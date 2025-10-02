@@ -1,2 +1,16 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
+
+@import 'colors';
+@import 'typography';
+
+:root {
+  --ion-color-primary: #{$primary-color};
+  --ion-color-secondary: #{$secondary-color};
+  --ion-color-success: #{$success-color};
+  --ion-color-warning: #{$warning-color};
+  --ion-color-danger: #{$danger-color};
+
+  --ion-font-family: #{$font-family-base};
+  --ion-font-size-base: #{$font-size-base};
+}

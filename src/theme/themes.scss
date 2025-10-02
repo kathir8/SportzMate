@@ -1,0 +1,13 @@
+/* Light Theme */
+:root {
+  --background-color: #F3F8FC;
+  --text-color: #000000;
+}
+
+/* Dark Theme */
+body.dark-theme {
+  --background-color: #121212;
+  --text-color: #ffffff;
+  --ion-color-primary: #bb86fc;
+  --ion-color-secondary: #03dac6;
+}

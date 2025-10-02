@@ -1,0 +1,41 @@
+<ion-content class="ion-padding login-page">
+
+
+  <h2 class="title">Log In</h2>
+
+  <!-- Email Input -->
+<ion-label class="email-text">Email</ion-label>
+<ion-input class="input-item" [(ngModel)]="email" type="email"></ion-input>
+ 
+  <!-- Next Button -->
+  <ion-button expand="block" class="next-btn" (click)="next()">
+    Next
+  </ion-button>
+
+  <!-- Divider -->
+  <div class="divider">
+    <span></span>
+    <p>or</p>
+    <span></span>
+  </div>
+
+  <!-- Social Login -->
+  <p class="connect-text">Connect With</p>
+  <div class="social-buttons">
+    <ion-button fill="clear" class="social-btn">
+      <ion-icon name="logo-google"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" class="social-btn">
+      <ion-icon name="logo-facebook"></ion-icon>
+    </ion-button>
+    <ion-button fill="clear" class="social-btn">
+      <ion-icon name="logo-instagram"></ion-icon>
+    </ion-button>
+  </div>
+
+  <!-- Footer Link -->
+  <p class="footer-text">
+    Create a Sportzmate Account
+  </p>
+
+</ion-content>

@@ -1,0 +1,91 @@
+$containerPaddingX: 23px;
+$inputPaddingX: 10px;
+
+.login-page {
+  --background: var(--background-color);
+  --color: var(--text-color);
+  --padding-start:#{$containerPaddingX};
+  --padding-end:#{$containerPaddingX};
+
+  .title {
+    margin-bottom: 36px;
+    margin-top: 33%;
+    line-height: 33px;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  .email-text {
+    line-height: 22px;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
+  .input-item {
+    border-radius: 10px;
+    margin-top: 10px;
+    margin-bottom: 36px;
+    box-shadow: 0 1px 4px #00000029;
+    background: #ffffff;
+    --padding-start:#{$inputPaddingX};
+    --padding-end:#{$inputPaddingX};
+  }
+
+  .next-btn {
+    --color: #ffffff;
+    margin-bottom: 41px;
+    --border-radius:10px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin: 25px 0;
+
+    span {
+      flex: 1;
+      height: 1px;
+      background: #d8e0e6;
+    }
+
+    p {
+      margin: 0 10px;
+      font-size: 14px;
+      color: #6b7b8c;
+    }
+  }
+
+  .connect-text {
+    font-weight: 600;
+    text-align: center;
+    margin-bottom: 15px;
+  }
+
+  .social-buttons {
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+
+    .social-btn {
+      width: 55px;
+      height: 55px;
+      border-radius: 50%;
+      background: #fff;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+
+      ion-icon {
+        font-size: 26px;
+        color: #444;
+      }
+    }
+  }
+
+  .footer-text {
+    margin-top: 40px;
+    text-align: center;
+    color: #ff5c2b;
+    font-size: 14px;
+    font-weight: 500;
+  }
+}

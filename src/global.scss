@@ -8,6 +8,12 @@
  * For more information on global stylesheets, visit the documentation:
  * https://ionicframework.com/docs/layout/global-stylesheets
  */
+ 
+@use "tailwindcss";
+@import 'theme/variables';
+@import 'theme/themes';
+/* You can add your global custom CSS below */
+@import "@fontsource/open-sans";
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
@@ -35,3 +41,11 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+
+ion-input {
+    input{
+        caret-color: var(--ion-color-primary) !important;
+    }
+}
+
