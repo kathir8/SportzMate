@@ -10,10 +10,10 @@
  */
  
 @use "tailwindcss";
-@import 'theme/variables';
-@import 'theme/themes';
+@use 'theme/variables' as *;
+@use 'theme/themes';
 /* You can add your global custom CSS below */
-@import "@fontsource/open-sans";
+@use "@fontsource/open-sans";
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";

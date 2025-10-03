@@ -1,8 +1,8 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
 
-@import 'colors';
-@import 'typography';
+@use 'colors' as *;
+@use 'typography' as *;
 
 :root {
   --ion-color-primary: #{$primary-color};
