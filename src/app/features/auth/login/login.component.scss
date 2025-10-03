@@ -9,7 +9,7 @@ $inputPaddingX: 10px;
 
   .title {
     margin-bottom: 36px;
-    margin-top: 33%;
+    margin-top: 119px;
     line-height: 33px;
     font-weight: bold;
     font-size: 24px;
@@ -34,7 +34,7 @@ $inputPaddingX: 10px;
   .next-btn {
     --color: #ffffff;
     margin-bottom: 41px;
-    --border-radius:10px;
+    --border-radius: 10px;
   }
 
   .divider {
@@ -46,20 +46,20 @@ $inputPaddingX: 10px;
     span {
       flex: 1;
       height: 1px;
-      background: #d8e0e6;
+      background: #C0DCEA;
     }
 
     p {
-      margin: 0 10px;
-      font-size: 14px;
-      color: #6b7b8c;
+      margin: 0 18px;
+      line-height: 22px;
+      color: #6E848F;
     }
   }
 
   .connect-text {
-    font-weight: 600;
+    font-weight: bold;
     text-align: center;
-    margin-bottom: 15px;
+    margin-bottom: 30px;
   }
 
   .social-buttons {
@@ -76,16 +76,27 @@ $inputPaddingX: 10px;
 
       ion-icon {
         font-size: 26px;
-        color: #444;
+
+        &.facebook {
+          color: #0866ff;
+        }
       }
     }
   }
 
-  .footer-text {
-    margin-top: 40px;
-    text-align: center;
-    color: #ff5c2b;
-    font-size: 14px;
-    font-weight: 500;
+
+}
+
+.footer {
+  &-toolbar {
+    --background: var(--background-color);
+    --border-color: #C0DCEA;
   }
+
+  &-text {
+    color: #F38756;
+    font-size: 16px;
+    font-weight: bold;
+  }
+
 }
