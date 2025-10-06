@@ -1,3 +1,21 @@
-<p>
-  signup works!
-</p>
+<ion-content class="signup-page">
+  <img src="assets/icon/signup.png">
+  <div class="ion-padding">
+    <h2 class="title">Sign Up</h2>
+
+    <ion-label class="text-field">Email</ion-label>
+    <ion-input class="text-input" [(ngModel)]="email" type="email"></ion-input>
+
+    <ion-label class="text-field">Password</ion-label>
+    <ion-input class="text-input" [(ngModel)]="password" type="password"></ion-input>
+
+    <ion-label class="text-field">Confirm Password</ion-label>
+    <ion-input class="text-input" [(ngModel)]="confirmPassword" type="password"></ion-input>
+
+
+    <ion-checkbox>I agree to the terms and conditions</ion-checkbox>
+
+    <ion-button expand="block" class="verify-btn" (click)="verify()">Verify</ion-button>
+  </div>
+
+</ion-content>
