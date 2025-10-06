@@ -1,5 +1,8 @@
 import { Routes } from '@angular/router';
 import { AuthGuard } from './core/auth.guard';
+import { LoginComponent } from './features/auth/login/login.component';
+import { SignupComponent } from './features/auth/signup/signup.component';
+import { DashboardComponent } from './features/dashboard/dashboard.component';
 
 export const routes: Routes = [
   {
@@ -12,21 +15,24 @@ export const routes: Routes = [
     children: [
       {
         path: 'login',
-        loadComponent: () =>
-          import('./features/auth/login/login.component').then(m => m.LoginComponent),
+        component: LoginComponent,
+        // loadComponent: () =>
+        //   import('./features/auth/login/login.component').then(m => m.LoginComponent),
       },
       {
         path: 'signup',
-        loadComponent: () =>
-          import('./features/auth/signup/signup.component').then(m => m.SignupComponent),
+        component:SignupComponent,
+        // loadComponent: () =>
+        //   import('./features/auth/signup/signup.component').then(m => m.SignupComponent),
       },
     ],
   },
   {
     path: 'dashboard',
     canActivate: [AuthGuard],
-    loadComponent: () =>
-      import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    component:DashboardComponent
+    // loadComponent: () =>
+    //   import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
   },
   {
     path: '**',
