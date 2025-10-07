@@ -29,9 +29,4 @@ accepted:boolean=false;
     // Later you can add API call here
   }
 
-  onCheckboxBlur(){
-    console.log(this.accepted);
-    
-  }
-
 }

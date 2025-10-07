@@ -6,7 +6,7 @@
     <ionic-input label="Password" type="password" [(ngModel)]="password" name="password"></ionic-input>
     <ionic-input label="Confirm Password" type="password" [(ngModel)]="confirmPassword" name="cPassword"></ionic-input>
 
-    <ionic-checkbox label="I agree to the terms and conditions" [(ngModel)]="accepted" (blur)="onCheckboxBlur()">
+    <ionic-checkbox label="I agree to the terms and conditions" [(ngModel)]="accepted">
     </ionic-checkbox>
 
     <ionic-button (ionClick)="verify()">Login</ionic-button>

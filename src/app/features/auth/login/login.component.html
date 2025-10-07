@@ -3,14 +3,8 @@
 
   <h2 class="title">Log In</h2>
 
-  <!-- Email Input -->
-  <ion-label class="email-text">Email</ion-label>
-  <ion-input class="input-item" [(ngModel)]="email" type="email"></ion-input>
-
-  <!-- Next Button -->
-  <ion-button expand="block" class="next-btn" (click)="next()">
-    Next
-  </ion-button>
+    <ionic-input label="Email" type="email" [(ngModel)]="email" name="email"></ionic-input>
+    <ionic-button (ionClick)="next()">Next</ionic-button>
 
   <!-- Divider -->
   <div class="divider">
@@ -32,7 +26,6 @@
       <img src="assets/icon/social/instagram.svg">
     </ion-button>
   </div>
-
 </ion-content>
 <ion-footer class="footer">
     <ion-toolbar class="footer-toolbar">

@@ -21,7 +21,7 @@ export class IonicCheckboxComponent implements ControlValueAccessor {
   @Input() disabled:boolean = false;          // Disabled state
   @Input() labelPlacement:'start' | 'end' | 'fixed' | 'stack' = 'end';                // Label text
 
-  @Output() blur = new EventEmitter<void>(); // Blur event
+  @Output() modelChange = new EventEmitter<boolean>();
 
   value: boolean = false;             // Internal value
 
@@ -51,11 +51,7 @@ export class IonicCheckboxComponent implements ControlValueAccessor {
     const checked = event.detail.checked;
     this.value = checked;
     this.onChange(checked); // updates ngModel
-  }
-
-  onBlurEvent(): void {
-    this.onTouched();
-    this.blur.emit(); // emit blur for parent
+    this.modelChange.emit(checked); // for [(ngModel)]
   }
 
 }
