@@ -1,0 +1,32 @@
+<ion-content class="ion-padding other-details-page">
+
+  <ion-range aria-label="Custom range" [value]="20" class="range-bar"></ion-range>
+  <h2 class="title"> Which one are you ?</h2>
+
+  <ion-grid class="gender-grid">
+    <ion-radio-group>
+    <ion-row>
+      <ion-col>
+        <ion-card class="card">
+          <ion-card-content>
+              <ion-radio class="radio-icon" value="male" name="gender"></ion-radio>
+            <ion-img src="assets/icon/signup/male.png" class="img" alt="male"></ion-img>
+            <p class="card-info">MALE</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+      <ion-col>
+        <ion-card class="card">
+          <ion-card-content>
+              <ion-radio class="radio-icon" value="female" name="gender"></ion-radio>
+            <ion-img src="assets/icon/signup/female.png" class="img" alt="female"></ion-img>
+            <p class="card-info">FEMALE</p>
+          </ion-card-content>
+        </ion-card>
+      </ion-col>
+    </ion-row>
+  </ion-radio-group>
+
+  </ion-grid>
+
+</ion-content>

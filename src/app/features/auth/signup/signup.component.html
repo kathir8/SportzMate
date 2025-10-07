@@ -1,15 +1,23 @@
 <ion-content class="signup-page">
-  <img src="assets/icon/signup.png">
+  <ion-img
+  src="assets/icon/signup/signup-bg.png"
+  alt="sign up image"
+></ion-img>
   <div class="ion-padding">
     <h2 class="title">Sign Up</h2>
+    @if(passwordPane){
     <ionic-input label="Email" type="email" [(ngModel)]="email" name="email"></ionic-input>
     <ionic-input label="Password" type="password" [(ngModel)]="password" name="password"></ionic-input>
     <ionic-input label="Confirm Password" type="password" [(ngModel)]="confirmPassword" name="cPassword"></ionic-input>
 
-    <ionic-checkbox label="I agree to the terms and conditions" [(ngModel)]="accepted">
+    <ionic-checkbox class="checkbox-container" label="I agree to the terms and conditions" [(ngModel)]="accepted">
     </ionic-checkbox>
 
-    <ionic-button (ionClick)="verify()">Login</ionic-button>
+    <ionic-button (ionClick)="verify()">Verify</ionic-button>
+  }@else{
+    <ionic-input label="Enter Verification Code" [(ngModel)]="code" name="code"></ionic-input>
+    <ionic-button (ionClick)="register()">Register</ionic-button>
+  }
 
   </div>
 

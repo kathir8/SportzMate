@@ -1,32 +1,40 @@
 import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonContent, IonImg } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicCheckboxComponent } from 'src/app/shared/components/ionic-checkbox/ionic-checkbox.component';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
-  imports:[IonContent, FormsModule, IonicInputComponent, IonicButtonComponent, IonicCheckboxComponent]
+  imports: [IonContent, FormsModule, IonicInputComponent, IonicButtonComponent, IonicCheckboxComponent, IonImg]
 })
-export class SignupComponent  implements OnInit {
-password:string ='';
-email:string ='kathir@gmail.com';
-confirmPassword: string = ''
-accepted:boolean=false;
+export class SignupComponent implements OnInit {
+  password: string = '';
+  email: string = '';
+  confirmPassword: string = ''
+  code: string = ''
+  accepted: boolean = false;
+  passwordPane: boolean = true;
 
-  constructor() { }
+  constructor(private router: Router) {}
 
-  
-  ngOnInit() {}
+  ngOnInit() { }
 
   verify() {
     console.log("Email: ", this.email);
     console.log("Password: ", this.password);
     console.log("Confirm Password: ", this.confirmPassword);
     // Later you can add API call here
+    this.passwordPane = false;
+  }
+
+  register(){
+    console.log(this.code);
+    this.router.navigate(['/auth/other-details']);
   }
 
 }

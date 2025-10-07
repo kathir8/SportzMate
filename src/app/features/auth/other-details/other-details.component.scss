@@ -1,0 +1,67 @@
+$containerPaddingX: 25px;
+$cardSpacingX: 0px;
+
+.other-details-page {
+    --background: var(--background-color);
+    --color: var(--text-color);
+    --padding-start:#{$containerPaddingX};
+    --padding-end:#{$containerPaddingX};
+    text-align: center;
+
+    ion-range {
+        --bar-background-active: #6E848F;
+        --bar-background: #C0DCEA;
+        --bar-border-radius: 10px;
+        --bar-height: 14px;
+        --knob-size: 0px;
+
+        &.range-bar {
+            pointer-events: none;
+            margin-top: 28px;
+            margin: auto;
+            width: 130px;
+        }
+    }
+
+    .title {
+        font-weight: bold;
+        margin-top: 80px;
+    }
+
+    .gender-grid {
+        padding: 0;
+
+        ion-col {
+            padding-inline-start: 10px;
+            padding-inline-end: 10px;
+
+            .card {
+                border: 1px solid var(--ion-color-primary);
+                margin-inline-start: $cardSpacingX;
+                margin-inline-end: $cardSpacingX;
+                --background: transparent;
+                border-radius: 20px;
+                box-shadow: none;
+
+                ion-card-content {
+                    padding-inline-start: $cardSpacingX;
+                    padding-inline-end: $cardSpacingX;
+                    padding-top: 0;
+                    padding-bottom: 0;
+
+                    .img {
+                        height: 225px;
+                    }
+
+                    .card-info {
+                        padding-bottom: 5px;
+                        line-height: 22px;
+                        padding-top: 5px;
+                        font-size: 16px;
+                        color: black;
+                    }
+                }
+            }
+        }
+    }
+}
