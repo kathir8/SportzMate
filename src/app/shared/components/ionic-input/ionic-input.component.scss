@@ -1,0 +1,22 @@
+$inputPaddingX: 10px;
+
+
+ion-input {
+    &.text-input {
+        border-radius: 10px;
+        margin-top: 10px;
+        margin-bottom: 36px;
+        box-shadow: 0 1px 4px #00000029;
+        background: #ffffff;
+        --padding-start:#{$inputPaddingX};
+        --padding-end:#{$inputPaddingX};
+        --highlight-color: none;
+    }
+}
+
+.text-field {
+    line-height: 22px;
+    font-size: 16px;
+    font-weight: bold;
+}
+

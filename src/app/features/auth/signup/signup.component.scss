@@ -1,5 +1,4 @@
 $containerPaddingX: 23px;
-$inputPaddingX: 10px;
 
 .signup-page{
   --background: var(--background-color);
@@ -13,29 +12,6 @@ $inputPaddingX: 10px;
     line-height: 33px;
     font-weight: bold;
     font-size: 24px;
-  }
-
-  .text-field {
-    line-height: 22px;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .text-input {
-    border-radius: 10px;
-    margin-top: 10px;
-    margin-bottom: 36px;
-    box-shadow: 0 1px 4px #00000029;
-    background: #ffffff;
-    --padding-start:#{$inputPaddingX};
-    --padding-end:#{$inputPaddingX};
-  }
-
-
-  .verify-btn {
-    --color: #ffffff;
-    margin-bottom: 41px;
-    --border-radius: 10px;
   }
 
 }
