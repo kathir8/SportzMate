@@ -2,6 +2,16 @@
 
   <h2 class="title"> How old are you ?</h2>
   <p class="content">To give you a better experience we need to know your Age</p>
+
+
+  <div class="age-selector" #scrollContainer (scroll)="onScroll()">
+
+    @for (age of ages; track age) {
+    <div class="number">{{ age }}</div>
+    }
+  </div>
+
+
   <ion-nav-link router-direction="forward" [component]="interestComponent">
     <ionic-button>Continue</ionic-button>
   </ion-nav-link>
