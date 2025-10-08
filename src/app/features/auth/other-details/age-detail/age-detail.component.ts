@@ -10,40 +10,41 @@ import { InterestDetailComponent } from '../interest-detail/interest-detail.comp
   imports: [IonNavLink, IonicButtonComponent]
 })
 export class AgeDetailComponent {
+  
   interestComponent = InterestDetailComponent;
-    @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
+  @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
 
-  ages: number[] = [];
+  startAge = 15;
+  endAge = 50;
+  ages: number[] = Array.from({ length: (this.endAge - this.startAge + 1) }, (_, i) => i + this.startAge);
   selectedAge = 29;
+  private readonly ITEM_GAP = 24;
+
 
   constructor() { }
 
-   ngOnInit() {
-    this.ages = Array.from({ length: 33 }, (_, i) => i + 18); // 18 → 50
-  }
-
   ngAfterViewInit() {
-    // Set scroll to selectedAge initially (centered)
-    setTimeout(() => this.centerOnAge(this.selectedAge), 100);
+    setTimeout(() => this.centerOnAge(this.selectedAge));
   }
 
-    onScroll() {
+  onScroll() {
     const el = this.scrollContainer.nativeElement;
     const scrollLeft = el.scrollLeft;
-    const itemWidth = el.children[0].clientWidth + 24; // 24 = gap
-    const centerIndex = Math.round(scrollLeft / itemWidth) + 1;
-    this.selectedAge = this.ages[centerIndex] || this.selectedAge;
+    const itemWidth = el.children[0].clientWidth + this.ITEM_GAP;
+    const centerIndex = Math.round(scrollLeft / itemWidth);
+    this.selectedAge = this.ages[centerIndex];
   }
 
   centerOnAge(age: number) {
     const el = this.scrollContainer.nativeElement;
     const index = this.ages.indexOf(age);
-    const itemWidth = el.children[0].clientWidth + 24;
+    if (index === -1) return;
+
+    const itemWidth = el.children[0].clientWidth + this.ITEM_GAP;
+    const centerOffset = el.offsetWidth / 2 - (el.children[0].clientWidth / 2);
     el.scrollTo({
-      left: (index - 1) * itemWidth,
+      left: index * itemWidth - centerOffset,
       behavior: 'smooth',
     });
   }
-  
-
 }
