@@ -1,0 +1,37 @@
+<div class="gender-detail">
+  <h2 class="title"> Which one are you ?</h2>
+
+  <ion-grid class="gender-grid">
+    <ion-row>
+      <ion-col size="6">
+        <div class="gender-card" [class.selected]="selectedGender === 'male'" (click)="selectGender('male')">
+          @if(selectedGender === 'male'){
+          <div class="radio-circle">
+            <ion-icon [icon]="icons.checkmarkOutline"></ion-icon>
+          </div>
+          }
+
+          <ion-img src="assets/icon/signup/male.png"></ion-img>
+          <p class="gender-title">MALE</p>
+        </div>
+      </ion-col>
+
+      <ion-col size="6">
+        <div class="gender-card female" [class.selected]="selectedGender === 'female'" (click)="selectGender('female')">
+          @if(selectedGender === 'female'){
+
+          <div class="radio-circle">
+            <ion-icon [icon]="icons.checkmarkOutline"></ion-icon>
+          </div>
+          }
+
+          <ion-img src="assets/icon/signup/female.png"></ion-img>
+          <p class="gender-title">FEMALE</p>
+        </div>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+  <ion-nav-link router-direction="forward" [component]="ageComponent">
+    <ionic-button >Continue</ionic-button>
+  </ion-nav-link>
+</div>

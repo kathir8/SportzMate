@@ -1,0 +1,14 @@
+$containerPaddingX: 25px;
+
+.age-detail {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    margin-top: 90px;
+
+    .title {
+        font-weight: bold;
+    }
+    .content{
+        line-height: 22px;
+    }
+}

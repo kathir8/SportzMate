@@ -13,7 +13,7 @@ import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic
   imports: [FormsModule, IonContent, IonIcon, IonFooter, IonToolbar, IonTitle, IonButton, RouterLink, IonicInputComponent, IonicButtonComponent]
 })
 export class LoginComponent {
-public icons = {chevronForward,heartOutline,logoFacebook,logoGoogle,logoInstagram}; // You can add in this object as many as you need
+icons = {chevronForward,heartOutline,logoFacebook,logoGoogle,logoInstagram};
 
   email: string = '';
 

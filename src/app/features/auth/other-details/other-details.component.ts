@@ -1,17 +1,51 @@
-import { Component, OnInit } from '@angular/core';
-import { IonContent } from '@ionic/angular/standalone';
-import { IonRange, IonCol, IonGrid, IonRow, IonCard, IonImg, IonRadio, IonRadioGroup, IonCardContent } from '@ionic/angular/standalone';
-
+import { Component, ViewChild } from '@angular/core';
+import { IonHeader, IonContent, IonRange, IonNav, IonButtons, IonButton, IonToolbar, IonIcon } from '@ionic/angular/standalone';
+import { GenderDetailComponent } from "./gender-detail/gender-detail.component";
+import { chevronBackOutline } from 'ionicons/icons';
 @Component({
   selector: 'other-details',
   templateUrl: './other-details.component.html',
   styleUrls: ['./other-details.component.scss'],
-  imports:[IonContent, IonRange, IonCol, IonGrid, IonRow ,IonCard, IonCardContent,IonImg, IonRadioGroup , IonRadio]
+  imports: [IonHeader, IonContent, IonRange, IonNav, IonButtons, IonButton, IonIcon, IonToolbar]
 })
-export class OtherDetailsComponent  implements OnInit {
+export class OtherDetailsComponent {
 
+  @ViewChild('nav') ionNav!: IonNav;
+
+  genderComponent = GenderDetailComponent;
+  icons = { chevronBackOutline };
+  showBackButton: boolean = false;
+  ionValue: number = 20;
   constructor() { }
 
-  ngOnInit() {}
+
+  onNavChange(event: CustomEvent<void>) {
+    const ionNavElement = event.target as HTMLIonNavElement;
+    const active = ionNavElement.getActive();
+
+    active.then((view) => {
+      const componentName = view?.component?.name;
+      if (!componentName) {
+        this.showBackButton = false;
+        return
+      }
+
+      if (componentName === '_GenderDetailComponent') {
+        this.showBackButton = false;
+        this.ionValue = 20;
+      } else if (componentName === '_AgeDetailComponent') {
+        this.showBackButton = true;
+        this.ionValue = 40;
+      } else if (componentName === '_InterestDetailComponent') {
+        this.showBackButton = true;
+        this.ionValue = 60;
+      }
+    });
+  }
+
+
+  goBack() {
+    this.ionNav?.pop();
+  }
 
 }
