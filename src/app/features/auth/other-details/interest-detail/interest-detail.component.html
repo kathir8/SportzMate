@@ -1,3 +1,16 @@
-<p>
-  interest-detail works!
-</p>
+<div class="interest-detail">
+
+  <h2 class="title"> What Sport are<br> you interested in ?</h2>
+
+  <div class="sports-container">
+    @for (sport of sports; track sport) {
+    <ion-chip class="interest-chip" [class.selected]="selectedSports.includes(sport)"
+      (click)="toggleSportSelection(sport)">{{sport}}</ion-chip>
+    }
+  </div>
+
+
+  <ion-nav-link router-direction="forward" [component]="profileComponent">
+    <ionic-button>Continue</ionic-button>
+  </ion-nav-link>
+</div>

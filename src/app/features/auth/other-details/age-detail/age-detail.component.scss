@@ -9,6 +9,7 @@ $scrollPadding: calc(50% - ($itemWidth / 2));
 
   .title {
     font-weight: bold;
+    margin-top: 0px;
   }
 
   .content {
@@ -37,7 +38,7 @@ $scrollPadding: calc(50% - ($itemWidth / 2));
 
       &.active {
         box-shadow: 0 0 12px #0000001a;
-        color: var(--ion-color-primary);
+        color: var(--ion-color-primary-fade);
         justify-content: center;
         align-items: center;
         background: white;
