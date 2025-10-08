@@ -58,3 +58,9 @@ $scrollPadding: calc(50% - ($itemWidth / 2));
     }
   }
 }
+
+.footer {
+  padding-right:#{$containerPaddingX};
+  padding-left:#{$containerPaddingX};
+  margin-bottom: 25px;
+}

@@ -1,0 +1,20 @@
+$containerPaddingX: 25px;
+
+.profile-detail {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    margin-top: 90px;
+
+    
+    .title {
+        margin-bottom: 38px;
+        font-weight: bold;
+        margin-top: 0px;
+    }
+}
+
+.footer {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    margin-bottom: 25px;
+}

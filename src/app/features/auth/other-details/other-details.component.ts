@@ -39,6 +39,9 @@ export class OtherDetailsComponent {
       } else if (componentName === '_InterestDetailComponent') {
         this.showBackButton = true;
         this.ionValue = 60;
+      }else if (componentName === '_ProfileDetailComponent') {
+        this.showBackButton = true;
+        this.ionValue = 80;
       }
     });
   }

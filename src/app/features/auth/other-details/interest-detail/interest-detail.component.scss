@@ -30,9 +30,14 @@ $containerPaddingX: 25px;
             &.selected {
                 border: 1px solid var(--ion-color-primary-fade);
                 background-color: var(--ion-color-primary);
-                --color:#ffffff;
+                --color: #ffffff;
             }
         }
     }
+}
 
+.footer {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    margin-bottom: 25px;
 }

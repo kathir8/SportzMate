@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonNavLink } from '@ionic/angular/standalone';
+import { IonNavLink, IonFooter } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { InterestDetailComponent } from '../interest-detail/interest-detail.component';
 
@@ -7,10 +7,10 @@ import { InterestDetailComponent } from '../interest-detail/interest-detail.comp
   selector: 'app-age-detail',
   templateUrl: './age-detail.component.html',
   styleUrls: ['./age-detail.component.scss'],
-  imports: [IonNavLink, IonicButtonComponent]
+  imports: [IonNavLink, IonicButtonComponent, IonFooter]
 })
 export class AgeDetailComponent {
-  
+
   interestComponent = InterestDetailComponent;
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
 

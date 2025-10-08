@@ -1,5 +1,4 @@
 <div class="interest-detail">
-
   <h2 class="title"> What Sport are<br> you interested in ?</h2>
 
   <div class="sports-container">
@@ -8,9 +7,10 @@
       (click)="toggleSportSelection(sport)">{{sport}}</ion-chip>
     }
   </div>
+</div>
 
-
+<ion-footer class="footer">
   <ion-nav-link router-direction="forward" [component]="profileComponent">
     <ionic-button>Continue</ionic-button>
   </ion-nav-link>
-</div>
+</ion-footer>

@@ -1,8 +1,9 @@
 $containerPaddingX: 25px;
-.header{
+
+.header {
     background: var(--background-color);
-    
 }
+
 .gender-detail {
     padding-right:#{$containerPaddingX};
     padding-left:#{$containerPaddingX};
@@ -66,4 +67,10 @@ $containerPaddingX: 25px;
         }
 
     }
+}
+
+.footer {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    margin-bottom: 25px;
 }
