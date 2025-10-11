@@ -1,0 +1,13 @@
+<ion-label class="text-field">Country</ion-label>
+<ng-select [items]="countries" bindLabel="name" bindValue="code" placeholder="Select Country" class="country-dropdown"
+  [(ngModel)]="selectedCountry" [searchable]="true" appendTo="body" (change)="onSelectionChange($event)">
+  <ng-template ng-label-tmp let-item="item">
+    <span class="flag-icon" [style.background-image]="'url(' + getFlagUrl(item.code) + ')'"></span>
+    {{item.name}}
+  </ng-template>
+
+  <ng-template ng-option-tmp let-item="item" let-index="index">
+    <span class="flag-icon" [style.background-image]="'url(' + getFlagUrl(item.code) + ')'"></span>
+    {{item.name}}
+  </ng-template>
+</ng-select>
