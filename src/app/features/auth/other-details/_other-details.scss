@@ -1,0 +1,19 @@
+$containerPaddingX: 25px;
+
+.outer-container {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    margin-top: 90px;
+
+    .title {
+        font-weight: bold;
+        line-height: 33px;
+        margin-top: 0px;
+    }
+}
+
+.footer {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    padding-bottom: 25px;
+}

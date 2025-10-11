@@ -1,22 +1,8 @@
-$containerPaddingX: 25px;
-
-.header {
-    background: var(--background-color);
-}
-
-.gender-detail {
-    padding-right:#{$containerPaddingX};
-    padding-left:#{$containerPaddingX};
-    margin-top: 90px;
-
-
-    .title {
-        margin-bottom: 40px;
-        font-weight: bold;
-        margin-top: 0px;
-    }
+@use "../other-details";
+.outer-container {
 
     .gender-grid {
+        margin-top: 40px;
         margin-bottom: 100px;
 
         .gender-card {
@@ -67,10 +53,4 @@ $containerPaddingX: 25px;
         }
 
     }
-}
-
-.footer {
-    padding-right:#{$containerPaddingX};
-    padding-left:#{$containerPaddingX};
-    margin-bottom: 25px;
 }

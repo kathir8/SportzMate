@@ -1,17 +1,9 @@
+@use "../other-details";
 $itemWidth: 80px;
-$containerPaddingX: 25px;
 $scrollPadding: calc(50% - ($itemWidth / 2));
 
-.age-detail {
-  padding-right:#{$containerPaddingX};
-  padding-left:#{$containerPaddingX};
-  margin-top: 90px;
-
-  .title {
-    font-weight: bold;
-    margin-top: 0px;
-  }
-
+.outer-container {
+ 
   .content {
     line-height: 22px;
   }
@@ -57,10 +49,4 @@ $scrollPadding: calc(50% - ($itemWidth / 2));
       display: none;
     }
   }
-}
-
-.footer {
-  padding-right:#{$containerPaddingX};
-  padding-left:#{$containerPaddingX};
-  margin-bottom: 25px;
 }
