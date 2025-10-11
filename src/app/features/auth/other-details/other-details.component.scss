@@ -1,19 +1,24 @@
-.header{
+.header {
     background: var(--background-color);
-    .toolbar{
+    box-shadow: none;
+
+    .toolbar {
         --background: var(--background-color);
-        --border-width:0;
-        .back-button{
+        --border-width: 0;
+
+        .back-button {
             position: absolute;
         }
     }
 }
+
 .other-details-page {
     --background: var(--background-color);
     --color: var(--text-color);
     text-align: center;
 
 }
+
 ion-range {
     --bar-background-active: #6E848F;
     --bar-background: #C0DCEA;

@@ -1,0 +1,9 @@
+ion-input {
+    input {
+        caret-color: var(--ion-color-primary) !important;
+    }
+}
+
+ion-toolbar {
+    --ion-toolbar-color: var(--ion-color-primary) !important;
+}
