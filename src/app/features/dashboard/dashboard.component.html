@@ -8,6 +8,8 @@
       <ion-icon [icon]="icons.chatbubblesSharp"></ion-icon>
       Chat
     </ion-tab-button>
+    <div class="fab-space"></div>
+
     <ion-tab-button tab="invites">
       <ion-icon [icon]="icons.mailOpenSharp"></ion-icon>
       Invites
@@ -17,4 +19,9 @@
       Events
     </ion-tab-button>
   </ion-tab-bar>
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed" class="center-fab">
+    <ion-fab-button color="primary">
+      <ion-icon [icon]="icons.add" class="add-icon"></ion-icon>
+    </ion-fab-button>
+  </ion-fab>
 </ion-tabs>
