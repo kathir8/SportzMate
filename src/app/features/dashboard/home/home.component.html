@@ -33,20 +33,15 @@
     <ion-segment-content id="map" value="map">Second</ion-segment-content>
   </ion-segment-view>
 
-    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+  <ion-fab slot="fixed" vertical="bottom" horizontal="end" class="menu-fab">
     <ion-fab-button>
       <ion-icon [icon]="icons.filterSharp"></ion-icon>
     </ion-fab-button>
-    <ion-fab-list side="top">
-      <ion-fab-button>
-        <ion-icon name="document"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="color-palette"></ion-icon>
-      </ion-fab-button>
-      <ion-fab-button>
-        <ion-icon name="globe"></ion-icon>
-      </ion-fab-button>
+    <ion-fab-list side="start">
+      <div class="range-container">
+        <ion-range aria-label="Custom range" [min]="0" [max]="10" [value]="5" [pin]="true" [ticks]="true"
+          [snaps]="true"></ion-range>
+      </div>
     </ion-fab-list>
   </ion-fab>
 </ion-content>

@@ -93,4 +93,64 @@ $segmentRadius: 25px;
             }
         }
     }
+
+    .menu-fab {
+        margin-bottom: 20px;
+        
+        .range-container {
+            width: calc(100vw - 170px);
+            margin-right: 10px;
+            margin-top: -20px;
+
+            ion-range{
+                &::part(knob){
+                     transform: scale(0.3);   
+                }
+            }
+
+            // ion-range {
+            //     &::part(tick) {
+            //         background: #a2d2ff;
+            //     }
+
+            //     &::part(tick-active) {
+            //         background: #bde0fe;
+            //     }
+
+            //     &::part(pin) {
+            //         display: inline-flex;
+            //         align-items: center;
+            //         justify-content: center;
+
+            //         background: #ffafcc;
+            //         color: #fff;
+
+            //         border-radius: 50%;
+            //         transform: scale(1.01);
+
+            //         top: -20px;
+
+            //         min-width: 28px;
+            //         height: 28px;
+            //         transition: transform 120ms ease, background 120ms ease;
+            //     }
+
+            //     &::part(pin)::before {
+            //         content: none;
+            //     }
+
+            //     &::part(knob) {
+            //         background: #ffc8dd;
+            //     }
+
+            //     &::part(bar) {
+            //         background: #a2d2ff;
+            //     }
+
+            //     &::part(bar-active) {
+            //         background: #bde0fe;
+            //     }
+            // }
+        }
+    }
 }

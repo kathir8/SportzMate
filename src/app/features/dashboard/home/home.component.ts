@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonTitle, IonIcon, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel,IonFab,IonFabButton,IonFabList } from '@ionic/angular/standalone';
+import { IonContent, IonTitle, IonIcon, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel,IonFab,IonFabButton,IonFabList, IonRange } from '@ionic/angular/standalone';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, filterSharp } from 'ionicons/icons';
 
@@ -10,7 +10,7 @@ import { navigateCircleOutline, filterSharp } from 'ionicons/icons';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule,IonFab,IonFabButton,IonFabList]
+  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule,IonFab,IonFabButton,IonFabList,IonRange]
 
 })
 export class HomeComponent {
