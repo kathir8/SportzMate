@@ -1,3 +1,20 @@
-<p>
-  dashboard works!
-</p>
+<ion-tabs>
+  <ion-tab-bar slot="bottom">
+    <ion-tab-button tab="home">
+      <ion-icon [icon]="icons.homeSharp"></ion-icon>
+      Home
+    </ion-tab-button>
+    <ion-tab-button tab="chat">
+      <ion-icon [icon]="icons.chatbubblesSharp"></ion-icon>
+      Chat
+    </ion-tab-button>
+    <ion-tab-button tab="invites">
+      <ion-icon [icon]="icons.mailOpenSharp"></ion-icon>
+      Invites
+    </ion-tab-button>
+    <ion-tab-button tab="events">
+      <ion-icon [icon]="icons.menuOutline"></ion-icon>
+      Events
+    </ion-tab-button>
+  </ion-tab-bar>
+</ion-tabs>

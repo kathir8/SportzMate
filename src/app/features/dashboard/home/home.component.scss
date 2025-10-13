@@ -1,0 +1,96 @@
+$containerPaddingX: 15px;
+$segmentRadius: 25px;
+
+.home-page {
+    .heading-container {
+        display: flex;
+
+        .title {
+            line-height: 30px;
+            font-weight: 800;
+            padding-left: 0;
+            font-size: 22px;
+        }
+
+        .profile-container {
+            position: relative;
+
+            .profile-wrapper {
+                border: 3px solid var(--ion-color-primary);
+                overflow: hidden;
+
+                .profile-pic {
+                    border-radius: 50%;
+                    object-fit: cover;
+                    height: 100%;
+                    width: 100%;
+                }
+
+            }
+
+            .online-indicator {
+                background-color: #54C26E;
+                border: 2px solid #fff;
+                border-radius: 50%;
+                position: absolute;
+                height: 14px;
+                width: 14px;
+                right: 3px;
+                top: 3px;
+            }
+
+            .icon-overlay {
+                justify-content: center;
+                align-items: center;
+                position: absolute;
+                border-radius: 50%;
+                background: #fff;
+                display: flex;
+                bottom: 0px;
+                left: 0px;
+
+                ion-icon {
+                    color: #628B9F;
+                    font-size: 22px;
+                }
+            }
+        }
+    }
+
+    .invites-dropdown {
+        margin-bottom: 15px;
+        margin-top: 25px;
+    }
+
+    .segment-wrapper {
+        border-radius: $segmentRadius;
+        --background: #F8F8F8;
+        --color: #B6B6B6;
+
+        ion-segment-button {
+            line-height: 22px;
+            font-weight: 600;
+            font-size: 16px;
+            margin: 4px;
+
+            ion-label {
+                text-transform: none;
+            }
+
+            &::part(native) {
+                // ripple effect
+                border-radius: $segmentRadius;
+                overflow: hidden;
+            }
+
+            &.segment-button-checked {
+                border-radius: $segmentRadius;
+                background: #fff;
+            }
+
+            &::part(indicator) {
+                opacity: 0;
+            }
+        }
+    }
+}

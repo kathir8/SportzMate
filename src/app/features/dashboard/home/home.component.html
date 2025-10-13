@@ -1,0 +1,37 @@
+<ion-content class="ion-padding home-page">
+  <div id="home-page">
+    <div class="heading-container">
+      <ion-title class="title">Choose Your<br> Sports Mate Today !</ion-title>
+      <div class="profile-container">
+        <ion-avatar class="profile-wrapper">
+          <ion-img src="assets/icon/signup/profile.png" alt="user" class="profile-pic"></ion-img>
+        </ion-avatar>
+        <div class="online-indicator"></div>
+        <div class="icon-overlay">
+          <ion-icon [icon]="icons.navigateCircleOutline"></ion-icon>
+        </div>
+      </div>
+    </div>
+
+    <ng-select [items]="countries" bindLabel="name" bindValue="code" placeholder="Search Invites"
+      class="invites-dropdown"></ng-select>
+
+    <ion-segment [(ngModel)]="segmentView" class="segment-wrapper">
+      <ion-segment-button value="list" content-id="list">
+        <ion-label>List View</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="map" content-id="map">
+        <ion-label>Map View</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+
+    <ion-segment-view>
+      <ion-segment-content id="list" value="list">
+        
+
+        <p>Based on your current Location</p>
+      </ion-segment-content>
+      <ion-segment-content id="map" value="map">Second</ion-segment-content>
+    </ion-segment-view>
+  </div>
+</ion-content>

@@ -4,7 +4,7 @@ import { AuthGuard } from './core/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login',
+    redirectTo: 'dashboard',
     pathMatch: 'full',
   },
   {
@@ -20,7 +20,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/auth/signup/signup.component').then(m => m.SignupComponent)
       },
-       {
+      {
         path: 'other-details',
         loadComponent: () =>
           import('./features/auth/other-details/other-details.component').then(m => m.OtherDetailsComponent)
@@ -31,7 +31,34 @@ export const routes: Routes = [
     path: 'dashboard',
     canActivate: [AuthGuard],
     loadComponent: () =>
-      import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent)
+      import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
+    children: [
+      {
+        path: '',
+        redirectTo: 'home',
+        pathMatch: 'full'
+      },
+      {
+        path: 'home',
+        loadComponent: () =>
+          import('./features/dashboard/home/home.component').then(m => m.HomeComponent)
+      },
+      {
+        path: 'chat',
+        loadComponent: () =>
+          import('./features/dashboard/chat/chat.component').then(m => m.ChatComponent)
+      },
+      {
+        path: 'invites',
+        loadComponent: () =>
+          import('./features/dashboard/invites/invites.component').then(m => m.InvitesComponent)
+      },
+      {
+        path: 'events',
+        loadComponent: () =>
+          import('./features/dashboard/events/events.component').then(m => m.EventsComponent)
+      },
+    ]
   },
   {
     path: '**',

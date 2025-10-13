@@ -1,5 +1,4 @@
 $containerPaddingX: 37px;
-$inputPaddingX: 10px;
 
 .login-page {
   --background: var(--background-color);
@@ -15,27 +14,6 @@ $inputPaddingX: 10px;
     font-size: 24px;
   }
 
-  .email-text {
-    line-height: 22px;
-    font-size: 16px;
-    font-weight: bold;
-  }
-
-  .input-item {
-    border-radius: 10px;
-    margin-top: 10px;
-    margin-bottom: 36px;
-    box-shadow: 0 1px 4px #00000029;
-    background: #ffffff;
-    --padding-start:#{$inputPaddingX};
-    --padding-end:#{$inputPaddingX};
-  }
-
-  .next-btn {
-    --color: #ffffff;
-    margin-bottom: 41px;
-    --border-radius: 10px;
-  }
 
   .divider {
     display: flex;
@@ -83,8 +61,6 @@ $inputPaddingX: 10px;
       }
     }
   }
-
-
 }
 
 .footer {
