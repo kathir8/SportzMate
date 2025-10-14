@@ -26,9 +26,42 @@
 
   <ion-segment-view>
     <ion-segment-content id="list" value="list">
-
-
       <p>Based on your current Location</p>
+
+
+      <ion-list class="sports-mate-list">
+        @for (item of sportsMateList; track item; let index = $index) {
+        <ion-item>
+          <ion-thumbnail class="mate-img">
+            <img alt="Silhouette of mountains" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+          </ion-thumbnail>
+
+          <ion-grid>
+            <ion-row>
+              <ion-col size="8">
+                <ion-label class="name-text">{{item.name}}, {{item.place}}</ion-label>
+                <div class="time-wrapper">
+                  <ion-icon [icon]="icons.calendarClear"></ion-icon>
+                  <ion-label class="time-text">{{item.time}}</ion-label>
+                </div>
+                <div class="badge-wrapper">
+                  <ion-badge class="primary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
+                  <ion-badge class="secondary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
+                </div>
+              </ion-col>
+              <ion-col class="game-detail">
+                <ion-badge class="distanceOrDuration">{{item.distanceOrDuration}}</ion-badge>
+                <ion-icon [icon]="icons.bicycleOutline"></ion-icon>
+              </ion-col>
+            </ion-row>
+          </ion-grid>
+        </ion-item>
+        }
+      </ion-list>
+
+      <ion-infinite-scroll (ionInfinite)="loadMore($event)">
+        <ion-infinite-scroll-content></ion-infinite-scroll-content>
+      </ion-infinite-scroll>
     </ion-segment-content>
     <ion-segment-content id="map" value="map">Second</ion-segment-content>
   </ion-segment-view>
@@ -39,8 +72,8 @@
     </ion-fab-button>
     <ion-fab-list side="start">
       <div class="range-container">
-        <ion-range aria-label="Custom range" [min]="0" [max]="10" [value]="5" [pin]="true" [ticks]="true"
-          [snaps]="true"></ion-range>
+        <ion-range aria-label="Custom range" [min]="1" [max]="15" [value]="5" [pin]="true"
+          [pinFormatter]="formatKm"></ion-range>
       </div>
     </ion-fab-list>
   </ion-fab>

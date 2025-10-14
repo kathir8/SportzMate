@@ -1,5 +1,7 @@
 $containerPaddingX: 15px;
 $segmentRadius: 25px;
+$sliderBgWidth: (
+    2 * $containerPaddingX) + 37px;
 
 .home-page {
     .heading-container {
@@ -16,141 +18,217 @@ $segmentRadius: 25px;
             position: relative;
 
             .profile-wrapper {
-                border: 3px solid var(--ion-color-primary);
-                overflow: hidden;
+                border: 3px solid var(--ion-color-primary
+                );
+            overflow: hidden;
 
-                .profile-pic {
-                    border-radius: 50%;
-                    object-fit: cover;
-                    height: 100%;
-                    width: 100%;
-                }
-
-            }
-
-            .online-indicator {
-                background-color: #54C26E;
-                border: 2px solid #fff;
+            .profile-pic {
                 border-radius: 50%;
-                position: absolute;
-                height: 14px;
-                width: 14px;
-                right: 3px;
-                top: 3px;
+                object-fit: cover;
+                height: 100%;
+                width: 100%;
             }
 
-            .icon-overlay {
+        }
+
+        .online-indicator {
+            background-color: #54C26E;
+            border: 2px solid #fff;
+            border-radius: 50%;
+            position: absolute;
+            height: 14px;
+            width: 14px;
+            right: 3px;
+            top: 3px;
+        }
+
+        .icon-overlay {
+            justify-content: center;
+            align-items: center;
+            position: absolute;
+            border-radius: 50%;
+            background: #fff;
+            display: flex;
+            bottom: 0px;
+            left: 0px;
+
+            ion-icon {
+                color: #628B9F;
+                font-size: 22px;
+            }
+        }
+    }
+}
+
+.invites-dropdown {
+    margin-bottom: 15px;
+    margin-top: 25px;
+}
+
+.segment-wrapper {
+    border-radius: $segmentRadius;
+    --background: #F8F8F8;
+    --color: #B6B6B6;
+
+    ion-segment-button {
+        line-height: 22px;
+        font-weight: 600;
+        font-size: 16px;
+        margin: 4px;
+
+        ion-label {
+            text-transform: none;
+        }
+
+        &::part(native) {
+            // ripple effect
+            border-radius: $segmentRadius;
+            overflow: hidden;
+        }
+
+        &.segment-button-checked {
+            border-radius: $segmentRadius;
+            background: #fff;
+        }
+
+        &::part(indicator) {
+            opacity: 0;
+        }
+    }
+}
+
+.sports-mate-list {
+    font-size: 12px;
+
+    ion-item {
+        --padding-start: 0;
+        --inner-padding-end: 0;
+
+        .mate-img {
+            --border-radius: 18px;
+            --size: 73px;
+        }
+
+        .name-text {
+            font-size: 14px;
+            font-weight: 600;
+        }
+
+        .time-wrapper {
+            align-items: center;
+            color: #628B9F;
+            display: flex;
+
+            .time-text {
+                margin-left: 5px;
+                font-size: 12px;
+            }
+        }
+
+        .badge-wrapper {
+            margin-top: 5px;
+            display: flex;
+            gap: 13px;
+
+            ion-badge {
                 justify-content: center;
                 align-items: center;
-                position: absolute;
-                border-radius: 50%;
-                background: #fff;
+                border-radius: 7px;
+                font-size: 12px;
+                font-weight: 600;
                 display: flex;
-                bottom: 0px;
-                left: 0px;
+                height: 30px;
+                width: 50px;
+
+                &.primary {
+                    --background: #FFE1D3;
+                    --color: #FF9463;
+                }
+
+                &.secondary {
+                    --background: #D4FFDE;
+                    --color: #54C26E;
+                }
 
                 ion-icon {
-                    color: #628B9F;
-                    font-size: 22px;
+                    margin-right: 5px;
+                    font-size: 15px;
+                }
+            }
+        }
+
+        .game-detail {
+            justify-content: center;
+            flex-direction: column;
+            align-items: center;
+            display: flex;
+
+            .distanceOrDuration {
+                --background: #F3F8FC;
+                justify-content: center;
+                align-items: center;
+                --color: #628B9F;
+                border-radius: 7px;
+                font-weight: 600;
+                font-size: 12px;
+                display: flex;
+                height: 25px;
+                width: 57px;
+            }
+
+            ion-icon {
+                color: #D6D6D6;
+                font-size: 35px;
+            }
+        }
+    }
+
+}
+
+
+
+.menu-fab {
+    bottom: 30px;
+
+    .range-container {
+        width: calc(100vw - $sliderBgWidth);
+        box-shadow: 0px 1px 5px #00000024;
+        border-radius: 35px 0 0 35px;
+        background: #F3F8FC;
+        position: absolute;
+        right: -25px;
+        height: 53px;
+        z-index: -1;
+
+        ion-range {
+            --bar-background-active: #FFB898;
+            --knob-background: #FF4E18;
+            --bar-background: #FFB898;
+            --bar-border-radius: 10px;
+            --knob-size: 20px;
+            --bar-height: 5px;
+            padding-top: 5px;
+            width: 85%;
+            left: 25px;
+
+            &::part(pin) {
+                transition: transform 120ms ease, background 120ms ease;
+                transform: scale(1);
+                border-radius: 4px;
+                font-weight: bold;
+                padding-top: 6px;
+                font-size: 10px;
+                height: 17px;
+                bottom: 30px;
+                width: 38px;
+
+                &::before {
+                    height: 10px;
+                    width: 12px;
+                    left: 26px;
                 }
             }
         }
     }
-
-    .invites-dropdown {
-        margin-bottom: 15px;
-        margin-top: 25px;
-    }
-
-    .segment-wrapper {
-        border-radius: $segmentRadius;
-        --background: #F8F8F8;
-        --color: #B6B6B6;
-
-        ion-segment-button {
-            line-height: 22px;
-            font-weight: 600;
-            font-size: 16px;
-            margin: 4px;
-
-            ion-label {
-                text-transform: none;
-            }
-
-            &::part(native) {
-                // ripple effect
-                border-radius: $segmentRadius;
-                overflow: hidden;
-            }
-
-            &.segment-button-checked {
-                border-radius: $segmentRadius;
-                background: #fff;
-            }
-
-            &::part(indicator) {
-                opacity: 0;
-            }
-        }
-    }
-
-    .menu-fab {
-        margin-bottom: 20px;
-        
-        .range-container {
-            width: calc(100vw - 170px);
-            margin-right: 10px;
-            margin-top: -20px;
-
-            ion-range{
-                &::part(knob){
-                     transform: scale(0.3);   
-                }
-            }
-
-            // ion-range {
-            //     &::part(tick) {
-            //         background: #a2d2ff;
-            //     }
-
-            //     &::part(tick-active) {
-            //         background: #bde0fe;
-            //     }
-
-            //     &::part(pin) {
-            //         display: inline-flex;
-            //         align-items: center;
-            //         justify-content: center;
-
-            //         background: #ffafcc;
-            //         color: #fff;
-
-            //         border-radius: 50%;
-            //         transform: scale(1.01);
-
-            //         top: -20px;
-
-            //         min-width: 28px;
-            //         height: 28px;
-            //         transition: transform 120ms ease, background 120ms ease;
-            //     }
-
-            //     &::part(pin)::before {
-            //         content: none;
-            //     }
-
-            //     &::part(knob) {
-            //         background: #ffc8dd;
-            //     }
-
-            //     &::part(bar) {
-            //         background: #a2d2ff;
-            //     }
-
-            //     &::part(bar-active) {
-            //         background: #bde0fe;
-            //     }
-            // }
-        }
-    }
+}
 }
