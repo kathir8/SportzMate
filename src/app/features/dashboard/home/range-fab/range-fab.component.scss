@@ -1,0 +1,48 @@
+.range-fab {
+    bottom: 30px;
+
+    ion-fab-button {
+        --background: linear-gradient(61deg, #FF9463, #FF4E18);
+    }
+
+    .range-container {
+        width: calc(100vw - 67px);
+        box-shadow: 0px 1px 5px #00000024;
+        border-radius: 35px 0 0 35px;
+        background: #F3F8FC;
+        position: absolute;
+        right: -25px;
+        height: 53px;
+        z-index: -1;
+
+        ion-range {
+            --bar-background-active: #FFB898;
+            --knob-background: #FF4E18;
+            --bar-background: #FFB898;
+            --bar-border-radius: 10px;
+            --knob-size: 20px;
+            --bar-height: 5px;
+            padding-top: 5px;
+            width: 80%;
+            left: 25px;
+
+            &::part(pin) {
+                transition: transform 120ms ease, background 120ms ease;
+                transform: scale(1);
+                border-radius: 4px;
+                font-weight: bold;
+                padding-top: 6px;
+                font-size: 10px;
+                height: 17px;
+                bottom: 30px;
+                width: 38px;
+
+                &::before {
+                    height: 10px;
+                    width: 12px;
+                    left: 26px;
+                }
+            }
+        }
+    }
+}

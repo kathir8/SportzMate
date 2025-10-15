@@ -1,0 +1,11 @@
+<ion-fab slot="fixed" vertical="bottom" horizontal="end" class="range-fab">
+  <ion-fab-button>
+    <ion-icon [icon]="icons.filterSharp"></ion-icon>
+  </ion-fab-button>
+  <ion-fab-list side="start">
+    <div class="range-container">
+      <ion-range aria-label="Custom range" [min]="1" [max]="15" [value]="5" [pin]="true"
+        [pinFormatter]="formatKm"></ion-range>
+    </div>
+  </ion-fab-list>
+</ion-fab>
