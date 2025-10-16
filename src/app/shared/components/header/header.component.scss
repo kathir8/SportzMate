@@ -1,0 +1,13 @@
+.header {
+    background: var(--background-color);
+    box-shadow: none;
+
+    .toolbar {
+        --background: var(--background-color);
+        --border-width: 0;
+
+        .back-button {
+            position: absolute;
+        }
+    }
+}

@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, InfiniteScrollCustomEvent, IonRefresher, IonRefresherContent, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { bicycleOutline, calendarClear, peopleOutline } from 'ionicons/icons';
+import { MateListItem } from '../models/mate.model';
 @Component({
   selector: 'app-mate-list-view',
   templateUrl: './mate-list-view.component.html',
@@ -10,68 +12,147 @@ import { bicycleOutline, calendarClear, peopleOutline } from 'ionicons/icons';
 export class MateListViewComponent {
   icons = { peopleOutline, bicycleOutline, calendarClear };
 
-  sportsMateList = [
+  sportsMateList:MateListItem[] = [
     {
-      icon: '',
+      id:1,
+      profileImg: '',
       name: 'Christian Bale',
-      place: 'Chicago',
+      location: 'Chicago',
       time: '20 Oct, 4 PM',
-      need: 8,
-      coming: 8,
+      requiredMembers: 8,
+      confirmedMembers: 8,
       distanceOrDuration: '600 M',
-      type: 'Cycling'
+      sport: 'Cycling'
     },
     {
-      icon: '',
+      id:2,
+      profileImg: '',
       name: 'Elizabeth Taylor',
-      place: 'Naperville',
+      location: 'Naperville',
       time: '20 Oct, 4 PM',
-      need: 3,
-      coming: 4,
+      requiredMembers: 3,
+      confirmedMembers: 4,
       distanceOrDuration: '2 Hr',
-      type: 'Badmiton'
+      sport: 'Badmiton'
     },
     {
-      icon: '',
+      id:3,
+      profileImg: '',
       name: 'Judy',
-      place: 'Bolingbrook',
+      location: 'Bolingbrook',
       time: '20 Oct, 4 PM',
-      need: 4,
-      coming: 4,
+      requiredMembers: 4,
+      confirmedMembers: 4,
       distanceOrDuration: '3 km',
-      type: 'Running'
+      sport: 'Running'
     },
     {
-      icon: '',
+      id:4,
+      profileImg: '',
       name: 'Christian Bale',
-      place: 'Chicago',
+      location: 'Chicago',
       time: '20 Oct, 4 PM',
-      need: 8,
-      coming: 8,
+      requiredMembers: 8,
+      confirmedMembers: 8,
       distanceOrDuration: '600 M',
-      type: 'Cycling'
+      sport: 'Cycling'
     },
     {
-      icon: '',
+      id:5,
+      profileImg: '',
       name: 'Elizabeth Taylor',
-      place: 'Naperville',
+      location: 'Naperville',
       time: '20 Oct, 4 PM',
-      need: 3,
-      coming: 4,
+      requiredMembers: 3,
+      confirmedMembers: 4,
       distanceOrDuration: '2 Hr',
-      type: 'Badmiton'
+      sport: 'Badmiton'
     },
     {
-      icon: '',
+      id:6,
+      profileImg: '',
       name: 'Judy',
-      place: 'Bolingbrook',
+      location: 'Bolingbrook',
       time: '20 Oct, 4 PM',
-      need: 4,
-      coming: 4,
+      requiredMembers: 4,
+      confirmedMembers: 4,
       distanceOrDuration: '3 km',
-      type: 'Running'
+      sport: 'Running'
+    },
+     {
+      id:7,
+      profileImg: '',
+      name: 'Christian Bale',
+      location: 'Chicago',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 8,
+      confirmedMembers: 8,
+      distanceOrDuration: '600 M',
+      sport: 'Cycling'
+    },
+    {
+      id:8,
+      profileImg: '',
+      name: 'Elizabeth Taylor',
+      location: 'Naperville',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 3,
+      confirmedMembers: 4,
+      distanceOrDuration: '2 Hr',
+      sport: 'Badmiton'
+    },
+    {
+      id:9,
+      profileImg: '',
+      name: 'Judy',
+      location: 'Bolingbrook',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 4,
+      confirmedMembers: 4,
+      distanceOrDuration: '3 km',
+      sport: 'Running'
+    },
+    {
+      id:10,
+      profileImg: '',
+      name: 'Christian Bale',
+      location: 'Chicago',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 8,
+      confirmedMembers: 8,
+      distanceOrDuration: '600 M',
+      sport: 'Cycling'
+    },
+    {
+      id:11,
+      profileImg: '',
+      name: 'Elizabeth Taylor',
+      location: 'Naperville',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 3,
+      confirmedMembers: 4,
+      distanceOrDuration: '2 Hr',
+      sport: 'Badmiton'
+    },
+    {
+      id:12,
+      profileImg: '',
+      name: 'Judy',
+      location: 'Bolingbrook',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 4,
+      confirmedMembers: 4,
+      distanceOrDuration: '3 km',
+      sport: 'Running'
     },
   ];
+
+    constructor(private router: Router) {}
+
+    openMateDetail(id: number) {
+    // Pass the ID or name in the route parameter
+    this.router.navigate(['dashboard/mate-detail', id]);
+  }
 
   loadMore(event: InfiniteScrollCustomEvent) {
     this.generateItems();

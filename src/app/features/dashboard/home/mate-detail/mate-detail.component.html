@@ -1,0 +1,12 @@
+<app-header (backClicked)="handleBack()">
+
+  <ion-title>{{mate?.sport}}</ion-title>
+</app-header>
+
+<ion-content class="ion-padding">
+  <h2>{{ mate?.name }}</h2>
+  <p>Place: {{ mate?.location }}</p>
+  <p>Time: {{ mate?.time }}</p>
+  <p>Distance/Duration: {{ mate?.distanceOrDuration }}</p>
+  <p>Type: {{ mate?.sport }}</p>
+</ion-content>

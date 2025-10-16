@@ -1,19 +1,18 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonHeader, IonContent, IonRange, IonNav, IonButtons, IonButton, IonToolbar, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonRange, IonNav } from '@ionic/angular/standalone';
 import { GenderDetailComponent } from "./gender-detail/gender-detail.component";
-import { chevronBackOutline } from 'ionicons/icons';
+import { HeaderComponent } from "src/app/shared/components/header/header.component";
 @Component({
   selector: 'other-details',
   templateUrl: './other-details.component.html',
   styleUrls: ['./other-details.component.scss'],
-  imports: [IonHeader, IonContent, IonRange, IonNav, IonButtons, IonButton, IonIcon, IonToolbar]
+  imports: [IonContent, IonRange, IonNav, HeaderComponent]
 })
 export class OtherDetailsComponent {
 
   @ViewChild('nav') ionNav!: IonNav;
 
   genderComponent = GenderDetailComponent;
-  icons = { chevronBackOutline };
   showBackButton: boolean = false;
   ionValue: number = 20;
   constructor() { }
@@ -39,7 +38,7 @@ export class OtherDetailsComponent {
       } else if (componentName === '_InterestDetailComponent') {
         this.showBackButton = true;
         this.ionValue = 60;
-      }else if (componentName === '_ProfileDetailComponent') {
+      } else if (componentName === '_ProfileDetailComponent') {
         this.showBackButton = true;
         this.ionValue = 80;
       }

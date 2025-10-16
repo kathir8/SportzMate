@@ -58,6 +58,11 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/events/events.component').then(m => m.EventsComponent)
       },
+        {
+        path: 'mate-detail/:id',
+        loadComponent: () =>
+          import('./features/dashboard/home/mate-detail/mate-detail.component').then(m => m.MateDetailComponent)
+      },
     ]
   },
   {
