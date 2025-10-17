@@ -16,6 +16,7 @@ export class IonicButtonComponent {
   @Input() fill: 'clear' | 'outline' | 'solid' = 'solid';
   @Input() type: 'button' | 'submit' | 'reset' = 'button';
   @Input() shape: 'round' | 'default' | 'circle' = 'default';
+  @Input() dynamicClass: string = '';
 
   @Output() ionClick = new EventEmitter<void>();
 

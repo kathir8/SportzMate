@@ -1,5 +1,12 @@
 .ionic-button {
     --ion-color-primary-contrast: #ffffff;
     --border-radius: 10px;
+    text-transform: none;
     height: 55px;
+
+    &.create-invite {
+        --ion-color-base: #628B9F !important;
+        --border-radius: 18px;
+        height: 35px;
+    }
 }

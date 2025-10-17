@@ -2,6 +2,8 @@
   <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
+  @if(sportsMateList.length){
+
   <ion-list class="sports-mate-list">
     @for (item of sportsMateList; track item; let index = $index) {
     <ion-item (click)="openMateDetail(item.id)">
@@ -32,6 +34,19 @@
     }
   </ion-list>
 
+  }@else {
+
+  <div class="oops-container">
+    <img src="https://cdn-icons-png.flaticon.com/512/4076/4076549.png" alt="No Mates" class="oops-img" />
+    <div class="oops-text">
+      <h2>OOPS !</h2>
+      <p>No Mates Found</p>
+    </div>
+  </div>
+
+  <ionic-button dynamicClass="create-invite" (ionClick)="createInvitation()" [fill]="'outline'"
+    color="secondary"><ion-icon [icon]="icons.add"></ion-icon> Create a Invitation</ionic-button>
+  }
   <ion-infinite-scroll (ionInfinite)="loadMore($event)">
     <ion-infinite-scroll-content></ion-infinite-scroll-content>
   </ion-infinite-scroll>
