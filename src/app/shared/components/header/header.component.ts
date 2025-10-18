@@ -10,5 +10,6 @@ import { chevronBackOutline } from 'ionicons/icons';
 export class HeaderComponent {
   icons = { chevronBackOutline };
   @Input() showBackButton = true;
+  @Input() headerClass = '';
   @Output() backClicked = new EventEmitter<null>();
 }

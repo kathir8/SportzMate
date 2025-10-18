@@ -1,7 +1,14 @@
 @use "../mate";
 
 $containerPaddingX: 30px;
-$circleWidth: 38px;
+$circleWidth: 40px;
+
+.header-title {
+    padding-left: 50px;
+    font-weight: 500;
+    text-align: left;
+    --color: #000;
+}
 
 .mate-detail-page {
     --padding-start:#{$containerPaddingX};
@@ -18,19 +25,24 @@ $circleWidth: 38px;
     }
 
     .cards-container {
+        justify-content: space-between;
         flex-wrap: wrap;
         display: flex;
+        width: 100%;
         gap: 12px;
 
         .info-card {
+            flex: 1 1 calc(25% - 12px);
             justify-content: center;
             flex-direction: column;
             background: #F3F8FC;
             align-items: center;
             border-radius: 16px;
+            max-width: 100px;
             aspect-ratio: 1;
+            min-width: 70px;
             display: flex;
-            width: 90px;
+            padding: 8px;
 
             .reqd-circle {
                 border: 2px solid var(--ion-color-secondary);
@@ -52,25 +64,26 @@ $circleWidth: 38px;
                 position: relative;
                 display: flex;
                 right: 5px;
+                width: 60px;
+                height: 40px;
 
                 .profile-pic,
                 .extra {
-                    width: $circleWidth;
                     border-radius: 50%;
+                    position: absolute;
                     object-fit: cover;
                     aspect-ratio: 1;
+                    width: 32px;
 
                     &.first {
                         border: 2px solid var(--ion-color-primary);
-                        position: absolute;
                         z-index: 3;
                         left: 5px;
                     }
 
                     &.second {
                         border: 2px solid var(--ion-color-secondary);
-                        position: absolute;
-                        left: 15px;
+                        left: 20px;
                         z-index: 2;
                     }
 
@@ -79,10 +92,11 @@ $circleWidth: 38px;
                         color: var(--ion-color-secondary);
                         justify-content: end;
                         align-items: center;
-                        padding-right: 3px;
-                        margin-left: 35px;
+                        padding-right: 1px;
                         font-size: 10px;
                         display: flex;
+                        left: 35px;
+                        z-index: 1;
                     }
                 }
             }
@@ -104,7 +118,8 @@ $circleWidth: 38px;
             }
 
             &.reduce-width {
-                width: 60px;
+                flex: 1 1 calc(20% - 12px);
+                max-width: 70px;
             }
         }
     }
@@ -162,7 +177,7 @@ $circleWidth: 38px;
     }
 
     .spacer {
-        margin-left: calc(-1 * var(--padding-start)); 
+        margin-left: calc(-1 * var(--padding-start));
         background: #F2F2F2;
         margin-bottom: 15px;
         margin-top: 15px;
@@ -174,5 +189,47 @@ $circleWidth: 38px;
         margin-bottom: 10px;
         font-weight: 600;
         font-size: 18px;
+    }
+}
+
+.footer {
+    background-color: white;
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    padding-bottom: 25px;
+    box-shadow: none;
+}
+
+
+@media (max-width: 768px) {
+    .cards-container {
+        justify-content: center;
+
+        .info-card {
+            flex: 1 1 calc(45% - 12px);
+            max-width: none;
+        }
+    }
+}
+
+@media (max-width: 480px) {
+    .cards-container {
+        justify-content: space-between;
+
+        .info-card {
+            flex: 1 1 calc(47% - 10px);
+            min-width: 70px;
+        }
+    }
+}
+
+@media (max-width: 360px) {
+    .cards-container {
+        gap: 8px;
+
+        .info-card {
+            flex: 1 1 calc(48% - 8px);
+            min-width: 65px;
+        }
     }
 }

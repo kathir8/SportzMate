@@ -13,9 +13,9 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 export class MateListViewComponent {
   icons = { peopleOutline, bicycleOutline, calendarClear, add };
 
-  sportsMateList:MateListItem[] = [
+  sportsMateList: MateListItem[] = [
     {
-      id:1,
+      id: 1,
       profileImg: '',
       name: 'Christian Bale',
       location: 'Chicago',
@@ -26,7 +26,7 @@ export class MateListViewComponent {
       sport: 'Cycling'
     },
     {
-      id:2,
+      id: 2,
       profileImg: '',
       name: 'Elizabeth Taylor',
       location: 'Naperville',
@@ -37,7 +37,7 @@ export class MateListViewComponent {
       sport: 'Badmiton'
     },
     {
-      id:3,
+      id: 3,
       profileImg: '',
       name: 'Judy',
       location: 'Bolingbrook',
@@ -48,7 +48,7 @@ export class MateListViewComponent {
       sport: 'Running'
     },
     {
-      id:4,
+      id: 4,
       profileImg: '',
       name: 'Christian Bale',
       location: 'Chicago',
@@ -59,7 +59,7 @@ export class MateListViewComponent {
       sport: 'Cycling'
     },
     {
-      id:5,
+      id: 5,
       profileImg: '',
       name: 'Elizabeth Taylor',
       location: 'Naperville',
@@ -70,40 +70,7 @@ export class MateListViewComponent {
       sport: 'Badmiton'
     },
     {
-      id:6,
-      profileImg: '',
-      name: 'Judy',
-      location: 'Bolingbrook',
-      time: '20 Oct, 4 PM',
-      requiredMembers: 4,
-      confirmedMembers: 4,
-      distanceOrDuration: '3 km',
-      sport: 'Running'
-    },
-     {
-      id:7,
-      profileImg: '',
-      name: 'Christian Bale',
-      location: 'Chicago',
-      time: '20 Oct, 4 PM',
-      requiredMembers: 8,
-      confirmedMembers: 8,
-      distanceOrDuration: '600 M',
-      sport: 'Cycling'
-    },
-    {
-      id:8,
-      profileImg: '',
-      name: 'Elizabeth Taylor',
-      location: 'Naperville',
-      time: '20 Oct, 4 PM',
-      requiredMembers: 3,
-      confirmedMembers: 4,
-      distanceOrDuration: '2 Hr',
-      sport: 'Badmiton'
-    },
-    {
-      id:9,
+      id: 6,
       profileImg: '',
       name: 'Judy',
       location: 'Bolingbrook',
@@ -114,7 +81,7 @@ export class MateListViewComponent {
       sport: 'Running'
     },
     {
-      id:10,
+      id: 7,
       profileImg: '',
       name: 'Christian Bale',
       location: 'Chicago',
@@ -125,7 +92,7 @@ export class MateListViewComponent {
       sport: 'Cycling'
     },
     {
-      id:11,
+      id: 8,
       profileImg: '',
       name: 'Elizabeth Taylor',
       location: 'Naperville',
@@ -136,7 +103,40 @@ export class MateListViewComponent {
       sport: 'Badmiton'
     },
     {
-      id:12,
+      id: 9,
+      profileImg: '',
+      name: 'Judy',
+      location: 'Bolingbrook',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 4,
+      confirmedMembers: 4,
+      distanceOrDuration: '3 km',
+      sport: 'Running'
+    },
+    {
+      id: 10,
+      profileImg: '',
+      name: 'Christian Bale',
+      location: 'Chicago',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 8,
+      confirmedMembers: 8,
+      distanceOrDuration: '600 M',
+      sport: 'Cycling'
+    },
+    {
+      id: 11,
+      profileImg: '',
+      name: 'Elizabeth Taylor',
+      location: 'Naperville',
+      time: '20 Oct, 4 PM',
+      requiredMembers: 3,
+      confirmedMembers: 4,
+      distanceOrDuration: '2 Hr',
+      sport: 'Badmiton'
+    },
+    {
+      id: 12,
       profileImg: '',
       name: 'Judy',
       location: 'Bolingbrook',
@@ -148,9 +148,9 @@ export class MateListViewComponent {
     },
   ];
 
-    constructor(private router: Router) {}
+  constructor(private router: Router) { }
 
-    openMateDetail(id: number) {
+  openMateDetail(id: number) {
     // Pass the ID or name in the route parameter
     this.router.navigate(['dashboard/mate-detail', id]);
   }
@@ -166,16 +166,15 @@ export class MateListViewComponent {
 
   }
 
-  createInvitation(){
+  createInvitation() {
 
   }
 
   handleRefresh(event: RefresherCustomEvent) {
-    // Example: refresh or reload your list
     setTimeout(() => {
       // You can call your API or regenerate items here
-      this.sportsMateList = [...this.sportsMateList]; // For now, just reassign
       this.generateItems(); // fetch new
+      this.sportsMateList = [...this.sportsMateList]; // For now, just reassign
       event.target.complete(); // Stop refresher
     }, 1000);
   }

@@ -14,3 +14,15 @@ ion-tab-bar {
         font-size: 40px;
     }
 }
+
+
+ion-tab-bar,
+ion-fab {
+    transition: opacity 0.3s ease, visibility 0.3s ease, height 0.3s ease;
+}
+
+.hide-tabs {
+    pointer-events: none;
+    overflow: hidden;
+    height: 0;
+}

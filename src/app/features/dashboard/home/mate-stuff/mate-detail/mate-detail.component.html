@@ -1,13 +1,13 @@
-<app-header (backClicked)="handleBack()">
+<app-header headerClass="from-mate-detail" (backClicked)="handleBack()">
 
-  <ion-title>{{mate?.sport}}</ion-title>
+  <ion-title class="header-title" slot="start">{{mate?.sport}}</ion-title>
 </app-header>
 
 <ion-content class="ion-padding mate-detail-page">
 
   <div class="primary-details">
     <ion-thumbnail class="mate-img">
-      <img alt="profile" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+      <img alt="profile" [src]="'https://randomuser.me/api/portraits/women/' + mate?.id + '.jpg'" />
     </ion-thumbnail>
 
     <ion-grid>
@@ -109,4 +109,8 @@
 
     </div>
   </div>
+
 </ion-content>
+<ion-footer class="footer">
+  <ionic-button>I'm Interested</ionic-button>
+</ion-footer>

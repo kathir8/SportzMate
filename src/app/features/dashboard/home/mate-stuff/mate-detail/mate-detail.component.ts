@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, IonTitle, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonTitle, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, IonFooter } from '@ionic/angular/standalone';
 import { MateDetail } from '../models/mate.model';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { calendarClear, calendarOutline, mailOpenOutline, timeOutline } from 'ionicons/icons';
+import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 @Component({
   selector: 'app-mate-detail',
   templateUrl: './mate-detail.component.html',
   styleUrls: ['./mate-detail.component.scss'],
-  imports: [IonContent, IonTitle, HeaderComponent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon]
+  imports: [IonContent, IonTitle, HeaderComponent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, IonFooter, IonicButtonComponent]
 })
 export class MateDetailComponent implements OnInit {
   icons = { calendarClear,calendarOutline, timeOutline, mailOpenOutline };
