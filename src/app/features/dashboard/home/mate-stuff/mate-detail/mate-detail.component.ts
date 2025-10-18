@@ -1,15 +1,17 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, IonTitle } from '@ionic/angular/standalone';
+import { IonContent, IonTitle, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon } from '@ionic/angular/standalone';
 import { MateDetail } from '../models/mate.model';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
+import { calendarClear, calendarOutline, timeOutline } from 'ionicons/icons';
 @Component({
   selector: 'app-mate-detail',
   templateUrl: './mate-detail.component.html',
   styleUrls: ['./mate-detail.component.scss'],
-  imports: [IonContent, IonTitle, HeaderComponent]
+  imports: [IonContent, IonTitle, HeaderComponent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon]
 })
 export class MateDetailComponent implements OnInit {
+  icons = { calendarClear,calendarOutline, timeOutline };
 
   mate?: MateDetail;
 

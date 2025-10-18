@@ -1,3 +1,5 @@
+@use "../mate";
+
 .list-scroll-container {
     -webkit-overflow-scrolling: touch;
     overflow-y: auto;
@@ -11,30 +13,13 @@
         margin-bottom: 60px;
         font-size: 12px;
 
+        .mate-img {
+            --size: 73px;
+        }
+
         ion-item {
             --padding-start: 0;
             --inner-padding-end: 0;
-
-            .mate-img {
-                --border-radius: 18px;
-                --size: 73px;
-            }
-
-            .name-text {
-                font-size: 14px;
-                font-weight: 600;
-            }
-
-            .time-wrapper {
-                align-items: center;
-                color: #628B9F;
-                display: flex;
-
-                .time-text {
-                    margin-left: 5px;
-                    font-size: 12px;
-                }
-            }
 
             .badge-wrapper {
                 margin-top: 5px;
@@ -69,24 +54,6 @@
             }
 
             .game-detail {
-                justify-content: center;
-                flex-direction: column;
-                align-items: center;
-                display: flex;
-
-                .distanceOrDuration {
-                    --background: #F3F8FC;
-                    justify-content: center;
-                    align-items: center;
-                    --color: #628B9F;
-                    border-radius: 7px;
-                    font-weight: 600;
-                    font-size: 12px;
-                    display: flex;
-                    height: 25px;
-                    width: 57px;
-                }
-
                 ion-icon {
                     color: #D6D6D6;
                     font-size: 35px;

@@ -5,8 +5,8 @@ import { IonContent, IonTitle, IonIcon, IonImg, IonAvatar, IonSegment, IonSegmen
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
 import { RangeFabComponent } from './range-fab/range-fab.component';
-import { MateListViewComponent } from "./mate-list-view/mate-list-view.component";
-import { MateMapViewComponent } from "./mate-map-view/mate-map-view.component";
+import { MateListViewComponent } from "./mate-stuff/mate-list-view/mate-list-view.component";
+import { MateMapViewComponent } from "./mate-stuff/mate-map-view/mate-map-view.component";
 
 
 @Component({

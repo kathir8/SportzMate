@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, InfiniteScrollCustomEvent, IonRefresher, IonRefresherContent, RefresherCustomEvent, IonButton } from '@ionic/angular/standalone';
+import { IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, InfiniteScrollCustomEvent, IonRefresher, IonRefresherContent, RefresherCustomEvent } from '@ionic/angular/standalone';
 import { add, bicycleOutline, calendarClear, peopleOutline } from 'ionicons/icons';
 import { MateListItem } from '../models/mate.model';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
@@ -8,7 +8,7 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
   selector: 'app-mate-list-view',
   templateUrl: './mate-list-view.component.html',
   styleUrls: ['./mate-list-view.component.scss'],
-  imports: [IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, IonRefresher, IonRefresherContent, IonicButtonComponent,IonButton]
+  imports: [IonList, IonItem, IonInfiniteScroll, IonInfiniteScrollContent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, IonRefresher, IonRefresherContent, IonicButtonComponent]
 })
 export class MateListViewComponent {
   icons = { peopleOutline, bicycleOutline, calendarClear, add };

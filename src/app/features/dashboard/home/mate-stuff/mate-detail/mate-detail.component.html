@@ -1,0 +1,57 @@
+<app-header (backClicked)="handleBack()">
+
+  <ion-title>{{mate?.sport}}</ion-title>
+</app-header>
+
+<ion-content class="ion-padding">
+  <div class="primary-details">
+    <ion-thumbnail class="mate-img">
+      <img alt="profile" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" />
+    </ion-thumbnail>
+
+    <ion-grid>
+      <ion-row>
+        <ion-col size="8">
+          <ion-label class="name-text">{{mate?.name}}, {{mate?.location}}</ion-label>
+          <div class="time-wrapper">
+            <ion-icon [icon]="icons.calendarClear"></ion-icon>
+            <ion-label class="time-text">{{mate?.time}}</ion-label>
+          </div>
+        </ion-col>
+        <ion-col class="game-detail">
+          <ion-badge class="distanceOrDuration">{{mate?.distanceOrDuration}}</ion-badge>
+        </ion-col>
+      </ion-row>
+    </ion-grid>
+  </div>
+
+  <div class="cards-container">
+    <div class="info-card">
+      <div class="reqd-circle">
+        <span class="count">{{mate?.requiredMembers}}</span>
+      </div>
+      <div class="label">Total Members</div>
+    </div>
+
+    <div class="info-card">
+      <div class="profile-stack">
+        <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="profile" class="profile-pic first" />
+        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="profile" class="profile-pic second" />
+        <div class="extra third">3+</div>
+      </div>
+      <div class="label">Vacancy</div>
+    </div>
+
+     <div class="info-card reduce-width">
+      <ion-icon [icon]="icons.calendarOutline"></ion-icon>
+      <div class="label">OCT 18</div>
+    </div>
+
+    <div class="info-card reduce-width">
+      <ion-icon [icon]="icons.timeOutline"></ion-icon>
+      <div class="label">4 PM</div>
+    </div>
+
+  </div>
+
+</ion-content>
