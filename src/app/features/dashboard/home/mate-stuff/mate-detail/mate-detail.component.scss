@@ -1,132 +1,178 @@
 @use "../mate";
 
+$containerPaddingX: 30px;
 $circleWidth: 38px;
 
-.primary-details {
-    margin-bottom: 35px;
-    margin-top: 35px;
-    display: flex;
+.mate-detail-page {
+    --padding-start:#{$containerPaddingX};
+    --padding-end:#{$containerPaddingX};
 
-    .mate-img {
-        --size: 65px;
-    }
-}
-
-.cards-container {
-    display: flex;
-    gap: 12px;
-    flex-wrap: wrap;
-
-    .info-card {
-        width: 90px;
-        height: 90px;
-        background: #F3F8FC;
-        border-radius: 16px;
+    .primary-details {
+        margin-bottom: 35px;
+        margin-top: 35px;
         display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        box-shadow: 0 0 0.5px #0000001a;
 
-
-
-        .reqd-circle {
-            border: 2px solid var(--ion-color-secondary);
-            color: var(--ion-color-secondary);
-            font-size: 20px;
-            width: $circleWidth;
-            aspect-ratio: 1;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-weight: 600;
+        .mate-img {
+            --size: 65px;
         }
+    }
 
+    .cards-container {
+        flex-wrap: wrap;
+        display: flex;
+        gap: 12px;
 
-        .profile-stack {
-            position: relative;
-            display: flex;
-            align-items: center;
+        .info-card {
             justify-content: center;
-            right: 5px;
+            flex-direction: column;
+            background: #F3F8FC;
+            align-items: center;
+            border-radius: 16px;
+            aspect-ratio: 1;
+            display: flex;
+            width: 90px;
 
-            // .profile-pic {
-            //     width: $circleWidth;
-            //     aspect-ratio: 1;
-            //     border-radius: 50%;
-            //     border: 2px solid #f47c4d;
-            //     z-index: 2;
-            // }
-
-            // .extra {
-            //     position: absolute;
-            //     right: -10px;
-            //     width: $circleWidth;
-            //     aspect-ratio: 1;
-            //     background: #eaf3f7;
-            //     border-radius: 50%;
-            //     border: 2px solid var(--ion-color-secondary);
-            //     display: flex;
-            //     align-items: center;
-            //     justify-content: center;
-            //     font-size: 12px;
-            //     color: var(--ion-color-secondary);
-            //     z-index: 1;
-            // }
-
-            .profile-pic,
-            .extra {
+            .reqd-circle {
+                border: 2px solid var(--ion-color-secondary);
+                color: var(--ion-color-secondary);
+                justify-content: center;
+                align-items: center;
                 width: $circleWidth;
+                border-radius: 50%;
+                font-weight: 600;
+                font-size: 20px;
                 aspect-ratio: 1;
+                display: flex;
+            }
+
+
+            .profile-stack {
+                justify-content: center;
+                align-items: center;
+                position: relative;
+                display: flex;
+                right: 5px;
+
+                .profile-pic,
+                .extra {
+                    width: $circleWidth;
+                    border-radius: 50%;
+                    object-fit: cover;
+                    aspect-ratio: 1;
+
+                    &.first {
+                        border: 2px solid var(--ion-color-primary);
+                        position: absolute;
+                        z-index: 3;
+                        left: 5px;
+                    }
+
+                    &.second {
+                        border: 2px solid var(--ion-color-secondary);
+                        position: absolute;
+                        left: 15px;
+                        z-index: 2;
+                    }
+
+                    &.third {
+                        border: 2px solid var(--ion-color-secondary);
+                        color: var(--ion-color-secondary);
+                        justify-content: end;
+                        align-items: center;
+                        padding-right: 3px;
+                        margin-left: 35px;
+                        font-size: 10px;
+                        display: flex;
+                    }
+                }
+            }
+
+
+            ion-icon {
+                color: var(--ion-color-secondary);
+                margin-bottom: 4px;
+                font-size: 28px;
+            }
+
+
+            .label {
+                text-align: center;
+                font-weight: 600;
+                margin-top: 5px;
+                font-size: 10px;
+                color: #000;
+            }
+
+            &.reduce-width {
+                width: 60px;
+            }
+        }
+    }
+
+    .description-container {
+        margin-top: 20px;
+
+        .content {
+            line-height: 19px;
+            color: #747474;
+            font-size: 14px;
+        }
+    }
+
+    .profile-container {
+        scroll-snap-type: x mandatory;
+        align-items: center;
+        overflow-x: auto;
+        display: flex;
+        gap: 20px;
+
+        .profile-item {
+            scroll-snap-align: start;
+            position: relative;
+            aspect-ratio: 1;
+            flex: 0 0 auto;
+            width: 65px;
+
+            img {
+                box-shadow: 0px 1px 4px 1px #628b9f4d;
+                border: 1px solid transparent;
                 border-radius: 50%;
                 object-fit: cover;
+            }
 
-                &.first {
-                    left: 5px;
-                    border: 2px solid #f47c4d;
-                    z-index: 3;
-                    position: absolute;
-                }
+            &.active img {
+                border: 2px solid var(--ion-color-primary);
+            }
 
-                &.second {
-                    position: absolute;
-                    left: 15px;
-                    border: 2px solid var(--ion-color-secondary);
-                    z-index: 2;
-                }
-
-                &.third {
-                    border: 2px solid var(--ion-color-secondary);
-                    display: flex;
-                    justify-content: end;
-                    align-items: center;
-                    font-size: 10px;
-                    padding-right: 3px;
-                    margin-left: 35px;
-                    color: var(--ion-color-secondary);
-                }
+            .mail-icon {
+                box-shadow: 0px 1px 0px 0px #ff4e189e;
+                color: var(--ion-color-primary);
+                border-radius: 50%;
+                background: #fff;
+                position: absolute;
+                padding: 3px;
+                bottom: 2px;
+                right: 2px;
             }
         }
 
-
-        ion-icon {
-            font-size: 28px;
-            color: var(--ion-color-secondary);
-            margin-bottom: 4px;
+        &::-webkit-scrollbar {
+            display: none;
         }
+    }
 
+    .spacer {
+        margin-left: calc(-1 * var(--padding-start)); 
+        background: #F2F2F2;
+        margin-bottom: 15px;
+        margin-top: 15px;
+        width: 100vw;
+        height: 3px;
+    }
 
-        .label {
-            font-size: 10px;
-            font-weight: 600;
-            color: #000;
-            margin-top: 5px;
-            text-align: center;
-        }
-
-        &.reduce-width {
-            width: 60px;
-        }
+    .title {
+        margin-bottom: 10px;
+        font-weight: 600;
+        font-size: 18px;
     }
 }
