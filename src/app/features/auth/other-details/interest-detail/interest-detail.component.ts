@@ -10,6 +10,7 @@ import { ProfileDetailComponent } from '../profile-detail/profile-detail.compone
   imports: [IonChip, IonNavLink, IonicButtonComponent, IonFooter]
 })
 export class InterestDetailComponent {
+  static navId = 'InterestDetail';
 
   profileComponent = ProfileDetailComponent;
   sports: string[] = ['Cricket', 'Football', 'Badminton', 'Running', 'Tennis', 'Volleyball', 'Basketball', 'Kabaddi', 'Cycling'];

@@ -13,6 +13,7 @@ import { Router } from '@angular/router';
   imports: [IonFooter, IonicButtonComponent, IonicInputComponent, FormsModule, CountryDropdownComponent, IonImg]
 })
 export class ProfileDetailComponent {
+  static navId = 'ProfileDetail';
 
   userName: string = '';
 

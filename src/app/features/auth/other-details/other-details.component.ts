@@ -23,22 +23,22 @@ export class OtherDetailsComponent {
     const active = ionNavElement.getActive();
 
     active.then((view) => {
-      const componentName = view?.component?.name;
+      const componentName = view?.component?.navId;
       if (!componentName) {
         this.showBackButton = false;
         return
       }
 
-      if (componentName === '_GenderDetailComponent') {
+      if (componentName === 'GenderDetail') {
         this.showBackButton = false;
         this.ionValue = 20;
-      } else if (componentName === '_AgeDetailComponent') {
+      } else if (componentName === 'AgeDetail') {
         this.showBackButton = true;
         this.ionValue = 40;
-      } else if (componentName === '_InterestDetailComponent') {
+      } else if (componentName === 'InterestDetail') {
         this.showBackButton = true;
         this.ionValue = 60;
-      } else if (componentName === '_ProfileDetailComponent') {
+      } else if (componentName === 'ProfileDetail') {
         this.showBackButton = true;
         this.ionValue = 80;
       }

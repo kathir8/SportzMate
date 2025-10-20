@@ -10,6 +10,7 @@ import { InterestDetailComponent } from '../interest-detail/interest-detail.comp
   imports: [IonNavLink, IonicButtonComponent, IonFooter]
 })
 export class AgeDetailComponent {
+  static navId = 'AgeDetail';
 
   interestComponent = InterestDetailComponent;
   @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
