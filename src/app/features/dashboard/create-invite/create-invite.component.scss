@@ -1,0 +1,38 @@
+ion-content {
+    /* Ensure ion-content's background is also set, overriding any default transparency */
+    --background: #fff; /* Often needed, but it should rely on the modal's background */
+    
+    /* Apply padding to content */
+    --padding-start: 16px;
+    --padding-end: 16px;
+    --padding-top: 20px;
+}
+.invite-sheet {
+   --background: #fff;
+  color: #000;
+  height: auto;
+  .sheet-content {
+    padding-top: 20px;
+  }
+
+  .sheet-img {
+    display: block;
+    margin: 0 auto 16px auto;
+    width: 100px;
+  }
+
+  .input-item {
+    margin-bottom: 10px;
+    border-radius: 12px;
+    --background: #f5f5f5;
+  }
+
+  .textarea {
+    --min-height: 80px;
+  }
+
+  .post-btn {
+    margin-top: 12px;
+    border-radius: 12px;
+  }
+}

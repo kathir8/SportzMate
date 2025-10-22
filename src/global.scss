@@ -43,7 +43,25 @@
 
 @import '@ng-select/ng-select/themes/default.theme.css';
 
+.bottom-sheet-modal {
+ --background: #ffffff; /* Use a strong color like white */
+    
+    /* 2. Control height and alignment (Crucial for bottom sheet) */
+    --height: 1100px; 
+    // --max-height: 70%; /* Matches your 0.7 initialBreakpoint */
+     z-index: 9999 !important;
+    /* 3. Apply top rounded corners */
+    --border-radius: 20px 20px 0 0; 
 
-.d-flex{
-    display: flex;
+    /* 4. Target the internal content container (using ::part) */
+    /* This ensures the content sits at the bottom of the screen */
+    &::part(content) {
+        // Ensure the content wrapper respects the border-radius and background
+        border-radius: 20px 20px 0 0;
+    }
+
+    /* 5. Ensure the backdrop is visible for the overlay effect */
+    &::part(backdrop) {
+        opacity: 0.5 !important;
+    }
 }
