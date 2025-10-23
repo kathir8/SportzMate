@@ -1,3 +1,47 @@
-<p>
-  mate-map-view works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Nearby Players</ion-title>
+    <ion-buttons slot="end">
+      <ion-segment value="5" (ionChange)="onRadiusChange($event.detail.value)">
+        <ion-segment-button value="5">
+          <ion-label>5 km</ion-label>
+        </ion-segment-button>
+        <ion-segment-button value="10">
+          <ion-label>10 km</ion-label>
+        </ion-segment-button>
+      </ion-segment>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content class="map-page">
+  <div #mapRef id="map" class="map"></div>
+
+  <!-- Bottom carousel/cards -->
+  <div class="bottom-area" *ngIf="hasPlayers()">
+    <div class="cards-wrapper" >
+      <div class="card" id="{{'card-' + item.player.id}}"
+           *ngFor="let item of bottomPlayers()"
+           (click)="onCardClick(item.player)">
+        <div class="left">
+          <img class="avatar" [src]="item.player.photo" />
+          <div class="badge">{{ item.player.game === 'Badminton' ? '🏸' : item.player.game === 'Cricket' ? '🏏' : item.player.game === 'Cycling' ? '🚴' : '🎾' }}</div>
+        </div>
+        <div class="right">
+          <div class="name">{{item.player.name}}</div>
+          <div class="meta">{{ item.player.game }} • {{ item.distanceKm }} km</div>
+
+          <div class="actions">
+            <button class="btn-interested">Interested 👍</button>
+            <button class="btn-chat">Chat 💬</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- fallback when no players -->
+  <div class="no-players" *ngIf="!hasPlayers()">
+    <p>No players within {{radiusKm}} km</p>
+  </div>
+</ion-content>

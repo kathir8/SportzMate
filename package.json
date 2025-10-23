@@ -30,6 +30,7 @@
     "@fontsource/open-sans": "^5.2.7",
     "@ionic/angular": "^8.7.5",
     "@ng-select/ng-select": "^20.3.0",
+    "@types/google.maps": "^3.58.1",
     "ionicons": "^7.0.0",
     "postcss": "^8.5.6",
     "rxjs": "~7.8.0",
