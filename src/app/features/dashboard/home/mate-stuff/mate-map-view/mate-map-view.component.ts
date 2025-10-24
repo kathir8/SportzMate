@@ -16,7 +16,7 @@ interface Player {
 })
 export class MateMapViewComponent {
 
-   @ViewChild('mapRef', { static: false }) mapElement!: ElementRef;
+  @ViewChild('mapRef', { static: false }) mapElement!: ElementRef;
 
   map!: google.maps.Map;
   infoWindow!: google.maps.InfoWindow;
@@ -32,9 +32,9 @@ export class MateMapViewComponent {
 
   // Dummy players around Chennai with offsets for demo
   players: Player[] = [
-    { id: 'p1', name: 'Amelia', photo: 'https://i.pravatar.cc/150?img=12', game: 'Badminton', coords: { lat: 13.0184, lng: 80.2100 } },
-    { id: 'p2', name: 'Joseph', photo: 'https://i.pravatar.cc/150?img=5', game: 'Cricket', coords: { lat: 13.0900, lng: 80.2200 } },
-    { id: 'p3', name: 'Emma', photo: 'https://i.pravatar.cc/150?img=20', game: 'Cycling', coords: { lat: 13.0500, lng: 80.1550 } },
+    { id: 'p1', name: 'Amelia', photo: 'assets/avatars/avatar1.jfif', game: 'Badminton', coords: { lat: 13.0184, lng: 80.2100 } },
+    { id: 'p2', name: 'Joseph', photo: 'assets/avatars/avatar2.jfif', game: 'Cricket', coords: { lat: 13.0900, lng: 80.2200 } },
+    { id: 'p3', name: 'Emma', photo: 'assets/avatars/avatar3.jfif', game: 'Cycling', coords: { lat: 13.0500, lng: 80.1550 } },
   ];
 
   // players currently shown within radius
@@ -119,7 +119,7 @@ export class MateMapViewComponent {
 
     // filter by radius
     this.visiblePlayers = arr.filter(x => x.distanceKm <= this.radiusKm)
-                             .sort((a,b)=> a.distanceKm - b.distanceKm);
+      .sort((a, b) => a.distanceKm - b.distanceKm);
 
     // show only up to 4 in bottom cards for the initial UI (but you can scroll horizontally)
     // create markers for visible players
@@ -136,55 +136,169 @@ export class MateMapViewComponent {
     this.fitBounds();
   }
 
-  // add a marker for player's avatar, and a small badge marker to show the game emoji
-  addPlayerMarker(player: Player, distanceKm: number) {
-    // avatar marker
-    const avatarIcon: google.maps.Icon = {
-      url: player.photo,
-      scaledSize: new google.maps.Size(56, 56),
-      anchor: new google.maps.Point(28, 28) // center anchor
-    };
+  // --- updated addPlayerMarker (minimal change) ---
+  async addPlayerMarker(player: Player, distanceKm: number) {
+    try {
+      const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
+        player.photo,
+        this.gameEmoji(player.game),
+        player.name
+      );
 
-    const marker = new google.maps.Marker({
-      position: player.coords,
-      map: this.map,
-      icon: avatarIcon,
-      title: player.name,
-      zIndex: 100
-    });
+      const marker = new google.maps.Marker({
+        position: player.coords,
+        map: this.map,
+        title: player.name,
+        zIndex: 100,
+        icon: {
+          url,
+          size: new google.maps.Size(width, height),
+          scaledSize: new google.maps.Size(width, height),
+          anchor: new google.maps.Point(anchorX, anchorY)
+        }
+      });
 
-    marker.addListener('click', () => {
-      this.openPlayerInfo(player, marker, distanceKm);
-      // scroll the bottom carousel to this player card (client-side)
-      const el = document.getElementById('card-' + player.id);
-      if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-    });
+      marker.addListener('click', () => {
+        this.openPlayerInfo(player, marker, distanceKm);
+        const el = document.getElementById('card-' + player.id);
+        if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'center' });
+      });
 
-    this.markers.push(marker);
-
-    // create a small badge icon using SVG data URL with game emoji
-    const emoji = this.gameEmoji(player.game);
-    const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="36" height="36">
-      <circle cx="18" cy="18" r="18" fill="#fff" />
-      <text x="50%" y="50%" font-size="18" dominant-baseline="middle" text-anchor="middle">${emoji}</text>
-    </svg>`;
-    const badgeIconUrl = 'data:image/svg+xml;charset=UTF-8,' + encodeURIComponent(svg);
-
-    // place badge slightly offset (so it doesn't cover avatar)
-    const badgeMarker = new google.maps.Marker({
-      position: { lat: player.coords.lat + 0.00015, lng: player.coords.lng + 0.00012 },
-      map: this.map,
-      icon: {
-        url: badgeIconUrl,
-        scaledSize: new google.maps.Size(36, 36),
-        anchor: new google.maps.Point(18, 18)
-      },
-      clickable: false,
-      zIndex: 101
-    });
-
-    this.badgeMarkers.push(badgeMarker);
+      this.markers.push(marker);
+    } catch (err) {
+      console.error('Marker icon failed', err);
+    }
   }
+
+
+  // --- updated createCompositeMarkerIcon (new design: like your screenshot) ---
+  createCompositeMarkerIcon(photoUrl: string, emoji: string, name: string): Promise<{
+    url: string; width: number; height: number; anchorX: number; anchorY: number;
+  }> {
+    return new Promise((resolve) => {
+      const w = 180, h = 200;
+      const avatarR = 25;
+      const avatarCx = w / 2;
+      const avatarCy = 110;
+
+      const canvas = document.createElement('canvas');
+      canvas.width = w;
+      canvas.height = h;
+      const ctx = canvas.getContext('2d')!;
+
+      // clear bg
+      ctx.clearRect(0, 0, w, h);
+
+      // Draw name bubble (pill) with emoji and arrow
+      const pillY = 35;
+      const pillW = ctx.measureText(name).width + 80;
+      const pillH = 34;
+      const pillX = (w - pillW) / 2;
+      const arrowH = 10;
+      const radius = pillH / 2; // to make it oval
+
+      ctx.beginPath();
+
+      // Rounded pill shape
+      ctx.moveTo(pillX + radius, pillY);
+      ctx.lineTo(pillX + pillW - radius, pillY);
+      ctx.quadraticCurveTo(pillX + pillW, pillY, pillX + pillW, pillY + radius);
+      ctx.lineTo(pillX + pillW, pillY + pillH - radius);
+      ctx.quadraticCurveTo(pillX + pillW, pillY + pillH, pillX + pillW - radius, pillY + pillH);
+      ctx.lineTo(pillX + pillW / 2 + 10, pillY + pillH);
+      ctx.lineTo(pillX + pillW / 2, pillY + pillH + arrowH); // arrow tip
+      ctx.lineTo(pillX + pillW / 2 - 10, pillY + pillH);
+      ctx.lineTo(pillX + radius, pillY + pillH);
+      ctx.quadraticCurveTo(pillX, pillY + pillH, pillX, pillY + pillH - radius);
+      ctx.lineTo(pillX, pillY + radius);
+      ctx.quadraticCurveTo(pillX, pillY, pillX + radius, pillY);
+      ctx.closePath();
+
+      // Fill with white and shadow
+      ctx.fillStyle = "#ffffff";
+      ctx.shadowColor = "#0000004d";
+      ctx.shadowBlur = 3;
+      ctx.fill();
+      ctx.shadowBlur = 0;
+
+      //  border stroke
+      ctx.strokeStyle = "#0000001a";
+      ctx.lineWidth = 1;
+      ctx.stroke();
+
+      // Emoji on left
+      ctx.font = "18px serif";
+      ctx.textAlign = "left";
+      ctx.textBaseline = "middle";
+      ctx.fillText(emoji, pillX + 10, pillY + pillH / 2);
+
+      // Name text
+      ctx.font = "600 15px sans-serif";
+      ctx.fillStyle = "#333";
+      ctx.textAlign = "left";
+      ctx.fillText(name, pillX + 35, pillY + pillH / 2 + 1);
+
+      // Arrow mark (>)
+      ctx.font = "bold 16px sans-serif";
+      ctx.fillText("›", pillX + 5 + pillW - 20, pillY + pillH / 2 + 1);
+
+      // Draw avatar (circle)
+      const img = new Image();
+      img.crossOrigin = "anonymous";
+      img.src = photoUrl;
+
+      img.onload = () => {
+        // soft shadow under avatar
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(avatarCx, avatarCy + 3, avatarR + 6, 0, Math.PI * 2);
+        ctx.fillStyle = "rgba(0,0,0,0.15)";
+        ctx.fill();
+        ctx.restore();
+
+        // clip + draw
+        ctx.save();
+        ctx.beginPath();
+        ctx.arc(avatarCx, avatarCy, avatarR, 0, Math.PI * 2);
+        ctx.closePath();
+        ctx.clip();
+
+        const scale = Math.max((avatarR * 2) / img.width, (avatarR * 2) / img.height);
+        const sw = img.width * scale;
+        const sh = img.height * scale;
+        ctx.drawImage(img, avatarCx - sw / 2, avatarCy - sh / 2, sw, sh);
+        ctx.restore();
+
+        // white ring
+        ctx.beginPath();
+        ctx.arc(avatarCx, avatarCy, avatarR + 3, 0, Math.PI * 2);
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 5;
+        ctx.stroke();
+
+        const url = canvas.toDataURL("image/png");
+        resolve({ url, width: w, height: h, anchorX: w / 2, anchorY: h - 5 });
+      };
+
+      img.onerror = () => {
+        ctx.beginPath();
+        ctx.arc(avatarCx, avatarCy, avatarR, 0, Math.PI * 2);
+        ctx.fillStyle = "#ccc";
+        ctx.fill();
+        ctx.strokeStyle = "#fff";
+        ctx.lineWidth = 5;
+        ctx.stroke();
+
+        const url = canvas.toDataURL("image/png");
+        resolve({ url, width: w, height: h, anchorX: w / 2, anchorY: h - 5 });
+      };
+    });
+  }
+
+
+
+  /* -------------------------------------------------------------------------- */
+
 
   // when clicking a marker or carousel photo
   openPlayerInfo(player: Player, marker: google.maps.Marker, distKm: number) {
@@ -225,13 +339,13 @@ export class MateMapViewComponent {
     const R = 6371; // km
     const dLat = this.deg2rad(lat2 - lat1);
     const dLon = this.deg2rad(lon2 - lon1);
-    const a = Math.sin(dLat/2) * Math.sin(dLat/2) +
-              Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
-              Math.sin(dLon/2) * Math.sin(dLon/2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
+      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
+      Math.sin(dLon / 2) * Math.sin(dLon / 2);
+    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   }
-  deg2rad(deg: number) { return deg * (Math.PI/180); }
+  deg2rad(deg: number) { return deg * (Math.PI / 180); }
 
   // fit bounds around current + visible players
   fitBounds() {
@@ -256,7 +370,7 @@ export class MateMapViewComponent {
     this.map.panTo(player.coords);
     this.map.setZoom(15);
     // small timeout to ensure pan completes
-    setTimeout(()=> this.openPlayerInfo(player, m, v.distanceKm), 300);
+    setTimeout(() => this.openPlayerInfo(player, m, v.distanceKm), 300);
   }
 
   // helper: number of players in bottom carousel (if many, it's scrollable)
