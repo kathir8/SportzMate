@@ -1,4 +1,3 @@
-import { CommonModule } from '@angular/common';
 import { Component, ElementRef, ViewChild } from '@angular/core';
 import { IonContent, IonTitle, IonHeader, IonToolbar, IonButtons, IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular/standalone';
 interface Player {
@@ -12,11 +11,12 @@ interface Player {
   selector: 'app-mate-map-view',
   templateUrl: './mate-map-view.component.html',
   styleUrls: ['./mate-map-view.component.scss'],
-  imports: [IonContent, IonTitle, IonHeader, IonToolbar, IonButtons, IonSegment, IonSegmentButton, IonLabel, CommonModule]
+  imports: [IonContent, IonTitle, IonHeader, IonToolbar, IonButtons, IonSegment, IonSegmentButton, IonLabel]
 })
 export class MateMapViewComponent {
 
   @ViewChild('mapRef', { static: false }) mapElement!: ElementRef;
+  @ViewChild('carouselRef', { static: false }) carouselRef!: ElementRef<HTMLDivElement>;
 
   map!: google.maps.Map;
   infoWindow!: google.maps.InfoWindow;
@@ -33,12 +33,16 @@ export class MateMapViewComponent {
   // Dummy players around Chennai with offsets for demo
   players: Player[] = [
     { id: 'p1', name: 'Amelia', photo: 'assets/avatars/avatar1.jfif', game: 'Badminton', coords: { lat: 13.0184, lng: 80.2100 } },
-    { id: 'p2', name: 'Joseph', photo: 'assets/avatars/avatar2.jfif', game: 'Cricket', coords: { lat: 13.0900, lng: 80.2200 } },
-    { id: 'p3', name: 'Emma', photo: 'assets/avatars/avatar3.jfif', game: 'Cycling', coords: { lat: 13.0500, lng: 80.1550 } },
+    { id: 'p2', name: 'Emma', photo: 'assets/avatars/avatar2.jfif', game: 'Cycling', coords: { lat: 13.0150, lng: 80.2000 } },
+    { id: 'p3', name: 'Joseph', photo: 'assets/avatars/avatar3.jfif', game: 'Cricket', coords: { lat: 13.0900, lng: 80.2200 } },
+    { id: 'p4', name: 'Martin', photo: 'assets/avatars/avatar4.jpg', game: 'Tennis', coords: { lat: 13.0200, lng: 80.2350 } },
   ];
 
   // players currently shown within radius
   visiblePlayers: Array<{ player: Player; distanceKm: number }> = [];
+
+  selectedPlayerId: string = '';
+
 
   constructor() { }
 
@@ -142,7 +146,8 @@ export class MateMapViewComponent {
       const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
         player.photo,
         this.gameEmoji(player.game),
-        player.name
+        player.name,
+        player.id
       );
 
       const marker = new google.maps.Marker({
@@ -171,8 +176,7 @@ export class MateMapViewComponent {
   }
 
 
-  // --- updated createCompositeMarkerIcon (new design: like your screenshot) ---
-  createCompositeMarkerIcon(photoUrl: string, emoji: string, name: string): Promise<{
+  createCompositeMarkerIcon(photoUrl: string, emoji: string, name: string, id: string): Promise<{
     url: string; width: number; height: number; anchorX: number; anchorY: number;
   }> {
     return new Promise((resolve) => {
@@ -215,7 +219,10 @@ export class MateMapViewComponent {
       ctx.closePath();
 
       // Fill with white and shadow
-      ctx.fillStyle = "#ffffff";
+
+      const isSelected = this.selectedPlayerId === id;
+
+      ctx.fillStyle = isSelected ? '#FF4E18' : "#ffffff";
       ctx.shadowColor = "#0000004d";
       ctx.shadowBlur = 3;
       ctx.fill();
@@ -234,7 +241,7 @@ export class MateMapViewComponent {
 
       // Name text
       ctx.font = "600 15px sans-serif";
-      ctx.fillStyle = "#333";
+      ctx.fillStyle = isSelected ? "#ffffff" : "#628B9F";
       ctx.textAlign = "left";
       ctx.fillText(name, pillX + 35, pillY + pillH / 2 + 1);
 
@@ -363,24 +370,79 @@ export class MateMapViewComponent {
 
   // clicking a bottom-card photo should center & open popup
   onCardClick(player: Player) {
+
+    this.selectedPlayerId = player.id;
+
+    this.visiblePlayers.forEach(v => {
+      const marker = this.markers.find(m => m.getTitle() === v.player.name);
+      if (marker) this.updateMarkerIcon(v.player, marker);
+    });
     // find marker for this player
     const m = this.markers.find(x => x.getTitle() === player.name);
-    const v = this.visiblePlayers.find(x => x.player.id === player.id);
-    if (!m || !v) return;
-    this.map.panTo(player.coords);
-    this.map.setZoom(15);
-    // small timeout to ensure pan completes
-    setTimeout(() => this.openPlayerInfo(player, m, v.distanceKm), 300);
+    if (m) this.map.panTo(player.coords);
   }
 
-  // helper: number of players in bottom carousel (if many, it's scrollable)
-  hasPlayers() {
-    return this.visiblePlayers.length > 0;
+  async updateMarkerIcon(player: Player, marker: google.maps.Marker) {
+    try {
+      const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
+        player.photo,
+        this.gameEmoji(player.game),
+        player.name,
+        player.id
+      );
+
+      marker.setIcon({
+        url,
+        size: new google.maps.Size(width, height),
+        scaledSize: new google.maps.Size(width, height),
+        anchor: new google.maps.Point(anchorX, anchorY)
+      });
+    } catch (err) {
+      console.error('Failed to update marker icon', err);
+    }
   }
 
-  // helper for rendering up to 4 cards at bottom, but allow horizontal scroll for more
-  bottomPlayers() {
-    return this.visiblePlayers;
+  onCarouselScroll() {
+    if (!this.carouselRef) return;
+
+    const scrollEl = this.carouselRef.nativeElement;
+    const children = Array.from(scrollEl.children) as HTMLElement[];
+
+    const scrollLeft = scrollEl.scrollLeft;
+    const center = scrollEl.offsetWidth / 2 + scrollLeft;
+
+    let closestCard: any = null;
+    let minDistance = Number.MAX_VALUE;
+
+    children.forEach(child => {
+      const childCenter = child.offsetLeft + child.offsetWidth / 2;
+      const distance = Math.abs(center - childCenter);
+      if (distance < minDistance) {
+        minDistance = distance;
+        closestCard = child;
+      }
+    });
+
+    if (closestCard) {
+      const id = closestCard.id.replace('card-', '');
+      if (this.selectedPlayerId !== id) {
+        this.selectedPlayerId = id;
+
+        // update all markers for selection
+        this.visiblePlayers.forEach(v => {
+          const marker = this.markers.find(m => m.getTitle() === v.player.name);
+          if (marker) this.updateMarkerIcon(v.player, marker);
+        });
+
+        // pan map to centered player
+        const player = this.visiblePlayers.find(v => v.player.id === id)?.player;
+        if (player) this.map.panTo(player.coords);
+      }
+    }
+  }
+
+  trackByOption(index: number, item: any): any {
+    return item.id || index;
   }
 
 }

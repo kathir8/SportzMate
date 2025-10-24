@@ -16,82 +16,97 @@
   bottom: 16px;
   padding: 8px 14px;
   pointer-events: auto;
+
+  .cards-wrapper {
+    display: flex;
+    gap: 12px;
+    overflow-x: auto;
+    padding-bottom: 6px;
+    padding-left: 6px;
+    padding-right: 6px;
+    scroll-snap-type: x mandatory;
+
+    .card {
+      scroll-snap-align: center;
+      min-width: 300px;
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 6px 18px #14142814;
+      display: flex;
+      align-items: center;
+      padding: 12px;
+      cursor: pointer;
+      transition: transform 0.16s ease;
+
+      .left {
+        position: relative;
+        margin-right: 12px;
+
+        .avatar {
+          width: 64px;
+          height: 64px;
+          border-radius: 50%;
+          object-fit: cover;
+          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.15);
+        }
+
+        .badge {
+          position: absolute;
+          bottom: -6px;
+          right: -6px;
+          background: #fff;
+          border-radius: 50%;
+          padding: 4px;
+          box-shadow: 0 2px 6px rgba(0, 0, 0, 0.12);
+          font-size: 14px;
+        }
+      }
+
+      .right {
+        flex: 1;
+
+        .name {
+          font-weight: 700;
+          margin-bottom: 4px;
+        }
+
+        .meta {
+          font-size: 13px;
+          color: #666;
+          margin-bottom: 10px;
+        }
+
+        .actions {
+          display: flex;
+          gap: 8px;
+
+          .btn-interested {
+            background: #fff;
+            border: 1px solid #FF6B6B;
+            color: #FF6B6B;
+            padding: 6px 10px;
+            border-radius: 8px;
+          }
+
+          .btn-chat {
+            background: #FF6B6B;
+            color: white;
+            padding: 6px 10px;
+            border-radius: 8px;
+            border: none;
+          }
+        }
+
+      }
+
+      &:hover {
+        transform: translateY(-4px);
+      }
+    }
+  }
 }
 
-.cards-wrapper {
-  display: flex;
-  gap: 12px;
-  overflow-x: auto;
-  padding-bottom: 6px;
-  padding-left: 6px;
-  padding-right: 6px;
-}
 
-.card {
-  min-width: 300px;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 6px 18px rgba(20,20,40,0.08);
-  display: flex;
-  align-items: center;
-  padding: 12px;
-  cursor: pointer;
-  transition: transform 0.16s ease;
-}
-.card:hover { transform: translateY(-4px); }
-
-.left {
-  position: relative;
-  margin-right: 12px;
-}
-.avatar {
-  width: 64px;
-  height: 64px;
-  border-radius: 50%;
-  object-fit: cover;
-  box-shadow: 0 4px 10px rgba(0,0,0,0.15);
-}
-.badge {
-  position: absolute;
-  bottom: -6px;
-  right: -6px;
-  background: #fff;
-  border-radius: 50%;
-  padding: 4px;
-  box-shadow: 0 2px 6px rgba(0,0,0,0.12);
-  font-size: 14px;
-}
-
-.right {
-  flex: 1;
-}
-.name {
-  font-weight: 700;
-  margin-bottom: 4px;
-}
-.meta {
-  font-size: 13px;
-  color: #666;
-  margin-bottom: 10px;
-}
-.actions {
-  display:flex;
-  gap: 8px;
-}
-.btn-interested {
-  background: #fff;
-  border: 1px solid #FF6B6B;
-  color: #FF6B6B;
-  padding: 6px 10px;
-  border-radius: 8px;
-}
-.btn-chat {
-  background: #FF6B6B;
-  color: white;
-  padding: 6px 10px;
-  border-radius: 8px;
-  border: none;
-}
 
 .no-players {
   position: fixed;
