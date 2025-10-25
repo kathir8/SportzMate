@@ -1,155 +1,69 @@
-import { Component, effect, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, Input, input, ViewChild } from '@angular/core';
 import { IonContent } from '@ionic/angular/standalone';
 import { HomeService } from '../../services/home-service';
 import { Router } from '@angular/router';
-interface Player {
-  id: number;
-  name: string;
-  photo: string; // avatar URL
-  game: 'Badminton' | 'Cricket' | 'Cycling' | 'Tennis' | 'Football' | 'Running' | 'Swimming' | 'Yoga' | 'Basketball';
-  coords: { lat: number; lng: number; };
-}
+import { Coordinates, MateListItem } from '../models/mate.model';
+import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
+
 @Component({
   selector: 'app-mate-map-view',
   templateUrl: './mate-map-view.component.html',
   styleUrls: ['./mate-map-view.component.scss'],
-  imports: [IonContent]
+  imports: [IonContent, NoMateFoundComponent]
 })
 export class MateMapViewComponent {
   private router = inject(Router);
-  homeService = inject(HomeService);
+  private homeService = inject(HomeService);
 
-  @ViewChild('mapRef', { static: false }) mapElement!: ElementRef;
+  // players currently within radius
+  visiblePlayers = input<MateListItem[]>([]);
+  current = input.required<{ lat: number; lng: number }>();
+
+
+  @ViewChild('mapRef', { static: true }) mapElement!: ElementRef;
   @ViewChild('carouselRef', { static: false }) carouselRef!: ElementRef<HTMLDivElement>;
-  @Input() activeTab!: 'list' | 'map';
 
   map!: google.maps.Map;
   infoWindow!: google.maps.InfoWindow;
   userMarker!: google.maps.Marker;
   markers: google.maps.Marker[] = [];
   badgeMarkers: google.maps.Marker[] = [];
-
-  // Default radius in kilometers
-  radiusKm = this.homeService.range();
-
-  // Current location (fallback to Chennai if geolocation fails)
-  current = { lat: 13.0827, lng: 80.2707 };
-
-  // Dummy players around Chennai with offsets for demo
-  // players: Player[] = [
-  //   { id: 1, name: 'Amelia', photo: 'assets/avatars/avatar1.jfif', game: 'Badminton', coords: { lat: 13.0184, lng: 80.2100 } },
-  //   { id: 2, name: 'Emma', photo: 'assets/avatars/avatar2.jfif', game: 'Cycling', coords: { lat: 13.0150, lng: 80.2000 } },
-  //   { id: 3, name: 'Joseph', photo: 'assets/avatars/avatar3.jfif', game: 'Cricket', coords: { lat: 13.0900, lng: 80.2200 } },
-  //   { id: 4, name: 'Martin', photo: 'assets/avatars/avatar4.jpg', game: 'Tennis', coords: { lat: 13.0200, lng: 80.2350 } },
-  // ];
-
-
-  players: Player[] = [
-    {
-      "id": 1,
-      "name": "Amelia",
-      "photo": "assets/avatars/avatar1.jfif",
-      "game": "Badminton",
-      "coords": { "lat": 13.0752, "lng": 80.2905 }
-    },
-    {
-      "id": 2,
-      "name": "Rahul",
-      "photo": "assets/avatars/avatar2.jfif",
-      "game": "Cycling",
-      "coords": { "lat": 13.0901, "lng": 80.2650 }
-    },
-    {
-      "id": 3,
-      "name": "Meera",
-      "photo": "assets/avatars/avatar3.jfif",
-      "game": "Cricket",
-      "coords": { "lat": 13.0705, "lng": 80.2555 }
-    },
-    {
-      "id": 4,
-      "name": "Karthik",
-      "photo": "assets/avatars/avatar4.jfif",
-      "game": "Football",
-      "coords": { "lat": 13.0450, "lng": 80.2489 }
-    },
-    {
-      "id": 5,
-      "name": "Sophia",
-      "photo": "assets/avatars/avatar5.jfif",
-      "game": "Running",
-      "coords": { "lat": 13.0600, "lng": 80.2950 }
-    },
-    {
-      "id": 6,
-      "name": "Vikram",
-      "photo": "assets/avatars/avatar6.jfif",
-      "game": "Swimming",
-      "coords": { "lat": 13.1005, "lng": 80.3055 }
-    },
-    {
-      "id": 7,
-      "name": "Priya",
-      "photo": "assets/avatars/avatar7.jfif",
-      "game": "Tennis",
-      "coords": { "lat": 13.1420, "lng": 80.2005 }
-    },
-    {
-      "id": 8,
-      "name": "Arjun",
-      "photo": "assets/avatars/avatar8.jfif",
-      "game": "Basketball",
-      "coords": { "lat": 13.0255, "lng": 80.3205 }
-    },
-    {
-      "id": 9,
-      "name": "Nisha",
-      "photo": "assets/avatars/avatar9.jfif",
-      "game": "Yoga",
-      "coords": { "lat": 13.1550, "lng": 80.2455 }
-    }
-  ]
-
-
-  // players currently shown within radius
-  visiblePlayers: Array<{ player: Player; distanceKm: number }> = [];
+  circle!: google.maps.Circle;
 
   selectedPlayerId: number | null = null;
 
 
   constructor() {
-    // Effect runs whenever range or activeTab changes
     effect(() => {
-      if (this.homeService.segmentView() === 'map') {
-        this.calculateMap(this.homeService.range());
+      const players = this.visiblePlayers();
+      const cur = this.current();
+
+      if (players.length && cur.lat && cur.lng) {
+        // Initialize or update map
+        if (!this.map) {
+          this.initMap(cur);
+        } else {
+          this.map.setCenter(cur);
+          this.circle?.setCenter(cur);
+          if (this.userMarker) {
+            this.userMarker.setPosition(cur);
+          }
+        }
+        this.loadNearbyPlayers(players, cur);
       }
     });
+
+    effect(() => {
+      const r = this.homeService.rangeKm(); // if this returns a signal value
+      if (this.circle) this.circle.setRadius(r * 1000);
+    });
+
   }
 
-
-  calculateMap(range: number) {
-    this.radiusKm = range;
-    this.loadNearbyPlayers();
-  }
-
-  async ngAfterViewInit() {
-    await this.initMap();
-    this.loadNearbyPlayers();
-  }
-
-  async initMap() {
-    // try browser geolocation
-    try {
-      const pos = await this.getCurrentPosition();
-      this.current.lat = pos.coords.latitude;
-      this.current.lng = pos.coords.longitude;
-    } catch (err) {
-      console.warn('Geolocation failed or denied — using fallback coordinates.', err);
-    }
-
+  initMap(center: Coordinates) {
     const mapEl = this.mapElement.nativeElement as HTMLElement;
     this.map = new google.maps.Map(mapEl, {
-      center: this.current,
+      center,
       zoom: 13,
       mapTypeId: google.maps.MapTypeId.ROADMAP,
       disableDefaultUI: false
@@ -159,7 +73,7 @@ export class MateMapViewComponent {
 
     // marker for current location
     this.userMarker = new google.maps.Marker({
-      position: this.current,
+      position: center,
       map: this.map,
       title: 'You',
       icon: {
@@ -173,65 +87,58 @@ export class MateMapViewComponent {
     });
 
     // circle showing radius
-    const circle = new google.maps.Circle({
+    this.circle = new google.maps.Circle({
       strokeColor: '#2E86DE',
       strokeOpacity: 0.6,
       strokeWeight: 1,
       fillColor: '#2E86DE',
       fillOpacity: 0.08,
       map: this.map,
-      center: this.current,
-      radius: this.radiusKm * 1000
+      center,
+      radius: this.homeService.rangeKm() * 1000
     });
 
-    // update circle when radius changes
-    (this as any)._circle = circle;
+    (this as any)._circle = this.circle;
   }
 
-  // helper: get geolocation promise
-  getCurrentPosition(): Promise<GeolocationPosition> {
-    return new Promise((resolve, reject) => {
-      if (!navigator.geolocation) reject('No geolocation');
-      navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 });
-    });
-  }
-
-  // main: compute visible players within radius and render markers + bottom cards
-  loadNearbyPlayers() {
+  // compute visible players within radius and render markers + bottom cards
+  loadNearbyPlayers(players: MateListItem[], center: Coordinates) {
     // clear existing markers
     this.clearMarkers();
 
-    // compute distances
-    const arr = this.players.map(p => {
-      const d = this.distanceKm(this.current.lat, this.current.lng, p.coords.lat, p.coords.lng);
-      return { player: p, distanceKm: Math.round(d * 100) / 100 };
-    });
-
-    // filter by radius
-    this.visiblePlayers = arr.filter(x => x.distanceKm <= this.radiusKm)
-      .sort((a, b) => a.distanceKm - b.distanceKm);
-
-    // show only up to 4 in bottom cards for the initial UI (but you can scroll horizontally)
     // create markers for visible players
-    this.visiblePlayers.forEach(item => this.addPlayerMarker(item.player, item.distanceKm));
+    players.forEach(item => this.addPlayerMarker(item));
 
     // update circle radius & center
-    const circle: google.maps.Circle = (this as any)._circle;
-    if (circle) {
-      circle.setCenter(this.current);
-      circle.setRadius(this.radiusKm * 1000);
+    if (this.circle) {
+      this.circle.setCenter(center);
+      this.circle.setRadius(this.homeService.rangeKm() * 1000);
     }
 
-    // adjust map bounds to include user + visible players comfortably
-    this.fitBounds();
+    // update user marker position if available
+    if (this.userMarker) {
+      this.userMarker.setPosition(center);
+    }
+
+    // fit bounds around user + visible players
+    const bounds = new google.maps.LatLngBounds();
+    bounds.extend(center);
+    players.forEach(v => bounds.extend(v.coords));
+    if (players.length) {
+      this.map.fitBounds(bounds, 120);
+    } else {
+      // when no players, keep a sane zoom
+      this.map.setCenter(center);
+      this.map.setZoom(13);
+    }
   }
 
-  // --- updated addPlayerMarker (minimal change) ---
-  async addPlayerMarker(player: Player, distanceKm: number) {
+
+  async addPlayerMarker(player: MateListItem) {
     try {
       const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
-        player.photo,
-        this.gameEmoji(player.game),
+        player.profileImg,
+        this.gameEmoji(player.sport),
         player.name,
         player.id
       );
@@ -393,7 +300,7 @@ export class MateMapViewComponent {
   }
 
   // small utility to produce emoji per game
-  gameEmoji(g: Player['game']) {
+  gameEmoji(g: MateListItem['sport']) {
     switch (g) {
       case 'Badminton': return '🏸';
       case 'Cricket': return '🏏';
@@ -408,44 +315,16 @@ export class MateMapViewComponent {
     }
   }
 
-
-  // compute distance between two lat/lon in km (Haversine)
-  distanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
-    const R = 6371; // km
-    const dLat = this.deg2rad(lat2 - lat1);
-    const dLon = this.deg2rad(lon2 - lon1);
-    const a = Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(this.deg2rad(lat1)) * Math.cos(this.deg2rad(lat2)) *
-      Math.sin(dLon / 2) * Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  }
-  deg2rad(deg: number) { return deg * (Math.PI / 180); }
-
-  // fit bounds around current + visible players
-  fitBounds() {
-    const bounds = new google.maps.LatLngBounds();
-    bounds.extend(this.current);
-    this.visiblePlayers.forEach(v => bounds.extend(v.player.coords));
-    this.map.fitBounds(bounds, 120);
-  }
-
-  // change radius (ui bound)
-  onRadiusChange(newVal: any) {
-    this.radiusKm = newVal;
-    this.loadNearbyPlayers();
-  }
-
   // clicking a bottom-card photo should center & open popup
   openMateDetail(id: number) {
     this.router.navigate(['dashboard/mate-detail', id]);
   }
 
-  async updateMarkerIcon(player: Player, marker: google.maps.Marker) {
+  async updateMarkerIcon(player: MateListItem, marker: google.maps.Marker) {
     try {
       const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
-        player.photo,
-        this.gameEmoji(player.game),
+        player.profileImg,
+        this.gameEmoji(player.sport),
         player.name,
         player.id
       );
@@ -488,20 +367,16 @@ export class MateMapViewComponent {
         this.selectedPlayerId = id;
 
         // update all markers for selection
-        this.visiblePlayers.forEach(v => {
-          const marker = this.markers.find(m => m.getTitle() === v.player.name);
-          if (marker) this.updateMarkerIcon(v.player, marker);
+        this.visiblePlayers().forEach(v => {
+          const marker = this.markers.find(m => m.getTitle() === v.name);
+          if (marker) this.updateMarkerIcon(v, marker);
         });
 
         // pan map to centered player
-        const player = this.visiblePlayers.find(v => v.player.id === id)?.player;
+        const player = this.visiblePlayers().find(v => v.id === id);
         if (player) this.map.panTo(player.coords);
       }
     }
-  }
-
-  trackByOption(index: number, item: any): any {
-    return item.id || index;
   }
 
 }

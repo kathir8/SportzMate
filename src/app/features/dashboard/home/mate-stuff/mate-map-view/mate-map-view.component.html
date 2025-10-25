@@ -1,19 +1,18 @@
 <ion-content class="map-page">
-  <div #mapRef id="map" class="map"></div>
 
-  @if(homeService.segmentView() === 'map'){
-  @if(visiblePlayers.length){
+  <div #mapRef id="map" [class]="{'map' : visiblePlayers().length}"></div>
+  @if(visiblePlayers().length){
   <div class="bottom-area">
     <div class="cards-wrapper" #carouselRef (scroll)="onCarouselScroll()">
-      @for(item of visiblePlayers; track trackByOption($index, item)){
-      <div class="card" id="{{'card-' + item.player.id}}" (click)="openMateDetail(item.player.id)">
+      @for(item of visiblePlayers(); track item.id){
+      <div class="card" id="{{'card-' + item.id}}" (click)="openMateDetail(item.id)">
         <div class="left">
-          <img class="avatar" [src]="item.player.photo" />
-          <div class="badge">{{ gameEmoji(item.player.game) }}</div>
+          <img class="avatar" [src]="item.profileImg" />
+          <div class="badge">{{ gameEmoji(item.sport) }}</div>
         </div>
         <div class="right">
-          <div class="name">{{item.player.name}}</div>
-          <div class="meta">{{ item.player.game }} • {{ item.distanceKm }} km</div>
+          <div class="name">{{item.name}}</div>
+          <div class="meta">{{ item.sport }} • {{ item.distanceKm }} km</div>
 
           <div class="actions">
             <button class="btn-interested">Interested 👍</button>
@@ -25,10 +24,7 @@
     </div>
   </div>
   }@else {
-  <div class="no-players">
-    <p>No players within {{radiusKm}} km</p>
-  </div>
-  }
+  <app-no-mate-found></app-no-mate-found>
   }
 
 </ion-content>

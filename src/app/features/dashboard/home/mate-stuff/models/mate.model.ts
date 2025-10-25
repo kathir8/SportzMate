@@ -5,13 +5,16 @@ export interface MateListItem {
     sport: 'Badminton' | 'Cricket' | 'Cycling' | 'Tennis' | 'Football' | 'Running' | 'Swimming' | 'Yoga' | 'Basketball';
     eventDateTime: string;
     distanceOrDuration: string;
-    profileImg?: string;
+    profileImg: string;
     requiredMembers: number;
     confirmedMembers: number;
-    coords: { lat: number; lng: number; }
+    coords: Coordinates;
+    distanceKm?: number
 }
 
 export interface MateDetail extends MateListItem {
     description: string;
     members: number[];
 }
+
+export interface Coordinates { lat: number; lng: number; }

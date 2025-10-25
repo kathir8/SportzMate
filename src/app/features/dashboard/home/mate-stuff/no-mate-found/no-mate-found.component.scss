@@ -1,0 +1,42 @@
+ .oops-container {
+     border-image: repeating-linear-gradient(90deg,
+             #628B9F3B 0 10px,
+             transparent 10px 20px) 1;
+     border-image-source: repeating-linear-gradient(45deg,
+             #628B9F3B 0 10px,
+             transparent 10px 20px);
+     border: 1px solid transparent;
+     justify-content: center;
+     align-items: center;
+     margin-bottom: 20px;
+     padding: 40px 20px;
+     border-radius: 8px;
+     max-width: 600px;
+     margin-top: 40px;
+     display: flex;
+     width: 100%;
+     gap: 20px;
+
+     .oops-img {
+         width: 120px;
+         height: auto;
+     }
+
+     .oops-text {
+         text-align: center;
+
+         h2 {
+             color: #628B9F;
+             font-weight: 700;
+             font-size: 32px;
+             margin: 0;
+         }
+
+         p {
+             color: #628B9F;
+             font-weight: 500;
+             margin: 5px 0 0;
+             font-size: 20px;
+         }
+     }
+ }

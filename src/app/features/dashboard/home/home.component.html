@@ -15,7 +15,7 @@
   <ng-select [items]="countries" bindLabel="name" bindValue="code" placeholder="Search Invites"
     class="invites-dropdown"></ng-select>
 
-  <ion-segment [ngModel]="homeService.segmentView()" (ionChange)="onSegmentChange($event)" class="segment-wrapper">
+  <ion-segment [ngModel]="segmentView()" (ngModelChange)="segmentView.set($event)" class="segment-wrapper">
     <ion-segment-button value="list" content-id="list">
       <ion-label>List View</ion-label>
     </ion-segment-button>
@@ -26,16 +26,19 @@
 
   <ion-segment-view>
     <ion-segment-content id="list" value="list">
+      @if(segmentView() === 'list'){
       <div class="text-wrapper">
         <p>Based on your current Location </p>
         <ion-icon [icon]="icons.navigateSharp"></ion-icon>
       </div>
 
-      <app-mate-list-view></app-mate-list-view>
-
+      <app-mate-list-view [visiblePlayers]="visiblePlayers()"></app-mate-list-view>
+      }
     </ion-segment-content>
     <ion-segment-content id="map" value="map">
-      <app-mate-map-view></app-mate-map-view>
+      @if(segmentView() === 'map'){
+      <app-mate-map-view [visiblePlayers]="visiblePlayers()" [current]="current()"></app-mate-map-view>
+      }
     </ion-segment-content>
   </ion-segment-view>
 

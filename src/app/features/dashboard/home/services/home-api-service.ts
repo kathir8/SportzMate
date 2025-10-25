@@ -50,7 +50,7 @@ export class HomeApiService {
       },
       {
         id: 4,
-        profileImg: 'assets/avatars/avatar4.jfif',
+        profileImg: 'assets/avatars/avatar4.jpg',
         name: 'Karthik',
         location: 'Chicago',
         eventDateTime: '20 Oct, 4 PM',
@@ -81,7 +81,7 @@ export class HomeApiService {
         requiredMembers: 4,
         confirmedMembers: 4,
         distanceOrDuration: '3 Km',
-        sport: 'Running',
+        sport: 'Swimming',
         coords: { "lat": 13.1005, "lng": 80.3055 }
       },
       {
@@ -98,14 +98,14 @@ export class HomeApiService {
       },
       {
         id: 8,
-        profileImg: 'assets/avatars/avatar4.jfif',
+        profileImg: 'assets/avatars/avatar4.jpg',
         name: 'Arjun',
         location: 'Naperville',
         eventDateTime: '20 Oct, 4 PM',
         requiredMembers: 3,
         confirmedMembers: 4,
         distanceOrDuration: '2 Hr',
-        sport: 'Tennis',
+        sport: 'Swimming',
         coords: { "lat": 13.0255, "lng": 80.3205 }
       },
       {

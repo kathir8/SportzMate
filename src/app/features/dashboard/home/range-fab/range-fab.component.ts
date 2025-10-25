@@ -12,7 +12,7 @@ export class RangeFabComponent {
   private homeService = inject(HomeService);
   icons = { filterSharp };
 
-  selectedRange = this.homeService.range();
+  selectedRange = this.homeService.rangeKm();
 
   formatKm(value: number) {
     return `${value} KM`;

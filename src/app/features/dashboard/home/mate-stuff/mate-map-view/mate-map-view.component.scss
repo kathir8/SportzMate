@@ -103,19 +103,9 @@
         transform: translateY(-4px);
       }
     }
+
+     &::-webkit-scrollbar {
+        display: none;
+    }
   }
-}
-
-
-
-.no-players {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 40%;
-  display:flex;
-  justify-content:center;
-  pointer-events: none;
-  color: #666;
-  font-weight: 600;
 }
