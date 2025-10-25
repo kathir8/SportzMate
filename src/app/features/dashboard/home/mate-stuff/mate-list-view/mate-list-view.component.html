@@ -1,40 +1,43 @@
-<div class="list-scroll-container">
-  @if(visiblePlayers().length){
+<ion-content class="list-scroll-container">
+    @if(displayedPlayers().length){
 
-  <ion-list class="sports-mate-list">
-    @for (item of visiblePlayers(); track item.id) {
-    <ion-item (click)="openMateDetail(item.id)">
-      <ion-thumbnail class="mate-img">
-        <img alt="profile" [src]="item.profileImg" />
-      </ion-thumbnail>
+    <ion-list class="sports-mate-list">
+      @for (item of displayedPlayers(); track item.id) {
+      <ion-item (click)="openMateDetail(item.id)">
+        <ion-thumbnail class="mate-img">
+          <img alt="profile" [src]="item.profileImg" />
+        </ion-thumbnail>
 
-      <ion-grid>
-        <ion-row>
-          <ion-col size="8">
-            <ion-label class="name-text">{{item.name}}, {{item.location}}</ion-label>
-            <div class="time-wrapper">
-              <ion-icon [icon]="icons.calendarClear"></ion-icon>
-              <ion-label class="time-text">{{item.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
-            </div>
-            <div class="badge-wrapper">
-              <ion-badge class="primary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
-              <ion-badge class="secondary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
-            </div>
-          </ion-col>
-          <ion-col class="game-detail">
-            <ion-badge class="distanceOrDuration">{{item.distanceOrDuration}}</ion-badge>
-            <ion-icon [icon]="icons.bicycleOutline"></ion-icon>
-          </ion-col>
-        </ion-row>
-      </ion-grid>
-    </ion-item>
+        <ion-grid>
+          <ion-row>
+            <ion-col size="8">
+              <ion-label class="name-text">{{item.name}}, {{item.location}}</ion-label>
+              <div class="time-wrapper">
+                <ion-icon [icon]="icons.calendarClear"></ion-icon>
+                <ion-label class="time-text">{{item.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
+              </div>
+              <div class="badge-wrapper">
+                <ion-badge class="primary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
+                <ion-badge class="secondary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
+              </div>
+            </ion-col>
+            <ion-col class="game-detail">
+              <ion-badge class="distanceOrDuration">{{item.distanceOrDuration}}</ion-badge>
+              <ion-icon [icon]="icons.bicycleOutline"></ion-icon>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </ion-item>
+      }
+    </ion-list>
+
+    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
+      <ion-infinite-scroll-content loadingSpinner="bubbles"
+        loadingText="Loading more mates..."></ion-infinite-scroll-content>
+    </ion-infinite-scroll>
+
+    }@else {
+    <app-no-mate-found></app-no-mate-found>
     }
-  </ion-list>
-
-  }@else {
-  <app-no-mate-found></app-no-mate-found>
-  }
-  <ion-infinite-scroll (ionInfinite)="loadMore($event)">
-    <ion-infinite-scroll-content></ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-</div>
+    
+</ion-content>

@@ -1,12 +1,13 @@
 @use "../mate";
 
 .list-scroll-container {
-    -webkit-overflow-scrolling: touch;
-    overflow-y: auto;
-    height: 100%;
 
-    &::-webkit-scrollbar {
-        display: none;
+    &::part(scroll) {
+        scrollbar-width: none;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
     }
 
     .sports-mate-list {
