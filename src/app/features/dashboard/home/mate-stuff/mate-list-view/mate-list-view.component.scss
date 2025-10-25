@@ -1,13 +1,13 @@
 @use "../mate";
 
-.list-scroll-container {
+.virtual-scroll-container {
+    height: 100%; // fills ion-content
+    width: 100%;
+    overflow: auto;
+    display: block;
 
-    &::part(scroll) {
-        scrollbar-width: none;
-
-        &::-webkit-scrollbar {
-            display: none;
-        }
+    &::-webkit-scrollbar {
+        display: none;
     }
 
     .sports-mate-list {

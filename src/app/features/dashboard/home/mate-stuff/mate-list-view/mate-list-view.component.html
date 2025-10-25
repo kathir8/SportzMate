@@ -1,9 +1,8 @@
-<ion-content class="list-scroll-container">
-    @if(displayedPlayers().length){
-
+<ion-content>
+  @if(visiblePlayers().length){
+  <cdk-virtual-scroll-viewport itemSize="90" class="virtual-scroll-container" [minBufferPx]="185" [maxBufferPx]="365">
     <ion-list class="sports-mate-list">
-      @for (item of displayedPlayers(); track item.id) {
-      <ion-item (click)="openMateDetail(item.id)">
+      <ion-item *cdkVirtualFor="let item of visiblePlayers(); trackBy: trackById" (click)="openMateDetail(item.id)">
         <ion-thumbnail class="mate-img">
           <img alt="profile" [src]="item.profileImg" />
         </ion-thumbnail>
@@ -28,16 +27,11 @@
           </ion-row>
         </ion-grid>
       </ion-item>
-      }
     </ion-list>
+  </cdk-virtual-scroll-viewport>
 
-    <ion-infinite-scroll threshold="100px" (ionInfinite)="loadMore($event)">
-      <ion-infinite-scroll-content loadingSpinner="bubbles"
-        loadingText="Loading more mates..."></ion-infinite-scroll-content>
-    </ion-infinite-scroll>
+  }@else {
+  <app-no-mate-found></app-no-mate-found>
+  }
 
-    }@else {
-    <app-no-mate-found></app-no-mate-found>
-    }
-    
 </ion-content>
