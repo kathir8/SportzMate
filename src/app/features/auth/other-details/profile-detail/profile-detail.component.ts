@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonFooter, IonImg } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
@@ -13,11 +13,11 @@ import { Router } from '@angular/router';
   imports: [IonFooter, IonicButtonComponent, IonicInputComponent, FormsModule, CountryDropdownComponent, IonImg]
 })
 export class ProfileDetailComponent {
-  static navId = 'ProfileDetail';
+  private router = inject(Router);
 
+  static navId = 'ProfileDetail';
   userName: string = '';
 
-  constructor(private router: Router) { }
   onCountryChange(country: any) {
     console.log('Selected:', country);
   }

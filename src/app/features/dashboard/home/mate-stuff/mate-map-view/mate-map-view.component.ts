@@ -1,22 +1,27 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonContent, IonTitle, IonHeader, IonToolbar, IonButtons, IonSegment, IonSegmentButton, IonLabel } from '@ionic/angular/standalone';
+import { Component, effect, ElementRef, inject, Input, ViewChild } from '@angular/core';
+import { IonContent } from '@ionic/angular/standalone';
+import { HomeService } from '../../services/home-service';
+import { Router } from '@angular/router';
 interface Player {
-  id: string;
+  id: number;
   name: string;
   photo: string; // avatar URL
-  game: 'Badminton' | 'Cricket' | 'Cycling' | 'Tennis';
+  game: 'Badminton' | 'Cricket' | 'Cycling' | 'Tennis' | 'Football' | 'Running' | 'Swimming' | 'Yoga' | 'Basketball';
   coords: { lat: number; lng: number; };
 }
 @Component({
   selector: 'app-mate-map-view',
   templateUrl: './mate-map-view.component.html',
   styleUrls: ['./mate-map-view.component.scss'],
-  imports: [IonContent, IonTitle, IonHeader, IonToolbar, IonButtons, IonSegment, IonSegmentButton, IonLabel]
+  imports: [IonContent]
 })
 export class MateMapViewComponent {
+  private router = inject(Router);
+  homeService = inject(HomeService);
 
   @ViewChild('mapRef', { static: false }) mapElement!: ElementRef;
   @ViewChild('carouselRef', { static: false }) carouselRef!: ElementRef<HTMLDivElement>;
+  @Input() activeTab!: 'list' | 'map';
 
   map!: google.maps.Map;
   infoWindow!: google.maps.InfoWindow;
@@ -25,26 +30,107 @@ export class MateMapViewComponent {
   badgeMarkers: google.maps.Marker[] = [];
 
   // Default radius in kilometers
-  radiusKm = 5;
+  radiusKm = this.homeService.range();
 
   // Current location (fallback to Chennai if geolocation fails)
   current = { lat: 13.0827, lng: 80.2707 };
 
   // Dummy players around Chennai with offsets for demo
+  // players: Player[] = [
+  //   { id: 1, name: 'Amelia', photo: 'assets/avatars/avatar1.jfif', game: 'Badminton', coords: { lat: 13.0184, lng: 80.2100 } },
+  //   { id: 2, name: 'Emma', photo: 'assets/avatars/avatar2.jfif', game: 'Cycling', coords: { lat: 13.0150, lng: 80.2000 } },
+  //   { id: 3, name: 'Joseph', photo: 'assets/avatars/avatar3.jfif', game: 'Cricket', coords: { lat: 13.0900, lng: 80.2200 } },
+  //   { id: 4, name: 'Martin', photo: 'assets/avatars/avatar4.jpg', game: 'Tennis', coords: { lat: 13.0200, lng: 80.2350 } },
+  // ];
+
+
   players: Player[] = [
-    { id: 'p1', name: 'Amelia', photo: 'assets/avatars/avatar1.jfif', game: 'Badminton', coords: { lat: 13.0184, lng: 80.2100 } },
-    { id: 'p2', name: 'Emma', photo: 'assets/avatars/avatar2.jfif', game: 'Cycling', coords: { lat: 13.0150, lng: 80.2000 } },
-    { id: 'p3', name: 'Joseph', photo: 'assets/avatars/avatar3.jfif', game: 'Cricket', coords: { lat: 13.0900, lng: 80.2200 } },
-    { id: 'p4', name: 'Martin', photo: 'assets/avatars/avatar4.jpg', game: 'Tennis', coords: { lat: 13.0200, lng: 80.2350 } },
-  ];
+    {
+      "id": 1,
+      "name": "Amelia",
+      "photo": "assets/avatars/avatar1.jfif",
+      "game": "Badminton",
+      "coords": { "lat": 13.0752, "lng": 80.2905 }
+    },
+    {
+      "id": 2,
+      "name": "Rahul",
+      "photo": "assets/avatars/avatar2.jfif",
+      "game": "Cycling",
+      "coords": { "lat": 13.0901, "lng": 80.2650 }
+    },
+    {
+      "id": 3,
+      "name": "Meera",
+      "photo": "assets/avatars/avatar3.jfif",
+      "game": "Cricket",
+      "coords": { "lat": 13.0705, "lng": 80.2555 }
+    },
+    {
+      "id": 4,
+      "name": "Karthik",
+      "photo": "assets/avatars/avatar4.jfif",
+      "game": "Football",
+      "coords": { "lat": 13.0450, "lng": 80.2489 }
+    },
+    {
+      "id": 5,
+      "name": "Sophia",
+      "photo": "assets/avatars/avatar5.jfif",
+      "game": "Running",
+      "coords": { "lat": 13.0600, "lng": 80.2950 }
+    },
+    {
+      "id": 6,
+      "name": "Vikram",
+      "photo": "assets/avatars/avatar6.jfif",
+      "game": "Swimming",
+      "coords": { "lat": 13.1005, "lng": 80.3055 }
+    },
+    {
+      "id": 7,
+      "name": "Priya",
+      "photo": "assets/avatars/avatar7.jfif",
+      "game": "Tennis",
+      "coords": { "lat": 13.1420, "lng": 80.2005 }
+    },
+    {
+      "id": 8,
+      "name": "Arjun",
+      "photo": "assets/avatars/avatar8.jfif",
+      "game": "Basketball",
+      "coords": { "lat": 13.0255, "lng": 80.3205 }
+    },
+    {
+      "id": 9,
+      "name": "Nisha",
+      "photo": "assets/avatars/avatar9.jfif",
+      "game": "Yoga",
+      "coords": { "lat": 13.1550, "lng": 80.2455 }
+    }
+  ]
+
 
   // players currently shown within radius
   visiblePlayers: Array<{ player: Player; distanceKm: number }> = [];
 
-  selectedPlayerId: string = '';
+  selectedPlayerId: number | null = null;
 
 
-  constructor() { }
+  constructor() {
+    // Effect runs whenever range or activeTab changes
+    effect(() => {
+      if (this.homeService.segmentView() === 'map') {
+        this.calculateMap(this.homeService.range());
+      }
+    });
+  }
+
+
+  calculateMap(range: number) {
+    this.radiusKm = range;
+    this.loadNearbyPlayers();
+  }
 
   async ngAfterViewInit() {
     await this.initMap();
@@ -163,20 +249,16 @@ export class MateMapViewComponent {
         }
       });
 
-      marker.addListener('click', () => {
-        this.openPlayerInfo(player, marker, distanceKm);
-        const el = document.getElementById('card-' + player.id);
-        if (el) el.scrollIntoView({ behavior: 'smooth', inline: 'center' });
-      });
-
+      marker.addListener('click', () => this.openMateDetail(player.id));
       this.markers.push(marker);
+
     } catch (err) {
       console.error('Marker icon failed', err);
     }
   }
 
 
-  createCompositeMarkerIcon(photoUrl: string, emoji: string, name: string, id: string): Promise<{
+  createCompositeMarkerIcon(photoUrl: string, emoji: string, name: string, id: number): Promise<{
     url: string; width: number; height: number; anchorX: number; anchorY: number;
   }> {
     return new Promise((resolve) => {
@@ -302,26 +384,6 @@ export class MateMapViewComponent {
     });
   }
 
-
-
-  /* -------------------------------------------------------------------------- */
-
-
-  // when clicking a marker or carousel photo
-  openPlayerInfo(player: Player, marker: google.maps.Marker, distKm: number) {
-    const content = `
-    <div style="display:flex; align-items:center; gap:10px;">
-      <img src="${player.photo}" style="width:64px;height:64px;border-radius:50%;object-fit:cover;"/>
-      <div>
-        <div style="font-weight:600;">${player.name}</div>
-        <div style="font-size:12px;color:#666;margin-top:4px;">${player.game} · ${distKm} km</div>
-      </div>
-    </div>
-    `;
-    this.infoWindow.setContent(content);
-    this.infoWindow.open({ anchor: marker, map: this.map });
-  }
-
   // remove markers
   clearMarkers() {
     this.markers.forEach(m => m.setMap(null));
@@ -337,9 +399,15 @@ export class MateMapViewComponent {
       case 'Cricket': return '🏏';
       case 'Cycling': return '🚴';
       case 'Tennis': return '🎾';
-      default: return '⚽';
+      case 'Football': return '⚽';
+      case 'Running': return '🏃';
+      case 'Swimming': return '🏊';
+      case 'Yoga': return '🧘';
+      case 'Basketball': return '🏀';
+      default: return '🎯';
     }
   }
+
 
   // compute distance between two lat/lon in km (Haversine)
   distanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
@@ -369,17 +437,8 @@ export class MateMapViewComponent {
   }
 
   // clicking a bottom-card photo should center & open popup
-  onCardClick(player: Player) {
-
-    this.selectedPlayerId = player.id;
-
-    this.visiblePlayers.forEach(v => {
-      const marker = this.markers.find(m => m.getTitle() === v.player.name);
-      if (marker) this.updateMarkerIcon(v.player, marker);
-    });
-    // find marker for this player
-    const m = this.markers.find(x => x.getTitle() === player.name);
-    if (m) this.map.panTo(player.coords);
+  openMateDetail(id: number) {
+    this.router.navigate(['dashboard/mate-detail', id]);
   }
 
   async updateMarkerIcon(player: Player, marker: google.maps.Marker) {
@@ -424,7 +483,7 @@ export class MateMapViewComponent {
     });
 
     if (closestCard) {
-      const id = closestCard.id.replace('card-', '');
+      const id = Number(closestCard.id.replace('card-', ''));
       if (this.selectedPlayerId !== id) {
         this.selectedPlayerId = id;
 

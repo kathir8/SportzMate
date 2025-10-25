@@ -1,5 +1,5 @@
 <ion-tabs>
-  <ion-tab-bar slot="bottom" [class.hide-tabs]="!showTabs">
+  <ion-tab-bar slot="bottom" [class.hide-tabs]="!showTabs()">
     <ion-tab-button tab="home">
       <ion-icon [icon]="icons.homeSharp"></ion-icon>
       Home
@@ -19,7 +19,7 @@
       Events
     </ion-tab-button>
   </ion-tab-bar>
-  <ion-fab vertical="bottom" horizontal="center" slot="fixed" [class.hide-tabs]="!showTabs" class="center-fab">
+  <ion-fab vertical="bottom" horizontal="center" slot="fixed" [class.hide-tabs]="!showTabs()" class="center-fab">
     <ion-fab-button color="primary" (click)="createNewInvite()">
       <ion-icon [icon]="icons.add" class="add-icon"></ion-icon>
     </ion-fab-button>

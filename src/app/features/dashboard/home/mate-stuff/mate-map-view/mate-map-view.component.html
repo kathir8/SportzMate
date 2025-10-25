@@ -1,51 +1,34 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Nearby Players</ion-title>
-    <ion-buttons slot="end">
-      <ion-segment value="5" (ionChange)="onRadiusChange($event.detail.value)">
-        <ion-segment-button value="5">
-          <ion-label>5 km</ion-label>
-        </ion-segment-button>
-        <ion-segment-button value="15">
-          <ion-label>10 km</ion-label>
-        </ion-segment-button>
-      </ion-segment>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-
 <ion-content class="map-page">
   <div #mapRef id="map" class="map"></div>
 
+  @if(homeService.segmentView() === 'map'){
   @if(visiblePlayers.length){
-    <!-- Bottom carousel/cards -->
-    <div class="bottom-area">
-      <div class="cards-wrapper" #carouselRef (scroll)="onCarouselScroll()">
-        @for(item of visiblePlayers; track trackByOption($index, item)){
-        <div class="card" id="{{'card-' + item.player.id}}"
-          (click)="onCardClick(item.player)">
-          <div class="left">
-            <img class="avatar" [src]="item.player.photo" />
-            <div class="badge">{{ gameEmoji(item.player.game) }}</div>
-          </div>
-          <div class="right">
-            <div class="name">{{item.player.name}}</div>
-            <div class="meta">{{ item.player.game }} • {{ item.distanceKm }} km</div>
-        
-            <div class="actions">
-              <button class="btn-interested">Interested 👍</button>
-              <button class="btn-chat">Chat 💬</button>
-            </div>
+  <div class="bottom-area">
+    <div class="cards-wrapper" #carouselRef (scroll)="onCarouselScroll()">
+      @for(item of visiblePlayers; track trackByOption($index, item)){
+      <div class="card" id="{{'card-' + item.player.id}}" (click)="openMateDetail(item.player.id)">
+        <div class="left">
+          <img class="avatar" [src]="item.player.photo" />
+          <div class="badge">{{ gameEmoji(item.player.game) }}</div>
+        </div>
+        <div class="right">
+          <div class="name">{{item.player.name}}</div>
+          <div class="meta">{{ item.player.game }} • {{ item.distanceKm }} km</div>
+
+          <div class="actions">
+            <button class="btn-interested">Interested 👍</button>
+            <button class="btn-chat">Chat 💬</button>
           </div>
         </div>
-        }
       </div>
+      }
     </div>
+  </div>
   }@else {
-    <!-- fallback when no players -->
-    <div class="no-players">
-      <p>No players within {{radiusKm}} km</p>
-    </div>
+  <div class="no-players">
+    <p>No players within {{radiusKm}} km</p>
+  </div>
+  }
   }
 
 </ion-content>

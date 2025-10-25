@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonImg } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
@@ -13,14 +13,13 @@ import { Router } from '@angular/router';
   imports: [IonContent, FormsModule, IonicInputComponent, IonicButtonComponent, IonicCheckboxComponent, IonImg]
 })
 export class SignupComponent implements OnInit {
+  private router = inject(Router);
   password: string = '';
   email: string = '';
   confirmPassword: string = ''
   code: string = ''
   accepted: boolean = false;
   passwordPane: boolean = true;
-
-  constructor(private router: Router) {}
 
   ngOnInit() { }
 

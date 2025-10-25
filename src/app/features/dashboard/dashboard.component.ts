@@ -1,7 +1,7 @@
-import { Component } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
-import { IonIcon, IonTabs, IonTabBar, IonTabButton,IonFab,IonFabButton, IonActionSheet, ModalController, ActionSheetController } from '@ionic/angular/standalone';
+import { IonIcon, IonTabs, IonTabBar, IonTabButton, IonFab, IonFabButton, ModalController } from '@ionic/angular/standalone';
 import { chatbubblesSharp, homeSharp, mailOpenSharp, menuOutline, add } from 'ionicons/icons';
 import { filter } from 'rxjs';
 import { CreateInviteComponent } from './create-invite/create-invite.component';
@@ -11,32 +11,41 @@ import { CreateInviteComponent } from './create-invite/create-invite.component';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
   standalone: true,
-  imports: [IonIcon, IonTabs, IonTabBar, IonTabButton, FormsModule,IonFab,IonFabButton, IonActionSheet]
+  imports: [IonIcon, IonTabs, IonTabBar, IonTabButton, FormsModule, IonFab, IonFabButton ]
 })
 export class DashboardComponent {
+  private router = inject(Router);
+  private modalCtrl = inject(ModalController);
+
   icons = { homeSharp, chatbubblesSharp, menuOutline, mailOpenSharp, add };
 
-  showTabs = true;
+  showTabs = signal(true);
 
- constructor(private router: Router, private modalCtrl: ModalController) {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        // Hide tabs on mate-detail route
-        this.showTabs = !event.url.includes('mate-detail');
+  constructor() {
+
+    effect(() => {
+      const navigationEnd = this.router.events.pipe(
+        filter(event => event instanceof NavigationEnd)
+      );
+
+      const subscription = navigationEnd.subscribe((event: NavigationEnd) => {
+        this.showTabs.set(!event.url.includes('mate-detail'));  // Hide tabs on mate-detail route
       });
+
+      return () => subscription.unsubscribe(); // Cleanup
+    });
   }
 
 
-  async createNewInvite(){
+  async createNewInvite() {
     const modal = await this.modalCtrl.create({
-    component: CreateInviteComponent,
-    breakpoints: [0, 0.4, 0.7],
-    initialBreakpoint: 0.5,
-     handleBehavior: 'cycle',
-    cssClass: 'bottom-sheet-modal'
-  });
-  await modal.present();
-    
+      component: CreateInviteComponent,
+      breakpoints: [0, 0.4, 0.7],
+      initialBreakpoint: 0.5,
+      handleBehavior: 'cycle',
+      cssClass: 'bottom-sheet-modal'
+    });
+    await modal.present();
+
   }
 }

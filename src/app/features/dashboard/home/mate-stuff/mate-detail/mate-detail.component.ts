@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonTitle, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, IonFooter } from '@ionic/angular/standalone';
 import { MateDetail } from '../models/mate.model';
@@ -12,27 +12,30 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
   imports: [IonContent, IonTitle, HeaderComponent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, IonFooter, IonicButtonComponent]
 })
 export class MateDetailComponent implements OnInit {
-  icons = { calendarClear,calendarOutline, timeOutline, mailOpenOutline };
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
+  icons = { calendarClear, calendarOutline, timeOutline, mailOpenOutline };
 
   mate?: MateDetail;
-
-  constructor(private route: ActivatedRoute, private router: Router) { }
 
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.mate = {
         id: +idParam,
-        profileImg: '',
-        name: 'Christian Bale',
+        profileImg: 'assets/avatars/avatar1.jfif',
+        name: 'Meera',
         location: 'Chicago',
-        time: '20 Oct, 4 PM',
+        eventDateTime: '2025-10-20T16:00:00.000Z',
         requiredMembers: 8,
         confirmedMembers: 8,
         distanceOrDuration: '600 M',
         sport: 'Cycling',
+        coords: { "lat": 13.0901, "lng": 80.2650 },
+        description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
         members: [1, 2, 3, 4, 5],
-        description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`
+
       }
     } else {
       this.handleBack();

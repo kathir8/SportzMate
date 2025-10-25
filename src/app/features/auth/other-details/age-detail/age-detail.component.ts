@@ -21,9 +21,6 @@ export class AgeDetailComponent {
   selectedAge = 29;
   private readonly ITEM_GAP = 24;
 
-
-  constructor() { }
-
   ngAfterViewInit() {
     setTimeout(() => this.centerOnAge(this.selectedAge));
   }

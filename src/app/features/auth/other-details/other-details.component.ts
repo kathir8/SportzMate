@@ -15,8 +15,6 @@ export class OtherDetailsComponent {
   genderComponent = GenderDetailComponent;
   showBackButton: boolean = false;
   ionValue: number = 20;
-  constructor() { }
-
 
   onNavChange(event: CustomEvent<void>) {
     const ionNavElement = event.target as HTMLIonNavElement;

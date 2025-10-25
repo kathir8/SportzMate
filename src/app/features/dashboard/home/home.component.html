@@ -15,7 +15,7 @@
   <ng-select [items]="countries" bindLabel="name" bindValue="code" placeholder="Search Invites"
     class="invites-dropdown"></ng-select>
 
-  <ion-segment [(ngModel)]="segmentView" class="segment-wrapper">
+  <ion-segment [ngModel]="homeService.segmentView()" (ionChange)="onSegmentChange($event)" class="segment-wrapper">
     <ion-segment-button value="list" content-id="list">
       <ion-label>List View</ion-label>
     </ion-segment-button>

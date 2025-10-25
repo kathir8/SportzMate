@@ -4,8 +4,8 @@
   </ion-fab-button>
   <ion-fab-list side="start">
     <div class="range-container">
-      <ion-range aria-label="Custom range" [min]="1" [max]="15" [value]="5" [pin]="true"
-        [pinFormatter]="formatKm"></ion-range>
+      <ion-range aria-label="Custom range" [min]="1" [max]="15" [value]="selectedRange"
+        (ionChange)="onIonChange($event)" [pin]="true" [pinFormatter]="formatKm"></ion-range>
     </div>
   </ion-fab-list>
 </ion-fab>
