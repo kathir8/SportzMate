@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonTitle, IonIcon, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel } from '@ionic/angular/standalone';
+import { IonContent, IonTitle, IonIcon, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
 import { RangeFabComponent } from './range-fab/range-fab.component';
@@ -10,14 +10,13 @@ import { MateMapViewComponent } from "./mate-stuff/mate-map-view/mate-map-view.c
 import { HomeService } from './services/home-service';
 import { HomeApiService } from './services/home-api-service';
 import { Coordinates, MateListItem } from './mate-stuff/models/mate.model';
-import { catchError, map, of, startWith } from 'rxjs';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent]
+  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent]
 
 })
 export class HomeComponent {
@@ -28,60 +27,41 @@ export class HomeComponent {
   icons = { navigateCircleOutline, navigateSharp };
 
   countries = [{ code: 'ad', name: 'Andorra' },
-    { code: 'ae', name: 'United Arab Emirates' },
+  { code: 'ae', name: 'United Arab Emirates' },
   { code: 'af', name: 'Afghanistan' },
   { code: 'ag', name: 'Antigua and Barbuda' }];
-  
+
   segmentView = signal<'list' | 'map'>('list');
   current = signal<Coordinates>({ lat: 13.0827, lng: 80.2707 }); // (fallback to Chennai if geolocation fails)
   loading = signal(true);
-  error = signal<string | null>(null);
+  mates = signal<MateListItem[]>([]);
 
-  mates = toSignal(
-    this.homeApi.getMates().pipe(
-      map((res) => {
-        this.loading.set(false);
-        return res;
-      }),
-      catchError((err) => {
-        console.error(err);
-        this.error.set('Failed to load mates');
-        this.loading.set(false);
-        return of([] as MateListItem[]);
-      }),
-      startWith([] as MateListItem[])
-    ),
-    { initialValue: [] as MateListItem[] }
-  );
 
   visiblePlayers = signal<MateListItem[]>([]);
 
   constructor() {
     effect(() => {
-        const mates = this.mates();
+      const mates = this.mates();
       const cur = this.current();
       const range = this.homeService.rangeKm();
-      if (mates.length) this.filterMatesByRadius(cur, mates, range);
+
+      if (mates.length && cur.lat && cur.lng) {
+        // filter by radius
+        const filtered = mates
+          .map((p) => ({
+            ...p,
+            distanceKm: this.distanceKm(cur.lat, cur.lng, p.coords.lat, p.coords.lng)
+          }))
+          .filter((p) => p.distanceKm <= range)
+          .sort((a, b) => a.distanceKm - b.distanceKm);
+        this.visiblePlayers.set(filtered);
+      }
     });
   }
 
-
   async ngAfterViewInit() {
-    await this.updateCurrentLocation();
+    await this.refreshData();
   }
-
-  async updateCurrentLocation() {
-    try {
-      const pos = await this.getCurrentPosition();
-       this.current.set({
-        lat: pos.coords.latitude,
-        lng: pos.coords.longitude
-      });
-    } catch (err) {
-      console.warn('Geolocation failed or denied — using fallback coordinates.', err);
-    }
-  }
-
 
   getCurrentPosition(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
@@ -90,16 +70,27 @@ export class HomeComponent {
     });
   }
 
-  filterMatesByRadius(current: Coordinates,mates: MateListItem[],rangeKm: number): void {
-      // filter by radius
-     const filtered = mates
-      .map((p) => ({
-        ...p,
-        distanceKm: this.distanceKm(current.lat, current.lng, p.coords.lat, p.coords.lng)
-      }))
-      .filter((p) => p.distanceKm <= rangeKm)
-      .sort((a, b) => a.distanceKm - b.distanceKm);
-       this.visiblePlayers.set(filtered);
+  async refreshData(): Promise<void> {
+    this.loading.set(true);
+
+    try {
+      // Update location
+      const pos = await this.getCurrentPosition();
+      this.current.set({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+    } catch (err) {
+      console.warn('Geolocation failed — using fallback.', err);
+    }
+
+    try {
+      // Fetch mates from API
+      const newMates = await firstValueFrom(this.homeApi.getMates());
+      this.mates.set(newMates);
+    } catch (err) {
+      console.error('Failed to load mates', err);
+      this.mates.set([]); // fallback empty
+    } finally {
+      this.loading.set(false);
+    }
   }
 
   // compute distance between two lat/lon in km (Haversine)
@@ -113,6 +104,14 @@ export class HomeComponent {
     const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
     return R * c;
   }
+
   deg2rad(deg: number) { return deg * (Math.PI / 180); }
+
+  async doRefresh(event: CustomEvent) {
+    await this.refreshData();
+    setTimeout(() => {
+      event.detail.complete(); // hide spinner
+    }, 2500);
+  }
 
 }
