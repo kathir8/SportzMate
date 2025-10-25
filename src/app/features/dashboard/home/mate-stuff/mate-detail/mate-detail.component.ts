@@ -27,7 +27,7 @@ export class MateDetailComponent implements OnInit {
         profileImg: 'assets/avatars/avatar1.jfif',
         name: 'Meera',
         location: 'Chicago',
-        eventDateTime: '2025-10-20T16:00:00.000Z',
+        eventDateTime: 1761408000000,
         requiredMembers: 8,
         confirmedMembers: 8,
         distanceOrDuration: '600 M',

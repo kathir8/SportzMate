@@ -3,7 +3,7 @@ export interface MateListItem {
     name: string;
     location: string;
     sport: 'Badminton' | 'Cricket' | 'Cycling' | 'Tennis' | 'Football' | 'Running' | 'Swimming' | 'Yoga' | 'Basketball';
-    eventDateTime: string;
+    eventDateTime: number;
     distanceOrDuration: string;
     profileImg: string;
     requiredMembers: number;
