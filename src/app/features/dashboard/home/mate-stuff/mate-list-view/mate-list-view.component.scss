@@ -14,53 +14,58 @@
         margin-bottom: 60px;
         font-size: 12px;
 
-        .mate-img {
-            --size: 73px;
-        }
+        .primary-details {
+            padding: 0;
 
-        ion-item {
-            --padding-start: 0;
-            --inner-padding-end: 0;
+            .row-container {
 
-            .badge-wrapper {
-                margin-top: 5px;
-                display: flex;
-                gap: 13px;
+                .mate-img {
+                    --size: 73px;
+                }
 
-                ion-badge {
-                    justify-content: center;
-                    align-items: center;
-                    border-radius: 7px;
-                    font-size: 12px;
-                    font-weight: 600;
-                    display: flex;
-                    height: 30px;
-                    width: 50px;
+                .detail-container {
 
-                    &.primary {
-                        --background: #FFE1D3;
-                        --color: #FF9463;
-                    }
 
-                    &.secondary {
-                        --background: #D4FFDE;
-                        --color: #54C26E;
-                    }
+                    .badge-wrapper {
+                        margin-top: 5px;
+                        display: flex;
+                        gap: 13px;
 
-                    ion-icon {
-                        margin-right: 5px;
-                        font-size: 15px;
+                        ion-badge {
+                            justify-content: center;
+                            align-items: center;
+                            border-radius: 7px;
+                            font-size: 12px;
+                            font-weight: 600;
+                            display: flex;
+                            height: 30px;
+                            width: 50px;
+
+                            &.primary {
+                                --background: #FFE1D3;
+                                --color: #FF9463;
+                            }
+
+                            &.secondary {
+                                --background: #D4FFDE;
+                                --color: #54C26E;
+                            }
+
+                            ion-icon {
+                                margin-right: 5px;
+                                font-size: 15px;
+                            }
+                        }
                     }
                 }
-            }
 
-            .game-detail {
-                ion-icon {
-                    color: #D6D6D6;
-                    font-size: 35px;
+                .game-detail {
+                    ion-icon {
+                        color: #D6D6D6;
+                        font-size: 35px;
+                    }
                 }
             }
         }
     }
-
 }

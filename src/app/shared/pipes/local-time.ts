@@ -9,7 +9,7 @@ export class LocalTimePipe implements PipeTransform {
 
   private cache = new Map<string, string>();
 
-  transform(timestamp: number, formatStr: string = DATE_FORMATS.FULL): unknown {
+  transform(timestamp?: number, formatStr: string = DATE_FORMATS.FULL): string {
     if (!timestamp) return '';
 
     const cacheKey = `${timestamp}-${formatStr}`;

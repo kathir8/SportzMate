@@ -5,26 +5,27 @@
 
 <ion-content class="ion-padding mate-detail-page">
 
-  <div class="primary-details">
-    <ion-thumbnail class="mate-img">
-      <img alt="profile" [src]="'https://randomuser.me/api/portraits/women/' + mate?.id + '.jpg'" />
-    </ion-thumbnail>
 
-    <ion-grid>
-      <ion-row>
-        <ion-col size="8">
-          <ion-label class="name-text">{{mate?.name}}, {{mate?.location}}</ion-label>
-          <div class="time-wrapper">
-            <ion-icon [icon]="icons.calendarClear"></ion-icon>
-            <ion-label class="time-text">{{mate?.eventDateTime}}</ion-label>
-          </div>
-        </ion-col>
-        <ion-col class="game-detail">
-          <ion-badge class="distanceOrDuration">{{mate?.distanceOrDuration}}</ion-badge>
-        </ion-col>
-      </ion-row>
-    </ion-grid>
-  </div>
+
+  <ion-grid class="primary-details">
+    <ion-row class="row-container">
+      <ion-col size="auto">
+        <ion-thumbnail class="mate-img">
+          <img alt="profile" [src]="mate?.profileImg" />
+        </ion-thumbnail>
+      </ion-col>
+      <ion-col class="detail-container">
+        <ion-label class="name-place">{{mate?.name}}, {{mate?.location}}</ion-label>
+        <div class="time-wrapper">
+          <ion-icon [icon]="icons.calendarClear"></ion-icon>
+          <ion-label class="time-text">{{mate?.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME}}</ion-label>
+        </div>
+      </ion-col>
+      <ion-col size="auto" class="game-detail">
+        <ion-badge class="distanceOrDuration">{{mate?.distanceOrDuration}}</ion-badge>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
 
   <div class="cards-container">
     <div class="info-card">
@@ -45,12 +46,12 @@
 
     <div class="info-card reduce-width">
       <ion-icon [icon]="icons.calendarOutline"></ion-icon>
-      <div class="label">OCT 18</div>
+      <div class="label">{{mate?.eventDateTime | localTime:DATE_FORMATS.MONTH_DAY | uppercase}}</div>
     </div>
 
     <div class="info-card reduce-width">
       <ion-icon [icon]="icons.timeOutline"></ion-icon>
-      <div class="label">4 PM</div>
+      <div class="label">{{mate?.eventDateTime | localTime:DATE_FORMATS.TIME}}</div>
     </div>
 
   </div>

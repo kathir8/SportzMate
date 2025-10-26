@@ -2,34 +2,33 @@
   @if(visiblePlayers().length){
   <cdk-virtual-scroll-viewport itemSize="90" class="virtual-scroll-container" [minBufferPx]="185" [maxBufferPx]="365">
     <ion-list class="sports-mate-list">
-      <ion-item *cdkVirtualFor="let item of visiblePlayers(); trackBy: trackById" (click)="openMateDetail(item.id)">
-        <ion-thumbnail class="mate-img">
-          <img alt="profile" [src]="item.profileImg" />
-        </ion-thumbnail>
-
-        <ion-grid>
-          <ion-row>
-            <ion-col size="8">
-              <ion-label class="name-text">{{item.name}}, {{item.location}}</ion-label>
-              <div class="time-wrapper">
-                <ion-icon [icon]="icons.calendarClear"></ion-icon>
-                <ion-label class="time-text">{{item.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
-              </div>
-              <div class="badge-wrapper">
-                <ion-badge class="primary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
-                <ion-badge class="secondary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
-              </div>
-            </ion-col>
-            <ion-col class="game-detail">
-              <ion-badge class="distanceOrDuration">{{item.distanceOrDuration}}</ion-badge>
-              <ion-icon [icon]="icons.bicycleOutline"></ion-icon>
-            </ion-col>
-          </ion-row>
-        </ion-grid>
-      </ion-item>
+      <ion-grid class="primary-details" *cdkVirtualFor="let item of visiblePlayers(); trackBy: trackById"
+        (click)="openMateDetail(item.id)">
+        <ion-row class="row-container">
+          <ion-col size="auto">
+            <ion-thumbnail class="mate-img">
+              <img alt="profile" [src]="item.profileImg" />
+            </ion-thumbnail>
+          </ion-col>
+          <ion-col class="detail-container">
+            <ion-label class="name-place">{{item.name}}, {{item.location}}</ion-label>
+            <div class="time-wrapper">
+              <ion-icon [icon]="icons.calendarClear"></ion-icon>
+              <ion-label class="time-text">{{item.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
+            </div>
+            <div class="badge-wrapper">
+              <ion-badge class="primary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
+              <ion-badge class="secondary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
+            </div>
+          </ion-col>
+          <ion-col size="auto" class="game-detail">
+            <ion-badge class="distanceOrDuration">{{item.distanceOrDuration}}</ion-badge>
+            <ion-icon [icon]="icons.bicycleOutline"></ion-icon>
+          </ion-col>
+        </ion-row>
+      </ion-grid>
     </ion-list>
   </cdk-virtual-scroll-viewport>
-
   }@else {
   <app-no-mate-found></app-no-mate-found>
   }

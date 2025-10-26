@@ -1,23 +1,20 @@
 @use "../mate";
 
-$containerPaddingX: 30px;
+$containerPaddingX: 16px;
 $circleWidth: 40px;
 
 .header-title {
-    padding-left: 50px;
+    padding-left: 10px;
     font-weight: 500;
     text-align: left;
     --color: #000;
 }
 
 .mate-detail-page {
-    --padding-start:#{$containerPaddingX};
-    --padding-end:#{$containerPaddingX};
 
     .primary-details {
         margin-bottom: 35px;
         margin-top: 35px;
-        display: flex;
 
         .mate-img {
             --size: 65px;
