@@ -6,6 +6,14 @@
 
 :root {
   --ion-color-primary: #{$primary-color};
+  --ion-color-primary-rgb: 255, 78, 24;
+
+  --ion-color-primary-contrast: #ffffff;
+  --ion-color-primary-contrast-rgb: 255, 255, 255;
+  --ion-color-primary-shade: #{mix(black, $primary-color, 12%)};
+  --ion-color-primary-tint: #{mix(white, $primary-color, 10%)};
+
+
   --ion-color-primary-fade: #{$primary-fade-color};
   --ion-color-secondary: #{$secondary-color};
   --ion-color-success: #{$success-color};

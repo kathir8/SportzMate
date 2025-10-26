@@ -1,6 +1,6 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, IonTitle, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, IonFooter } from '@ionic/angular/standalone';
+import { IonContent, IonTitle, IonThumbnail, IonGrid, IonRow, IonCol, IonLabel, IonIcon, IonFooter } from '@ionic/angular/standalone';
 import { MateDetail } from '../models/mate.model';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { calendarClear, calendarOutline, mailOpenOutline, timeOutline } from 'ionicons/icons';
@@ -9,11 +9,12 @@ import { HomeApiService } from '../../services/home-api-service';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { UpperCasePipe } from '@angular/common';
+import { IonicBadgeComponent } from "src/app/shared/components/ionic-badge/ionic-badge.component";
 @Component({
   selector: 'app-mate-detail',
   templateUrl: './mate-detail.component.html',
   styleUrls: ['./mate-detail.component.scss'],
-  imports: [IonContent, IonTitle, HeaderComponent, IonThumbnail, IonGrid, IonRow, IonCol, IonBadge, IonLabel, IonIcon, IonFooter, IonicButtonComponent, LocalTimePipe, UpperCasePipe]
+  imports: [IonContent, IonTitle, HeaderComponent, IonThumbnail, IonGrid, IonRow, IonCol, IonLabel, IonIcon, IonFooter, IonicButtonComponent, LocalTimePipe, UpperCasePipe, IonicBadgeComponent]
 })
 export class MateDetailComponent implements OnInit {
   private homeApi = inject(HomeApiService);

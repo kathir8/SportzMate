@@ -1,0 +1,48 @@
+.ionic-badge {
+
+    &.members-cnt {
+        justify-content: center;
+        align-items: center;
+        border-radius: 7px;
+        font-weight: 600;
+        font-size: 12px;
+        display: flex;
+        height: 30px;
+        width: 50px;
+
+        &.primary {
+            --background: #FFE1D3;
+            --color: #FF9463;
+        }
+
+        &.secondary {
+            --background: #D4FFDE;
+            --color: #54C26E;
+        }
+    }
+
+    &.distanceOrDuration {
+        --background: #F3F8FC;
+        justify-content: center;
+        align-items: center;
+        --color: #628B9F;
+        border-radius: 7px;
+        font-weight: 600;
+        font-size: 12px;
+        display: flex;
+        height: 25px;
+        width: 57px;
+    }
+
+}
+
+@media (max-width: 400px) {
+    .ionic-badge {
+        &.distanceOrDuration {
+            font-size: 10px;
+            padding: 0 6px;
+            width: auto;
+        }
+
+    }
+}

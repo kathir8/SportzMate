@@ -1,13 +1,12 @@
 .row-container {
-    display: grid;
     grid-template-columns: auto 1fr auto; // image, content, game-detail
     grid-template-rows: auto;
-    gap: 3px;
     align-items: center;
+    display: grid;
+    gap: 3px;
 
     .mate-img {
         --border-radius: 18px;
-        grid-column: 1;
     }
 
     ion-col {
@@ -16,7 +15,17 @@
 
     .detail-container {
         grid-column: 2;
-        min-width: 0;
+
+        .badge-wrapper {
+            margin-top: 5px;
+            display: flex;
+            gap: 13px;
+
+            .members-cnt-icon {
+                margin-right: 5px;
+                font-size: 15px;
+            }
+        }
 
         .name-place {
             text-overflow: ellipsis;
@@ -32,8 +41,8 @@
         .time-wrapper {
             align-items: center;
             color: #628B9F;
-            min-width: 0;
             display: flex;
+            min-width: 0;
             gap: 4px;
 
             .time-text {
@@ -47,25 +56,16 @@
 
 
     .game-detail {
-        grid-column: 3;
         justify-content: center;
         flex-direction: column;
         align-items: center;
-        flex-shrink: 0;
-        display: flex;
         min-width: 60px;
+        grid-column: 3;
+        display: flex;
 
-        .distanceOrDuration {
-            --background: #F3F8FC;
-            justify-content: center;
-            align-items: center;
-            --color: #628B9F;
-            border-radius: 7px;
-            font-weight: 600;
-            font-size: 12px;
-            display: flex;
-            height: 25px;
-            width: 57px;
+        ion-icon {
+            color: #D6D6D6;
+            font-size: 35px;
         }
     }
 }
@@ -80,20 +80,12 @@
         }
 
         .time-wrapper {
-
             .time-text {
                 font-size: 11px;
             }
         }
 
-
         .game-detail {
-            .distanceOrDuration {
-                font-size: 10px;
-                padding: 0 6px;
-                width: auto;
-            }
-
             ion-icon {
                 font-size: 25px !important;
             }

@@ -17,12 +17,16 @@
               <ion-label class="time-text">{{item.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
             </div>
             <div class="badge-wrapper">
-              <ion-badge class="primary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
-              <ion-badge class="secondary"><ion-icon [icon]="icons.peopleOutline"></ion-icon> 4</ion-badge>
+              <ionic-badge dynamicClass="members-cnt primary">
+                <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{item.requiredMembers}}
+              </ionic-badge>
+              <ionic-badge dynamicClass="members-cnt secondary">
+                <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{item.confirmedMembers}}
+              </ionic-badge>
             </div>
           </ion-col>
           <ion-col size="auto" class="game-detail">
-            <ion-badge class="distanceOrDuration">{{item.distanceOrDuration}}</ion-badge>
+             <ionic-badge dynamicClass="distanceOrDuration">{{item.distanceOrDuration}}</ionic-badge>
             <ion-icon [icon]="icons.bicycleOutline"></ion-icon>
           </ion-col>
         </ion-row>

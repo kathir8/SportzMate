@@ -1,0 +1,16 @@
+.ionic-chip {
+    &.interest-chip {
+        border: 1px solid #707070;
+        justify-content: center;
+        background: #ffffff;
+        color: #000000;
+        font-size: 16px;
+        width: 100%;
+
+        &.selected {
+            border: 1px solid var(--ion-color-primary-fade);
+            background-color: var(--ion-color-primary);
+            color: #ffffff;
+        }
+    }
+}

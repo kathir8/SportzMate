@@ -1,19 +1,28 @@
-import { Component, effect, ElementRef, inject, Input, input, ViewChild } from '@angular/core';
-import { IonContent } from '@ionic/angular/standalone';
+import { Component, effect, ElementRef, inject,  input, ViewChild } from '@angular/core';
+import { IonContent, IonThumbnail, IonRow, IonCol, IonLabel, IonIcon } from '@ionic/angular/standalone';
 import { HomeService } from '../../services/home-service';
 import { Router } from '@angular/router';
 import { Coordinates, MateListItem } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
+import { DATE_FORMATS } from 'src/app/core/constants';
+import { bicycleOutline, calendarClear, chatboxOutline, peopleOutline, thumbsUpOutline } from 'ionicons/icons';
+import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
+import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
+import { IonicBadgeComponent } from "src/app/shared/components/ionic-badge/ionic-badge.component";
 
 @Component({
   selector: 'app-mate-map-view',
   templateUrl: './mate-map-view.component.html',
   styleUrls: ['./mate-map-view.component.scss'],
-  imports: [IonContent, NoMateFoundComponent]
+  imports: [IonContent, NoMateFoundComponent, IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicChipComponent, IonicBadgeComponent]
 })
 export class MateMapViewComponent {
   private router = inject(Router);
   private homeService = inject(HomeService);
+
+  DATE_FORMATS = DATE_FORMATS;
+
+  icons = { peopleOutline, bicycleOutline, calendarClear, thumbsUpOutline, chatboxOutline };
 
   // players currently within radius
   visiblePlayers = input<MateListItem[]>([]);
@@ -169,6 +178,7 @@ export class MateMapViewComponent {
     url: string; width: number; height: number; anchorX: number; anchorY: number;
   }> {
     return new Promise((resolve) => {
+      // Fixed canvas size
       const w = 180, h = 200;
       const avatarR = 25;
       const avatarCx = w / 2;
@@ -179,17 +189,39 @@ export class MateMapViewComponent {
       canvas.height = h;
       const ctx = canvas.getContext('2d')!;
 
+      // Calculate and Truncate the Name
+      ctx.font = "600 15px sans-serif";
+      const maxNameWidth = 100; // Maximum allowed width for the name (e.g., 100-120px)
+      let displayName = name;
+
+      // Truncation logic
+      let nameWidth = ctx.measureText(displayName).width;
+      if (nameWidth > maxNameWidth) {
+        // Append ellipsis and re-measure until it fits
+        while (displayName.length > 0 && ctx.measureText(displayName + '...').width > maxNameWidth) {
+          displayName = displayName.substring(0, displayName.length - 1);
+        }
+        displayName += '...';
+        nameWidth = ctx.measureText(displayName).width; // Use final truncated width
+      }
+
+      // Calculate Pill Width using the final nameWidth
+      const pillY = 35;
+      const pillH = 34;
+      const arrowH = 10;
+      const radius = pillH / 2;
+
+      const emojiWidth = 20;
+      const arrowWidth = 15;
+      const paddingAndSpacing = 10 + 5 + 5 + 10; // LeftPad + Spacing + Spacing + RightPad
+
+      const pillW = nameWidth + emojiWidth + arrowWidth + paddingAndSpacing;
+      const pillX = (w - pillW) / 2; // Center the pill within the 180px canvas
+
       // clear bg
       ctx.clearRect(0, 0, w, h);
 
-      // Draw name bubble (pill) with emoji and arrow
-      const pillY = 35;
-      const pillW = ctx.measureText(name).width + 80;
-      const pillH = 34;
-      const pillX = (w - pillW) / 2;
-      const arrowH = 10;
-      const radius = pillH / 2; // to make it oval
-
+      // Draw name bubble (pill)
       ctx.beginPath();
 
       // Rounded pill shape
@@ -217,22 +249,27 @@ export class MateMapViewComponent {
       ctx.fill();
       ctx.shadowBlur = 0;
 
-      //  border stroke
+      // border stroke
       ctx.strokeStyle = "#0000001a";
       ctx.lineWidth = 1;
       ctx.stroke();
+
+      // Draw Text Elements using displayName
+      const startX = pillX + 10; // Starting point (left padding)
 
       // Emoji on left
       ctx.font = "18px serif";
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
-      ctx.fillText(emoji, pillX + 10, pillY + pillH / 2);
+      ctx.fillText(emoji, startX, pillY + pillH / 2);
+
+      const nameStartX = startX + emojiWidth + 5; // Emoji position + estimated width + spacing
 
       // Name text
       ctx.font = "600 15px sans-serif";
       ctx.fillStyle = isSelected ? "#ffffff" : "#628B9F";
       ctx.textAlign = "left";
-      ctx.fillText(name, pillX + 35, pillY + pillH / 2 + 1);
+      ctx.fillText(displayName, nameStartX, pillY + pillH / 2 + 1);
 
       // Arrow mark (>)
       ctx.font = "bold 16px sans-serif";
@@ -379,4 +416,11 @@ export class MateMapViewComponent {
     }
   }
 
+  interested(){
+
+  }
+
+  chat(){
+
+  }
 }
