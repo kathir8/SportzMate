@@ -4,7 +4,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'dashboard',
+    redirectTo: 'auth/login',
     pathMatch: 'full',
   },
   {
@@ -58,7 +58,7 @@ export const routes: Routes = [
         loadComponent: () =>
           import('./features/dashboard/events/events.component').then(m => m.EventsComponent)
       },
-        {
+      {
         path: 'mate-detail/:id',
         loadComponent: () =>
           import('./features/dashboard/home/mate-stuff/mate-detail/mate-detail.component').then(m => m.MateDetailComponent)

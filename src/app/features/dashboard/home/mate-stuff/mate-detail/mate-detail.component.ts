@@ -1,20 +1,20 @@
 import { UpperCasePipe } from '@angular/common';
 import { Component, inject, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonCol, IonContent, IonFooter, IonGrid, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail, IonTitle } from '@ionic/angular/standalone';
-import { calendarClear, calendarOutline, mailOpenOutline, timeOutline } from 'ionicons/icons';
+import { IonContent, IonFooter, IonGrid, IonIcon, IonTitle } from '@ionic/angular/standalone';
+import { calendarOutline, mailOpenOutline, timeOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
-import { IonicBadgeComponent } from "src/app/shared/components/ionic-badge/ionic-badge.component";
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { HomeApiService } from '../../services/home-api-service';
+import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { MateDetail } from '../models/mate.model';
 @Component({
   selector: 'app-mate-detail',
   templateUrl: './mate-detail.component.html',
   styleUrls: ['./mate-detail.component.scss'],
-  imports: [IonContent, IonTitle, HeaderComponent, IonThumbnail, IonGrid, IonRow, IonCol, IonLabel, IonIcon, IonFooter, IonicButtonComponent, LocalTimePipe, UpperCasePipe, IonicBadgeComponent, IonImg]
+  imports: [IonContent, IonTitle, HeaderComponent, IonGrid, IonIcon, IonFooter, IonicButtonComponent, LocalTimePipe, UpperCasePipe, MateBasicComponent]
 })
 export class MateDetailComponent implements OnInit {
   private homeApi = inject(HomeApiService);
@@ -23,7 +23,7 @@ export class MateDetailComponent implements OnInit {
 
   DATE_FORMATS = DATE_FORMATS;
 
-  icons = { calendarClear, calendarOutline, timeOutline, mailOpenOutline };
+  icons = { calendarOutline, timeOutline, mailOpenOutline };
 
   mate?: MateDetail;
 

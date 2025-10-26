@@ -1,12 +1,10 @@
 import { Component, effect, ElementRef, inject, input, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonCol, IonContent, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
-import { bicycleOutline, calendarClear, chatboxOutline, peopleOutline, thumbsUpOutline } from 'ionicons/icons';
-import { DATE_FORMATS } from 'src/app/core/constants';
-import { IonicBadgeComponent } from "src/app/shared/components/ionic-badge/ionic-badge.component";
+import { IonContent, IonIcon } from '@ionic/angular/standalone';
+import { chatboxOutline, thumbsUpOutline } from 'ionicons/icons';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
-import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { HomeService } from '../../services/home-service';
+import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { Coordinates, MateListItem } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
 
@@ -14,15 +12,13 @@ import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
   selector: 'app-mate-map-view',
   templateUrl: './mate-map-view.component.html',
   styleUrls: ['./mate-map-view.component.scss'],
-  imports: [IonContent, NoMateFoundComponent, IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicChipComponent, IonicBadgeComponent, IonImg]
+  imports: [IonContent, NoMateFoundComponent, IonIcon, IonicChipComponent, MateBasicComponent]
 })
 export class MateMapViewComponent {
   private router = inject(Router);
   private homeService = inject(HomeService);
 
-  DATE_FORMATS = DATE_FORMATS;
-
-  icons = { peopleOutline, bicycleOutline, calendarClear, thumbsUpOutline, chatboxOutline };
+  icons = { thumbsUpOutline, chatboxOutline };
 
   // players currently within radius
   visiblePlayers = input<MateListItem[]>([]);
@@ -416,11 +412,11 @@ export class MateMapViewComponent {
     }
   }
 
-  interested(){
+  interested() {
 
   }
 
-  chat(){
+  chat() {
 
   }
 }

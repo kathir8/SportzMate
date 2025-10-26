@@ -1,11 +1,9 @@
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonCol, IonContent, IonGrid, IonIcon, IonImg, IonLabel, IonList, IonRow, IonThumbnail } from '@ionic/angular/standalone';
-import { add, bicycleOutline, calendarClear, peopleOutline } from 'ionicons/icons';
-import { DATE_FORMATS } from 'src/app/core/constants';
-import { IonicBadgeComponent } from "src/app/shared/components/ionic-badge/ionic-badge.component";
-import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
+import { IonContent, IonGrid, IonList } from '@ionic/angular/standalone';
+import { add } from 'ionicons/icons';
+import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { MateListItem } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
 
@@ -13,12 +11,11 @@ import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
   selector: 'app-mate-list-view',
   templateUrl: './mate-list-view.component.html',
   styleUrls: ['./mate-list-view.component.scss'],
-  imports: [IonList, IonThumbnail, IonGrid, IonRow, IonCol, IonLabel, IonIcon, NoMateFoundComponent, LocalTimePipe, IonContent, CdkVirtualScrollViewport, ScrollingModule, IonicBadgeComponent, IonImg]
+  imports: [IonList, IonGrid, NoMateFoundComponent, IonContent, CdkVirtualScrollViewport, ScrollingModule, MateBasicComponent]
 })
 export class MateListViewComponent {
   private router = inject(Router);
-  DATE_FORMATS = DATE_FORMATS;
-  icons = { peopleOutline, bicycleOutline, calendarClear, add };
+  icons = { add };
 
   visiblePlayers = input<MateListItem[]>([]);
 

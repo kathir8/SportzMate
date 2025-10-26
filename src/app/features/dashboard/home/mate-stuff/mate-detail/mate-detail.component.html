@@ -5,23 +5,7 @@
 <ion-content class="ion-padding mate-detail-page">
 
   <ion-grid class="primary-details">
-    <ion-row class="row-container">
-      <ion-col size="auto">
-        <ion-thumbnail class="mate-img">
-          <ion-img alt="profile" [src]="mate?.profileImg"></ion-img>
-        </ion-thumbnail>
-      </ion-col>
-      <ion-col class="detail-container">
-        <ion-label class="name-place">{{mate?.name}}, {{mate?.location}}</ion-label>
-        <div class="time-wrapper">
-          <ion-icon [icon]="icons.calendarClear"></ion-icon>
-          <ion-label class="time-text">{{mate?.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME}}</ion-label>
-        </div>
-      </ion-col>
-      <ion-col size="auto" class="game-detail">
-        <ionic-badge dynamicClass="distanceOrDuration">{{mate?.distanceOrDuration}}</ionic-badge>
-      </ion-col>
-    </ion-row>
+    <app-mate-basic [mate]="mate" dynamicClass="from-mate-detail"></app-mate-basic>
   </ion-grid>
 
   <div class="cards-container">

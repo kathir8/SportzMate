@@ -1,0 +1,30 @@
+<ion-row class="row-container" [class]="dynamicClass">
+  <ion-col size="auto">
+    <ion-thumbnail class="mate-img">
+      <ion-img alt="profile" [src]="mate()?.profileImg"></ion-img>
+    </ion-thumbnail>
+  </ion-col>
+  <ion-col class="detail-container">
+    <ion-label class="name-place">{{mate()?.name}}, {{mate()?.location}}</ion-label>
+    <div class="time-wrapper">
+      <ion-icon [icon]="icons.calendarClear"></ion-icon>
+      <ion-label class="time-text">{{mate()?.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
+    </div>
+    @if(dynamicClass !== 'from-mate-detail'){
+    <div class="badge-wrapper">
+      <ionic-badge dynamicClass="members-cnt primary">
+        <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.requiredMembers}}
+      </ionic-badge>
+      <ionic-badge dynamicClass="members-cnt secondary">
+        <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.confirmedMembers}}
+      </ionic-badge>
+    </div>
+    }
+  </ion-col>
+  <ion-col size="auto" class="game-detail">
+    <ionic-badge dynamicClass="distanceOrDuration">{{mate()?.distanceOrDuration}}</ionic-badge>
+    @if(dynamicClass !== 'from-mate-detail'){
+    <ion-icon [icon]="icons.bicycleOutline"></ion-icon>
+    }
+  </ion-col>
+</ion-row>

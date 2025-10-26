@@ -69,8 +69,26 @@
             font-size: 35px;
         }
     }
-}
 
+    &.from-mate-list {
+        .mate-img {
+            --size: 73px;
+        }
+    }
+
+    &.from-mate-map {
+        .mate-img {
+            --border-radius: 50%;
+            --size: 50px;
+        }
+    }
+
+    &.from-mate-detail {
+        .mate-img {
+            --size: 65px;
+        }
+    }
+}
 
 @media (max-width: 400px) {
     .row-container {

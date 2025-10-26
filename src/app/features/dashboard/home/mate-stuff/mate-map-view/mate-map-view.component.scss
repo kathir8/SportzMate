@@ -1,5 +1,3 @@
-@use "../mate";
-
 .map-page {
   --ion-background-color: #f6f7fb;
   position: relative;
@@ -37,13 +35,6 @@
       min-width: 300px;
       cursor: pointer;
       padding: 5px;
-
-      .row-container {
-        .mate-img {
-          --border-radius: 50%;
-          --size: 50px;
-        }
-      }
 
       &:hover {
         transform: translateY(-4px);
