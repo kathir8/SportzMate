@@ -1,8 +1,8 @@
 import { Component } from '@angular/core';
-import { IonNavLink, IonFooter } from '@ionic/angular/standalone';
+import { IonFooter, IonNavLink } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
-import { ProfileDetailComponent } from '../profile-detail/profile-detail.component';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
+import { ProfileDetailComponent } from '../profile-detail/profile-detail.component';
 
 @Component({
   selector: 'app-interest-detail',

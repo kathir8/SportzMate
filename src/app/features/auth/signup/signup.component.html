@@ -1,8 +1,5 @@
 <ion-content class="signup-page">
-  <ion-img
-  src="assets/icon/signup/signup-bg.png"
-  alt="sign up image"
-></ion-img>
+  <ion-img src="assets/icon/signup/signup-bg.png" alt="sign up image"></ion-img>
   <div class="ion-padding">
     <h2 class="title">Sign Up</h2>
     @if(passwordPane){
@@ -14,10 +11,10 @@
     </ionic-checkbox>
 
     <ionic-button (ionClick)="verify()">Verify</ionic-button>
-  }@else{
+    }@else{
     <ionic-input label="Enter Verification Code" [(ngModel)]="code" name="code"></ionic-input>
     <ionic-button (ionClick)="register()">Register</ionic-button>
-  }
+    }
 
   </div>
 

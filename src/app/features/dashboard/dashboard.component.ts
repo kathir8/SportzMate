@@ -1,8 +1,8 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { NavigationEnd, Router } from '@angular/router';
-import { IonIcon, IonTabs, IonTabBar, IonTabButton, IonFab, IonFabButton, ModalController } from '@ionic/angular/standalone';
-import { chatbubblesSharp, homeSharp, mailOpenSharp, menuOutline, add } from 'ionicons/icons';
+import { IonFab, IonFabButton, IonIcon, IonTabBar, IonTabButton, IonTabs, ModalController } from '@ionic/angular/standalone';
+import { add, chatbubblesSharp, homeSharp, mailOpenSharp, menuOutline } from 'ionicons/icons';
 import { filter } from 'rxjs';
 import { CreateInviteComponent } from './create-invite/create-invite.component';
 

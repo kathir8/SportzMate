@@ -1,17 +1,14 @@
 <app-header headerClass="from-mate-detail" (backClicked)="handleBack()">
-
   <ion-title class="header-title" slot="start">{{mate?.sport}}</ion-title>
 </app-header>
 
 <ion-content class="ion-padding mate-detail-page">
 
-
-
   <ion-grid class="primary-details">
     <ion-row class="row-container">
       <ion-col size="auto">
         <ion-thumbnail class="mate-img">
-          <img alt="profile" [src]="mate?.profileImg" />
+          <ion-img alt="profile" [src]="mate?.profileImg"></ion-img>
         </ion-thumbnail>
       </ion-col>
       <ion-col class="detail-container">

@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonNavLink, IonFooter } from '@ionic/angular/standalone';
+import { IonFooter, IonNavLink } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { InterestDetailComponent } from '../interest-detail/interest-detail.component';
 

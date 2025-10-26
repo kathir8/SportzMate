@@ -1,12 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, IonButton, ModalController } from '@ionic/angular/standalone';
+import { IonButton, IonCol, IonContent, IonIcon, IonImg, IonInput, IonItem, IonRow, IonTextarea, ModalController } from '@ionic/angular/standalone';
 import { calendarClearOutline, locationSharp, personOutline } from 'ionicons/icons';
 @Component({
   selector: 'app-create-invite',
   templateUrl: './create-invite.component.html',
   styleUrls: ['./create-invite.component.scss'],
-  imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, IonButton, FormsModule]
+  imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, IonButton, FormsModule,IonImg]
 })
 export class CreateInviteComponent {
   private modalCtrl = inject(ModalController);

@@ -1,7 +1,7 @@
 import { Component, ViewChild } from '@angular/core';
-import { IonContent, IonRange, IonNav } from '@ionic/angular/standalone';
-import { GenderDetailComponent } from "./gender-detail/gender-detail.component";
+import { IonContent, IonNav, IonRange } from '@ionic/angular/standalone';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
+import { GenderDetailComponent } from "./gender-detail/gender-detail.component";
 @Component({
   selector: 'other-details',
   templateUrl: './other-details.component.html',

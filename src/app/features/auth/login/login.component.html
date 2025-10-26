@@ -1,10 +1,9 @@
 <ion-content class="ion-padding login-page">
 
-
   <h2 class="title">Log In</h2>
 
-    <ionic-input label="Email" type="email" [(ngModel)]="email" name="email"></ionic-input>
-    <ionic-button (ionClick)="next()">Next</ionic-button>
+  <ionic-input label="Email" type="email" [(ngModel)]="email" name="email"></ionic-input>
+  <ionic-button (ionClick)="next()">Next</ionic-button>
 
   <!-- Divider -->
   <div class="divider">
@@ -16,19 +15,22 @@
   <!-- Social Login -->
   <p class="connect-text">Connect With</p>
   <div class="social-buttons">
-    <ion-button fill="clear" class="social-btn">
+    <ionic-button fill="clear" dynamicClass="social-btn">
       <ion-img src="assets/icon/social/google.svg" alt="google"></ion-img>
-    </ion-button>
-    <ion-button fill="clear" class="social-btn">
+    </ionic-button>
+
+    <ionic-button fill="clear" dynamicClass="social-btn">
       <ion-icon [icon]="icons.logoFacebook" class="facebook"></ion-icon>
-    </ion-button>
-    <ion-button fill="clear" class="social-btn">
+    </ionic-button>
+
+    <ionic-button fill="clear" dynamicClass="social-btn">
       <ion-img src="assets/icon/social/instagram.svg" alt="instagram"></ion-img>
-    </ion-button>
+    </ionic-button>
+
   </div>
 </ion-content>
 <ion-footer class="footer">
-    <ion-toolbar class="footer-toolbar">
+  <ion-toolbar class="footer-toolbar">
     <ion-title class="footer-text" [routerLink]="['/auth/signup']">Create a Sportzmate Account</ion-title>
-    </ion-toolbar>
+  </ion-toolbar>
 </ion-footer>

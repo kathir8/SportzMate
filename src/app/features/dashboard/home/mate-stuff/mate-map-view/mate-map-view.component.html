@@ -9,7 +9,7 @@
         <ion-row class="row-container">
           <ion-col size="auto">
             <ion-thumbnail class="mate-img">
-              <img alt="profile" [src]="item.profileImg" />
+              <ion-img alt="profile" [src]="item.profileImg"></ion-img>
             </ion-thumbnail>
           </ion-col>
           <ion-col class="detail-container">
@@ -28,7 +28,7 @@
             </div>
           </ion-col>
           <ion-col size="auto" class="game-detail">
-             <ionic-badge dynamicClass="distanceOrDuration">{{item.distanceOrDuration}}</ionic-badge>
+            <ionic-badge dynamicClass="distanceOrDuration">{{item.distanceOrDuration}}</ionic-badge>
             <ion-icon [icon]="icons.bicycleOutline"></ion-icon>
           </ion-col>
         </ion-row>
@@ -36,8 +36,7 @@
           Interested <ion-icon [icon]="icons.thumbsUpOutline"></ion-icon>
         </ionic-chip>
         <ionic-chip [outline]="true" color="primary" (ionClick)="chat()">
-          Chat <ion-icon
-            [icon]="icons.chatboxOutline"></ion-icon>
+          Chat <ion-icon [icon]="icons.chatboxOutline"></ion-icon>
         </ionic-chip>
       </div>
       }

@@ -3,7 +3,7 @@ $itemWidth: 80px;
 $scrollPadding: calc(50% - ($itemWidth / 2));
 
 .outer-container {
- 
+
   .content {
     line-height: 22px;
   }
@@ -29,14 +29,14 @@ $scrollPadding: calc(50% - ($itemWidth / 2));
       font-size: 28px;
 
       &.active {
-        box-shadow: 0 0 12px #0000001a;
         color: var(--ion-color-primary-fade);
+        box-shadow: 0 0 12px #0000001a;
         justify-content: center;
         align-items: center;
         background: white;
+        height: $itemWidth;
         border-radius: 50%;
         line-height: 80px;
-        height: $itemWidth;
         width: $itemWidth;
         font-weight: bold;
         font-size: 36px;

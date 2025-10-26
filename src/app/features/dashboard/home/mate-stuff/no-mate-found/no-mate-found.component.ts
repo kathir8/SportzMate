@@ -1,14 +1,14 @@
 import { Component, inject } from '@angular/core';
-import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
-import { IonIcon, ModalController } from '@ionic/angular/standalone';
+import { IonIcon, IonImg, ModalController } from '@ionic/angular/standalone';
 import { add } from 'ionicons/icons';
+import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { CreateInviteComponent } from '../../../create-invite/create-invite.component';
 
 @Component({
   selector: 'app-no-mate-found',
   templateUrl: './no-mate-found.component.html',
   styleUrls: ['./no-mate-found.component.scss'],
-  imports: [IonicButtonComponent, IonIcon]
+  imports: [IonicButtonComponent, IonIcon, IonImg]
 })
 export class NoMateFoundComponent {
   private modalCtrl = inject(ModalController);

@@ -1,16 +1,16 @@
 import { CommonModule } from '@angular/common';
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonContent, IonTitle, IonIcon, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, IonRefresher, IonRefresherContent } from '@ionic/angular/standalone';
+import { IonAvatar, IonContent, IonIcon, IonImg, IonLabel, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonTitle } from '@ionic/angular/standalone';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
-import { RangeFabComponent } from './range-fab/range-fab.component';
+import { firstValueFrom } from 'rxjs';
 import { MateListViewComponent } from "./mate-stuff/mate-list-view/mate-list-view.component";
 import { MateMapViewComponent } from "./mate-stuff/mate-map-view/mate-map-view.component";
-import { HomeService } from './services/home-service';
-import { HomeApiService } from './services/home-api-service';
 import { Coordinates, MateListItem } from './mate-stuff/models/mate.model';
-import { firstValueFrom } from 'rxjs';
+import { RangeFabComponent } from './range-fab/range-fab.component';
+import { HomeApiService } from './services/home-api-service';
+import { HomeService } from './services/home-service';
 
 @Component({
   selector: 'app-home',

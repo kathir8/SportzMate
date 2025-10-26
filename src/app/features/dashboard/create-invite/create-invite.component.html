@@ -1,7 +1,7 @@
 <ion-content class="invite-sheet">
 
   <div class="sheet-content">
-            <img alt="invite" src="https://ionicframework.com/docs/img/demos/thumbnail.svg" class="sheet-img"/>
+      <ion-img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="invite" class="sheet-img"></ion-img>
     <ion-item lines="none" class="input-item">
       <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
       <ion-input placeholder="Invite Name" [(ngModel)]="form.name"></ion-input>
@@ -12,16 +12,16 @@
       <ion-input placeholder="Choose the Location" [(ngModel)]="form.location"></ion-input>
     </ion-item>
 
-      <ion-row>
-        <ion-col size="6">
-          <ion-item lines="none" class="input-item small">
-            <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
-            <ion-input placeholder="No of Players" [(ngModel)]="form.players"></ion-input>
-          </ion-item>
-        </ion-col>
+    <ion-row>
+      <ion-col size="6">
+        <ion-item lines="none" class="input-item small">
+          <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
+          <ion-input placeholder="No of Players" [(ngModel)]="form.players"></ion-input>
+        </ion-item>
+      </ion-col>
 
-        <ion-col size="6">
-          <!-- <ion-item lines="none" class="input-item small">
+      <ion-col size="6">
+        <!-- <ion-item lines="none" class="input-item small">
             <ion-icon [icon]="icons.calendarClearOutline" slot="start"></ion-icon>
             <ion-datetime
               presentation="date-time"
@@ -29,14 +29,11 @@
               [(ngModel)]="form.datetime"
             ></ion-datetime>
           </ion-item> -->
-        </ion-col>
-      </ion-row>
+      </ion-col>
+    </ion-row>
 
     <ion-item lines="none" class="input-item textarea">
-      <ion-textarea
-        placeholder="Description"
-        [(ngModel)]="form.description"
-      ></ion-textarea>
+      <ion-textarea placeholder="Description" [(ngModel)]="form.description"></ion-textarea>
     </ion-item>
 
     <ion-button expand="block" color="primary" class="post-btn" (click)="submit()">

@@ -8,4 +8,12 @@
         --border-radius: 18px;
         height: 35px;
     }
+
+    &.social-btn {
+        box-shadow: 0 2px 5px #0000001a;
+        background: #fff;
+        border-radius: 50%;
+        height: 55px;
+        width: 55px;
+    }
 }
