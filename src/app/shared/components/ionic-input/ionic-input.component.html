@@ -1,2 +1,2 @@
 <ion-label class="text-field">{{ label }}</ion-label>
-<ion-input class="text-input" [type]="type" [value]="value" [type]="type" [readonly]="readonly" [disabled]="disabled" (ionInput)="onInputChange($event)" (ionBlur)="onBlurEvent()"></ion-input>
+<ion-input class="text-input" [class]="dynamicClass" [placeholder]="placeholder" [type]="type" [value]="value" [type]="type" [readonly]="readonly" [disabled]="disabled"  [clearInput]="clearInput"(ionInput)="onInputChange($event)" (ionBlur)="onBlurEvent()"></ion-input>

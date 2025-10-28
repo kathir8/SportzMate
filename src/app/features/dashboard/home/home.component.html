@@ -17,10 +17,9 @@
     </div>
   </div>
 
-  <ng-select [items]="countries" bindLabel="name" bindValue="code" placeholder="Search Invites"
-    class="invites-dropdown"></ng-select>
+  <ionic-input placeholder="Search Invites" [(ngModel)]="rawSearchTerm" dynamicClass="mate-search" [clearInput]="true"></ionic-input>
 
-  <ion-segment [ngModel]="segmentView()" (ngModelChange)="segmentView.set($event)" class="segment-wrapper">
+  <ion-segment [(ngModel)]="segmentView" class="segment-wrapper">
     <ion-segment-button value="list" content-id="list">
       <ion-label>List View</ion-label>
     </ion-segment-button>

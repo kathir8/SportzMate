@@ -19,11 +19,15 @@ export class IonicInputComponent<T extends string | number = string> implements 
 
   @Input() label = '';
   @Input() type: 'text' | 'number' | 'email' | 'password' = 'text';
+  @Input() dynamicClass = {};
   @Input() placeholder: string = '';
   @Input() readonly: boolean = false;
   @Input() disabled: boolean = false;
+  @Input() clearInput: boolean = false;
 
   @Output() blur = new EventEmitter<void>();
+  @Output() valueChange = new EventEmitter<T>();
+
 
   value: T | null = null;
 
@@ -51,6 +55,7 @@ export class IonicInputComponent<T extends string | number = string> implements 
     const value = (event.detail.value ?? '') as unknown as T;
     this.value = value;
     this.onChange(value);
+    this.valueChange.emit(value);
   }
 
   onBlurEvent(): void {

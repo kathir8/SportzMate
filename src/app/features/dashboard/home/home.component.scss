@@ -3,6 +3,7 @@ $segmentRadius: 25px;
 
 .home-page {
     .heading-container {
+        margin-bottom: 35px;
         display: flex;
 
         .title {
@@ -55,11 +56,6 @@ $segmentRadius: 25px;
                 }
             }
         }
-    }
-
-    .invites-dropdown {
-        margin-bottom: 15px;
-        margin-top: 25px;
     }
 
     .segment-wrapper {

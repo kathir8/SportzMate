@@ -1,6 +1,6 @@
 // For information on how to create your own theme, please see:
 // http://ionicframework.com/docs/theming/
-
+@use "sass:color";
 @use 'colors' as *;
 @use 'typography' as *;
 
@@ -10,8 +10,8 @@
 
   --ion-color-primary-contrast: #ffffff;
   --ion-color-primary-contrast-rgb: 255, 255, 255;
-  --ion-color-primary-shade: #{mix(black, $primary-color, 12%)};
-  --ion-color-primary-tint: #{mix(white, $primary-color, 10%)};
+  --ion-color-primary-shade: #{color.mix(black, $primary-color, 12%)};
+  --ion-color-primary-tint: #{color.mix(white, $primary-color, 10%)};
 
 
   --ion-color-primary-fade: #{$primary-fade-color};

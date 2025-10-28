@@ -1,10 +1,11 @@
 import { CommonModule } from '@angular/common';
-import { Component, effect, inject, signal } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonAvatar, IonContent, IonIcon, IonImg, IonLabel, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonTitle } from '@ionic/angular/standalone';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
 import { firstValueFrom } from 'rxjs';
+import { IonicInputComponent } from "src/app/shared/components/ionic-input/ionic-input.component";
 import { MateListViewComponent } from "./mate-stuff/mate-list-view/mate-list-view.component";
 import { MateMapViewComponent } from "./mate-stuff/mate-map-view/mate-map-view.component";
 import { Coordinates, MateListItem } from './mate-stuff/models/mate.model';
@@ -16,7 +17,7 @@ import { HomeService } from './services/home-service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent]
+  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent, IonicInputComponent]
 
 })
 export class HomeComponent {
@@ -26,42 +27,65 @@ export class HomeComponent {
 
   icons = { navigateCircleOutline, navigateSharp };
 
-  countries = [{ code: 'ad', name: 'Andorra' },
-  { code: 'ae', name: 'United Arab Emirates' },
-  { code: 'af', name: 'Afghanistan' },
-  { code: 'ag', name: 'Antigua and Barbuda' }];
-
   segmentView = signal<'list' | 'map'>('list');
   current = signal<Coordinates>({ lat: 13.0827, lng: 80.2707 }); // (fallback to Chennai if geolocation fails)
   loading = signal(true);
   mates = signal<MateListItem[]>([]);
+  searchInvites = signal<string>('');
+  rawSearchTerm = signal<string>('');
+  debouncedSearchInvites = signal<string>('');
 
 
-  visiblePlayers = signal<MateListItem[]>([]);
+  rangeFilteredMates = computed(() => {
+    const mates = this.mates();
+    const cur = this.current();
+    const range = this.homeService.rangeKm();
+
+    if (!mates.length || !cur.lat || !cur.lng) return [];
+
+    // Calculate distance and filter by radius
+    const filtered = mates
+      .map((p) => ({
+        ...p,
+        distanceKm: this.distanceKm(cur.lat!, cur.lng!, p.coords.lat, p.coords.lng)
+      }))
+      .filter((p) => p.distanceKm! <= range);
+
+    return filtered;
+  });
+
+  visiblePlayers = computed(() => {
+    let filtered = this.rangeFilteredMates();
+    const searchTerm = this.debouncedSearchInvites().toLowerCase().trim();
+
+    // Filter by Search Term 
+    if (searchTerm) {
+      filtered = filtered.filter((p) =>
+        p.name.toLowerCase().includes(searchTerm) || p.location.toLowerCase().includes(searchTerm)
+      );
+    }
+
+    // Sort by Distance
+    const sorted = [...filtered].sort((a, b) => a.distanceKm! - b.distanceKm!);
+    return sorted;
+  });
 
   constructor() {
-    effect(() => {
-      const mates = this.mates();
-      const cur = this.current();
-      const range = this.homeService.rangeKm();
+    effect((onCleanup) => {
+      const currentSearchTerm = this.rawSearchTerm();
 
-      if (mates.length && cur.lat && cur.lng) {
-        // filter by radius
-        const filtered = mates
-          .map((p) => ({
-            ...p,
-            distanceKm: this.distanceKm(cur.lat, cur.lng, p.coords.lat, p.coords.lng)
-          }))
-          .filter((p) => p.distanceKm <= range)
-          .sort((a, b) => a.distanceKm - b.distanceKm);
-        this.visiblePlayers.set(filtered);
-      }
+      const timeout = setTimeout(() => {
+        this.debouncedSearchInvites.set(currentSearchTerm);
+      }, 500);
+
+      onCleanup(() => clearTimeout(timeout));
     });
   }
 
   async ngAfterViewInit() {
     await this.refreshData();
   }
+
 
   getCurrentPosition(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
