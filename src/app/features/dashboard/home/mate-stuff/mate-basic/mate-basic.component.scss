@@ -64,9 +64,14 @@
         grid-column: 3;
         display: flex;
 
-        ion-icon {
+        .sport-icon {
             color: #D6D6D6;
             font-size: 35px;
+        }
+        .chat-icon{
+            color: var(--ion-color-primary-fade);
+            margin-right: 5px;
+            font-size: 15px;
         }
     }
 

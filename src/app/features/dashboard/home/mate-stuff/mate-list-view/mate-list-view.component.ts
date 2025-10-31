@@ -6,6 +6,7 @@ import { add } from 'ionicons/icons';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { MateListItem } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
+import { MyInvites } from '../../../invites/models/invite.model';
 
 @Component({
   selector: 'app-mate-list-view',
@@ -13,18 +14,18 @@ import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
   styleUrls: ['./mate-list-view.component.scss'],
   imports: [IonList, IonGrid, NoMateFoundComponent, IonContent, CdkVirtualScrollViewport, ScrollingModule, MateBasicComponent]
 })
-export class MateListViewComponent {
+export class MateListViewComponent<T extends MateListItem | MyInvites> {
   private router = inject(Router);
   icons = { add };
 
-  visiblePlayers = input<MateListItem[]>([]);
+  responseList = input<T[]>([]);
 
   openMateDetail(id: number) {
     // Pass the ID or name in the route parameter
     this.router.navigate(['dashboard/mate-detail', id]);
   }
 
-    trackById(index: number, item: MateListItem) {
+  trackById(index: number, item: T) {
     return item.id;
   }
 

@@ -2,6 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { MateDetail, MateListItem } from '../mate-stuff/models/mate.model';
+import { SportType } from 'src/app/shared/models/shared.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +20,7 @@ export class HomeApiService {
       requiredMembers: 8,
       confirmedMembers: 8,
       distanceOrDuration: '600 M',
-      sport: 'Cycling',
+      sport: SportType.Cycling,
       coords: { "lat": 13.0901, "lng": 80.2650 }
     },
     {
@@ -31,7 +32,7 @@ export class HomeApiService {
       requiredMembers: 3,
       confirmedMembers: 4,
       distanceOrDuration: '2 Hr',
-      sport: 'Badminton',
+      sport: SportType.Badminton,
       coords: { "lat": 13.0752, "lng": 80.2905 }
     },
     {
@@ -43,7 +44,7 @@ export class HomeApiService {
       requiredMembers: 4,
       confirmedMembers: 4,
       distanceOrDuration: '3 Km',
-      sport: 'Running',
+      sport: SportType.Running,
       coords: { "lat": 13.0705, "lng": 80.2555 }
     },
     {
@@ -55,7 +56,7 @@ export class HomeApiService {
       requiredMembers: 8,
       confirmedMembers: 6,
       distanceOrDuration: '2 Hr',
-      sport: 'Football',
+      sport: SportType.Football,
       coords: { "lat": 13.0450, "lng": 80.2489 }
     },
     {
@@ -67,7 +68,7 @@ export class HomeApiService {
       requiredMembers: 3,
       confirmedMembers: 4,
       distanceOrDuration: '2 Hr',
-      sport: 'Badminton',
+      sport: SportType.Badminton,
       coords: { "lat": 13.0600, "lng": 80.2950 }
     },
     {
@@ -79,7 +80,7 @@ export class HomeApiService {
       requiredMembers: 4,
       confirmedMembers: 4,
       distanceOrDuration: '3 Km',
-      sport: 'Swimming',
+      sport: SportType.Swimming,
       coords: { "lat": 13.1005, "lng": 80.3055 }
     },
     {
@@ -91,7 +92,7 @@ export class HomeApiService {
       requiredMembers: 8,
       confirmedMembers: 8,
       distanceOrDuration: '5 Km',
-      sport: 'Cycling',
+      sport: SportType.Cycling,
       coords: { "lat": 13.1420, "lng": 80.2005 }
     },
     {
@@ -103,7 +104,7 @@ export class HomeApiService {
       requiredMembers: 3,
       confirmedMembers: 4,
       distanceOrDuration: '2 Hr',
-      sport: 'Swimming',
+      sport: SportType.Swimming,
       coords: { "lat": 13.0255, "lng": 80.3205 }
     },
     {
@@ -115,7 +116,7 @@ export class HomeApiService {
       requiredMembers: 4,
       confirmedMembers: 4,
       distanceOrDuration: '3 km',
-      sport: 'Running',
+      sport: SportType.Running,
       coords: { "lat": 13.1550, "lng": 80.2455 }
     }
   ];

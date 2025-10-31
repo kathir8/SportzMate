@@ -3,6 +3,7 @@ import { IonFooter, IonNavLink } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { ProfileDetailComponent } from '../profile-detail/profile-detail.component';
+import { SportType } from 'src/app/shared/models/shared.model';
 
 @Component({
   selector: 'app-interest-detail',
@@ -14,10 +15,10 @@ export class InterestDetailComponent {
   static navId = 'InterestDetail';
 
   profileComponent = ProfileDetailComponent;
-  sports: string[] = ['Cricket', 'Football', 'Badminton', 'Running', 'Tennis', 'Volleyball', 'Basketball', 'Kabaddi', 'Cycling'];
-  selectedSports: string[] = ['Football', 'Running'];
+  sports = Object.values(SportType);
+  selectedSports: SportType[] = [SportType.Football, SportType.Running];
 
-  toggleSportSelection(sport: string) {
+  toggleSportSelection(sport: SportType) {
     const index = this.selectedSports.indexOf(sport);
 
     if (index > -1) {

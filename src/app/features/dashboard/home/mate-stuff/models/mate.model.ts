@@ -1,8 +1,10 @@
+import { SportType } from "src/app/shared/models/shared.model";
+
 export interface MateListItem {
     id: number;
     name: string;
     location: string;
-    sport: 'Badminton' | 'Cricket' | 'Cycling' | 'Tennis' | 'Football' | 'Running' | 'Swimming' | 'Yoga' | 'Basketball';
+    sport: SportType;
     eventDateTime: number;
     distanceOrDuration: string;
     profileImg: string;

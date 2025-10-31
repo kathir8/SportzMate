@@ -7,6 +7,7 @@ import { HomeService } from '../../services/home-service';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { Coordinates, MateListItem } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
+import { SportType } from 'src/app/shared/models/shared.model';
 
 @Component({
   selector: 'app-mate-map-view',
@@ -333,7 +334,7 @@ export class MateMapViewComponent {
   }
 
   // small utility to produce emoji per game
-  gameEmoji(g: MateListItem['sport']) {
+  gameEmoji(g: SportType) {
     switch (g) {
       case 'Badminton': return '🏸';
       case 'Cricket': return '🏏';

@@ -36,7 +36,7 @@ export class HomeComponent {
   debouncedSearchInvites = signal<string>('');
 
 
-  rangeFilteredMates = computed(() => {
+  rangeFilteredMates = computed<MateListItem[]>(() => {
     const mates = this.mates();
     const cur = this.current();
     const range = this.homeService.rangeKm();
@@ -54,7 +54,7 @@ export class HomeComponent {
     return filtered;
   });
 
-  visiblePlayers = computed(() => {
+  visiblePlayers = computed<MateListItem[]>(() => {
     let filtered = this.rangeFilteredMates();
     const searchTerm = this.debouncedSearchInvites().toLowerCase().trim();
 

@@ -1,8 +1,8 @@
 <ion-content>
-  @if(visiblePlayers().length){
+  @if(responseList().length){
   <cdk-virtual-scroll-viewport itemSize="90" class="virtual-scroll-container" [minBufferPx]="185" [maxBufferPx]="365">
     <ion-list class="sports-mate-list">
-      <ion-grid class="primary-details" *cdkVirtualFor="let item of visiblePlayers(); trackBy: trackById"
+      <ion-grid class="primary-details" *cdkVirtualFor="let item of responseList(); trackBy: trackById"
         (click)="openMateDetail(item.id)">
         <app-mate-basic [mate]="item" dynamicClass="from-mate-list"></app-mate-basic>
       </ion-grid>
