@@ -1,5 +1,5 @@
 import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonFooter, IonNavLink } from '@ionic/angular/standalone';
+import { IonFooter, IonNavLink, IonContent } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { InterestDetailComponent } from '../interest-detail/interest-detail.component';
 
@@ -7,7 +7,7 @@ import { InterestDetailComponent } from '../interest-detail/interest-detail.comp
   selector: 'app-age-detail',
   templateUrl: './age-detail.component.html',
   styleUrls: ['./age-detail.component.scss'],
-  imports: [IonNavLink, IonicButtonComponent, IonFooter]
+  imports: [IonNavLink, IonicButtonComponent, IonFooter, IonContent]
 })
 export class AgeDetailComponent {
   static navId = 'AgeDetail';

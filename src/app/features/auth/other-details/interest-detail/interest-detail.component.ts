@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { IonFooter, IonNavLink } from '@ionic/angular/standalone';
+import { IonFooter, IonNavLink, IonContent } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { ProfileDetailComponent } from '../profile-detail/profile-detail.component';
@@ -9,7 +9,7 @@ import { SportType } from 'src/app/shared/models/shared.model';
   selector: 'app-interest-detail',
   templateUrl: './interest-detail.component.html',
   styleUrls: ['./interest-detail.component.scss'],
-  imports: [IonNavLink, IonicButtonComponent, IonFooter, IonicChipComponent]
+  imports: [IonNavLink, IonicButtonComponent, IonFooter, IonicChipComponent, IonContent]
 })
 export class InterestDetailComponent {
   static navId = 'InterestDetail';
