@@ -1,19 +1,26 @@
-.virtual-scroll-container {
-    height: 100%; // fills ion-content
-    width: 100%;
-    overflow: auto;
-    display: block;
+$containerPaddingX: 0px;
 
-    &::-webkit-scrollbar {
-        display: none;
-    }
+.list-view {
+    --padding-start:#{$containerPaddingX};
+    --padding-end:#{$containerPaddingX};
 
-    .sports-mate-list {
-        margin-bottom: 60px;
-        font-size: 12px;
+    .virtual-scroll-container {
+        height: 100%; // fills ion-content
+        width: 100%;
+        overflow: auto;
+        display: block;
 
-        .primary-details {
-            padding: 0;
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sports-mate-list {
+            margin-bottom: 60px;
+            font-size: 12px;
+
+            .primary-details {
+                padding: 0;
+            }
         }
     }
 }
