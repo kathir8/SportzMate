@@ -4,7 +4,7 @@ import { AuthGuard } from './core/guards/auth.guard';
 export const routes: Routes = [
   {
     path: '',
-    redirectTo: 'auth/login',
+    redirectTo: 'other-details',
     pathMatch: 'full',
   },
   {
@@ -19,13 +19,13 @@ export const routes: Routes = [
         path: 'signup',
         loadComponent: () =>
           import('./features/auth/signup/signup.component').then(m => m.SignupComponent)
-      },
-      {
-        path: 'other-details',
-        loadComponent: () =>
-          import('./features/auth/other-details/other-details.component').then(m => m.OtherDetailsComponent)
-      },
+      }
     ],
+  },
+  {
+    path: 'other-details',
+    loadComponent: () =>
+      import('./features/other-details/other-details.component').then(m => m.OtherDetailsComponent)
   },
   {
     path: 'dashboard',

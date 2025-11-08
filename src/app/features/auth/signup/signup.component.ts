@@ -30,7 +30,7 @@ export class SignupComponent {
   }
 
   register(){
-    this.router.navigate(['/auth/other-details'], { replaceUrl: true });
+    this.router.navigate(['/other-details'], { replaceUrl: true });
   }
 
 }

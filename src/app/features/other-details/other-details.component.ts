@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { IonContent, IonNav, IonRange } from '@ionic/angular/standalone';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { GenderDetailComponent } from "./gender-detail/gender-detail.component";
+import { ProfileDetailComponent } from './profile-detail/profile-detail.component';
 @Component({
   selector: 'other-details',
   templateUrl: './other-details.component.html',
@@ -12,7 +13,8 @@ export class OtherDetailsComponent {
 
   @ViewChild('nav') ionNav!: IonNav;
 
-  genderComponent = GenderDetailComponent;
+  // genderComponent = GenderDetailComponent;
+  profileDetailComponent = ProfileDetailComponent;
   showBackButton: boolean = false;
   ionValue: number = 20;
 

@@ -55,6 +55,7 @@ yarn-error.log
 
 # Miscellaneous
 /android
+/ios
 /.angular
 /.angular/cache
 .sass-cache/

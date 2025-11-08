@@ -1,0 +1,24 @@
+<ion-content class="ion-padding outer-container">
+  <h2 class="title">Profile Details</h2>
+    <ion-avatar style="width: 120px; height: 120px; margin: auto;">
+      @if(profileImage){
+        <img [src]="profileImage" />
+      }@else {
+
+        <div class="profile-placeholder">
+          <ion-img src="assets/icon/signup/profile.png" alt="profile-placeholder"></ion-img>
+        </div>
+      }
+    </ion-avatar>
+    <ion-button expand="block" (click)="captureProfileImage()">📷 Capture from Camera</ion-button>
+    <ion-button expand="block" color="medium" (click)="chooseFromGallery()">🖼️ Choose from Gallery</ion-button>
+
+  <div class="profile-details-container">
+    <ionic-input label="User Name" [(ngModel)]="userName" name="userName"></ionic-input>
+    <country-dropdown (countryChange)="onCountryChange($event)"></country-dropdown>
+  </div>
+</ion-content>
+
+<ion-footer class="footer">
+  <ionic-button (ionClick)="confirm()">Confirm</ionic-button>
+</ion-footer>
