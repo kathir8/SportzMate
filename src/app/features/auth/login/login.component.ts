@@ -28,11 +28,9 @@ export class LoginComponent {
       this.router.navigateByUrl('/auth/signup', { replaceUrl: true });
     } catch (err) {
       console.error('Login failed', err);
-    } finally {
-      console.log("finally");
-      
-      // this.loading.set(false);
-    }
+      } finally {
+        // this.loading.set(false);
+      }
   }
 
   next() {

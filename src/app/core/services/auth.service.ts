@@ -23,7 +23,7 @@ export class AuthService {
       this._user.set(user);
     });
 
-        // Handle Google OAuth redirect result
+    // Handle Google OAuth redirect result
     this.handleGoogleRedirectLogin();
 
   }
@@ -37,35 +37,25 @@ export class AuthService {
 
   // GOOGLE LOGIN
   async googleLogin() {
-      try {
-    console.log('googleLogin: starting redirect...');
-    const provider = new GoogleAuthProvider();
-    await signInWithRedirect(this.auth, provider);
-    console.log('googleLogin: signInWithRedirect returned (this line typically never runs due to redirect).');
-  } catch (err) {
-    console.error('googleLogin error:', err);
-    alert('googleLogin error: ' + (err as any)?.message);
-  }
+    try {
+      const provider = new GoogleAuthProvider();
+      await signInWithPopup(this.auth, provider);
+    } catch (err) {
+      console.error('googleLogin error:', (err as any)?.message);
+    }
   }
 
-   // Process the redirect result (runs after Google sends user back)
+  // Process the redirect result (runs after Google sends user back)
   private async handleGoogleRedirectLogin() {
     try {
-          console.log('handleGoogleRedirectLogin: checking redirect result...');
 
       const result = await getRedirectResult(this.auth);
-          console.log('getRedirectResult returned:', result);
 
       if (result?.user) {
-              console.log('Got user from redirect:', result.user.uid, result.user.email);
-
         await this.saveUserProfile(result.user);
-      }else{
-              console.log('No redirect user present.');
       }
     } catch (err) {
-      console.error("Google Login Redirect Error:", err);
-          alert('Google redirect error: ' + (err as any)?.message);
+      console.error("Google Login Redirect Error:", (err as any)?.message);
     }
   }
 
