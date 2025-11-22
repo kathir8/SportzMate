@@ -18,23 +18,12 @@ export class ProfileDetailComponent {
   profileImage: string | undefined = undefined;
 
 
-    async captureProfileImage() {
-    const image = await Camera.getPhoto({
-      quality: 90,
-      allowEditing: true,
-      resultType: CameraResultType.DataUrl, // base64 format
-      source: CameraSource.Camera, // directly open camera
-    });
-
-    this.profileImage = image.dataUrl;
-  }
-
-  async chooseFromGallery() {
+  async selectProfileImage() {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: true,
       resultType: CameraResultType.DataUrl,
-      source: CameraSource.Photos, // open gallery
+      source: CameraSource.Prompt, // Shows device default picker with camera and gallery options
     });
 
     this.profileImage = image.dataUrl;
