@@ -16,7 +16,7 @@
         <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.requiredMembers}}
       </ionic-badge>
       <ionic-badge dynamicClass="members-cnt secondary">
-        <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.confirmedMembers}}
+        <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.participants?.length}}
       </ionic-badge>
     </div>
     }

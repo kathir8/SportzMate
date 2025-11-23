@@ -31,7 +31,11 @@ export class LoginComponent {
     try {
       // this.loading.set(true);
       const loggedinUser: User = await this.auth.loginViaGoogle();
-      this.userService.updateUserDetail(loggedinUser.uid);
+      if(loggedinUser.uid){
+        this.userService.updateUserDetail(loggedinUser.uid);
+      }else{
+        console.error('User not found');
+      }
     } catch (err) {
       console.error('Login failed', err);
     } finally {

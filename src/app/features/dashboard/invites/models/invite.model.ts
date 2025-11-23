@@ -8,6 +8,19 @@ export interface MyInvites {
     eventDateTime: number;
     profileImg: string;
     requiredMembers: number;
-    confirmedMembers: number;
+    participants: number[];
     chatCount:number
+}
+
+export interface Invite {
+  id: string;
+  title: string;
+  sport: string;
+  creatorUid: string;
+  startAt: string;       // ISO date
+  location: { lat:number, lng:number, placeName?:string };
+  participants: string[]; // array of UIDs
+  requiredMembers?: number;
+  createdAt?: string;
+  updatedAt?: string;
 }

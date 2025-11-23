@@ -1,0 +1,26 @@
+import { inject, Injectable } from '@angular/core';
+import { UserApiService } from '../../../core/services/user-api-service';
+import { Router } from '@angular/router';
+import { UserExist } from '../../../core/model/user.model';
+import { UserStore } from 'src/app/core/stores/user-store';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class UserService {
+  private userApi = inject(UserApiService);
+  private userStore = inject(UserStore);
+  private router = inject(Router);
+
+  updateUserDetail(id: string) {
+    this.userApi.fetchUserDetail(id).subscribe((response: UserExist) => {
+      if (response.exist) {
+        this.userStore.setCurrent(response);
+        const routePath: string = this.userStore.isOnboarded() ? '/dashboard/home' : '/other-details';
+        this.router.navigateByUrl(routePath, { replaceUrl: true });
+      } else {
+        this.router.navigateByUrl('/login', { replaceUrl: true });
+      }
+    });
+  }
+}

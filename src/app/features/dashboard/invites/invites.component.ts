@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { IonContent, IonGrid, IonIcon, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel } from '@ionic/angular/standalone';
 import { MateListViewComponent } from "../home/mate-stuff/mate-list-view/mate-list-view.component";
 import { MyInvites } from './models/invite.model';
-import { InvitesApiService } from './services/invites-api-service';
+import { InviteApiService } from './services/invite-api-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 @Component({
   selector: 'app-invites',
@@ -14,7 +14,7 @@ import { toSignal } from '@angular/core/rxjs-interop';
 })
 export class InvitesComponent {
   private router = inject(Router);
-  private invitesApiService = inject(InvitesApiService);
+  private invitesApiService = inject(InviteApiService);
 
   segmentView = signal<'myInvites' | 'approveInvites'>('myInvites');
   myInvitesList = signal<MyInvites[]>([]);

@@ -18,7 +18,7 @@ export class HomeApiService {
       location: 'Chicago',
       eventDateTime: 1761408000000,
       requiredMembers: 8,
-      confirmedMembers: 8,
+      participants: [1, 2, 3, 4, 5, 6, 7, 8],
       distanceOrDuration: '600 M',
       sport: SportType.Cycling,
       coords: { "lat": 13.0901, "lng": 80.2650 }
@@ -30,7 +30,7 @@ export class HomeApiService {
       location: 'Naperville',
       eventDateTime: 1761408000000,
       requiredMembers: 3,
-      confirmedMembers: 4,
+      participants: [1, 2, 3, 4],
       distanceOrDuration: '2 Hr',
       sport: SportType.Badminton,
       coords: { "lat": 13.0752, "lng": 80.2905 }
@@ -42,7 +42,7 @@ export class HomeApiService {
       location: 'Anna Nagar West Extension',
       eventDateTime: 1761408000000,
       requiredMembers: 4,
-      confirmedMembers: 4,
+      participants: [1, 2, 3, 4],
       distanceOrDuration: '3 Km',
       sport: SportType.Running,
       coords: { "lat": 13.0705, "lng": 80.2555 }
@@ -54,7 +54,7 @@ export class HomeApiService {
       location: 'Chicago',
       eventDateTime: 1761408000000,
       requiredMembers: 8,
-      confirmedMembers: 6,
+      participants: [1, 2, 3, 4, 5, 6],
       distanceOrDuration: '2 Hr',
       sport: SportType.Football,
       coords: { "lat": 13.0450, "lng": 80.2489 }
@@ -66,7 +66,7 @@ export class HomeApiService {
       location: 'Naperville',
       eventDateTime: 1761408000000,
       requiredMembers: 3,
-      confirmedMembers: 4,
+      participants: [1, 2, 3, 4],
       distanceOrDuration: '2 Hr',
       sport: SportType.Badminton,
       coords: { "lat": 13.0600, "lng": 80.2950 }
@@ -78,7 +78,7 @@ export class HomeApiService {
       location: 'Bolingbrook',
       eventDateTime: 1761408000000,
       requiredMembers: 4,
-      confirmedMembers: 4,
+      participants: [1, 2, 3, 4],
       distanceOrDuration: '3 Km',
       sport: SportType.Swimming,
       coords: { "lat": 13.1005, "lng": 80.3055 }
@@ -90,7 +90,7 @@ export class HomeApiService {
       location: 'Chicago',
       eventDateTime: 1761408000000,
       requiredMembers: 8,
-      confirmedMembers: 8,
+      participants: [1, 2, 3, 4, 5, 6, 7, 8],
       distanceOrDuration: '5 Km',
       sport: SportType.Cycling,
       coords: { "lat": 13.1420, "lng": 80.2005 }
@@ -102,7 +102,7 @@ export class HomeApiService {
       location: 'Naperville',
       eventDateTime: 1761408000000,
       requiredMembers: 3,
-      confirmedMembers: 4,
+      participants: [1, 2, 3, 4],
       distanceOrDuration: '2 Hr',
       sport: SportType.Swimming,
       coords: { "lat": 13.0255, "lng": 80.3205 }
@@ -114,7 +114,7 @@ export class HomeApiService {
       location: 'Bolingbrook',
       eventDateTime: 1761408000000,
       requiredMembers: 4,
-      confirmedMembers: 4,
+      participants: [1, 2, 3, 4],
       distanceOrDuration: '3 km',
       sport: SportType.Running,
       coords: { "lat": 13.1550, "lng": 80.2455 }

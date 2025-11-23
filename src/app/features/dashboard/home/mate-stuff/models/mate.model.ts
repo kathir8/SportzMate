@@ -9,7 +9,7 @@ export interface MateListItem {
     distanceOrDuration: string;
     profileImg: string;
     requiredMembers: number;
-    confirmedMembers: number;
+    participants: number[];
     coords: Coordinates;
     distanceKm?: number
 }
