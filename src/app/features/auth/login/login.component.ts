@@ -1,11 +1,13 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router, RouterLink } from '@angular/router';
+import { RouterLink } from '@angular/router';
 import { IonContent, IonFooter, IonIcon, IonImg, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram } from 'ionicons/icons';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
+import { UserService } from '../../other-details/services/user-service';
+import { User } from '@angular/fire/auth';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -14,23 +16,27 @@ import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic
 })
 export class LoginComponent {
   private auth = inject(AuthService);
-  private router = inject(Router);
+  private userService = inject(UserService);
 
   icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
 
 
   email: string = '';
 
-  async login() {
+  ionViewDidEnter() {
+    this.auth.initialize();
+  }
+
+  async loginViaGoogle() {
     try {
       // this.loading.set(true);
-      await this.auth.googleLogin();
-      this.router.navigateByUrl('/auth/signup', { replaceUrl: true });
+      const loggedinUser: User = await this.auth.loginViaGoogle();
+      this.userService.updateUserDetail(loggedinUser.uid);
     } catch (err) {
       console.error('Login failed', err);
-      } finally {
-        // this.loading.set(false);
-      }
+    } finally {
+      // this.loading.set(false);
+    }
   }
 
   next() {

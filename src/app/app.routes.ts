@@ -8,19 +8,14 @@ export const routes: Routes = [
     pathMatch: 'full',
   },
   {
-    path: 'auth',
-    children: [
-      {
-        path: 'login',
-        loadComponent: () =>
-          import('./features/auth/login/login.component').then(m => m.LoginComponent)
-      },
-      {
-        path: 'signup',
-        loadComponent: () =>
-          import('./features/auth/signup/signup.component').then(m => m.SignupComponent)
-      }
-    ],
+    path: 'login',
+    loadComponent: () =>
+      import('./features/auth/login/login.component').then(m => m.LoginComponent)
+  },
+  {
+    path: 'signup',
+    loadComponent: () =>
+      import('./features/auth/signup/signup.component').then(m => m.SignupComponent)
   },
   {
     path: 'other-details',
@@ -67,6 +62,6 @@ export const routes: Routes = [
   },
   {
     path: '**',
-    redirectTo: 'auth/login',
+    redirectTo: 'login',
   },
 ];

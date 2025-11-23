@@ -33,6 +33,7 @@
     "@capacitor/keyboard": "7.0.3",
     "@capacitor/preferences": "^7.0.2",
     "@capacitor/status-bar": "7.0.3",
+    "@capgo/capacitor-social-login": "^7.18.2",
     "@fontsource/open-sans": "^5.2.7",
     "@ionic/angular": "^8.7.5",
     "@ng-select/ng-select": "^20.3.0",

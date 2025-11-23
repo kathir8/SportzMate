@@ -1,7 +1,9 @@
-import { computed, inject, Injectable, signal } from '@angular/core';
-import { Auth, authState, getRedirectResult, GoogleAuthProvider, signInWithEmailAndPassword, signInWithPopup, signInWithRedirect, signOut, User } from '@angular/fire/auth';
-import { doc, Firestore, getDoc, setDoc } from '@angular/fire/firestore';
-import { firstValueFrom } from 'rxjs';
+import { computed, Injectable } from '@angular/core';
+import { initializeApp } from '@angular/fire/app';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithCredential, User } from '@angular/fire/auth';
+import { Capacitor } from '@capacitor/core';
+import { SocialLogin } from "@capgo/capacitor-social-login";
+import { environment } from 'src/environments/environment';
 
 window.addEventListener('unhandledrejection', (ev) => {
   console.error('Unhandled promise rejection:', ev.reason);
@@ -9,84 +11,97 @@ window.addEventListener('unhandledrejection', (ev) => {
 @Injectable({ providedIn: 'root' })
 export class AuthService {
   private token: string | null = null;
-  private _user = signal<User | null>(null);
+  isLoggedIn = computed(() => this.token !== null);
+  firebase: any;
+  loginResponse: any;
+  refresh_Access_token: any;
 
-  user = computed(() => this._user());
-  isLoggedIn = computed(() => !!this._user() || this.token !== null);
-
-  private auth = inject(Auth);
-  private firestore = inject(Firestore);
 
   constructor() {
-    // sync firebase user → our signal store
-    authState(this.auth).subscribe((user) => {
-      this._user.set(user);
-    });
-
-    // Handle Google OAuth redirect result
-    this.handleGoogleRedirectLogin();
-
+    this.firebase = initializeApp(environment.firebaseConfig);
   }
 
-  
-  login(email: string, password: string) {
-    this.token = 'dummy-token';
-
-    return signInWithEmailAndPassword(this.auth, email, password);
+  public async logout() {
+    await getAuth(this.firebase).signOut();
+    this.refresh_Access_token = undefined;
+    this.loginResponse = undefined;
+    await SocialLogin.logout({ provider: 'google' }).then(() => console.log('Signed Out')).catch((e: any) => { console.log('Signed Out'); });
   }
 
-  // GOOGLE LOGIN
-  async googleLogin() {
-    try {
-      const provider = new GoogleAuthProvider();
-      await signInWithPopup(this.auth, provider);
-    } catch (err) {
-      console.error('googleLogin error:', (err as any)?.message);
-    }
-  }
-
-  // Process the redirect result (runs after Google sends user back)
-  private async handleGoogleRedirectLogin() {
-    try {
-
-      const result = await getRedirectResult(this.auth);
-
-      if (result?.user) {
-        await this.saveUserProfile(result.user);
+  public async refreshToken() {
+    const auth = getAuth(this.firebase);
+    onAuthStateChanged(auth, async (currenUser: User | null) => {
+      if (currenUser) {
+        const idToken = await currenUser.getIdToken(true);
+        console.log(idToken);
+        this.refresh_Access_token = idToken;
+      } else {
+        this.logout();
       }
-    } catch (err) {
-      console.error("Google Login Redirect Error:", (err as any)?.message);
-    }
+    });
   }
 
-  // SAVE USER PROFILE TO FIRESTORE
-  private async saveUserProfile(user: User) {
-    const ref = doc(this.firestore, `users/${user.uid}`);
-    const snap = await getDoc(ref);
+  async initialize() {
 
-    if (!snap.exists()) {
-      await setDoc(ref, {
-        uid: user.uid,
-        name: user.displayName,
-        email: user.email,
-        photoURL: user.photoURL,
-        createdAt: new Date().toISOString(),
-        lastSeen: new Date().toISOString(),
+    const platform = Capacitor.getPlatform();
+    console.log('Initializing on platform:', platform);
+
+    const config: any = {
+      google: {
+        webClientId: "853532937748-7fb6egmr2jhqt726pb641t995io06rda.apps.googleusercontent.com",
+        mode: 'online'
+      }
+    };
+
+    await SocialLogin.initialize(config);
+
+    console.log('SocialLogin initialized successfully');
+  } catch(error: any) {
+    console.error('Failed to initialize SocialLogin:', error);
+    throw error;
+  }
+
+
+  async loginViaGoogle() {
+    try {
+      console.log('Starting Google login...');
+
+      const user: any = await SocialLogin.login({
+        provider: 'google',
+        options: {
+          scopes: ['email', 'profile'],
+          forceRefreshToken: true
+        }
       });
-    } else {
-      await setDoc(ref, {
-        lastSeen: new Date().toISOString(),
-      }, { merge: true });
+
+      console.log('Raw login response:', user);
+
+      if (user?.result) {
+        this.loginResponse = user.result;
+        console.log('Login successful:', JSON.stringify(user.result, null, 2));
+
+        // Sign in to Firebase with the credential
+        const credential = GoogleAuthProvider.credential(
+          user.result.idToken,
+          user.result.accessToken
+        );
+
+        const auth = getAuth(this.firebase);
+        const firebaseUser = await signInWithCredential(auth, credential);
+
+        console.log('Firebase user:', firebaseUser.user.email);
+        this.token = await firebaseUser.user.getIdToken();
+        this.refresh_Access_token = this.token;
+
+        return firebaseUser.user;
+      } else {
+        throw new Error('No user data received from Google login');
+      }
+    } catch (error: any) {
+      console.error('Google login error:', error);
+      throw error;
     }
-  }
 
-  logout() {
-    this.token = null;
-    return signOut(this.auth);
-  }
 
-  // convenience
-  async getUserOnce() {
-    return await firstValueFrom(authState(this.auth));
   }
 }
