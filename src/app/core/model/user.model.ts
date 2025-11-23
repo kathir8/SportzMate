@@ -4,9 +4,10 @@ export class UserDetail {
   name: string = '';
   email: string = '';
   profile: string = '';
+  customProfile: string = '';
   id: string = '';
   age?:number;
-  gender?:'male'|'female'|'other'|null;
+  gender?:'male'|'female'|null;
   interest: SportType[]=[];
 }
 

@@ -1,14 +1,14 @@
 <ion-content class="ion-padding outer-container">
   <h2 class="title">Profile Details</h2>
-    <ion-avatar style="width: 120px; height: 120px; margin: auto;" (click)="selectProfileImage()">
-      @if(userService.userDetail.profile){
-        <img [src]="userService.userDetail.profile" />
-      }@else {
-        <div class="profile-placeholder">
-          <ion-img src="assets/icon/signup/profile.png" alt="profile-placeholder"></ion-img>
-        </div>
-      }
-    </ion-avatar>
+  <ion-avatar style="width: 120px; height: 120px; margin: auto;" (click)="selectProfileImage()">
+    @if(profileImage()){
+    <img [src]="profileImage()" />
+    }@else {
+    <div class="profile-placeholder">
+      <ion-img src="assets/icon/signup/profile.png" alt="profile-placeholder"></ion-img>
+    </div>
+    }
+  </ion-avatar>
   <div class="profile-details-container">
     <ionic-input label="User Name" [(ngModel)]="userName" name="userName"></ionic-input>
     <country-dropdown (countryChange)="onCountryChange($event)"></country-dropdown>
