@@ -10,7 +10,7 @@
     <ionic-checkbox class="checkbox-container" label="I agree to the terms and conditions" [(ngModel)]="accepted">
     </ionic-checkbox>
 
-    <ionic-button (ionClick)="verify()">Verify</ionic-button>
+    <ionic-button (ionClick)="sendVerification()">Verify</ionic-button>
     }@else{
     <ionic-input label="Enter Verification Code" [(ngModel)]="code" name="code"></ionic-input>
     <ionic-button (ionClick)="register()">Register</ionic-button>
