@@ -1,1 +1,1 @@
-<ion-toast trigger="open-toast" [message]="message()" [duration]="duration" (didDismiss)="message.set('')"></ion-toast>
+<ion-toast  [isOpen]="isOpen()" trigger="open-toast" [message]="message()" [duration]="duration"  (didDismiss)="isOpen.set(false)"></ion-toast>

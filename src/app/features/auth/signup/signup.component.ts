@@ -6,6 +6,7 @@ import { IonContent, IonImg } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicCheckboxComponent } from 'src/app/shared/components/ionic-checkbox/ionic-checkbox.component';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
+import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 
 @Component({
   selector: 'app-signup',
@@ -15,6 +16,8 @@ import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic
 })
 export class SignupComponent {
   private router = inject(Router);
+  private toast = inject(IonicToastService);
+
   password: string = '';
   email: string = '';
   name: string = 'Kathiravan';
@@ -37,7 +40,7 @@ export class SignupComponent {
       const displayName = localStorage.getItem("signupName");
 
       if (!email || !password || !displayName) {
-        alert("Session expired. Please sign up again.");
+        this.toast.show("Session expired. Please sign up again.");
         return;
       }
 
@@ -50,7 +53,7 @@ export class SignupComponent {
         // Set the password manually, since email-link login has no password
         await updatePassword(user, password);
 
-        await updateProfile(user, {displayName});
+        await updateProfile(user, { displayName });
         console.log(user);
 
         // Step 3: Save to backend DB
@@ -66,7 +69,7 @@ export class SignupComponent {
 
       } catch (err) {
         console.error(err);
-        alert("Verification failed. " + err);
+        this.toast.show("Verification failed." + err);
       } finally {
         this.isVerifying = false;
       }
@@ -80,21 +83,21 @@ export class SignupComponent {
     // CHECK IF EMAIL ALREADY EXISTS
     const methods = await fetchSignInMethodsForEmail(auth, this.email);
 
-     if (methods.length > 0) {
-    if (methods.includes("password")) {
-      alert("This email already has an account. Please login instead.");
-      this.router.navigate(['/auth/login']);
+    if (methods.length > 0) {
+      if (methods.includes("password")) {
+        this.toast.show("This email already has an account. Please login instead.");
+        this.router.navigate(['/auth/login']);
+        return;
+      }
+
+      if (methods.includes("google.com")) {
+        this.toast.show("This email is registered with Google. Please use 'Sign in with Google'.");
+        return;
+      }
+      this.toast.show("This email is already registered.");
+      alert("This email is already registered.");
       return;
     }
-
-    if (methods.includes("google.com")) {
-      alert("This email is registered with Google. Please use 'Sign in with Google'.");
-      return;
-    }
-
-    alert("This email is already registered.");
-    return;
-  }
 
     const actionCodeSettings = {
       url: window.location.href,   // 🔥 Return to SAME PAGE
@@ -107,12 +110,10 @@ export class SignupComponent {
       localStorage.setItem("signupEmail", this.email);
       localStorage.setItem("signupPassword", this.password);
       localStorage.setItem("signupName", this.name);
-
-      alert("Verification link sent! Check your email.");
-
+      this.toast.show("Verification link sent! Check your email.");
     } catch (err) {
       console.error(err);
-      alert("Failed to send verification email.");
+      this.toast.show("Failed to send verification email.");
     }
   }
 

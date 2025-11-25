@@ -19,9 +19,6 @@ export class AppComponent {
 
   constructor() {
     this.auth.refreshToken();
-  }
-
-  ngOnInit() {
     effect(() => {
       const toastInstance = this.globalToast();
       if (toastInstance) {
@@ -29,6 +26,7 @@ export class AppComponent {
       }
     });
   }
+  
 
   toggleTheme(event: any) {
     this.themeService.setDarkTheme(event.detail.checked);

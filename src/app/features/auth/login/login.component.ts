@@ -8,7 +8,6 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { UserService } from '../../other-details/services/user-service';
 import { User } from '@angular/fire/auth';
-import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,7 +16,6 @@ import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-t
 })
 export class LoginComponent {
   private auth = inject(AuthService);
-  private toast = inject(IonicToastService);
   private userService = inject(UserService);
 
   icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
@@ -46,7 +44,6 @@ export class LoginComponent {
   }
 
   next() {
-      this.toast.show("Form submitted!");
     console.log("Entered Email: ", this.email);
     // Later you can add API call here
   }

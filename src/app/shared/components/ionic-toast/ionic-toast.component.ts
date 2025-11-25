@@ -12,17 +12,17 @@ export class IonicToastComponent {
   message = signal<string>('');
   isOpen = signal(false);
 
-  @Input() duration = 3000;
+  @Input() duration = 2000;
+
   constructor() {
     effect(() => {
       const msg = this.message();
       this.isOpen.set(!!msg?.trim()?.length);
     });
-
   }
 
-
   show(msg: string) {
+    this.message.set('');
     this.message.set(msg);
   }
 
