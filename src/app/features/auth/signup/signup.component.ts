@@ -1,5 +1,5 @@
 import { Component, inject } from '@angular/core';
-import { createUserWithEmailAndPassword, getAuth, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink } from '@angular/fire/auth';
+import { fetchSignInMethodsForEmail, getAuth, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, updatePassword, updateProfile } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonImg } from '@ionic/angular/standalone';
@@ -17,14 +17,15 @@ export class SignupComponent {
   private router = inject(Router);
   password: string = '';
   email: string = '';
+  name: string = 'Kathiravan';
   confirmPassword: string = ''
   code: string = ''
   accepted: boolean = false;
   passwordPane: boolean = true;
- isVerifying = false;
+  isVerifying = false;
 
-  async ngOnInit(){
-      const auth = getAuth();
+  async ngOnInit() {
+    const auth = getAuth();
     const url = window.location.href;
 
     // 🔥 If user clicks email verification link, we detect it here
@@ -33,32 +34,39 @@ export class SignupComponent {
 
       const email = localStorage.getItem("signupEmail");
       const password = localStorage.getItem("signupPassword");
+      const displayName = localStorage.getItem("signupName");
 
-      if (!email || !password) {
+      if (!email || !password || !displayName) {
         alert("Session expired. Please sign up again.");
         return;
       }
 
       try {
-        // Step 1: Mark email verified
-        await signInWithEmailLink(auth, email, url);
+        // Verify link + sign user in
+        const result = await signInWithEmailLink(auth, email, url);
 
-        // Step 2: Create Firebase user
-        const userCred = await createUserWithEmailAndPassword(auth, email, password);
+        const user = result.user;
+
+        // Set the password manually, since email-link login has no password
+        await updatePassword(user, password);
+
+        await updateProfile(user, {displayName});
+        console.log(user);
 
         // Step 3: Save to backend DB
-        await this.saveUserToDB(userCred.user);
+        await this.saveUserToDB(user);
 
         // Step 4: Cleanup
         localStorage.removeItem("signupEmail");
         localStorage.removeItem("signupPassword");
+        localStorage.removeItem("signupName");
 
         // Step 5: Navigate to other-details
         this.router.navigate(['/other-details']);
 
       } catch (err) {
         console.error(err);
-        alert("Verification failed.");
+        alert("Verification failed. " + err);
       } finally {
         this.isVerifying = false;
       }
@@ -68,6 +76,25 @@ export class SignupComponent {
 
   async sendVerification() {
     const auth = getAuth();
+
+    // CHECK IF EMAIL ALREADY EXISTS
+    const methods = await fetchSignInMethodsForEmail(auth, this.email);
+
+     if (methods.length > 0) {
+    if (methods.includes("password")) {
+      alert("This email already has an account. Please login instead.");
+      this.router.navigate(['/auth/login']);
+      return;
+    }
+
+    if (methods.includes("google.com")) {
+      alert("This email is registered with Google. Please use 'Sign in with Google'.");
+      return;
+    }
+
+    alert("This email is already registered.");
+    return;
+  }
 
     const actionCodeSettings = {
       url: window.location.href,   // 🔥 Return to SAME PAGE
@@ -79,6 +106,7 @@ export class SignupComponent {
 
       localStorage.setItem("signupEmail", this.email);
       localStorage.setItem("signupPassword", this.password);
+      localStorage.setItem("signupName", this.name);
 
       alert("Verification link sent! Check your email.");
 
@@ -103,7 +131,7 @@ export class SignupComponent {
 
   verify() {
 
-    
+
     console.log("Email: ", this.email);
     console.log("Password: ", this.password);
     console.log("Confirm Password: ", this.confirmPassword);
@@ -112,7 +140,7 @@ export class SignupComponent {
   }
 
 
-  register(){
+  register() {
     this.router.navigate(['/other-details'], { replaceUrl: true });
   }
 
