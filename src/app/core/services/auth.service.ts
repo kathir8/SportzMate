@@ -1,7 +1,6 @@
 import { computed, Injectable } from '@angular/core';
 import { initializeApp } from '@angular/fire/app';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithCredential, User } from '@angular/fire/auth';
-import { Capacitor } from '@capacitor/core';
+import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithCredential, signInWithEmailAndPassword, User } from '@angular/fire/auth';
 import { SocialLogin } from "@capgo/capacitor-social-login";
 import { environment } from 'src/environments/environment';
 
@@ -33,7 +32,6 @@ export class AuthService {
     onAuthStateChanged(auth, async (currenUser: User | null) => {
       if (currenUser) {
         const idToken = await currenUser.getIdToken(true);
-        console.log(idToken);
         this.refresh_Access_token = idToken;
       } else {
         //this.logout();
@@ -42,9 +40,6 @@ export class AuthService {
   }
 
   async initialize() {
-
-    const platform = Capacitor.getPlatform();
-    console.log('Initializing on platform:', platform);
 
     const config: any = {
       google: {
@@ -55,7 +50,6 @@ export class AuthService {
 
     await SocialLogin.initialize(config);
 
-    console.log('SocialLogin initialized successfully');
   } catch(error: any) {
     console.error('Failed to initialize SocialLogin:', error);
     throw error;
@@ -64,8 +58,6 @@ export class AuthService {
 
   async loginViaGoogle() {
     try {
-      console.log('Starting Google login...');
-
       const user: any = await SocialLogin.login({
         provider: 'google',
         options: {
@@ -74,11 +66,8 @@ export class AuthService {
         }
       });
 
-      console.log('Raw login response:', user);
-
       if (user?.result) {
         this.loginResponse = user.result;
-        console.log('Login successful:', JSON.stringify(user.result, null, 2));
 
         // Sign in to Firebase with the credential
         const credential = GoogleAuthProvider.credential(
@@ -97,11 +86,19 @@ export class AuthService {
       } else {
         throw new Error('No user data received from Google login');
       }
-    } catch (error: any) {
-      console.error('Google login error:', error);
+    } catch (error) {
       throw error;
     }
+  }
 
+  async login(email: string, password: string) {
+    try {
+      const auth = getAuth();
+      const result = await signInWithEmailAndPassword(auth, email, password);
+      return result.user;
 
+    } catch (error) {
+      throw error;
+    }
   }
 }

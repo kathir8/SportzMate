@@ -13,8 +13,8 @@ export class UserService {
   private userStore = inject(UserStore);
   private router = inject(Router);
 
-  updateUserDetail(id: string) {
-    this.userApi.fetchUserDetail(id).subscribe((response: UserExist) => {
+  fetchUserDetail(id: string) {
+    this.userApi.getUserDetail(id).subscribe((response: UserExist) => {
       if (response.exist) {
         this.userStore.setCurrent(response);
         const routePath: string = this.userStore.isOnboarded() ? '/dashboard/home' : '/other-details';

@@ -8,6 +8,7 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { UserService } from '../../other-details/services/user-service';
 import { User } from '@angular/fire/auth';
+import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -17,12 +18,13 @@ import { User } from '@angular/fire/auth';
 export class LoginComponent {
   private auth = inject(AuthService);
   private userService = inject(UserService);
+  private toast = inject(IonicToastService);
 
   icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
 
 
   email: string = 'ilayakathi@gmail.com';
-  password: string = 'sportzmate';
+  password: string = 'spuorgpkj';
 
 
   ionViewDidEnter() {
@@ -32,22 +34,39 @@ export class LoginComponent {
   async loginViaGoogle() {
     try {
       // this.loading.set(true);
-      const loggedinUser: User = await this.auth.loginViaGoogle();
-      if(loggedinUser.uid){
-        this.userService.updateUserDetail(loggedinUser.uid);
-      }else{
-        console.error('User not found');
-      }
+      const user: User = await this.auth.loginViaGoogle();
+      this.fetchUser(user);
+
     } catch (err) {
-      console.error('Login failed', err);
+      this.toast.show("Google login error");
+      console.error('Google login error', err);
     } finally {
       // this.loading.set(false);
     }
   }
 
-  next() {
-    console.log("Entered Email: ", this.email);
-    // Later you can add API call here
+  async next() {
+    try {
+
+      const user: User = await this.auth.login(this.email, this.password);
+      this.fetchUser(user);
+
+    } catch (error: any) {
+      const msg = error.code === 'auth/invalid-credential' ? 'Incorrect mail / password' : 'Login failed';
+      this.toast.show(msg);
+    }
   }
 
+  private fetchUser(user: User) {
+    if (!user.emailVerified) {
+      this.toast.show("Please verify your email before logging in.");
+      return;
+    }
+
+    if (user.uid) {
+      this.userService.fetchUserDetail(user.uid);
+    } else {
+      this.toast.show("User not found");
+    }
+  }
 }
