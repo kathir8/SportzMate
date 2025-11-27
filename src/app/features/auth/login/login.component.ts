@@ -23,8 +23,8 @@ export class LoginComponent {
   icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
 
 
-  email: string = 'ilayakathi@gmail.com';
-  password: string = 'spuorgpkj';
+  email: string = '';
+  password: string = '';
 
 
   ionViewDidEnter() {
@@ -39,13 +39,17 @@ export class LoginComponent {
 
     } catch (err) {
       this.toast.show("Google login error");
-      console.error('Google login error', err);
     } finally {
       // this.loading.set(false);
     }
   }
 
   async next() {
+
+    if (!this.loginValidation()) {
+      return;
+    }
+
     try {
 
       const user: User = await this.auth.login(this.email, this.password);
@@ -68,5 +72,20 @@ export class LoginComponent {
     } else {
       this.toast.show("User not found");
     }
+  }
+
+  private loginValidation(): boolean {
+    const emailError = this.auth.validateEmail(this.email);
+    if (emailError) {
+      this.toast.show(emailError);
+      return false;
+    }
+
+    const passwordError = this.auth.validatePassword(this.password);
+    if (passwordError) {
+      this.toast.show(passwordError);
+      return false;
+    }
+    return true;
   }
 }

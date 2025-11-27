@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { UserExist } from '../../../core/model/user.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { Observable, of } from 'rxjs';
+import { User } from '@angular/fire/auth';
 
 @Injectable({
   providedIn: 'root',
@@ -28,5 +29,16 @@ export class UserService {
   isuserExist(email: string): Observable<boolean> {
     return of(false);
     return this.userApi.checkUserExist(email);
+  }
+
+  saveUser(user: User) {
+    if(user){
+      this.userApi.createUser(user).subscribe((response: UserExist) => {
+        localStorage.removeItem("signupEmail");
+        localStorage.removeItem("signupPassword");
+        localStorage.removeItem("signupName");
+        this.router.navigate(['/other-details'], { replaceUrl: true });
+      });
+    }
   }
 }

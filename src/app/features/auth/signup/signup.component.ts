@@ -1,5 +1,4 @@
-import { Component, inject } from '@angular/core';
-import { fetchSignInMethodsForEmail, getAuth, isSignInWithEmailLink, sendSignInLinkToEmail, signInWithEmailLink, updatePassword, updateProfile } from '@angular/fire/auth';
+import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonImg } from '@ionic/angular/standalone';
@@ -9,6 +8,7 @@ import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { UserService } from '../../other-details/services/user-service';
 import { firstValueFrom } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Component({
   selector: 'app-signup',
@@ -19,69 +19,36 @@ import { firstValueFrom } from 'rxjs';
 export class SignupComponent {
   private router = inject(Router);
   private toast = inject(IonicToastService);
+  private auth = inject(AuthService);
   private userService = inject(UserService);
 
   password: string = 'sportzmate';
   email: string = 'ilayakathi@gmail.com';
   name: string = 'Kathiravan';
   confirmPassword: string = ''
-  code: string = ''
-  accepted: boolean = false;
-  passwordPane: boolean = true;
-  isVerifying = false;
+  accepted = signal(false);
+  isVerifying = signal(false);
 
   async ngOnInit() {
-    const auth = getAuth();
-    const url = window.location.href;
+    try {
+      const userDetail = await this.auth.userClickEmailVerify();
 
-    // 🔥 If user clicks email verification link, we detect it here
-    if (isSignInWithEmailLink(auth, url)) {
-      this.isVerifying = true;
-
-      const email = localStorage.getItem("signupEmail");
-      const password = localStorage.getItem("signupPassword");
-      const displayName = localStorage.getItem("signupName");
-
-      if (!email || !password || !displayName) {
+      if (userDetail == null) {
         this.toast.show("Session expired. Please sign up again.");
         return;
       }
-
-      try {
-        // Verify link + sign user in
-        const result = await signInWithEmailLink(auth, email, url);
-
-        const user = result.user;
-
-        // Set the password manually, since email-link login has no password
-        await updatePassword(user, password);
-
-        await updateProfile(user, { displayName });
-        console.log(user);
-
-        // Step 3: Save to backend DB
-        await this.saveUserToDB(user);
-
-        // Step 4: Cleanup
-        localStorage.removeItem("signupEmail");
-        localStorage.removeItem("signupPassword");
-        localStorage.removeItem("signupName");
-
-        // Step 5: Navigate to other-details
-        this.router.navigate(['/other-details']);
-
-      } catch (err) {
-        console.error(err);
-        this.toast.show("Verification failed." + err);
-      } finally {
-        this.isVerifying = false;
-      }
+      this.userService.saveUser(userDetail);
+    } catch (error) {
+      this.toast.show("Verification failed. Please try again.");
     }
   }
 
 
   async sendVerification() {
-    const auth = getAuth();
+
+    if (!this.signUpValidation()) {
+      return
+    }
 
     const isUserExist = await firstValueFrom(this.userService.isuserExist(this.email));
     if (isUserExist) {
@@ -89,50 +56,40 @@ export class SignupComponent {
       this.router.navigate(['/auth/login']);
     }
 
-    const actionCodeSettings = {
-      url: window.location.href,   // 🔥 Return to SAME PAGE
-      handleCodeInApp: true
-    };
-
     try {
-      await sendSignInLinkToEmail(auth, this.email, actionCodeSettings);
-
-      localStorage.setItem("signupEmail", this.email);
-      localStorage.setItem("signupPassword", this.password);
-      localStorage.setItem("signupName", this.name);
-      this.toast.show("Verification link sent! Check your email.");
+      const verificationMailSent = await this.auth.sendVerification(this.email, this.password, this.name);
+      if (verificationMailSent) {
+        this.toast.show("Verification link sent! Check your email.");
+      }
     } catch (err) {
-      console.error(err);
       this.toast.show("Failed to send verification email.");
     }
+
   }
 
-  async saveUserToDB(user: any) {
-    // 🔥 Your backend call here
-    return fetch('/api/users/create', {
-      method: 'POST',
-      body: JSON.stringify({
-        uid: user.uid,
-        email: user.email,
-        name: user.displayName ?? null
-      }),
-      headers: { 'Content-Type': 'application/json' }
-    });
-  }
+  private signUpValidation(): boolean {
+    const emailError = this.auth.validateEmail(this.email);
+    if (emailError) {
+      this.toast.show(emailError);
+      return false;
+    }
 
-  verify() {
+    const passwordError = this.auth.validatePassword(this.password);
+    if (passwordError) {
+      this.toast.show(passwordError);
+      return false;
+    }
 
+    if (this.password !== this.confirmPassword) {
+      this.toast.show("Passwords do not match.");
+      return false;
+    }
 
-    console.log("Email: ", this.email);
-    console.log("Password: ", this.password);
-    console.log("Confirm Password: ", this.confirmPassword);
-    // Later you can add API call here
-    this.passwordPane = false;
-  }
-
-
-  register() {
-    this.router.navigate(['/other-details'], { replaceUrl: true });
+    if (!this.accepted()) {
+      this.toast.show("Please accept the terms and conditions.");
+      return false;
+    }
+    return true;
   }
 
 }

@@ -1,6 +1,6 @@
 import { computed, Injectable } from '@angular/core';
 import { initializeApp } from '@angular/fire/app';
-import { getAuth, GoogleAuthProvider, onAuthStateChanged, signInWithCredential, signInWithEmailAndPassword, User } from '@angular/fire/auth';
+import { getAuth, GoogleAuthProvider, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithCredential, signInWithEmailAndPassword, signInWithEmailLink, updatePassword, updateProfile, User } from '@angular/fire/auth';
 import { SocialLogin } from "@capgo/capacitor-social-login";
 import { environment } from 'src/environments/environment';
 
@@ -87,6 +87,7 @@ export class AuthService {
         throw new Error('No user data received from Google login');
       }
     } catch (error) {
+      console.error('Google login error', error);
       throw error;
     }
   }
@@ -98,7 +99,73 @@ export class AuthService {
       return result.user;
 
     } catch (error) {
+      console.error('Login error', error);
       throw error;
     }
+  }
+
+  async sendVerification(email: string, password: string, name: string) {
+    const auth = getAuth();
+
+    try {
+      const actionCodeSettings = {
+        url: window.location.href,   // 🔥 Return to SAME PAGE
+        handleCodeInApp: true
+      };
+      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+
+      localStorage.setItem("signupEmail", email);
+      localStorage.setItem("signupPassword", password);
+      localStorage.setItem("signupName", name);
+      return true;
+    } catch (err) {
+      console.error('Send verification error', err);
+      throw err;
+    }
+
+  }
+
+  async userClickEmailVerify() {
+    const auth = getAuth();
+    const url = window.location.href;
+
+    if (isSignInWithEmailLink(auth, url)) {
+      const email = localStorage.getItem("signupEmail");
+      const password = localStorage.getItem("signupPassword");
+      const displayName = localStorage.getItem("signupName");
+
+      if (!email || !password || !displayName) {
+        return null;
+      }
+
+      try {
+        // Verify link + sign user in
+        const result = await signInWithEmailLink(auth, email, url);
+
+        const user = result.user;
+
+        // Set the password manually, since email-link login has no password
+        await updatePassword(user, password);
+
+        await updateProfile(user, { displayName });
+        return user;
+
+      } catch (error) {
+        console.error('Verification failed.', error);
+        throw error;
+      }
+    }
+    return undefined;
+  }
+
+  validateEmail(email: string): string {
+    if (!email) return 'Please enter your email';
+    const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+    return emailRegex.test(email.trim()) ? '' : 'Please enter a valid email';
+  }
+
+  validatePassword(password: string): string {
+    if (!password) return 'Please enter your password';
+    return password.length >= 8 ? '' : 'Please must be at least 8 characters';
   }
 }

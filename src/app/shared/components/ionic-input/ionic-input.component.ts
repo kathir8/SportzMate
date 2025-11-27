@@ -1,12 +1,12 @@
 import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
-import { IonLabel, IonInput } from '@ionic/angular/standalone';
+import { IonLabel, IonInput, IonInputPasswordToggle } from '@ionic/angular/standalone';
 
 @Component({
   selector: 'ionic-input',
   templateUrl: './ionic-input.component.html',
   styleUrls: ['./ionic-input.component.scss'],
-  imports: [IonLabel, IonInput],
+  imports: [IonLabel, IonInput, IonInputPasswordToggle],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -28,14 +28,13 @@ export class IonicInputComponent<T extends string | number = string> implements 
   @Output() blur = new EventEmitter<void>();
   @Output() valueChange = new EventEmitter<T>();
 
-
   value: T | null = null;
 
   // ControlValueAccessor methods
-  private onChange: (value: T | null) => void = () => {};
+  private onChange: (value: T | null) => void = () => { };
   private onTouched = () => { };
 
-  writeValue(value:  T | null): void {
+  writeValue(value: T | null): void {
     this.value = value;
   }
 
