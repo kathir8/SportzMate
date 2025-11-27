@@ -7,6 +7,8 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 import { IonicCheckboxComponent } from 'src/app/shared/components/ionic-checkbox/ionic-checkbox.component';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
+import { UserService } from '../../other-details/services/user-service';
+import { firstValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-signup',
@@ -17,9 +19,10 @@ import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-t
 export class SignupComponent {
   private router = inject(Router);
   private toast = inject(IonicToastService);
+  private userService = inject(UserService);
 
-  password: string = '';
-  email: string = '';
+  password: string = 'sportzmate';
+  email: string = 'ilayakathi@gmail.com';
   name: string = 'Kathiravan';
   confirmPassword: string = ''
   code: string = ''
@@ -80,23 +83,10 @@ export class SignupComponent {
   async sendVerification() {
     const auth = getAuth();
 
-    // CHECK IF EMAIL ALREADY EXISTS
-    const methods = await fetchSignInMethodsForEmail(auth, this.email);
-
-    if (methods.length > 0) {
-      if (methods.includes("password")) {
-        this.toast.show("This email already has an account. Please login instead.");
-        this.router.navigate(['/auth/login']);
-        return;
-      }
-
-      if (methods.includes("google.com")) {
-        this.toast.show("This email is registered with Google. Please use 'Sign in with Google'.");
-        return;
-      }
-      this.toast.show("This email is already registered.");
-      alert("This email is already registered.");
-      return;
+    const isUserExist = await firstValueFrom(this.userService.isuserExist(this.email));
+    if (isUserExist) {
+      this.toast.show("This email already has an account. Please login instead.");
+      this.router.navigate(['/auth/login']);
     }
 
     const actionCodeSettings = {

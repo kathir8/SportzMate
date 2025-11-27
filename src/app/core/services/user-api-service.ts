@@ -21,4 +21,8 @@ export class UserApiService {
     return this.api.get<UserDetail[]>(`/api/users/search?q=${encodeURIComponent(q)}`);
   }
 
+  checkUserExist(email: string): Observable<boolean> {
+    return this.api.get<boolean>(`checkUserExist/${email}`);
+  }
+
 }

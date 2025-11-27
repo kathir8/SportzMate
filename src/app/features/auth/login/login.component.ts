@@ -21,7 +21,9 @@ export class LoginComponent {
   icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
 
 
-  email: string = '';
+  email: string = 'ilayakathi@gmail.com';
+  password: string = 'sportzmate';
+
 
   ionViewDidEnter() {
     this.auth.initialize();
