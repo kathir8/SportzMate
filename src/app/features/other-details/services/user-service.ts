@@ -5,6 +5,7 @@ import { UserExist } from '../../../core/model/user.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { Observable, of } from 'rxjs';
 import { User } from '@angular/fire/auth';
+import { AuthService } from 'src/app/core/services/auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -12,19 +13,41 @@ import { User } from '@angular/fire/auth';
 export class UserService {
   private userApi = inject(UserApiService);
   private userStore = inject(UserStore);
+  private auth = inject(AuthService);
   private router = inject(Router);
 
-  fetchUserDetail(id: string) {
-    this.userApi.getUserDetail(id).subscribe((response: UserExist) => {
-      if (response.exist) {
-        this.userStore.setCurrent(response);
-        const routePath: string = this.userStore.isOnboarded() ? '/dashboard/home' : '/other-details';
-        this.router.navigateByUrl(routePath, { replaceUrl: true });
-      } else {
-        this.router.navigateByUrl('/login', { replaceUrl: true });
+  initializeUser() {
+    const cached = this.userStore.loadFromCache();
+
+    if (!cached) {
+      this.auth.logout();
+      return;
+    }
+    this.navigateAfterUserLoad();
+  }
+
+
+  fetchUserDetail(uid: string) {
+    this.userApi.getUserDetail(uid).subscribe((user: UserExist) => {
+      if (!user.exist) {
+        this.auth.logout();
+        return;
       }
+
+      this.userStore.setCurrent(user);
+      this.navigateAfterUserLoad();
+
     });
   }
+
+  private navigateAfterUserLoad() {
+    const routePath = this.userStore.isOnboarded()
+      ? '/dashboard/home'
+      : '/other-details';
+
+    this.router.navigateByUrl(routePath, { replaceUrl: true });
+  }
+
 
   isuserExist(email: string): Observable<boolean> {
     return of(false);
@@ -32,7 +55,7 @@ export class UserService {
   }
 
   saveUser(user: User) {
-    if(user){
+    if (user) {
       this.userApi.createUser(user).subscribe((response: UserExist) => {
         localStorage.removeItem("signupEmail");
         localStorage.removeItem("signupPassword");

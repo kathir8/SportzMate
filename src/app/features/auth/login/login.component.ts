@@ -28,7 +28,7 @@ export class LoginComponent {
 
 
   ionViewDidEnter() {
-    this.auth.initialize();
+    this.auth.initializeSocialLogin();
   }
 
   async loginViaGoogle() {
@@ -38,7 +38,8 @@ export class LoginComponent {
       this.fetchUser(user);
 
     } catch (err) {
-      this.toast.show("Google login error");
+      const msg = err === 'NoUser' ? 'No user data received from Google login' : 'Google login error';
+      this.toast.show(msg);
     } finally {
       // this.loading.set(false);
     }

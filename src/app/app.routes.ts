@@ -19,6 +19,7 @@ export const routes: Routes = [
   },
   {
     path: 'other-details',
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import('./features/other-details/other-details.component').then(m => m.OtherDetailsComponent)
   },

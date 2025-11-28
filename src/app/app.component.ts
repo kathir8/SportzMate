@@ -1,9 +1,9 @@
 import { Component, effect, inject, viewChild } from '@angular/core';
 import { IonApp, IonRouterOutlet } from '@ionic/angular/standalone';
 import { ThemeService } from './shared/services/theme.service';
-import { AuthService } from './core/services/auth.service';
 import { IonicToastComponent } from 'src/app/shared/components/ionic-toast/ionic-toast.component';
 import { IonicToastService } from './shared/components/ionic-toast/ionic-toast.service';
+import { UserService } from './features/other-details/services/user-service';
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -15,10 +15,10 @@ export class AppComponent {
 
   private themeService = inject(ThemeService);
   private toastService = inject(IonicToastService);
-  private auth = inject(AuthService);
+  private userService = inject(UserService);
 
   constructor() {
-    this.auth.refreshToken();
+    this.userService.initializeUser();
     effect(() => {
       const toastInstance = this.globalToast();
       if (toastInstance) {
