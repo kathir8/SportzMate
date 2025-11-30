@@ -1,7 +1,6 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { initializeApp } from '@angular/fire/app';
 import { getAuth, GoogleAuthProvider, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithCredential, signInWithEmailAndPassword, signInWithEmailLink, updatePassword, updateProfile, User } from '@angular/fire/auth';
-import { Router } from '@angular/router';
 import { SocialLogin } from "@capgo/capacitor-social-login";
 import { environment } from 'src/environments/environment';
 
@@ -10,7 +9,6 @@ window.addEventListener('unhandledrejection', (ev) => {
 });
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private router = inject(Router);
   private firebase = initializeApp(environment.firebaseConfig);
 
   private uid = signal<string | null>(null);
@@ -182,7 +180,7 @@ export class AuthService {
   }
 
 
-  async logout(): Promise<void> {
+  async logout(): Promise<boolean> {
     try {
       const auth = getAuth(this.firebase);
       await auth.signOut();
@@ -198,15 +196,12 @@ export class AuthService {
         console.warn('SocialLogin logout failed (non-fatal)', e);
       });
 
-      // navigate to login for instant UX
-      this.router.navigate(['/login']);
+      return true;
     } catch (err) {
       console.error('Logout failed', err);
-      // still clear signals and navigate
       this.uid.set(null);
       this.token.set(null);
-      this.router.navigate(['/login']);
-      throw err;
+      return false;
     }
   }
 

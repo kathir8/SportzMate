@@ -6,6 +6,7 @@ import { UserStore } from 'src/app/core/stores/user-store';
 import { Observable, of } from 'rxjs';
 import { User } from '@angular/fire/auth';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { SplashScreen } from '@capacitor/splash-screen';
 
 @Injectable({
   providedIn: 'root',
@@ -16,11 +17,12 @@ export class UserService {
   private auth = inject(AuthService);
   private router = inject(Router);
 
+
   initializeUser() {
     const cached = this.userStore.loadFromCache();
 
     if (!cached) {
-      this.auth.logout();
+      this.redirectToLogin();
       return;
     }
     this.navigateAfterUserLoad();
@@ -30,7 +32,8 @@ export class UserService {
   fetchUserDetail(uid: string) {
     this.userApi.getUserDetail(uid).subscribe((user: UserExist) => {
       if (!user.exist) {
-        this.auth.logout();
+        this.redirectToLogin();
+
         return;
       }
 
@@ -46,6 +49,7 @@ export class UserService {
       : '/other-details';
 
     this.router.navigateByUrl(routePath, { replaceUrl: true });
+    SplashScreen.hide();
   }
 
 
@@ -63,5 +67,11 @@ export class UserService {
         this.router.navigate(['/other-details'], { replaceUrl: true });
       });
     }
+  }
+
+  private redirectToLogin() {
+    this.auth.logout();
+    this.router.navigateByUrl('/login', { replaceUrl: true });
+    SplashScreen.hide();
   }
 }

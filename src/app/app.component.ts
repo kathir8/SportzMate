@@ -4,6 +4,8 @@ import { ThemeService } from './shared/services/theme.service';
 import { IonicToastComponent } from 'src/app/shared/components/ionic-toast/ionic-toast.component';
 import { IonicToastService } from './shared/components/ionic-toast/ionic-toast.service';
 import { UserService } from './features/other-details/services/user-service';
+import { SplashScreen } from '@capacitor/splash-screen';
+
 @Component({
   selector: 'app-root',
   templateUrl: 'app.component.html',
@@ -13,11 +15,12 @@ export class AppComponent {
 
   globalToast = viewChild.required<IonicToastComponent>('globalToast');
 
-  private themeService = inject(ThemeService);
   private toastService = inject(IonicToastService);
+  private themeService = inject(ThemeService);
   private userService = inject(UserService);
 
   constructor() {
+    SplashScreen.show();
     this.userService.initializeUser();
     effect(() => {
       const toastInstance = this.globalToast();
@@ -26,7 +29,7 @@ export class AppComponent {
       }
     });
   }
-  
+
 
   toggleTheme(event: any) {
     this.themeService.setDarkTheme(event.detail.checked);
