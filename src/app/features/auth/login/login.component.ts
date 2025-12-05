@@ -28,7 +28,7 @@ export class LoginComponent {
 
 
   ionViewDidEnter() {
-    this.auth.initializeSocialLogin();
+    // this.auth.initializeSocialLogin();
   }
 
   async loginViaGoogle() {

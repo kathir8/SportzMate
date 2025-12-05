@@ -1,3 +1,29 @@
-  <ion-content class="ion-padding chat-page">
-     chatting
-    </ion-content>
+<ion-content class="ion-padding chat-page">
+  <div class="chat-container">
+    @for (msg of messages(); track msg.id) {
+      <div class="message-wrapper" [class.mine]="msg.senderId === currentUid()">
+        <div class="msg">
+          {{ msg.text }}
+        </div>
+        <span class="timestamp">
+          {{ msg.timestamp.toDate() | date:'short' }}
+        </span>
+      </div>
+    } @empty {
+      <div class="no-messages">
+        <p>No messages yet. Start the conversation!</p>
+      </div>
+    }
+  </div>
+
+  <div class="input-area">
+    <input 
+      type="text" 
+      [(ngModel)]="newMessage" 
+      (keyup.enter)="send()"
+      placeholder="Type a message..."
+    />
+    <button (click)="send()">Send</button>
+  </div>
+
+</ion-content>

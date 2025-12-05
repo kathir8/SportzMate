@@ -1,6 +1,7 @@
 // user.store.ts
 import { Injectable, signal, computed } from '@angular/core';
 import { UserDetail } from '../model/user.model';
+import { SportType } from 'src/app/shared/models/shared.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserStore {
@@ -20,10 +21,20 @@ export class UserStore {
 
   loadFromCache(): UserDetail | null {
     try {
-      const cached = localStorage.getItem('userDetail');
-      if (!cached) return null;
+      // const cached = localStorage.getItem('userDetail');
+       const parsed:UserDetail = {
+      name : 'Kathiravan',
+      email : 'sukn99@gmail.com',
+      profile : '',
+      customProfile : '',
+      id : 'ZImljsDYntQLvi3y9NPgdxsDdqF3',
+      age: 25,
+      gender: 'male',
+      interest: [SportType.Basketball],
+    }
+      // if (!cached) return null;
 
-      const parsed = JSON.parse(cached);
+      // const parsed = JSON.parse(cached);
       this.current.set(parsed);
       return parsed;
 

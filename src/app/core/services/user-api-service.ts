@@ -41,7 +41,7 @@ export class UserApiService {
    getUserDetail(id: string): Observable<UserExist> {
     const userDetail:UserExist = {
       name : 'Kathiravan',
-      email : 'ilayakathi@gmail.com',
+      email : 'sukn99@gmail.com',
       profile : '',
       customProfile : '',
       id : id,

@@ -12,6 +12,7 @@ import { Coordinates, MateListItem } from './mate-stuff/models/mate.model';
 import { RangeFabComponent } from './range-fab/range-fab.component';
 import { HomeApiService } from './services/home-api-service';
 import { HomeService } from './services/home-service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
@@ -24,6 +25,8 @@ export class HomeComponent {
 
   public homeService = inject(HomeService);
   private homeApi = inject(HomeApiService);
+  private router = inject(Router);
+
 
   icons = { navigateCircleOutline, navigateSharp };
 
@@ -136,6 +139,11 @@ export class HomeComponent {
     setTimeout(() => {
       event.detail.complete(); // hide spinner
     }, 2500);
+  }
+
+
+  openChat(uid: string) {
+    this.router.navigate(['/dashboard/chat'], { state: { receiverUid: uid } });
   }
 
 }
