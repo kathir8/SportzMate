@@ -50,7 +50,6 @@ export class ChatComponent {
     this.chatService.sendMessage(
       this.roomId(),
       this.currentUid(),
-      this.receiverUid(),
       this.newMessage()
     );
 

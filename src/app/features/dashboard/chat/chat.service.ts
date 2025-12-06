@@ -1,6 +1,6 @@
 import { inject, Injectable, resource, Signal, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Firestore, collection, addDoc, query, orderBy, collectionData, Timestamp, CollectionReference } from '@angular/fire/firestore';
+import { Firestore, collection, addDoc, query, orderBy, collectionData, Timestamp, CollectionReference, serverTimestamp } from '@angular/fire/firestore';
 import { firstValueFrom, Observable } from 'rxjs';
 
 
@@ -26,16 +26,23 @@ export class ChatService {
   }
 
   // Send Message
-  async sendMessage(roomId: string, senderId: string, receiverId: string, text: string) {
-    const ref = collection(this.firestore, `messages/${roomId}/chat`);
-    return await addDoc(ref, {
+  async sendMessage(roomId: string, senderId: string, text: string) {
+
+  try {
+    const chatRef = collection(this.firestore, `messages/${roomId}/chat`);
+
+    await addDoc(chatRef, {
       senderId,
-      receiverId,
       text,
-      timestamp: new Date(),
-      read: false
+      timestamp: serverTimestamp(),
     });
+
   }
+  catch (error:any) {
+    console.error("🔥 Firestore write error:", error.code, error.message);
+  }
+}
+
 
 
 
