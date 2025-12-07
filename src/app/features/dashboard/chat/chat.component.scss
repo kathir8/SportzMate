@@ -1,34 +1,159 @@
- .chat-container {
-     height: 100%;
-     padding: 10px;
- }
+$containerPaddingX: 15px;
 
- .msg {
-     padding: 8px;
-     margin: 5px 0;
-     background: #ddd;
-     border-radius: 10px;
-     max-width: 70%;
- }
+.chat-page {
+    --background: var(--background-color);
+    --padding-start:#{$containerPaddingX};
+    --padding-end:#{$containerPaddingX};
 
- .msg.mine {
-     background: #4caf50;
-     color: white;
-     margin-left: auto;
- }
+    .chat-wrapper {
+        overflow: hidden;
+        width: 100%;
+        height: 100vh;
+        position: relative;
 
- .input-box {
-     position: fixed;
-     bottom: 0;
-     width: 100%;
-     display: flex;
-     padding: 10px;
-     background: white;
-     left: 0px;
- }
+        .chat-outer-container {
+            overflow: hidden;
+            width: 100%;
+            height: 100vh;
+            position: relative;
+            display: flex;
 
- input {
-     flex: 1;
-     padding: 10px;
-     border-radius: 5px;
- }
+            .chat-inner-container {
+                position: relative;
+                flex-direction: column;
+                display: flex;
+                width: 100%;
+                height: 100%;
+
+                .message-outer-container {
+                    position: relative;
+                    overflow-y: auto;
+                    padding: 16px 0;
+
+                    > :not([hidden])~ :not([hidden]) {
+                        margin-bottom: 0px;
+                        margin-top: 8px;
+                    }
+
+                    .message-inner-container {
+                        margin-bottom: 4px;
+                        display: flex;
+
+                        &.reciever {
+                            justify-content: flex-start;
+                        }
+
+                        &.sender {
+                            justify-content: flex-end;
+                        }
+                    }
+
+                    .message-container {
+                        position: relative;
+                        max-width: 85%;
+                        padding: 6px 8px;
+                        border-radius: 8px;
+                        font-size: 14px;
+                        line-height: 1.625;
+                        box-shadow: #00000000 0px 0px 0px 0px;
+
+                        &.sender {
+                            border-top-right-radius: 0px;
+                            background-color: var(--ion-color-primary);
+                        }
+
+                        &.reciever {
+                            background: #ffffff;
+                            border-top-left-radius: 0px;
+                        }
+
+                        .triangle {
+                            position: absolute;
+                            top: 0;
+                            width: 0;
+                            height: 0;
+                            border-width: 6px;
+                            border-color: transparent;
+
+                            &.sender {
+                                right: -8px;
+                                border-top-color: var(--ion-color-primary);
+                                border-right-color: var(--ion-color-primary);
+                            }
+
+                            &.reciever {
+                                left: -8px;
+                                border-top-color: #ffffff;
+                                border-right-color: #ffffff;
+                            }
+                        }
+
+                        .message {
+                            padding-left: 4px;
+                            padding-right: 4px;
+                            overflow-wrap: break-word;
+                            white-space: pre-wrap;
+
+                            &.sender {
+                                color: #ffffff;
+                            }
+
+                            &.reciever {
+                                color: #111b21;
+                            }
+                        }
+
+                        .time-container {
+                            display: flex;
+                            justify-content: flex-end;
+                            align-items: center;
+                            gap: 4px;
+                            min-width: 50px;
+                            margin-top: -4px;
+
+                            .timing {
+                                font-size: 11px;
+                                padding-top: 4px;
+
+                                &.sender {
+                                    color: var(--ion-color-primary-fade);
+                                }
+
+                                &.reciever {
+                                    color: #667781;
+                                }
+                            }
+
+                            .tick {
+                                color: var(---ion-color-secondary);
+                                font-size: 16px;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+
+
+}
+
+.input-box {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    display: flex;
+    padding: 10px;
+    background: white;
+    left: 0px;
+}
+
+input {
+    flex: 1;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+
+/* -------------------------------------------------------------------------- */

@@ -56,4 +56,18 @@ export class ChatComponent {
     this.newMessage.set('');
   }
 
+  getMsgSide(senderId:string):'sender' | 'reciever'{
+   return senderId === this.currentUid() ? 'sender' : 'reciever';
+  }
+
+  isMessageFirstInGroup(currentSenderIsMe: string, index: number): boolean {
+    // 1. Check if it's the very first message
+    if (index === 0) {
+      return true;
+    }
+
+    // 2. Check if the sender is different from the previous message's sender
+    const previousMessage = this.messages()[index - 1];
+    return previousMessage.senderId !== currentSenderIsMe;
+  }
 }
