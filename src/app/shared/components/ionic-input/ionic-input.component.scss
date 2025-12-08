@@ -16,6 +16,9 @@ ion-input {
             border-radius: 0;
             box-shadow: none;
         }
+        &.from-chat{
+            margin-bottom: 16px;
+        }
     }
 }
 

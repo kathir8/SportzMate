@@ -1,50 +1,78 @@
-<ion-content class="ion-padding chat-page">
+<ion-content class="ion-padding chat-page" scroll-y="false">
   <div class="chat-wrapper">
-      <div class="chat-outer-container">
-        <div class="chat-inner-container">
-          <div class="message-outer-container">
-            @for (msg of messages(); track msg.id;let index = $index) {
-            <div class="message-inner-container" [class]="getMsgSide(msg.senderId)">
-              <div class="message-container" [class]="getMsgSide(msg.senderId)">
+    <div class="chat-outer-container">
+      <div class="chat-inner-container">
+        <div class="message-outer-container">
+          @for (msg of messages(); track msg.id;let index = $index) {
+          <div class="message-inner-container" [class]="getMsgSide(msg.senderId)">
+            <div class="message-container" [class]="getMsgSide(msg.senderId)">
 
-                @if(isMessageFirstInGroup(msg.senderId, index)){
-                <span class="triangle" [class]="getMsgSide(msg.senderId)"></span>
+              @if(isMessageFirstInGroup(msg.senderId, index)){
+              <span class="triangle" [class]="getMsgSide(msg.senderId)"></span>
+              }
+              <div class="message" [class]="getMsgSide(msg.senderId)">{{msg.text}}</div>
+
+              <div class="time-container">
+                <span class="timing" [class]="getMsgSide(msg.senderId)">
+                  {{msg.timestamp.toDate() | date:'short'}}
+                </span>
+
+                @if(msg.read && msg.senderId === currentUid()){
+                <span class="tick">
+                  <svg viewBox="0 0 16 15" width="16" height="15" className="">
+                    <path fill="currentColor"
+                      d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.473-.018l6.158-7.595a.413.413 0 0 0-.056-.541z">
+                    </path>
+                    <path fill="currentColor"
+                      d="M12.08 3.316l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.473-.018l6.158-7.595a.413.413 0 0 0-.056-.541z">
+                    </path>
+                  </svg>
+                </span>
                 }
-                <div class="message" [class]="getMsgSide(msg.senderId)">{{msg.text}}</div>
-
-                <div class="time-container">
-                  <span class="timing" [class]="getMsgSide(msg.senderId)">
-                    {{msg.timestamp.toDate() | date:'short'}}
-                  </span>
-
-                  @if(msg.read && msg.senderId === currentUid()){
-                  <span class="tick">
-                    <svg viewBox="0 0 16 15" width="16" height="15" className="">
-                      <path fill="currentColor"
-                        d="M15.01 3.316l-.478-.372a.365.365 0 0 0-.51.063L8.666 9.879a.32.32 0 0 1-.484.033l-.358-.325a.319.319 0 0 0-.484.032l-.378.483a.418.418 0 0 0 .036.541l1.32 1.266c.143.14.361.125.473-.018l6.158-7.595a.413.413 0 0 0-.056-.541z">
-                      </path>
-                      <path fill="currentColor"
-                        d="M12.08 3.316l-.478-.372a.365.365 0 0 0-.51.063L4.566 9.879a.32.32 0 0 1-.484.033L1.891 7.769a.366.366 0 0 0-.515.006l-.423.433a.364.364 0 0 0 .006.514l3.258 3.185c.143.14.361.125.473-.018l6.158-7.595a.413.413 0 0 0-.056-.541z">
-                      </path>
-                    </svg>
-                  </span>
-                  }
-                </div>
               </div>
             </div>
-            } @empty {
-            <div class="no-messages">
-              <p>No messages yet. Start the conversation!</p>
+          </div>
+          } @empty {
+          <div class="no-messages">
+            <p>No messages yet. Start the conversation!</p>
+          </div>
+          }
+        </div>
+
+        @if(showEmojiPicker()){
+        <div class="emoji-wrapper fade-in slide-in animate-in">
+          <div class="icon-text-container">
+            <span class="icon-text">SELECT EMOJI</span>
+            <div class="icon-close transition-colors" (click)="showEmojiPicker.set(false)">
+              <ion-icon [icon]="icons.closeOutline"></ion-icon>
+            </div>
+          </div>
+
+          <div class="emoji-container">
+            @for (emoji of emojiList(); track index;let index = $index) {
+            <div class="emoji transition-colors" (click)="handleEmojiClick(emoji)">
+              {{emoji}}
             </div>
             }
           </div>
-          <div class="input-area">
-            <input type="text" [(ngModel)]="newMessage" (keyup.enter)="send()" placeholder="Type a message..." />
-            <button (click)="send()">Send</button>
+        </div>
+        }
+
+        <div class="input-wrapper">
+          <div class="icon-container" [class.primary]="showEmojiPicker()">
+            <ion-icon [icon]="icons.happyOutline" (click)="showEmojiPicker.set(!showEmojiPicker())"></ion-icon>
+          </div>
+          <div class="icon-container" [class.primary]="false">
+            <ion-icon [icon]="icons.attachOutline"></ion-icon>
+          </div>
+          <ionic-input class="input-box" placeholder="Type a message" [(ngModel)]="newMessage"
+            [dynamicClass]="'from-chat'"></ionic-input>
+          <div class="icon-container primary" (click)="send()">
+            <ion-icon [icon]="icons.sendOutline"></ion-icon>
           </div>
         </div>
       </div>
+    </div>
   </div>
-
 
 </ion-content>

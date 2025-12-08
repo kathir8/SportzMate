@@ -1,4 +1,4 @@
-$containerPaddingX: 15px;
+$containerPaddingX: 0px;
 
 .chat-page {
     --background: var(--background-color);
@@ -28,7 +28,8 @@ $containerPaddingX: 15px;
                 .message-outer-container {
                     position: relative;
                     overflow-y: auto;
-                    padding: 16px 0;
+                    padding: 16px;
+                    flex: 1 1 0%;
 
                     > :not([hidden])~ :not([hidden]) {
                         margin-bottom: 0px;
@@ -131,29 +132,139 @@ $containerPaddingX: 15px;
                         }
                     }
                 }
+
+                .emoji-wrapper {
+                    position: absolute;
+                    bottom: 150px;
+                    right: 0px;
+                    width: 288px;
+                    height: 256px;
+                    display: flex;
+                    left: 16px;
+                    z-index: 50;
+                    background: white;
+                    transition-duration: 200ms;
+                    box-shadow: #00000000 0px 0px 0px;
+                    border-radius: 8px;
+                    flex-direction: column;
+                    border: 1px solid #e5e7eb;
+
+                    .icon-text-container {
+                        display: flex;
+                        align-items: center;
+                        justify-content: space-between;
+                        padding: 4px 12px;
+                        background-color: #f3f4f6;
+
+                        .icon-text {
+                            color: #6b7280;
+                            font-size: 12px;
+                            line-height: 16px;
+                            letter-spacing: 0.3px;
+                            font-weight: 600;
+                        }
+
+                        .icon-close {
+                            color: #9ca3af;
+                            font-size: 23px;
+                        }
+                    }
+
+                    .emoji-container {
+                        padding: 8px;
+                        gap: 4px;
+                        overflow-y: auto;
+                        grid-template-columns: repeat(6, minmax(0, 1fr));
+                        flex: 1 1 0%;
+                        display: grid;
+
+                        .emoji {
+                            font-size: 24px;
+                            line-height: 32px;
+                            padding: 6px;
+                            border-radius: 4px;
+                            justify-content: center;
+                            align-items: center;
+                            width: 40px;
+                            height: 40px;
+                            display: flex;
+                            cursor: pointer;
+                        }
+                    }
+                }
+
+                .input-wrapper {
+                    position: relative;
+                    z-index: 10;
+                    padding: 8px 16px;
+                    display: flex;
+                    align-items: center;
+                    gap: 8px;
+                    bottom: 80px;
+
+                    .icon-container {
+                        padding: 4px;
+                        font-size: 25px;
+                        color: #54656f;
+
+                        &.primary {
+                            color: var(--ion-color-primary);
+                        }
+                    }
+
+                    .input-box {
+                        display: flex;
+                        flex: 1 1 0%;
+                    }
+
+                }
+
+
+                .transition-colors {
+                    transition-property: color, background-color, border-color, text-decoration-color, fill, stroke, -webkit-text-decoration-color;
+                    transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+                    transition-duration: 150ms;
+                }
+
+
+                .fade-in {
+                    animation-name: fadeIn;
+                    animation-duration: 0.5s;
+                    animation-fill-mode: both;
+                }
+
+                @keyframes fadeIn {
+                    from {
+                        opacity: 0;
+                    }
+
+                    to {
+                        opacity: 1;
+                    }
+                }
+
+                .slide-in {
+                    animation-name: slideIn;
+                    animation-duration: 0.5s;
+                    animation-fill-mode: both;
+                }
+
+                @keyframes slideIn {
+                    from {
+                        transform: translateY(8px);
+                    }
+
+                    to {
+                        transform: translateY(0);
+                    }
+                }
+
+
+                .animate-in {
+                    animation-timing-function: cubic-bezier(0.4, 0, 1, 1);
+                }
+
             }
         }
     }
-
-
-
 }
-
-.input-box {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    display: flex;
-    padding: 10px;
-    background: white;
-    left: 0px;
-}
-
-input {
-    flex: 1;
-    padding: 10px;
-    border-radius: 5px;
-}
-
-
-/* -------------------------------------------------------------------------- */
