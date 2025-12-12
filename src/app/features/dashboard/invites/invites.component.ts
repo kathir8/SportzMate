@@ -1,4 +1,4 @@
-import { Component, inject, signal } from '@angular/core';
+import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonGrid, IonIcon, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel } from '@ionic/angular/standalone';
@@ -6,28 +6,42 @@ import { MateListViewComponent } from "../home/mate-stuff/mate-list-view/mate-li
 import { MyInvites } from './models/invite.model';
 import { InviteApiService } from './services/invite-api-service';
 import { toSignal } from '@angular/core/rxjs-interop';
+import { MyGroupListComponent } from "./my-group-list/my-group-list.component";
 @Component({
   selector: 'app-invites',
   templateUrl: './invites.component.html',
   styleUrls: ['./invites.component.scss'],
-  imports: [IonContent, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, MateListViewComponent]
+  imports: [IonContent, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, MateListViewComponent, MyGroupListComponent]
 })
 export class InvitesComponent {
   private router = inject(Router);
   private invitesApiService = inject(InviteApiService);
 
-  segmentView = signal<'myInvites' | 'approveInvites'>('myInvites');
+  segmentView = signal<'myInvites' | 'acceptInvites'>('myInvites');
   myInvitesList = signal<MyInvites[]>([]);
+  myAcceptList = signal<MyInvites[]>([]);
 
-
-
+  
+  
   constructor() {
-    this.loadMyInvites();
+    effect(()=>{
+      if(this.segmentView() === 'myInvites'){
+        this.loadMyInvites();
+      }else{
+        this.loadAcceptInvites();
+      }
+    })
   }
 
   loadMyInvites() {
     this.invitesApiService.getMyInvites().subscribe(res => {
       this.myInvitesList.set(res);
+    });
+  }
+
+  loadAcceptInvites() {
+    this.invitesApiService.getAcceptInvites().subscribe(res => {
+      this.myAcceptList.set(res);
     });
   }
 

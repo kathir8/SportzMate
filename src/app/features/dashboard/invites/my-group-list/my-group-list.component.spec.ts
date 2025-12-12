@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { ChatComponent } from './chat.component';
+import { MyGroupListComponent } from './my-group-list.component';
 
-describe('ChatComponent', () => {
-  let component: ChatComponent;
-  let fixture: ComponentFixture<ChatComponent>;
+describe('MyGroupListComponent', () => {
+  let component: MyGroupListComponent;
+  let fixture: ComponentFixture<MyGroupListComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ ChatComponent ],
+      declarations: [ MyGroupListComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(ChatComponent);
+    fixture = TestBed.createComponent(MyGroupListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

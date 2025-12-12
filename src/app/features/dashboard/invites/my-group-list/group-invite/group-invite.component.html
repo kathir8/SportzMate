@@ -1,17 +1,15 @@
 <ion-content class="ion-padding list-view">
+  group list came
   <ionic-virtual-scroll [items]="responseList()" [dynamicListClass]="'sports-mate-list'" [dynamicGridClass]="'primary-details'"
-   [itemTemplate]="mateTemplate" [noDataTemplate]="emptyTemplate" [onItemClick]="openMateDetail.bind(this)">
+   [itemTemplate]="mateTemplate" [onItemClick]="acceptReject.bind(this)">
   </ionic-virtual-scroll>
 
   <ng-template #mateTemplate let-item>
+    
   <app-mate-basic 
       [mate]="item" 
-      [dynamicClass]="dynamicClass()">
+      [dynamicClass]="'from-accept-invites'">
   </app-mate-basic>
-</ng-template>
-
-<ng-template #emptyTemplate>
-  <app-no-mate-found></app-no-mate-found>
 </ng-template>
 
 </ion-content>

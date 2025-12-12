@@ -40,14 +40,26 @@ export const routes: Routes = [
           import('./features/dashboard/home/home.component').then(m => m.HomeComponent)
       },
       {
-        path: 'chat',
+        path: 'chat-list',
         loadComponent: () =>
-          import('./features/dashboard/chat/chat.component').then(m => m.ChatComponent)
+          import('./features/dashboard/chat-list/chat-list.component').then(m => m.ChatListComponent)
+      },
+      {
+        path: 'chat/:id',
+        loadComponent: () =>
+          import('./features/dashboard/chat-list/chat/chat.component').then(m => m.ChatComponent)
       },
       {
         path: 'invites',
         loadComponent: () =>
-          import('./features/dashboard/invites/invites.component').then(m => m.InvitesComponent)
+          import('./features/dashboard/invites/invites.component').then(m => m.InvitesComponent),
+        children: [
+          {
+            path: 'group/:id',
+            loadComponent: () =>
+              import('./features/dashboard/invites/my-group-list/group-invite/group-invite.component').then(m => m.GroupInviteComponent)
+          },
+        ]
       },
       {
         path: 'events',

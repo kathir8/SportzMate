@@ -1,0 +1,15 @@
+@if(items().length > 0) {
+<cdk-virtual-scroll-viewport [itemSize]="itemSize()" class="virtual-scroll-container" [minBufferPx]="minBufferPx()"
+  [maxBufferPx]="maxBufferPx()">
+  <ion-list [class]="dynamicListClass()">
+    <ion-grid [class]="dynamicGridClass()" *cdkVirtualFor="let item of items(); trackBy: trackByFn"
+      (click)="handleItemClick(item)">
+      <ng-container [ngTemplateOutlet]="itemTemplate()" [ngTemplateOutletContext]="{ $implicit: item }">
+      </ng-container>
+    </ion-grid>
+  </ion-list>
+</cdk-virtual-scroll-viewport>
+}@else {
+<ng-container [ngTemplateOutlet]="noDataTemplate()">
+</ng-container>
+}

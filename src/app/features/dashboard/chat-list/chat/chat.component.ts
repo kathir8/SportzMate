@@ -8,6 +8,7 @@ import { switchMap } from 'rxjs';
 import { happyOutline, attachOutline, sendOutline, closeOutline } from 'ionicons/icons';
 import { IonicInputComponent } from "src/app/shared/components/ionic-input/ionic-input.component";
 import { DatePipe } from '@angular/common';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-chat',
@@ -19,9 +20,12 @@ export class ChatComponent {
 
   private chatService = inject(ChatService);
   private userStore = inject(UserStore);
+  private route = inject(ActivatedRoute);
+  private router = inject(Router);
+
   icons = { happyOutline, attachOutline, sendOutline, closeOutline };
 
-  currentUid = signal(this.userStore.getCurrent()?.id ?? '');
+  currentUid = signal(this.userStore.getCurrent()?.id ?? 'unknown');
   receiverUid = signal('');
   showEmojiPicker = signal(false);
   emojiList = signal([
@@ -60,15 +64,15 @@ export class ChatComponent {
   );
 
 
-  constructor() {
-
-    const navState = history.state as { receiverUid?: string };
-
-    if (navState.receiverUid) {
-      this.receiverUid.set(navState.receiverUid);
+   ngOnInit() {
+    const idParam = this.route.snapshot.paramMap.get('id');
+    if (idParam) {
+      this.receiverUid.set(idParam);
+    } else {
+      this.handleBack();
     }
-  }
 
+  }
 
   handleEmojiClick(emoji: string) {
     this.newMessage.set(this.newMessage() + emoji);
@@ -99,5 +103,9 @@ export class ChatComponent {
     // 2. Check if the sender is different from the previous message's sender
     const previousMessage = this.messages()[index - 1];
     return previousMessage.senderId !== currentSenderIsMe;
+  }
+
+  handleBack() {
+    this.router.navigate(['/dashboard/chat']);
   }
 }

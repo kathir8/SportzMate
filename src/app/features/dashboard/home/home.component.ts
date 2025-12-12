@@ -140,10 +140,6 @@ export class HomeComponent {
       event.detail.complete(); // hide spinner
     }, 2500);
   }
-
-
-  openChat(uid: string) {
-    this.router.navigate(['/dashboard/chat'], { state: { receiverUid: uid } });
-  }
+ 
 
 }

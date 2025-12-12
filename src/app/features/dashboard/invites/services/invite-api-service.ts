@@ -9,12 +9,16 @@ import { SportType } from 'src/app/shared/models/shared.model';
 })
 export class InviteApiService {
   private api = inject(ApiService);
+  
 
-  private myInvitesData: MyInvites[] = [
+  getMyInvites(): Observable<MyInvites[]> {
+    return this.api.get<MyInvites[]>(`myInvites`);
+
+    const myInvitesData: MyInvites[] = [
     {
       id: 1,
       profileImg: 'assets/avatars/avatar1.jfif',
-      name: 'Emma',
+      name: 'Kathir Office',
       location: 'Newyork',
       eventDateTime: 1761408000000,
       requiredMembers: 8,
@@ -33,11 +37,38 @@ export class InviteApiService {
       sport: SportType.Cycling,
       chatCount: 10
     }
-  ]
+  ];
+    // return of(myInvitesData);
+  }
 
-  getMyInvites(): Observable<MyInvites[]> {
-    return this.api.get<MyInvites[]>(`myInvites`);
-    // return of(this.myInvitesData);
+   getAcceptInvites(): Observable<MyInvites[]> {
+    // return this.api.get<MyInvites[]>(`approveInvites`);
+
+     const myGroupData: MyInvites[] = [
+    {
+      id: 1,
+      profileImg: 'assets/avatars/avatar1.jfif',
+      name: 'Kathir Office',
+      location: 'Newyork',
+      eventDateTime: 1761408000000,
+      requiredMembers: 8,
+      participants: [],
+      sport: SportType.Badminton,
+      chatCount: 2
+    },
+    {
+      id: 2,
+      profileImg: 'assets/avatars/avatar1.jfif',
+      name: 'Emma',
+      location: 'Chicago',
+      eventDateTime: 1761408000000,
+      requiredMembers: 8,
+      participants: [1, 2],
+      sport: SportType.Cycling,
+      chatCount: 10
+    }
+  ];
+    return of(myGroupData);
   }
 
   fetchNearby(lat: number, lng: number) { return this.api.get<Invite[]>(`/api/invites/near?lat=${lat}&lng=${lng}`); }

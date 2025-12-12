@@ -10,10 +10,15 @@
 
   <ion-segment-view>
     <ion-segment-content id="myInvites" value="myInvites">
+      @if(segmentView() === 'myInvites'){
       <app-mate-list-view [responseList]="myInvitesList()"></app-mate-list-view>
+      }
     </ion-segment-content>
     <ion-segment-content id="acceptInvites" value="acceptInvites">
-      this is approve invites
+      @if(segmentView() === 'acceptInvites'){
+      <app-my-group-list [responseList]="myAcceptList()"></app-my-group-list>
+      }
+      <!-- <app-mate-list-view [responseList]="myApproveList()" [dynamicClass]="'from-accept-invites'"></app-mate-list-view> -->
     </ion-segment-content>
     </ion-segment-view>
 

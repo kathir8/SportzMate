@@ -1,24 +1,25 @@
 import { Component, computed, Input, input } from '@angular/core';
 import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
-import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline } from 'ionicons/icons';
+import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline, thumbsDownOutline, thumbsUpOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { IonicBadgeComponent } from 'src/app/shared/components/ionic-badge/ionic-badge.component';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { MateListItem } from '../models/mate.model';
 import { MyInvites } from '../../../invites/models/invite.model';
+import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 
 @Component({
   selector: 'app-mate-basic',
   templateUrl: './mate-basic.component.html',
   styleUrls: ['./mate-basic.component.scss'],
-  imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg]
+  imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg, IonicChipComponent]
 })
 export class MateBasicComponent<T extends MateListItem | MyInvites> {
   DATE_FORMATS = DATE_FORMATS;
 
-  icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses };
+  icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };
   mate = input<T>();
-  @Input() dynamicClass = '';
+  dynamicClass = input<string>('');
 
   getDistanceOrDuration(): string | null {
     const m = this.mate();
@@ -45,4 +46,10 @@ export class MateBasicComponent<T extends MateListItem | MyInvites> {
     return null;
   });
 
+  accept(){
+
+  }
+  reject(){
+    
+  }
 }

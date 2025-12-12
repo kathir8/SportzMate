@@ -1,0 +1,19 @@
+ .virtual-scroll-container {
+        height: 100%;
+        width: 100%;
+        overflow: auto;
+        display: block;
+
+        &::-webkit-scrollbar {
+            display: none;
+        }
+
+        .sports-mate-list {
+            margin-bottom: 60px;
+            font-size: 12px;
+
+            .primary-details {
+                padding: 0;
+            }
+        }
+    }

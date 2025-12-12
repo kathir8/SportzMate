@@ -1,6 +1,7 @@
 $containerPaddingX: 0px;
 
-.list-view {
+.chat-page {
+    --background: var(--background-color);
     --padding-start:#{$containerPaddingX};
     --padding-end:#{$containerPaddingX};
 }

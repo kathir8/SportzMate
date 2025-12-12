@@ -1,4 +1,4 @@
-<ion-row class="row-container" [class]="dynamicClass">
+<ion-row class="row-container" [class]="dynamicClass()">
   <ion-col size="auto">
     <ion-thumbnail class="mate-img">
       <ion-img alt="profile" [src]="mate()?.profileImg"></ion-img>
@@ -10,7 +10,14 @@
       <ion-icon [icon]="icons.calendarClear"></ion-icon>
       <ion-label class="time-text">{{mate()?.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
     </div>
-    @if(dynamicClass !== 'from-mate-detail'){
+    @if(dynamicClass() === 'from-accept-invites'){
+    <ionic-chip [outline]="true" color="primary" (ionClick)="accept()">
+      Accept <ion-icon [icon]="icons.thumbsUpOutline"></ion-icon>
+    </ionic-chip>
+    <ionic-chip [outline]="true" color="primary" (ionClick)="reject()">
+      Reject <ion-icon [icon]="icons.thumbsDownOutline"></ion-icon>
+    </ionic-chip>
+    }@else if(dynamicClass() !== 'from-mate-detail'){
     <div class="badge-wrapper">
       <ionic-badge dynamicClass="members-cnt primary">
         <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.requiredMembers}}
@@ -35,8 +42,8 @@
     </ionic-badge>
     }
 
-    @if(dynamicClass !== 'from-mate-detail'){
-    <ion-icon  class="sport-icon" [icon]="icons.bicycleOutline"></ion-icon>
+    @if(dynamicClass() !== 'from-mate-detail'){
+    <ion-icon class="sport-icon" [icon]="icons.bicycleOutline"></ion-icon>
     }
   </ion-col>
 </ion-row>
