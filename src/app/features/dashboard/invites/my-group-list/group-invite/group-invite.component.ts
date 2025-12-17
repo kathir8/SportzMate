@@ -1,21 +1,31 @@
 import { Component, inject, input, OnInit } from '@angular/core';
-import { IonContent } from '@ionic/angular/standalone';
-import { IonicVirtualScrollComponent } from 'src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component';
-import { MateBasicComponent } from '../../../home/mate-stuff/mate-basic/mate-basic.component';
-import { MyInvites } from '../../models/invite.model';
+import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
+import { GroupInvites } from '../../models/invite.model';
 import { ActivatedRoute } from '@angular/router';
+import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
+import { IonicBadgeComponent } from 'src/app/shared/components/ionic-badge/ionic-badge.component';
 
+/**
+ * Component for displaying and managing group invitations.
+ * 
+ * Handles the presentation of group invite details including group information,
+ * invitation metadata, and user actions for accepting or rejecting invites.
+ * 
+ * @selector app-group-invite
+ * @imports IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg
+ */
 @Component({
   selector: 'app-group-invite',
   templateUrl: './group-invite.component.html',
   styleUrls: ['./group-invite.component.scss'],
-  imports: [IonContent, IonicVirtualScrollComponent, MateBasicComponent]
+    imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg]
+  
 })
 export class GroupInviteComponent {
 
   private route = inject(ActivatedRoute);
 
-  responseList = input<MyInvites[]>([]);
+  group = input<GroupInvites[]>([]);
 
   constructor() { }
 

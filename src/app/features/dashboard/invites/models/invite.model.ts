@@ -11,6 +11,17 @@ export interface MyInvites {
     participants: number[];
     chatCount:number
 }
+export interface GroupInvites {
+    id: number;
+    name: string;
+    location: string;
+    sport: SportType;
+    eventDateTime: number;
+    profileImg: string;
+    requiredMembers: number;
+    participants: number[];
+    chatCount:number
+}
 
 export interface Invite {
   id: string;

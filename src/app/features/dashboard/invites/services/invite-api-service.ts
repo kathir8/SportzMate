@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { Invite, MyInvites } from '../models/invite.model';
+import { GroupInvites, Invite, MyInvites } from '../models/invite.model';
 import { SportType } from 'src/app/shared/models/shared.model';
 
 @Injectable({
@@ -41,10 +41,10 @@ export class InviteApiService {
     // return of(myInvitesData);
   }
 
-   getAcceptInvites(): Observable<MyInvites[]> {
+   getGroupInvites(): Observable<GroupInvites[]> {
     // return this.api.get<MyInvites[]>(`approveInvites`);
 
-     const myGroupData: MyInvites[] = [
+     const myGroupData: GroupInvites[] = [
     {
       id: 1,
       profileImg: 'assets/avatars/avatar1.jfif',

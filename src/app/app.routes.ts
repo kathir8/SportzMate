@@ -52,14 +52,12 @@ export const routes: Routes = [
       {
         path: 'invites',
         loadComponent: () =>
-          import('./features/dashboard/invites/invites.component').then(m => m.InvitesComponent),
-        children: [
-          {
-            path: 'group/:id',
-            loadComponent: () =>
-              import('./features/dashboard/invites/my-group-list/group-invite/group-invite.component').then(m => m.GroupInviteComponent)
-          },
-        ]
+          import('./features/dashboard/invites/invites.component').then(m => m.InvitesComponent)
+      },
+      {
+        path: 'invites/group/:id',
+        loadComponent: () =>
+          import('./features/dashboard/invites/my-group-list/group-invite/group-invite.component').then(m => m.GroupInviteComponent)
       },
       {
         path: 'events',

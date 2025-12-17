@@ -4,18 +4,16 @@
   </ionic-virtual-scroll>
 
   <ng-template #mateTemplate let-item>
-    name : {{item.name}}
+    <app-mate-basic 
+        [mate]="item" 
+        [dynamicClass]="'from-group-list'">
+    </app-mate-basic> 
     <br>
     
-  <!-- <app-mate-basic 
-      [mate]="item" 
-      [dynamicClass]="'from-accept-invites'">
-  </app-mate-basic> -->
 </ng-template>
 
 <ng-template #emptyTemplate>
-  Navigate to list view
-  <!-- <app-no-mate-found></app-no-mate-found> -->
+  <app-no-mate-found [dynamicClass]="'from-group-list'"></app-no-mate-found>
 </ng-template>
 
 </ion-content>

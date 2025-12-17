@@ -3,7 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
 import { IonContent, IonGrid, IonIcon, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel } from '@ionic/angular/standalone';
 import { MateListViewComponent } from "../home/mate-stuff/mate-list-view/mate-list-view.component";
-import { MyInvites } from './models/invite.model';
+import { GroupInvites, MyInvites } from './models/invite.model';
 import { InviteApiService } from './services/invite-api-service';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { MyGroupListComponent } from "./my-group-list/my-group-list.component";
@@ -19,7 +19,7 @@ export class InvitesComponent {
 
   segmentView = signal<'myInvites' | 'acceptInvites'>('myInvites');
   myInvitesList = signal<MyInvites[]>([]);
-  myAcceptList = signal<MyInvites[]>([]);
+  myGroupList = signal<GroupInvites[]>([]);
 
   
   
@@ -28,7 +28,7 @@ export class InvitesComponent {
       if(this.segmentView() === 'myInvites'){
         this.loadMyInvites();
       }else{
-        this.loadAcceptInvites();
+        this.loadGroupInvites();
       }
     })
   }
@@ -39,9 +39,9 @@ export class InvitesComponent {
     });
   }
 
-  loadAcceptInvites() {
-    this.invitesApiService.getAcceptInvites().subscribe(res => {
-      this.myAcceptList.set(res);
+  loadGroupInvites() {
+    this.invitesApiService.getGroupInvites().subscribe(res => {
+      this.myGroupList.set(res);
     });
   }
 

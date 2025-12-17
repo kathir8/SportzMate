@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, computed, inject, input } from '@angular/core';
 import { IonIcon, IonImg, ModalController } from '@ionic/angular/standalone';
 import { add } from 'ionicons/icons';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
@@ -12,6 +12,14 @@ import { CreateInviteComponent } from '../../../create-invite/create-invite.comp
 })
 export class NoMateFoundComponent {
   private modalCtrl = inject(ModalController);
+  dynamicClass = input<string>('');
+
+  text = computed(() => {
+    const c = this.dynamicClass();
+    if (!c) return 'No Mates Found';
+
+    return 'No Invite Created';
+  });
 
   icons = { add };
 
