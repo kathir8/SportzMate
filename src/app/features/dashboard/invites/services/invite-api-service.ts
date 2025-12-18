@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { GroupInvites, Invite, MyInvites } from '../models/invite.model';
+import { GroupDetail, GroupInvites, Invite, MyInvites } from '../models/invite.model';
 import { SportType } from 'src/app/shared/models/shared.model';
 
 @Injectable({
@@ -69,6 +69,29 @@ export class InviteApiService {
     }
   ];
     return of(myGroupData);
+  }
+
+
+   getGroupDetailById(id: number | null): Observable<GroupDetail> {
+
+
+    // return this.api.get<MateDetail>(`mates/${id}`);
+        const groupData = {
+      id: 1,
+      profileImg: 'assets/avatars/avatar1.jfif',
+      name: 'Meera Jasmine',
+      location: 'Chicago',
+      eventDateTime: 1761408000000,
+      requiredMembers: 8,
+      participants: [1, 2, 3, 4, 5, 6, 7, 8],
+      distanceOrDuration: '600 M',
+      sport: SportType.Cycling,
+      coords: { "lat": 13.0901, "lng": 80.2650 },
+      description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
+      members: [1, 2, 3, 4, 5],
+    };
+        return of(groupData);
+
   }
 
   fetchNearby(lat: number, lng: number) { return this.api.get<Invite[]>(`/api/invites/near?lat=${lat}&lng=${lng}`); }

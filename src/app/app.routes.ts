@@ -67,7 +67,7 @@ export const routes: Routes = [
       {
         path: 'mate-detail/:id',
         loadComponent: () =>
-          import('./features/dashboard/home/mate-stuff/mate-detail/mate-detail.component').then(m => m.MateDetailComponent)
+          import('./features/dashboard/home/mate-stuff/mate-detail-container/mate-detail-container.component').then(m => m.MateDetailContainerComponent)
       },
     ]
   },

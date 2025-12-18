@@ -1,45 +1,36 @@
-import { Component, inject, input, OnInit } from '@angular/core';
-import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
-import { GroupInvites } from '../../models/invite.model';
+import { Component, effect, inject, input, signal } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
-import { IonicBadgeComponent } from 'src/app/shared/components/ionic-badge/ionic-badge.component';
+import { IonAccordion, IonAccordionGroup, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { MateDetailComponent } from "../../../home/mate-stuff/mate-detail/mate-detail.component";
+import { GroupDetail } from '../../models/invite.model';
+import { InviteApiService } from '../../services/invite-api-service';
 
-/**
- * Component for displaying and managing group invitations.
- * 
- * Handles the presentation of group invite details including group information,
- * invitation metadata, and user actions for accepting or rejecting invites.
- * 
- * @selector app-group-invite
- * @imports IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg
- */
 @Component({
   selector: 'app-group-invite',
   templateUrl: './group-invite.component.html',
   styleUrls: ['./group-invite.component.scss'],
-    imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg]
-  
+  imports: [IonLabel, IonAccordion, IonAccordionGroup, IonItem, MateDetailComponent]
+
 })
 export class GroupInviteComponent {
 
   private route = inject(ActivatedRoute);
+  private inviteApi = inject(InviteApiService);
 
-  group = input<GroupInvites[]>([]);
+  group = signal<GroupDetail>({} as GroupDetail);
+  groupId = input<number | null>(null);
 
-  constructor() { }
+  constructor() {
+    effect(() => {
+      if (this.groupId()) {
 
-
-  ngOnInit() {
-    console.log("group-invite");
-    
-    const idParam = this.route.snapshot.paramMap.get('id');
-  
-
-  }
-
-  acceptReject(){
-
+        this.inviteApi.getGroupDetailById(this.groupId()).subscribe((res) => {
+          if (res) {
+            this.group.set(res);
+          }
+        });
+      }
+    });
   }
 
 }

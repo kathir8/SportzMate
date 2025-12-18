@@ -1,1 +1,27 @@
-hello
+ <ion-accordion-group>
+
+    <ion-accordion value="sportsDetail">
+
+      <ion-item slot="header" color="light">
+        <ion-label>Sports Detail</ion-label>
+      </ion-item>
+
+      <div class="ion-padding" slot="content">
+           <app-mate-detail [mate]="group()"></app-mate-detail>
+      </div>
+
+    </ion-accordion>
+
+     <ion-accordion value="inviteDetail">
+
+      <ion-item slot="header" color="light">
+        <ion-label>More Invites</ion-label>
+      </ion-item>
+
+      <div class="ion-padding" slot="content">
+         <div class="ion-padding content" slot="content">Second Content</div>
+      </div>
+
+    </ion-accordion>
+
+</ion-accordion-group>

@@ -39,23 +39,6 @@ export class DashboardComponent {
     return !hideRoutes.some(r => url.startsWith(r));
   });
 
-  // showTabs = signal(true);
-
-  // constructor() {
-
-  //   effect(() => {
-  //     const navigationEnd = this.router.events.pipe(
-  //       filter(event => event instanceof NavigationEnd)
-  //     );
-
-  //     const subscription = navigationEnd.subscribe((event: NavigationEnd) => {
-  //       this.showTabs.set(!event.url.includes('mate-detail'));  // Hide tabs on mate-detail route
-  //     });
-
-  //     return () => subscription.unsubscribe(); // Cleanup
-  //   });
-  // }
-
 
   async createNewInvite() {
   const modal = await this.modalCtrl.create({

@@ -1,0 +1,17 @@
+$containerPaddingX: 16px;
+
+.header-title {
+    padding-left: 10px;
+    font-weight: 500;
+    text-align: left;
+    --color: #000;
+}
+
+
+.footer {
+    background-color: white;
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    padding-bottom: 25px;
+    box-shadow: none;
+}

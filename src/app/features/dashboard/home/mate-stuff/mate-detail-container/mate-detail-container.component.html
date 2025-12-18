@@ -1,0 +1,18 @@
+<app-header headerClass="from-mate-detail" (backClicked)="handleBack()">
+  <ion-title class="header-title" slot="start">{{mate().sport}}</ion-title>
+</app-header>
+
+<ion-content class="ion-padding mate-detail-page">
+  @if(dynamicClass() === 'from-group'){
+  <app-group-invite [groupId]="groupId()"></app-group-invite>
+  }@else {
+  <app-mate-detail [mate]="mate()"></app-mate-detail>
+  }
+
+</ion-content>
+
+@if(dynamicClass() !== 'from-group'){
+<ion-footer class="footer">
+  <ionic-button>I'm Interested</ionic-button>
+</ion-footer>
+}
