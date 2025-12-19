@@ -38,6 +38,22 @@ export interface GroupDetail {
        distanceKm?: number;
        description: string;
     members: number[];
+    requestedMembers:RequestedList[]
+}
+
+export interface RequestedList {
+    id: number;
+    name: string;
+    profileImg: string;
+    location: string;
+    sport: SportType;
+       eventDateTime: number;
+       distanceOrDuration: string;
+       requiredMembers: number;
+       participants: number[];
+       coords: Coordinates;
+       distanceKm?: number;
+       description: string;
 }
 
 export interface Invite {

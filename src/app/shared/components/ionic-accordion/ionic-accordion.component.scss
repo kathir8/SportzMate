@@ -1,6 +1,9 @@
-
+ion-item {
+  font-weight: 600;
+}
 ion-accordion {
   border-radius: 8px;
+  margin-bottom: 8px;
   overflow: hidden;
   .content{
     color: #000;

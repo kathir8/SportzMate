@@ -27,7 +27,7 @@ export class MateListViewComponent<T extends MateListItem | MyInvites> {
   }
 
   trackById(index: number, item: T) {
-    return item.id;
+    return item.id || index;
   }
 
 }

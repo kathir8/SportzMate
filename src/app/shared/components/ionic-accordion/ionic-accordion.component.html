@@ -1,17 +1,17 @@
- <ion-accordion-group>
+<ion-accordion-group>
 
   @for (item of items(); track item.value) {
-    <ion-accordion [value]="item.value">
+  <ion-accordion [value]="item.value">
 
-      <ion-item slot="header" color="light">
-        <ion-label>{{ item.header }}</ion-label>
-      </ion-item>
+    <ion-item slot="header" color="light">
+      <ion-label>{{ item.title }}</ion-label>
+    </ion-item>
 
-      <div class="ion-padding" slot="content">
-         <ng-content select="[accordionContent={{item.value}}]"></ng-content>
-      </div>
+    <div slot="content" class="content">
+      <ng-container *ngComponentOutlet="item.component;inputs: item.inputs"></ng-container>
+    </div>
 
-    </ion-accordion>
+  </ion-accordion>
   }
 
 </ion-accordion-group>

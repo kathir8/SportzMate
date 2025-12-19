@@ -1,0 +1,7 @@
+$containerPaddingX: 5px;
+
+.list-view {
+    padding-left:#{$containerPaddingX};
+    padding-right:#{$containerPaddingX};
+    height: 550px;
+}

@@ -1,7 +1,7 @@
 import { CdkVirtualScrollViewport, ScrollingModule } from '@angular/cdk/scrolling';
 import { Component, input } from '@angular/core';
 import { MateListItem } from 'src/app/features/dashboard/home/mate-stuff/models/mate.model';
-import { MyInvites } from 'src/app/features/dashboard/invites/models/invite.model';
+import { MyInvites, RequestedList } from 'src/app/features/dashboard/invites/models/invite.model';
 import { IonGrid, IonList } from '@ionic/angular/standalone';
 import { NgTemplateOutlet } from '@angular/common';
 
@@ -11,7 +11,7 @@ import { NgTemplateOutlet } from '@angular/common';
   styleUrls: ['./ionic-virtual-scroll.component.scss'],
   imports: [CdkVirtualScrollViewport, ScrollingModule, IonList, IonGrid, NgTemplateOutlet],
 })
-export class IonicVirtualScrollComponent<T extends MateListItem | MyInvites> {
+export class IonicVirtualScrollComponent<T extends MateListItem | MyInvites | RequestedList> {
 
   constructor() { }
 

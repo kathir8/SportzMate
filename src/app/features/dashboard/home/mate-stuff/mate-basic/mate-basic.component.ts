@@ -1,11 +1,11 @@
-import { Component, computed, input } from '@angular/core';
+import { Component, computed, effect, input } from '@angular/core';
 import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
 import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline, thumbsDownOutline, thumbsUpOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { IonicBadgeComponent } from 'src/app/shared/components/ionic-badge/ionic-badge.component';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { MateListItem } from '../models/mate.model';
-import { MyInvites } from '../../../invites/models/invite.model';
+import { MyInvites, RequestedList } from '../../../invites/models/invite.model';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 
 @Component({
@@ -14,12 +14,20 @@ import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-c
   styleUrls: ['./mate-basic.component.scss'],
   imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg, IonicChipComponent]
 })
-export class MateBasicComponent<T extends MateListItem | MyInvites> {
+export class MateBasicComponent<T extends MateListItem | MyInvites | RequestedList> {
   DATE_FORMATS = DATE_FORMATS;
 
   icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };
   mate = input<T>();
   dynamicClass = input<string>('');
+
+  constructor(){
+    effect(() => {
+      if (this.mate()) {
+        console.log(this.mate());
+      }
+    });
+  }
 
   getDistanceOrDuration(): string | null {
     const m = this.mate();

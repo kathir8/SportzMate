@@ -23,11 +23,11 @@ export class UserStore {
     try {
       // const cached = localStorage.getItem('userDetail');
        const parsed:UserDetail = {
-      name : 'Kathiravan',
-      email : 'sukn99@gmail.com',
+      name : 'Kathir',
+      email : 'ilayakathi@gmail.com',
       profile : '',
       customProfile : '',
-      id : 'ZImljsDYntQLvi3y9NPgdxsDdqF3',
+      id : 'tXNwC6ZmTgdyUGKN7S1fmvTkX2o1',
       age: 25,
       gender: 'male',
       interest: [SportType.Basketball],

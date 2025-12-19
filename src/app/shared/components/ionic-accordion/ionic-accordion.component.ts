@@ -1,10 +1,12 @@
-import { Component, input, OnInit } from '@angular/core';
+import { Component, input } from '@angular/core';
 import { IonAccordion, IonAccordionGroup, IonItem, IonLabel } from '@ionic/angular/standalone';
+import { NgComponentOutlet } from '@angular/common';
 
 export interface IonicAccordionItem {
   value: string;
-  header: string;
-  content: string;
+  title: string;
+  component: any;
+  inputs?: Record<string, any>;
 }
 
 
@@ -12,14 +14,11 @@ export interface IonicAccordionItem {
   selector: 'ionic-accordion',
   templateUrl: './ionic-accordion.component.html',
   styleUrls: ['./ionic-accordion.component.scss'],
-  imports: [IonAccordionGroup, IonAccordion, IonItem, IonLabel],
+  imports: [IonAccordionGroup, IonAccordion, IonItem, IonLabel, NgComponentOutlet],
 })
-export class IonicAccordionComponent  implements OnInit {
+export class IonicAccordionComponent {
 
-  constructor() { }
+    items = input<IonicAccordionItem[]>([]);
 
-  ngOnInit() {}
-
-   items = input<IonicAccordionItem[]>([]);
 
 }

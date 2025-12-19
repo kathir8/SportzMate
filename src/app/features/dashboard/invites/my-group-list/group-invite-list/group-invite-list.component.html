@@ -1,0 +1,17 @@
+
+   <div class="list-view">
+<ionic-virtual-scroll [items]="responseList()" [dynamicListClass]="'sports-mate-list'" [dynamicGridClass]="'primary-details'"
+   [itemTemplate]="mateTemplate" [noDataTemplate]="emptyTemplate" [onItemClick]="openMateDetail.bind(this)">
+  </ionic-virtual-scroll>
+  </div>
+
+  <ng-template #mateTemplate let-item>
+  <app-mate-basic 
+      [mate]="item" 
+      [dynamicClass]="dynamicClass()">
+  </app-mate-basic>
+</ng-template>
+
+<ng-template #emptyTemplate>
+  <app-no-mate-found></app-no-mate-found>
+</ng-template> 
