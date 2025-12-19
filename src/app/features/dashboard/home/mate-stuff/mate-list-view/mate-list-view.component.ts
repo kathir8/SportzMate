@@ -23,7 +23,7 @@ export class MateListViewComponent<T extends MateListItem | MyInvites> {
 
 
   openMateDetail(item: T) {
-    this.router.navigate(['dashboard/mate-detail', item.id]);
+    this.router.navigate(['dashboard/match', item.id, 'mate']);
   }
 
   trackById(index: number, item: T) {

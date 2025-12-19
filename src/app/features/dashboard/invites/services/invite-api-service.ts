@@ -72,12 +72,12 @@ export class InviteApiService {
   }
 
 
-   getGroupDetailById(id: number | null): Observable<GroupDetail> {
+   getGroupDetailById(id: number): Observable<GroupDetail> {
 
 
     // return this.api.get<MateDetail>(`mates/${id}`);
         const groupData = {
-      id: 1,
+      id: id,
       profileImg: 'assets/avatars/avatar1.jfif',
       name: 'Meera Jasmine',
       location: 'Chicago',

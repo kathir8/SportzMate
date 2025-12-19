@@ -6,7 +6,7 @@
         <ion-label>Sports Detail</ion-label>
       </ion-item>
 
-      <div class="ion-padding" slot="content">
+      <div slot="content">
            <app-mate-detail [mate]="group()"></app-mate-detail>
       </div>
 
@@ -25,3 +25,8 @@
     </ion-accordion>
 
 </ion-accordion-group>
+
+
+<ng-template #footer>
+  <ionic-button>Cancel event</ionic-button>
+</ng-template>

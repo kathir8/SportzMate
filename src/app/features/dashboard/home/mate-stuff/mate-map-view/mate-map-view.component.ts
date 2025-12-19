@@ -351,7 +351,7 @@ export class MateMapViewComponent {
 
   // clicking a bottom-card photo should center & open popup
   openMateDetail(id: number) {
-    this.router.navigate(['dashboard/mate-detail', id]);
+    this.router.navigate(['dashboard/match', id, 'mate']);
   }
 
   async updateMarkerIcon(player: MateListItem, marker: google.maps.Marker) {

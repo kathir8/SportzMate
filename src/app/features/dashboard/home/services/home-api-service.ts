@@ -126,9 +126,9 @@ export class HomeApiService {
     return of(this.sampleMateData);
   }
 
-  getMateById(id: string): Observable<MateDetail> {
+  getMateById(id: number): Observable<MateDetail> {
     // return this.api.get<MateDetail>(`mates/${id}`);
-    const selectedMate = (this.sampleMateData.find(x => x.id === Number(id)) as MateDetail);
+    const selectedMate = (this.sampleMateData.find(x => x.id === id) as MateDetail);
     selectedMate.description = `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`;
     selectedMate.members = [1, 2, 3, 4, 5];
     return of(selectedMate);
