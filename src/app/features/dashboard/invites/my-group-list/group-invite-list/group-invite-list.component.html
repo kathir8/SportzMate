@@ -7,8 +7,9 @@
 
   <ng-template #mateTemplate let-item>
   <app-mate-basic 
-      [mate]="item" 
-      [dynamicClass]="dynamicClass()">
+      [mate]="item"
+      (isAccepted)="acceptOrReject($event)"
+      [dynamicClass]="'from-group-invite-list'">
   </app-mate-basic>
 </ng-template>
 

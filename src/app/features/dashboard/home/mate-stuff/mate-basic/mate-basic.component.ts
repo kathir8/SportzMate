@@ -1,4 +1,4 @@
-import { Component, computed, effect, input } from '@angular/core';
+import { Component, computed, input, output } from '@angular/core';
 import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
 import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline, thumbsDownOutline, thumbsUpOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
@@ -20,14 +20,8 @@ export class MateBasicComponent<T extends MateListItem | MyInvites | RequestedLi
   icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };
   mate = input<T>();
   dynamicClass = input<string>('');
+  isAccepted = output<boolean>();
 
-  constructor(){
-    effect(() => {
-      if (this.mate()) {
-        console.log(this.mate());
-      }
-    });
-  }
 
   getDistanceOrDuration(): string | null {
     const m = this.mate();
@@ -54,10 +48,8 @@ export class MateBasicComponent<T extends MateListItem | MyInvites | RequestedLi
     return null;
   });
 
-  accept(){
+  acceptOrReject(){
 
   }
-  reject(){
-    
-  }
+ 
 }

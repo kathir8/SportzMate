@@ -1,5 +1,4 @@
-import { Component, effect, input } from '@angular/core';
-import { IonContent } from '@ionic/angular/standalone';
+import { Component, input, signal } from '@angular/core';
 import { IonicVirtualScrollComponent } from 'src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component';
 import { MateBasicComponent } from "../../../home/mate-stuff/mate-basic/mate-basic.component";
 import { NoMateFoundComponent } from "../../../home/mate-stuff/no-mate-found/no-mate-found.component";
@@ -9,25 +8,26 @@ import { RequestedList } from '../../models/invite.model';
   selector: 'app-group-invite-list',
   templateUrl: './group-invite-list.component.html',
   styleUrls: ['./group-invite-list.component.scss'],
-  imports: [NoMateFoundComponent, MateBasicComponent, IonContent, IonicVirtualScrollComponent],
+  imports: [NoMateFoundComponent, MateBasicComponent, IonicVirtualScrollComponent],
 })
 export class GroupInviteListComponent {
 
   responseList = input<RequestedList[]>([]);
-  dynamicClass = input<string>('from-group-invite-list');
+  selectedMate = signal<RequestedList>({} as RequestedList);
 
-  constructor(){
-    effect(() => {
-      if (this.responseList()) {
-        console.log(this.responseList());
-      }
-    });
-  }
   trackById(index: number, item: RequestedList) {
     return item.id || index;
   }
 
+  acceptOrReject(accept: boolean) {
+    setTimeout(() => {
+      if (accept && this.selectedMate()) {
+        console.log(this.selectedMate().name);
+      }
+    });
+  }
+
   openMateDetail(item: RequestedList) {
-    console.log(item);
+    this.selectedMate.set(item);
   }
 }
