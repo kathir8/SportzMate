@@ -1,0 +1,58 @@
+<ion-toolbar>
+  <ion-buttons slot="start">
+    <ion-button (click)="dismiss('cancel')">Cancel</ion-button>
+  </ion-buttons>
+  <ion-buttons slot="end">
+    <ion-button  [disabled]="isPastSelection()" (click)="dismiss('confirm')">Done</ion-button>
+  </ion-buttons>
+</ion-toolbar>
+<ion-content>
+
+  <ion-picker class="date-picker">
+
+    <ion-picker-column [value]="day()" (ionChange)="setString(day.set, $event.detail.value)">
+      <ion-picker-column-option value="" disabled>DD</ion-picker-column-option>
+      @for (d of days(); track d) {
+      <ion-picker-column-option [value]="d">{{ d }}</ion-picker-column-option>
+      }
+    </ion-picker-column>
+
+    <ion-picker-column [value]="month()" (ionChange)="setString(month.set, $event.detail.value)">
+      <ion-picker-column-option value="" disabled>MM</ion-picker-column-option>
+      @for (m of months(); track m) {
+      <ion-picker-column-option [value]="m">{{ m }}</ion-picker-column-option>
+      }
+    </ion-picker-column>
+
+    <ion-picker-column [value]="year()" (ionChange)="setString(year.set, $event.detail.value)">
+      <ion-picker-column-option value="" disabled>YYYY</ion-picker-column-option>
+      @for (y of years(); track y) {
+      <ion-picker-column-option [value]="y">{{ y }}</ion-picker-column-option>
+      }
+    </ion-picker-column>
+
+  </ion-picker>
+
+  <ion-picker class="time-picker">
+
+    <ion-picker-column [value]="hour()" (ionChange)="setString(hour.set, $event.detail.value)">
+      @for (h of hours(); track h) {
+      <ion-picker-column-option [value]="h">{{ h }}</ion-picker-column-option>
+      }
+    </ion-picker-column>
+
+    <ion-picker-column [value]="minute()" (ionChange)="setString(minute.set, $event.detail.value)">
+      @for (m of minutes(); track m) {
+      <ion-picker-column-option [value]="m">{{ m }}</ion-picker-column-option>
+      }
+    </ion-picker-column>
+
+    <ion-picker-column [value]="meridiem()" (ionChange)="setMeridiem($event.detail.value)">
+      @for (md of meridiems; track md) {
+      <ion-picker-column-option [value]="md">{{ md }}</ion-picker-column-option>
+      }
+    </ion-picker-column>
+
+  </ion-picker>
+
+</ion-content>

@@ -65,3 +65,10 @@
         opacity: 0.5 !important;
     }
 }
+
+
+.fake-bottom-sheet {
+  --height: 70vh;
+  --border-radius: 16px 16px 0 0;
+  align-items: flex-end;
+}

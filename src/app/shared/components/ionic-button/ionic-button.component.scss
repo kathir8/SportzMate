@@ -1,7 +1,10 @@
 .ionic-button {
-    --border-radius: 10px;
+    &:not(.round) {
+        --border-radius: 10px;
+        height: 55px;
+    }
+
     text-transform: none;
-    height: 55px;
 
     &.create-invite {
         --ion-color-base: #628B9F !important;

@@ -1,43 +1,48 @@
 <ion-content class="invite-sheet">
+  <ion-img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="invite" class="sheet-img"></ion-img>
+  <ion-item lines="none" class="input-item">
+    <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
+    <ion-input placeholder="Invite Name" [value]="form().name" (ionInput)="updateForm('name', $event)">
+    </ion-input>
+  </ion-item>
 
-  <div class="sheet-content">
-      <ion-img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="invite" class="sheet-img"></ion-img>
-    <ion-item lines="none" class="input-item">
-      <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
-      <ion-input placeholder="Invite Name" [(ngModel)]="form.name"></ion-input>
-    </ion-item>
+  <ion-item lines="none" class="input-item">
+    <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
+    <ion-input placeholder="Choose the Location" [value]="form().location"
+      (ionInput)="updateForm('location', $event)"></ion-input>
+  </ion-item>
 
-    <ion-item lines="none" class="input-item">
-      <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
-      <ion-input placeholder="Choose the Location" [(ngModel)]="form.location"></ion-input>
-    </ion-item>
+  <ion-item lines="none" class="input-item">
+    <ion-icon [icon]="icons.calendarClearOutline" slot="start"></ion-icon>
+    <ion-input placeholder="Date & Time" readonly [value]="formattedDateTime()"
+      (click)="openDateTimePickerModel()"></ion-input>
+  </ion-item>
 
-    <ion-row>
-      <ion-col size="6">
-        <ion-item lines="none" class="input-item small">
-          <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
-          <ion-input placeholder="No of Players" [(ngModel)]="form.players"></ion-input>
-        </ion-item>
-      </ion-col>
+  <ion-row>
+    <ion-col size="10">
+      <ion-item lines="none" class="input-item">
+        <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
+        <ion-input placeholder="No of Players" type="number" [value]="form().players"
+          (ionInput)="updatePlayersFromInput($event)"></ion-input>
+      </ion-item>
+    </ion-col>
 
-      <ion-col size="6">
-        <!-- <ion-item lines="none" class="input-item small">
-            <ion-icon [icon]="icons.calendarClearOutline" slot="start"></ion-icon>
-            <ion-datetime
-              presentation="date-time"
-              placeholder="Date & Time"
-              [(ngModel)]="form.datetime"
-            ></ion-datetime>
-          </ion-item> -->
-      </ion-col>
-    </ion-row>
+    <ion-col class="button-container" size="2">
+      <ionic-button shape='round' expand="default" size="small" fill="outline"
+        [disabled]="form().players <= MIN_PLAYERS" (ionClick)="updatePlayers()">
+        <ion-icon slot="icon-only" [icon]="icons.caretDownOutline"></ion-icon>
+      </ionic-button>
+      <ionic-button shape='round' expand="default" size="small" fill="outline"
+        [disabled]="form().players >= MAX_PLAYERS" (ionClick)="updatePlayers(true)">
+        <ion-icon slot="icon-only" [icon]="icons.caretUpOutline"></ion-icon>
+      </ionic-button>
+    </ion-col>
+  </ion-row>
 
-    <ion-item lines="none" class="input-item textarea">
-      <ion-textarea placeholder="Description" [(ngModel)]="form.description"></ion-textarea>
-    </ion-item>
+  <ion-item lines="none" class="input-item textarea">
+    <ion-textarea placeholder="Description" [value]="form().description"
+      (ionInput)="updateForm('description', $event)"></ion-textarea>
+  </ion-item>
 
-    <ion-button expand="block" color="primary" class="post-btn" (click)="submit()">
-      Post
-    </ion-button>
-  </div>
+  <ionic-button class="post-btn" (ionClick)="submit()">Post</ionic-button>
 </ion-content>

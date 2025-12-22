@@ -2,17 +2,12 @@ ion-content {
   --padding-start: 16px;
   --background: #fff;
   --padding-end: 16px;
-  --padding-top: 20px;
+  --padding-top: 40px;
 }
 
 .invite-sheet {
-  --background: #fff;
   color: #000;
   height: auto;
-
-  .sheet-content {
-    padding-top: 20px;
-  }
 
   .sheet-img {
     margin: 0 auto 16px auto;
@@ -25,13 +20,13 @@ ion-content {
     margin-bottom: 10px;
     border-radius: 12px;
   }
+  .button-container{
+    justify-content: center;
+    padding-top: 10px;
+    display: flex;
+  }
 
   .textarea {
     --min-height: 80px;
-  }
-
-  .post-btn {
-    border-radius: 12px;
-    margin-top: 12px;
   }
 }
