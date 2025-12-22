@@ -1,35 +1,35 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { User } from '@angular/fire/auth';
 import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { IonContent, IonFooter, IonIcon, IonImg, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram } from 'ionicons/icons';
 import { AuthService } from 'src/app/core/services/auth.service';
+import { SignalService } from 'src/app/core/services/signal.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
-import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
-import { UserService } from '../../other-details/services/user-service';
-import { User } from '@angular/fire/auth';
+import { IonicSignalInputComponent } from "src/app/shared/components/ionic-signal-input/ionic-signal-input.component";
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
+import { UserService } from '../../other-details/services/user-service';
+export interface Credential {
+    email: string;
+    password: string;
+}
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [FormsModule, IonContent, IonIcon, IonFooter, IonToolbar, IonTitle, RouterLink, IonicInputComponent, IonicButtonComponent, IonImg]
+  imports: [FormsModule, IonContent, IonIcon, IonFooter, IonToolbar, IonTitle, RouterLink, IonicButtonComponent, IonImg, IonicSignalInputComponent]
 })
 export class LoginComponent {
   private auth = inject(AuthService);
   private userService = inject(UserService);
   private toast = inject(IonicToastService);
+  signalService = inject(SignalService);
 
   icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
 
-
-  email: string = '';
-  password: string = '';
-
-
-  ionViewDidEnter() {
-    // this.auth.initializeSocialLogin();
-  }
+   credentials = signal<Partial<Credential>>({});
 
   async loginViaGoogle() {
     try {
@@ -46,14 +46,14 @@ export class LoginComponent {
   }
 
   async next() {
-
+    console.log(this.credentials());
     if (!this.loginValidation()) {
       return;
     }
 
     try {
 
-      const user: User = await this.auth.login(this.email, this.password);
+      const user: User = await this.auth.login(this.credentials().email!, this.credentials().password!);
       this.fetchUser(user);
 
     } catch (error: any) {
@@ -76,13 +76,13 @@ export class LoginComponent {
   }
 
   private loginValidation(): boolean {
-    const emailError = this.auth.validateEmail(this.email);
+    const emailError = this.auth.validateEmail(this.credentials().email);
     if (emailError) {
       this.toast.show(emailError);
       return false;
     }
 
-    const passwordError = this.auth.validatePassword(this.password);
+    const passwordError = this.auth.validatePassword(this.credentials().password);
     if (passwordError) {
       this.toast.show(passwordError);
       return false;

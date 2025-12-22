@@ -2,8 +2,14 @@
 
   <h2 class="title">Log In</h2>
 
-  <ionic-input label="Email" type="email" [(ngModel)]="email" name="email"></ionic-input>
-  <ionic-input label="Password" type="password" [(ngModel)]="password" name="password"></ionic-input>
+  <ionic-signal-input label="Email" type="email" name="email" [value]="credentials().email"
+    (valueChange)="signalService.updateField(credentials,'email', $event)">
+  </ionic-signal-input>
+
+  <ionic-signal-input label="Password" type="password" name="password" [value]="credentials().password"
+    (valueChange)="signalService.updateField(credentials,'password', $event)">
+  </ionic-signal-input>
+
   <ionic-button (ionClick)="next()">Next</ionic-button>
 
   <!-- Divider -->

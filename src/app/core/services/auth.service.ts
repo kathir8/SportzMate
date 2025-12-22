@@ -206,13 +206,13 @@ export class AuthService {
   }
 
 
-  validateEmail(email: string): string {
+  validateEmail(email?: string): string {
     if (!email) return 'Please enter your email';
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
     return emailRegex.test(email.trim()) ? '' : 'Please enter a valid email';
   }
 
-  validatePassword(password: string): string {
+  validatePassword(password?: string): string {
     if (!password) return 'Please enter your password';
     return password.length >= 8 ? '' : 'Please must be at least 8 characters';
   }

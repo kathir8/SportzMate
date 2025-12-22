@@ -1,0 +1,29 @@
+$inputPaddingX: 10px;
+
+ion-input {
+    &.text-input {
+        box-shadow: 0 1px 4px #00000029;
+        --padding-start:#{$inputPaddingX};
+        --padding-end:#{$inputPaddingX};
+        --highlight-color: none;
+        background: #ffffff;
+        margin-bottom: 36px;
+        border-radius: 10px;
+        margin-top: 10px;
+
+        &.mate-search {
+            border-bottom: 1px solid #7F7F7F;
+            border-radius: 0;
+            box-shadow: none;
+        }
+        &.from-chat{
+            margin-bottom: 16px;
+        }
+    }
+}
+
+.text-field {
+    line-height: 22px;
+    font-weight: bold;
+    font-size: 16px;
+}
