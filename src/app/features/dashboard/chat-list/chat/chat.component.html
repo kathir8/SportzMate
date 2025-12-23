@@ -65,8 +65,8 @@
           <div class="icon-container" [class.primary]="false">
             <ion-icon [icon]="icons.attachOutline"></ion-icon>
           </div>
-          <ionic-input class="input-box" placeholder="Type a message" [(ngModel)]="newMessage"
-            [dynamicClass]="'from-chat'"></ionic-input>
+          <ionic-input class="input-box" placeholder="Type a message" [value]="newMessage()"
+            (valueChange)="updateMessage($event)" [dynamicClass]="'from-chat'"></ionic-input>
           <div class="icon-container primary" (click)="send()">
             <ion-icon [icon]="icons.sendOutline"></ion-icon>
           </div>

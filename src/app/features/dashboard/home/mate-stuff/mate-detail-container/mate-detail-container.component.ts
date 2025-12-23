@@ -13,14 +13,14 @@ import { MateDetail } from '../models/mate.model';
 
 export class MateDetailContainerComponent {
 
-  private homeApi = inject(HomeApiService);
+  private readonly homeApi = inject(HomeApiService);
 
   private readonly footerTemplate = viewChild<TemplateRef<unknown>>('footer');
-  footerReady = output<TemplateRef<unknown>>();
+  readonly footerReady = output<TemplateRef<unknown>>();
 
-  mate = signal<MateDetail>({} as MateDetail);
-  mateId = input<number>(0);
-  headingName = output<string>();
+  readonly mate = signal<MateDetail>({} as MateDetail);
+  readonly mateId = input<number>(0);
+  readonly headingName = output<string>();
 
   constructor() {
     effect(() => {

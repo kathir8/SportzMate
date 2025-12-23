@@ -1,4 +1,4 @@
-import { Component, effect, Input, signal } from '@angular/core';
+import { Component, effect, input, signal } from '@angular/core';
 import { IonToast } from '@ionic/angular/standalone';
 
 @Component({
@@ -9,10 +9,11 @@ import { IonToast } from '@ionic/angular/standalone';
 })
 export class IonicToastComponent {
 
-  message = signal<string>('');
-  isOpen = signal(false);
+  readonly message = signal<string>('');
+  readonly isOpen = signal(false);
 
-  @Input() duration = 2000;
+  readonly duration = input<number>(2000);
+
 
   constructor() {
     effect(() => {

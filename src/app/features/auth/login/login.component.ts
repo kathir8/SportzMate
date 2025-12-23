@@ -8,16 +8,16 @@ import { Credential } from 'src/app/core/model/login.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SignalService } from 'src/app/core/services/signal.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
-import { IonicSignalInputComponent } from "src/app/shared/components/ionic-signal-input/ionic-signal-input.component";
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { UserService } from '../../other-details/services/user-service';
+import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 
 
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [FormsModule, IonContent, IonIcon, IonFooter, IonToolbar, IonTitle, RouterLink, IonicButtonComponent, IonImg, IonicSignalInputComponent]
+  imports: [FormsModule, IonContent, IonIcon, IonFooter, IonToolbar, IonTitle, RouterLink, IonicButtonComponent, IonImg, IonicInputComponent]
 })
 export class LoginComponent {
   private readonly auth = inject(AuthService);

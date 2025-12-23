@@ -12,26 +12,26 @@ export class IonicButtonComponent {
   /* ------------------------------------
    Configuration Inputs (Parent → Child)
   ------------------------------------- */
-  color = input<'primary' | 'secondary' | 'tertiary' | 'success' | 'danger' | 'warning' | 'light' | 'medium' | 'dark'>('primary');
+  readonly color = input<'primary' | 'secondary' | 'tertiary' | 'success' | 'danger' | 'warning' | 'light' | 'medium' | 'dark'>('primary');
 
-  expand = input<'full' | 'block' | 'default'>('block');
+  readonly expand = input<'full' | 'block' | 'default'>('block');
 
-  size = input<'small' | 'default' | 'large'>('default');
+  readonly size = input<'small' | 'default' | 'large'>('default');
 
-  disabled = input<boolean>(false);
+  readonly disabled = input<boolean>(false);
 
-  fill = input<'clear' | 'outline' | 'solid'>('solid');
+  readonly fill = input<'clear' | 'outline' | 'solid'>('solid');
 
-  type = input<'button' | 'submit' | 'reset'>('button');
+  readonly type = input<'button' | 'submit' | 'reset'>('button');
 
-  shape = input<'round' | 'default'>('default');
+  readonly shape = input<'round' | 'default'>('default');
 
-  dynamicClass = input<string>('');
+  readonly dynamicClass = input<string>('');
 
   /* ------------------------------------
    Output Event (Child → Parent)
   ------------------------------------- */
-  ionClick = output<void>();
+  readonly ionClick = output<void>();
 
   /* ------------------------------------
    Click handler

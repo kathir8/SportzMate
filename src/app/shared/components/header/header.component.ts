@@ -21,13 +21,13 @@ export class HeaderComponent {
   /* ------------------------------------
    Inputs (Parent → Child)
   ------------------------------------- */
-  showBackButton = input<boolean>(true);
-  headerClass = input<string>('');
+  readonly showBackButton = input<boolean>(true);
+  readonly headerClass = input<string>('');
 
   /* ------------------------------------
    Outputs (Child → Parent)
   ------------------------------------- */
-  backClicked = output<void>();
+  readonly backClicked = output<void>();
 
   /* ------------------------------------
    Event handler

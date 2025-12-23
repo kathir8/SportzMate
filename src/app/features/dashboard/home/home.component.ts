@@ -5,7 +5,7 @@ import { IonAvatar, IonContent, IonIcon, IonImg, IonLabel, IonRefresher, IonRefr
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
 import { firstValueFrom } from 'rxjs';
-import { IonicSignalInputComponent } from "src/app/shared/components/ionic-signal-input/ionic-signal-input.component";
+import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { MateListViewComponent } from "./mate-stuff/mate-list-view/mate-list-view.component";
 import { MateMapViewComponent } from "./mate-stuff/mate-map-view/mate-map-view.component";
 import { Coordinates, MateListItem } from './mate-stuff/models/mate.model';
@@ -17,7 +17,7 @@ import { HomeService } from './services/home-service';
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent, IonicSignalInputComponent]
+  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent, IonicInputComponent ]
 
 })
 export class HomeComponent {

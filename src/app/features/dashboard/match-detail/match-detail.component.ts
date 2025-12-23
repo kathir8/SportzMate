@@ -8,7 +8,6 @@ import { GroupInviteComponent } from '../invites/my-group-list/group-invite/grou
 
 type MatchType = 'group' | 'mate';
 
-
 @Component({
   selector: 'app-match-detail',
   templateUrl: './match-detail.component.html',
@@ -18,19 +17,19 @@ type MatchType = 'group' | 'mate';
 })
 export class MatchDetailComponent implements OnInit {
 
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
   type = signal<'group' | 'mate'>('mate');
   private isMatchType(value: string | null): value is MatchType {
     return value === 'group' || value === 'mate';
   }
 
-  isGroup = computed(() => this.type() === 'group');
+  readonly isGroup = computed(() => this.type() === 'group');
 
-  id = signal<number>(0);
-  headingText = signal<string>('');
-  footerTpl = signal<TemplateRef<unknown> | null>(null);
+  readonly id = signal<number>(0);
+  readonly headingText = signal<string>('');
+  readonly footerTpl = signal<TemplateRef<unknown> | null>(null);
 
   ngOnInit() {
 

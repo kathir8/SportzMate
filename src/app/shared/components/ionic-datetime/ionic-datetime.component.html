@@ -48,7 +48,7 @@
     </ion-picker-column>
 
     <ion-picker-column [value]="meridiem()" (ionChange)="setMeridiem($event.detail.value)">
-      @for (md of meridiems; track md) {
+      @for (md of meridiem(); track md) {
       <ion-picker-column-option [value]="md">{{ md }}</ion-picker-column-option>
       }
     </ion-picker-column>

@@ -8,7 +8,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { SignalService } from 'src/app/core/services/signal.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicCheckboxComponent } from 'src/app/shared/components/ionic-checkbox/ionic-checkbox.component';
-import { IonicSignalInputComponent } from "src/app/shared/components/ionic-signal-input/ionic-signal-input.component";
+import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { UserService } from '../../other-details/services/user-service';
 
@@ -16,7 +16,7 @@ import { UserService } from '../../other-details/services/user-service';
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
-  imports: [IonContent, FormsModule, IonicButtonComponent, IonicCheckboxComponent, IonImg, IonicSignalInputComponent]
+  imports: [IonContent, FormsModule, IonicButtonComponent, IonicCheckboxComponent, IonImg, IonicInputComponent ]
 })
 export class SignupComponent {
   private readonly router = inject(Router);

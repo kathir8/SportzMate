@@ -13,9 +13,9 @@ import { GroupInvites } from '../models/invite.model';
   imports: [IonContent, IonicVirtualScrollComponent, MateBasicComponent, NoMateFoundComponent]
 })
 export class MyGroupListComponent {
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
-  responseList = input<GroupInvites[]>([]);
+  readonly responseList = input<GroupInvites[]>([]);
 
   openGroup(item: GroupInvites) {
     this.router.navigate(['dashboard/match', item.id, 'group']);

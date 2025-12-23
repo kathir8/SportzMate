@@ -4,9 +4,9 @@ import { IonGrid, IonIcon } from '@ionic/angular/standalone';
 import { calendarOutline, mailOpenOutline, timeOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
+import { GroupDetail } from '../../../invites/models/invite.model';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { MateDetail } from '../models/mate.model';
-import { GroupDetail } from '../../../invites/models/invite.model';
 @Component({
   selector: 'app-mate-detail',
   templateUrl: './mate-detail.component.html',
@@ -15,13 +15,10 @@ import { GroupDetail } from '../../../invites/models/invite.model';
 })
 export class MateDetailComponent {
 
-  mate = input<MateDetail | GroupDetail>({} as MateDetail);
+  readonly mate = input<MateDetail | GroupDetail>({} as MateDetail);
 
-  DATE_FORMATS = DATE_FORMATS;
+  readonly DATE_FORMATS = DATE_FORMATS;
 
-  icons = { calendarOutline, timeOutline, mailOpenOutline };
-
-
-
+  readonly icons = { calendarOutline, timeOutline, mailOpenOutline };
 
 }

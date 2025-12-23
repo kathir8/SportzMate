@@ -18,12 +18,12 @@ import { IonCheckbox } from '@ionic/angular/standalone';
 export class IonicCheckboxComponent implements ControlValueAccessor {
 
   // inputs
-  label = input<string>('');
-  disabled = input<boolean>(false);
-  labelPlacement = input<'start' | 'end' | 'fixed' | 'stack'>('end');
+  readonly label = input<string>('');
+  readonly disabled = input<boolean>(false);
+  readonly labelPlacement = input<'start' | 'end' | 'fixed' | 'stack'>('end');
 
   // Internal value
-  checked = signal<boolean>(false);
+  readonly checked = signal<boolean>(false);
 
   // ControlValueAccessor callbacks
   private onChange: (value: boolean) => void = () => { };

@@ -9,18 +9,18 @@ import { IonChip } from '@ionic/angular/standalone';
 })
 export class IonicChipComponent {
 
-  color = input<
+  readonly color = input<
     'primary' | 'secondary' | 'tertiary' |
     'success' | 'danger' | 'warning' |
     'light' | 'medium' | 'dark'
   >('primary');
 
-  outline = input<boolean>(false);
-  disabled = input<boolean>(false);
+  readonly outline = input<boolean>(false);
+  readonly disabled = input<boolean>(false);
 
-  dynamicClass = input<string>('');
+  readonly dynamicClass = input<string>('');
 
-  ionClick = output<void>();
+  readonly ionClick = output<void>();
 
   onClick(): void {
     if (!this.disabled()) {

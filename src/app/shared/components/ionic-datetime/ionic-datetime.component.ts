@@ -15,26 +15,26 @@ export class IonicDateTimeComponent {
   private modalCtrl = inject(ModalController);
   private now = new Date();
 
-  initialTimestamp : number | null = null;
+  private readonly initialTimestamp: number | null = null;
 
-  day = signal('');
-  month = signal('');
-  year = signal('');
-  hour = signal('');
-  minute = signal('');
-  meridiem = signal<'AM' | 'PM'>('AM');
-  
+  readonly day = signal('');
+  readonly month = signal('');
+  readonly year = signal('');
+  readonly hour = signal('');
+  readonly minute = signal('');
+  readonly meridiem = signal<'AM' | 'PM'>('AM');
 
-  years = computed(() => {
+
+  readonly years = computed(() => {
     const currentYear = this.now.getFullYear();
     return Array.from({ length: 5 }, (_, i) => String(currentYear + i));
   });
 
-  months = computed(() =>
+  readonly months = computed(() =>
     Array.from({ length: 12 }, (_, i) => String(i + 1).padStart(2, '0'))
   );
 
-  days = computed(() => {
+  readonly days = computed(() => {
     if (!this.month() || !this.year()) return [];
     const daysInMonth = new Date(+this.year(), +this.month(), 0).getDate();
     return Array.from({ length: daysInMonth }, (_, i) =>
@@ -42,22 +42,19 @@ export class IonicDateTimeComponent {
     );
   });
 
-  hours = computed(() =>
+  readonly hours = computed(() =>
     Array.from({ length: 12 }, (_, i) =>
       String(i + 1).padStart(2, '0')
     )
   );
 
-  minutes = computed(() =>
+  readonly minutes = computed(() =>
     Array.from({ length: 60 }, (_, i) =>
       String(i).padStart(2, '0')
     )
   );
 
-  meridiems = ['AM', 'PM'];
-
-
-  isPastSelection = computed(() => {
+  readonly isPastSelection = computed(() => {
     if (!this.day() || !this.month() || !this.year()) return true;
 
     let h = +this.hour();
@@ -76,8 +73,8 @@ export class IonicDateTimeComponent {
   });
 
 
-    ionViewWillEnter() {
-      
+  ionViewWillEnter() {
+
     const baseDate = this.initialTimestamp
       ? new Date(this.initialTimestamp)
       : this.now;

@@ -18,15 +18,14 @@ export class GroupInviteComponent {
   private readonly inviteApi = inject(InviteApiService);
 
   private readonly footerTemplate = viewChild<TemplateRef<unknown>>('footer');
-  footerReady = output<TemplateRef<unknown>>();
+  readonly footerReady = output<TemplateRef<unknown>>();
 
-  group = signal<GroupDetail>({} as GroupDetail);
-  requestedMembers = signal<RequestedList[]>([]);
-  groupId = input<number>(0);
-  headingName = output<string>();
+  private readonly group = signal<GroupDetail>({} as GroupDetail);
+  private readonly requestedMembers = signal<RequestedList[]>([]);
+  readonly groupId = input<number>(0);
+  readonly headingName = output<string>();
 
-
-  accordionItems = computed<IonicAccordionItem[]>(() => [
+  readonly accordionItems = computed<IonicAccordionItem[]>(() => [
     {
       value: 'sportsDetail',
       title: 'Sports Detail',

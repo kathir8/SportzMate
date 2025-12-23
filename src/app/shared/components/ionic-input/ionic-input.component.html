@@ -1,8 +1,8 @@
-<ion-label class="text-field">{{ label }}</ion-label>
-<ion-input class="text-input" [class]="dynamicClass" [placeholder]="placeholder" [type]="type" [value]="value"
-    [type]="type" [readonly]="readonly" [disabled]="disabled" [clearInput]="clearInput"
-    (ionInput)="onInputChange($event)" (ionBlur)="onBlurEvent()">
-    @if(type === 'password'){
-    <ion-input-password-toggle slot="end"></ion-input-password-toggle>
-    }
-</ion-input>
+<ion-label class="text-field">{{ label() }}</ion-label>
+    <ion-input class="text-input" [class]="dynamicClass()"
+      [type]="type()" [placeholder]="placeholder()" 
+      [readonly]="readonly()" [disabled]="disabled()"
+      [value]="value()" [clearInput]="clearInput()"
+      (ionInput)="onInputChange($event)" (ionBlur)="onBlurEvent()">
+      @if(type() === 'password'){ <ion-input-password-toggle slot="end" /> }
+    </ion-input>

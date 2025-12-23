@@ -12,8 +12,8 @@ import { RequestedList } from '../../models/invite.model';
 })
 export class GroupInviteListComponent {
 
-  responseList = input<RequestedList[]>([]);
-  selectedMate = signal<RequestedList>({} as RequestedList);
+  readonly responseList = input<RequestedList[]>([]);
+  private readonly selectedMate = signal<RequestedList>({} as RequestedList);
 
   trackById(index: number, item: RequestedList) {
     return item.id || index;

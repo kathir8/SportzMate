@@ -1,5 +1,5 @@
 <ion-content class="ion-padding invites-page" [scrollY]="false">
-   <ion-segment [(ngModel)]="segmentView" class="segment-wrapper">
+  <ion-segment [(ngModel)]="segmentView" class="segment-wrapper">
     <ion-segment-button value="myInvites" content-id="myInvites">
       <ion-label>My Invites</ion-label>
     </ion-segment-button>
@@ -19,8 +19,6 @@
       <app-my-group-list [responseList]="myGroupList()"></app-my-group-list>
       }
     </ion-segment-content>
-    </ion-segment-view>
-
-
+  </ion-segment-view>
 
 </ion-content>

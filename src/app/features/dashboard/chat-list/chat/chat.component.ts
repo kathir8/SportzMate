@@ -7,14 +7,14 @@ import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { attachOutline, closeOutline, happyOutline, sendOutline } from 'ionicons/icons';
 import { switchMap } from 'rxjs';
 import { UserStore } from 'src/app/core/stores/user-store';
-import { IonicInputComponent } from "src/app/shared/components/ionic-input/ionic-input.component";
+import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { ChatMessage, ChatService } from './chat.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
-  imports: [IonContent, FormsModule, DatePipe, IonIcon, IonicInputComponent]
+  imports: [IonContent, FormsModule, DatePipe, IonIcon, IonicInputComponent ]
 })
 export class ChatComponent {
 
@@ -103,6 +103,10 @@ export class ChatComponent {
     // 2. Check if the sender is different from the previous message's sender
     const previousMessage = this.messages()[index - 1];
     return previousMessage.senderId !== currentSenderIsMe;
+  }
+
+  updateMessage(value: string): void {
+    this.newMessage.set(value);
   }
 
   handleBack() {

@@ -1,13 +1,13 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { formatToLocalTime } from '../utils/date-utils';
 import { DATE_FORMATS } from 'src/app/core/constants';
+import { formatToLocalTime } from '../utils/date-utils';
 
 @Pipe({
   name: 'localTime'
 })
 export class LocalTimePipe implements PipeTransform {
 
-  private cache = new Map<string, string>();
+  private readonly cache = new Map<string, string>();
 
   transform(timestamp?: number, formatStr: string = DATE_FORMATS.FULL): string {
     if (!timestamp) return '';

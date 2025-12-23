@@ -18,7 +18,7 @@ export interface IonicAccordionItem {
 })
 export class IonicAccordionComponent {
 
-    items = input<IonicAccordionItem[]>([]);
+   readonly items = input<IonicAccordionItem[]>([]);
 
 
 }
