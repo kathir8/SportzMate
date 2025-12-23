@@ -1,38 +1,44 @@
 import { Injectable, WritableSignal } from '@angular/core';
-type KeyOf<T> = Extract<keyof T, string>;
 
 @Injectable({
   providedIn: 'root',
 })
 export class SignalService {
 
-  updateField<T extends object, K extends KeyOf<T>>(
-    signal: WritableSignal<T>,
-    key: K,
-    value: T[K]
-  ): void {
-    signal.update(prev => ({
-      ...prev,
-      [key]: value
-    }));
+  getDeepValue<T>(source: T, path: string, defaultValue: any = ''): any {
+
+   const data = (typeof source === 'function') ? (source as any)() : source;
+    if (!data) return defaultValue;
+    const value = path.split('.').reduce((acc, key) => (acc as any)?.[key], data);
+    return value !== undefined && value !== null ? value : defaultValue;
   }
 
-  updateNestedField<
-    T extends object,
-    G extends KeyOf<T>,
-    K extends KeyOf<NonNullable<T[G]>>
-  >(
+  updateDeepValue<T extends object>(
     signal: WritableSignal<T>,
-    group: G,
-    key: K,
-    value: NonNullable<T[G]>[K]
+    path: string,
+    value: any
   ): void {
-    signal.update(prev => ({
-      ...prev,
-      [group]: {
-        ...(prev[group] as NonNullable<T[G]>),
-        [key]: value
+    signal.update((prev) => {
+      // 1. Shallow clone the root state
+      const newState = { ...prev };
+      const keys = path.split('.');
+      let current: any = newState;
+
+      for (let i = 0; i < keys.length - 1; i++) {
+        const key = keys[i];
+
+        // 2. The critical step: Clone the existing level if it exists, 
+        // otherwise start a new object. This preserves "home" when updating "pincode".
+        current[key] = current[key] ? { ...current[key] } : {};
+
+        // 3. Move deeper into the tree
+        current = current[key];
       }
-    }));
+
+      // 4. Final leaf assignment
+      current[keys[keys.length - 1]] = value;
+
+      return newState;
+    });
   }
 }

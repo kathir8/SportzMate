@@ -3,7 +3,7 @@
     <ion-button (click)="dismiss('cancel')">Cancel</ion-button>
   </ion-buttons>
   <ion-buttons slot="end">
-    <ion-button  [disabled]="isPastSelection()" (click)="dismiss('confirm')">Done</ion-button>
+    <ion-button [disabled]="isPastSelection()" (click)="dismiss('confirm')">Done</ion-button>
   </ion-buttons>
 </ion-toolbar>
 <ion-content>

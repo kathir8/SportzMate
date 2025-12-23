@@ -3,6 +3,7 @@ import { FormsModule } from '@angular/forms';
 import { IonCol, IonContent, IonIcon, IonImg, IonInput, IonItem, IonRow, IonTextarea, ModalController } from '@ionic/angular/standalone';
 import { calendarClearOutline, caretDownOutline, caretUpOutline, locationSharp, personOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
+import { SignalService } from 'src/app/core/services/signal.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicDateTimeComponent } from "src/app/shared/components/ionic-datetime/ionic-datetime.component";
 import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
@@ -23,16 +24,16 @@ type InviteForm = {
   imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, FormsModule, IonImg, IonicButtonComponent]
 })
 export class CreateInviteComponent {
-  private modalCtrl = inject(ModalController);
-  private bottomSheet = inject(BottomSheetService);
+  private readonly modalCtrl = inject(ModalController);
+  private readonly bottomSheet = inject(BottomSheetService);
+  private readonly signalService = inject(SignalService);
 
-  icons = { personOutline, locationSharp, calendarClearOutline, caretUpOutline, caretDownOutline };
-
+  readonly icons = { personOutline, locationSharp, calendarClearOutline, caretUpOutline, caretDownOutline };
   readonly MIN_PLAYERS = 1;
   readonly MAX_PLAYERS = 30;
 
 
-  form = signal<InviteForm>({
+  readonly form = signal<InviteForm>({
     name: '',
     location: '',
     players: this.MIN_PLAYERS,
@@ -40,11 +41,19 @@ export class CreateInviteComponent {
     description: ''
   });
 
-  formattedDateTime = computed(() => {
+  readonly formattedDateTime = computed(() => {
     const ts = this.form().datetime;
     return ts ? formatToLocalTime(ts, DATE_FORMATS.DATE_TIME) : '';
   });
 
+
+  getVal(path: string, fallback: any = '') {
+    return this.signalService.getDeepValue(this.form, path, fallback);
+  }
+
+  setVal(path: string, event: any) {
+    this.signalService.updateDeepValue(this.form, path, event);
+  }
 
   updateForm<K extends keyof InviteForm>(
     key: K,

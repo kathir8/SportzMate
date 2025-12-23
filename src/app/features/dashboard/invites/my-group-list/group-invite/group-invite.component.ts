@@ -15,9 +15,9 @@ import { GroupInviteListComponent } from '../group-invite-list/group-invite-list
 })
 export class GroupInviteComponent {
 
-  private inviteApi = inject(InviteApiService);
+  private readonly inviteApi = inject(InviteApiService);
 
-  footerTemplate = viewChild<TemplateRef<unknown>>('footer');
+  private readonly footerTemplate = viewChild<TemplateRef<unknown>>('footer');
   footerReady = output<TemplateRef<unknown>>();
 
   group = signal<GroupDetail>({} as GroupDetail);

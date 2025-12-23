@@ -1,14 +1,14 @@
-import { Component, computed, inject, Signal, signal } from '@angular/core';
-import { IonContent, IonIcon } from '@ionic/angular/standalone';
-import { ChatMessage, ChatService } from './chat.service';
-import { UserStore } from 'src/app/core/stores/user-store';
-import { FormsModule } from '@angular/forms';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { switchMap } from 'rxjs';
-import { happyOutline, attachOutline, sendOutline, closeOutline } from 'ionicons/icons';
-import { IonicInputComponent } from "src/app/shared/components/ionic-input/ionic-input.component";
 import { DatePipe } from '@angular/common';
+import { Component, computed, inject, Signal, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { IonContent, IonIcon } from '@ionic/angular/standalone';
+import { attachOutline, closeOutline, happyOutline, sendOutline } from 'ionicons/icons';
+import { switchMap } from 'rxjs';
+import { UserStore } from 'src/app/core/stores/user-store';
+import { IonicInputComponent } from "src/app/shared/components/ionic-input/ionic-input.component";
+import { ChatMessage, ChatService } from './chat.service';
 
 @Component({
   selector: 'app-chat',
@@ -18,17 +18,17 @@ import { ActivatedRoute, Router } from '@angular/router';
 })
 export class ChatComponent {
 
-  private chatService = inject(ChatService);
-  private userStore = inject(UserStore);
-  private route = inject(ActivatedRoute);
-  private router = inject(Router);
+  private readonly chatService = inject(ChatService);
+  private readonly userStore = inject(UserStore);
+  private readonly route = inject(ActivatedRoute);
+  private readonly router = inject(Router);
 
-  icons = { happyOutline, attachOutline, sendOutline, closeOutline };
+  readonly icons = { happyOutline, attachOutline, sendOutline, closeOutline };
 
-  currentUid = signal(this.userStore.getCurrent()?.id ?? 'unknown');
-  receiverUid = signal('');
-  showEmojiPicker = signal(false);
-  emojiList = signal([
+  readonly currentUid = signal(this.userStore.getCurrent()?.id ?? 'unknown');
+  private readonly receiverUid = signal('');
+  readonly showEmojiPicker = signal(false);
+  readonly emojiList = signal([
     "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇",
     "🙂", "🙃", "😉", "😌", "😍", "🥰", "😘", "😗", "😙", "😚",
     "😋", "😛", "😝", "😜", "🤪", "🤨", "🧐", "🤓", "😎", "🤩",
@@ -50,13 +50,13 @@ export class ChatComponent {
     "🔥", "✨", "🌟", "💫", "💥", "💢", "💦", "💧", "💤", "🕳",
     "🎉", "🎊", "🎈", "🎂", "🎁", "🕯", "💣"
   ]);
-  roomId = computed(() =>
+  private readonly roomId = computed(() =>
     this.chatService.getRoomId(this.currentUid(), this.receiverUid())
   );
 
-  newMessage = signal('');
+  readonly newMessage = signal('');
 
-  messages: Signal<ChatMessage[]> = toSignal(
+  readonly messages: Signal<ChatMessage[]> = toSignal(
     toObservable(this.roomId).pipe(
       switchMap(roomId => this.chatService.getMessages(roomId))
     ),
@@ -64,7 +64,7 @@ export class ChatComponent {
   );
 
 
-   ngOnInit() {
+  ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
       this.receiverUid.set(idParam);

@@ -9,10 +9,10 @@ window.addEventListener('unhandledrejection', (ev) => {
 });
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private firebase = initializeApp(environment.firebaseConfig);
-
-  private uid = signal<string | null>(null);
-  private token = signal<string | null>(null);
+  private readonly firebase = initializeApp(environment.firebaseConfig);
+  
+  private readonly uid = signal<string | null>(null);
+  private readonly token = signal<string | null>(null);
 
   isLoggedIn = computed(() => this.uid() !== null);
 

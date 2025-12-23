@@ -2,12 +2,12 @@
 
   <h2 class="title">Log In</h2>
 
-  <ionic-signal-input label="Email" type="email" name="email" [value]="credentials().email"
-    (valueChange)="signalService.updateField(credentials,'email', $event)">
+  <ionic-signal-input label="Email" type="email" name="email" [value]="getVal('email')"
+    (valueChange)="setVal('email', $event)">
   </ionic-signal-input>
 
-  <ionic-signal-input label="Password" type="password" name="password" [value]="credentials().password"
-    (valueChange)="signalService.updateField(credentials,'password', $event)">
+  <ionic-signal-input label="Password" type="password" name="password" [value]="getVal('password')"
+    (valueChange)="setVal('password', $event)">
   </ionic-signal-input>
 
   <ionic-button (ionClick)="next()">Next</ionic-button>

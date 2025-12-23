@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <ionic-input placeholder="Search Invites" [(ngModel)]="rawSearchTerm" dynamicClass="mate-search" [clearInput]="true"></ionic-input>
+  <ionic-signal-input placeholder="Search Invites" [value]="rawSearchTerm()" (valueChange)="updateSearchTerm($event)" dynamicClass="mate-search" [clearInput]="true"></ionic-signal-input>
 
   <ion-segment [(ngModel)]="segmentView" class="segment-wrapper">
     <ion-segment-button value="list" content-id="list">
@@ -45,6 +45,5 @@
       }
     </ion-segment-content>
   </ion-segment-view>
-  <!-- <button style="position:absolute; bottom:35px"(click)="openChat('tXNwC6ZmTgdyUGKN7S1fmvTkX2o1')">chat</button> -->
   <app-range-fab></app-range-fab>
 </ion-content>

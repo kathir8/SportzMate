@@ -2,14 +2,14 @@
   <ion-img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="invite" class="sheet-img"></ion-img>
   <ion-item lines="none" class="input-item">
     <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
-    <ion-input placeholder="Invite Name" [value]="form().name" (ionInput)="updateForm('name', $event)">
+    <ion-input placeholder="Invite Name" [value]="getVal('name')" (valueChange)="setVal('name', $event)">
     </ion-input>
   </ion-item>
 
   <ion-item lines="none" class="input-item">
     <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
-    <ion-input placeholder="Choose the Location" [value]="form().location"
-      (ionInput)="updateForm('location', $event)"></ion-input>
+    <ion-input placeholder="Choose the Location" [value]="getVal('location')"
+      (valueChange)="setVal('location', $event)"></ion-input>
   </ion-item>
 
   <ion-item lines="none" class="input-item">
@@ -22,7 +22,7 @@
     <ion-col size="10">
       <ion-item lines="none" class="input-item">
         <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
-        <ion-input placeholder="No of Players" type="number" [value]="form().players"
+        <ion-input placeholder="No of Players" type="number" [value]="getVal('players')"
           (ionInput)="updatePlayersFromInput($event)"></ion-input>
       </ion-item>
     </ion-col>
@@ -40,8 +40,8 @@
   </ion-row>
 
   <ion-item lines="none" class="input-item textarea">
-    <ion-textarea placeholder="Description" [value]="form().description"
-      (ionInput)="updateForm('description', $event)"></ion-textarea>
+    <ion-textarea placeholder="Description" [value]="getVal('description')"
+      (ionInput)="setVal('description', $event)"></ion-textarea>
   </ion-item>
 
   <ionic-button class="post-btn" (ionClick)="submit()">Post</ionic-button>

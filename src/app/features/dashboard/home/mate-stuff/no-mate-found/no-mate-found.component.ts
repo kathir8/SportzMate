@@ -11,17 +11,17 @@ import { CreateInviteComponent } from '../../../create-invite/create-invite.comp
   imports: [IonicButtonComponent, IonIcon, IonImg]
 })
 export class NoMateFoundComponent {
-  private modalCtrl = inject(ModalController);
-  dynamicClass = input<string>('');
+  private readonly modalCtrl = inject(ModalController);
+  readonly dynamicClass = input<string>('');
+  readonly icons = { add };
 
-  text = computed(() => {
+  readonly text = computed(() => {
     const c = this.dynamicClass();
     if (!c) return 'No Mates Found';
 
     return 'No Invite Created';
   });
 
-  icons = { add };
 
   async createNewInvite() {
     const modal = await this.modalCtrl.create({

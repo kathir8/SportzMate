@@ -21,20 +21,10 @@ export class UserStore {
 
   loadFromCache(): UserDetail | null {
     try {
-      // const cached = localStorage.getItem('userDetail');
-       const parsed:UserDetail = {
-      name : 'Kathir',
-      email : 'ilayakathi@gmail.com',
-      profile : '',
-      customProfile : '',
-      id : 'tXNwC6ZmTgdyUGKN7S1fmvTkX2o1',
-      age: 25,
-      gender: 'male',
-      interest: [SportType.Basketball],
-    }
-      // if (!cached) return null;
+      const cached = localStorage.getItem('userDetail');
+      if (!cached) return null;
 
-      // const parsed = JSON.parse(cached);
+      const parsed = JSON.parse(cached);
       this.current.set(parsed);
       return parsed;
 

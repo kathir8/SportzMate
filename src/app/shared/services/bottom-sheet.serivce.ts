@@ -8,8 +8,7 @@ import type { OverlayEventDetail } from '@ionic/core';
 })
 
 export class BottomSheetService {
-  private modalCtrl = inject(ModalController);
-
+  private readonly modalCtrl = inject(ModalController);
   private openComponents = signal<Set<any>>(new Set());
 
 

@@ -11,11 +11,11 @@ import { IonContent } from '@ionic/angular/standalone';
 })
 export class ChatListComponent {
 
-  private router = inject(Router);
+  private readonly router = inject(Router);
 
   constructor() { }
 
-  openChat(id:string) {
+  openChat(id: string) {
     this.router.navigate(['dashboard/chat', id]);
 
   }

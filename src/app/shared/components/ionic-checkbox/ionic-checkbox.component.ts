@@ -1,4 +1,4 @@
-import { Component, EventEmitter, forwardRef, Input, OnInit, Output } from '@angular/core';
+import { Component, forwardRef, input, signal } from '@angular/core';
 import { ControlValueAccessor, NG_VALUE_ACCESSOR } from '@angular/forms';
 import { IonCheckbox } from '@ionic/angular/standalone';
 
@@ -6,7 +6,7 @@ import { IonCheckbox } from '@ionic/angular/standalone';
   selector: 'ionic-checkbox',
   templateUrl: './ionic-checkbox.component.html',
   styleUrls: ['./ionic-checkbox.component.scss'],
-  imports:[IonCheckbox],
+  imports: [IonCheckbox],
   providers: [
     {
       provide: NG_VALUE_ACCESSOR,
@@ -17,21 +17,21 @@ import { IonCheckbox } from '@ionic/angular/standalone';
 })
 export class IonicCheckboxComponent implements ControlValueAccessor {
 
-  @Input() label:string = '';                // Label text
-  @Input() disabled:boolean = false;          // Disabled state
-  @Input() labelPlacement:'start' | 'end' | 'fixed' | 'stack' = 'end';                // Label text
+  // inputs
+  label = input<string>('');
+  disabled = input<boolean>(false);
+  labelPlacement = input<'start' | 'end' | 'fixed' | 'stack'>('end');
 
-  @Output() modelChange = new EventEmitter<boolean>();
-
-  value: boolean = false;             // Internal value
+  // Internal value
+  checked = signal<boolean>(false);
 
   // ControlValueAccessor callbacks
-  private onChange: (value: boolean) => void = () => {};
-  private onTouched: () => void = () => {};
+  private onChange: (value: boolean) => void = () => { };
+  private onTouched: () => void = () => { };
 
   // -------- ControlValueAccessor methods --------
   writeValue(value: boolean): void {
-    this.value = value ?? false;
+    this.checked.set(value ?? false);
   }
 
   registerOnChange(fn: (value: boolean) => void): void {
@@ -42,16 +42,13 @@ export class IonicCheckboxComponent implements ControlValueAccessor {
     this.onTouched = fn;
   }
 
-  setDisabledState?(isDisabled: boolean): void {
-    this.disabled = isDisabled;
-  }
 
   // -------- Event handlers --------
   onCheckboxChange(event: CustomEvent): void {
-    const checked = event.detail.checked;
-    this.value = checked;
-    this.onChange(checked); // updates ngModel
-    this.modelChange.emit(checked); // for [(ngModel)]
+    const isChecked = event.detail.checked;
+    this.checked.set(isChecked);
+    this.onChange(isChecked);
+    this.onTouched();
   }
 
 }

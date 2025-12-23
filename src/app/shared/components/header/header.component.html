@@ -1,13 +1,15 @@
-<ion-header translucent [class]="headerClass">
+<ion-header translucent [class]="headerClass()">
   <ion-toolbar class="toolbar">
-    @if(showBackButton){
+
+    @if (showBackButton()) {
     <ion-buttons slot="start">
-      <ion-button (click)="backClicked.emit()" class="back-button">
+      <ion-button class="back-button" (click)="emitBackClick()">
         <ion-icon [icon]="icons.chevronBackOutline"></ion-icon>
       </ion-button>
     </ion-buttons>
     }
 
     <ng-content></ng-content>
+
   </ion-toolbar>
 </ion-header>

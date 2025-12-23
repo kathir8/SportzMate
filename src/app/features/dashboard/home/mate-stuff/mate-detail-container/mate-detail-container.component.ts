@@ -15,7 +15,7 @@ export class MateDetailContainerComponent {
 
   private homeApi = inject(HomeApiService);
 
-  footerTemplate = viewChild<TemplateRef<unknown>>('footer');
+  private readonly footerTemplate = viewChild<TemplateRef<unknown>>('footer');
   footerReady = output<TemplateRef<unknown>>();
 
   mate = signal<MateDetail>({} as MateDetail);

@@ -1,5 +1,5 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
-import { IonFooter, IonNavLink, IonContent } from '@ionic/angular/standalone';
+import { Component, computed, ElementRef, signal, viewChild } from '@angular/core';
+import { IonContent, IonFooter, IonNavLink } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { InterestDetailComponent } from '../interest-detail/interest-detail.component';
 
@@ -10,32 +10,45 @@ import { InterestDetailComponent } from '../interest-detail/interest-detail.comp
   imports: [IonNavLink, IonicButtonComponent, IonFooter, IonContent]
 })
 export class AgeDetailComponent {
-  static navId = 'AgeDetail';
+  static readonly navId = 'AgeDetail';
 
-  interestComponent = InterestDetailComponent;
-  @ViewChild('scrollContainer') scrollContainer!: ElementRef<HTMLDivElement>;
+  readonly interestComponent = InterestDetailComponent;
+  private readonly scrollContainer = viewChild<ElementRef<HTMLDivElement>>('scrollContainer');
 
-  startAge = 15;
-  endAge = 50;
-  ages: number[] = Array.from({ length: (this.endAge - this.startAge + 1) }, (_, i) => i + this.startAge);
-  selectedAge = 29;
+  private readonly startAge = 15;
+  private readonly endAge = 50;
   private readonly ITEM_GAP = 24;
 
+  readonly selectedAge = signal<number>(29);
+
+
+  readonly ages = computed<number[]>(() =>
+    Array.from(
+      { length: this.endAge - this.startAge + 1 },
+      (_, index) => this.startAge + index
+    )
+  );
+  
   ngAfterViewInit() {
-    setTimeout(() => this.centerOnAge(this.selectedAge));
+    queueMicrotask(() => this.centerOnAge(this.selectedAge()));
   }
 
   onScroll() {
-    const el = this.scrollContainer.nativeElement;
-    const scrollLeft = el.scrollLeft;
+    const el = this.scrollContainer()?.nativeElement;
+    if (!el || el.children.length === 0) return;
     const itemWidth = el.children[0].clientWidth + this.ITEM_GAP;
-    const centerIndex = Math.round(scrollLeft / itemWidth);
-    this.selectedAge = this.ages[centerIndex];
+    const centerIndex = Math.round(el.scrollLeft / itemWidth);
+    const age = this.ages()[centerIndex];
+    if (age !== undefined) {
+      this.selectedAge.set(age);
+    }
   }
 
   centerOnAge(age: number) {
-    const el = this.scrollContainer.nativeElement;
-    const index = this.ages.indexOf(age);
+    const el = this.scrollContainer()?.nativeElement;
+    if (!el || el.children.length === 0) return;
+
+    const index = this.ages().indexOf(age);
     if (index === -1) return;
 
     const itemWidth = el.children[0].clientWidth + this.ITEM_GAP;

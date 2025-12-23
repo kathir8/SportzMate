@@ -15,18 +15,18 @@ export class IonicVirtualScrollComponent<T extends MateListItem | MyInvites | Re
 
   constructor() { }
 
-  dynamicListClass = input<string>('');
-  dynamicGridClass = input<string>('');
-  itemSize = input<number>(90);
-  minBufferPx = input<number>(185);
-  maxBufferPx = input<number>(365);
+  readonly dynamicListClass = input<string>('');
+  readonly dynamicGridClass = input<string>('');
+  readonly itemSize = input<number>(90);
+  readonly minBufferPx = input<number>(185);
+  readonly maxBufferPx = input<number>(365);
 
-  items = input<T[]>([]);
+  readonly items = input<T[]>([]);
 
-  itemTemplate = input<any>();
-  noDataTemplate = input<any>();
+  readonly itemTemplate = input<any>();
+  readonly noDataTemplate = input<any>();
 
-  onItemClick = input<(item: any) => void>();
+  readonly onItemClick = input<(item: any) => void>();
 
   trackByFn = (_: number, item: any) => item.id;
 

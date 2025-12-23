@@ -1,6 +1,5 @@
-import { inject, Injectable, resource, Signal, signal } from '@angular/core';
-import { toObservable, toSignal } from '@angular/core/rxjs-interop';
-import { Firestore, collection, addDoc, query, orderBy, collectionData, Timestamp, CollectionReference, serverTimestamp, doc, getDoc, updateDoc } from '@angular/fire/firestore';
+import { inject, Injectable } from '@angular/core';
+import { addDoc, collection, collectionData, CollectionReference, doc, Firestore, getDoc, orderBy, query, serverTimestamp, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom, Observable } from 'rxjs';
 import { UserStore } from 'src/app/core/stores/user-store';
 
@@ -19,9 +18,9 @@ export interface ChatMessage {
 })
 
 export class ChatService {
-  private firestore = inject(Firestore);
-  private userStore = inject(UserStore);
-  
+  private readonly firestore = inject(Firestore);
+  private readonly userStore = inject(UserStore);
+
 
   // Create a unique room ID for two users
   getRoomId(uid1: string, uid2: string): string {
@@ -31,20 +30,20 @@ export class ChatService {
   // Send Message
   async sendMessage(roomId: string, senderId: string, text: string) {
 
-  try {
-    const chatRef = collection(this.firestore, `messages/${roomId}/chat`);
+    try {
+      const chatRef = collection(this.firestore, `messages/${roomId}/chat`);
 
-    await addDoc(chatRef, {
-      senderId,
-      text,
-      timestamp: serverTimestamp(),
-    });
+      await addDoc(chatRef, {
+        senderId,
+        text,
+        timestamp: serverTimestamp(),
+      });
 
+    }
+    catch (error: any) {
+      console.error("🔥 Firestore write error:", error.code, error.message);
+    }
   }
-  catch (error:any) {
-    console.error("🔥 Firestore write error:", error.code, error.message);
-  }
-}
 
   getMessages(roomId: string): Observable<ChatMessage[]> {
     if (!roomId) {
@@ -57,7 +56,7 @@ export class ChatService {
     return collectionData<ChatMessage>(q, { idField: 'id' });
   }
 
-   async createGroup(name: string, members: string[]) {
+  async createGroup(name: string, members: string[]) {
     const createdBy = this.userStore.getCurrent()?.id ?? 'unknown';
 
     const groupsRef = collection(this.firestore, 'groups');
@@ -85,7 +84,7 @@ export class ChatService {
   }
 
 
-    async sendGroupMessage(groupId: string,text: string, audioUrl?: string, durationSec?: number) {
+  async sendGroupMessage(groupId: string, text: string, audioUrl?: string, durationSec?: number) {
     if (!groupId) throw new Error('groupId required');
     const senderId = this.userStore.getCurrent()?.id;
     if (!senderId) throw new Error('User not authenticated');
@@ -94,7 +93,7 @@ export class ChatService {
     const docRef = await addDoc(chatRef, {
       senderId,
       text: text ?? null,
-      audioUrl : audioUrl ?? null,
+      audioUrl: audioUrl ?? null,
       audioDuration: durationSec ?? null,
       timestamp: serverTimestamp(),
     });

@@ -1,4 +1,4 @@
-import { Component, computed, effect, inject, input, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { IonButton, IonButtons, IonContent, IonPicker, IonPickerColumn, IonPickerColumnOption, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import type { PickerColumnValue } from '@ionic/core';
 import { toUtcTimestamp } from '../../utils/date-utils';

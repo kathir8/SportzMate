@@ -15,31 +15,26 @@ import { CreateInviteComponent } from './create-invite/create-invite.component';
   imports: [IonIcon, IonTabs, IonTabBar, IonTabButton, FormsModule, IonFab, IonFabButton]
 })
 export class DashboardComponent {
-  private router = inject(Router);
-  private bottomSheet = inject(BottomSheetService);
+  private readonly router = inject(Router);
+  private readonly bottomSheet = inject(BottomSheetService);
 
-
-  icons = { homeSharp, chatbubblesSharp, menuOutline, mailOpenSharp, add };
+  readonly icons = { homeSharp, chatbubblesSharp, menuOutline, mailOpenSharp, add };
 
   private navigationEndSignal = toSignal(
     this.router.events.pipe(filter(e => e instanceof NavigationEnd)),
     { initialValue: null }
   );
 
-
-
-  showTabs = computed(() => {
+  readonly showTabs = computed(() => {
     const event = this.navigationEndSignal();
     if (!event) return true;
 
     const url = (event as NavigationEnd).url;
-
     // Hide tabs on these routes
     const hideRoutes = ['/dashboard/match', '/dashboard/chat/'];
 
     return !hideRoutes.some(r => url.startsWith(r));
   });
-
 
   async createNewInvite() {
     await this.bottomSheet.open(CreateInviteComponent);

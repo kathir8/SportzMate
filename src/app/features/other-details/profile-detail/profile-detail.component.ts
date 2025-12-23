@@ -1,28 +1,26 @@
 import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { Router } from '@angular/router';
-import { IonFooter, IonImg, IonContent, IonAvatar } from '@ionic/angular/standalone';
+import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
+import { IonAvatar, IonContent, IonFooter, IonImg } from '@ionic/angular/standalone';
+import { UserStore } from 'src/app/core/stores/user-store';
 import { CountryDropdownComponent } from "src/app/shared/components/country-dropdown/country-dropdown.component";
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
-import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
-import { Camera, CameraResultType, CameraSource } from '@capacitor/camera';
 import { UserService } from '../services/user-service';
-import { UserStore } from 'src/app/core/stores/user-store';
 
 @Component({
   selector: 'app-profile-detail',
   templateUrl: './profile-detail.component.html',
   styleUrls: ['./profile-detail.component.scss'],
-  imports: [IonFooter, IonicButtonComponent, IonicInputComponent, FormsModule, CountryDropdownComponent, IonImg, IonContent, IonAvatar]
+  imports: [IonFooter, IonicButtonComponent, FormsModule, CountryDropdownComponent, IonImg, IonContent, IonAvatar]
 })
 export class ProfileDetailComponent {
-  private router = inject(Router);
-  userService = inject(UserService);
-  userStore = inject(UserStore);
-  profileImage = signal<string | undefined>(undefined);
+  private readonly router = inject(Router);
+  private readonly userService = inject(UserService);
+  private readonly userStore = inject(UserStore);
+  readonly profileImage = signal<string | undefined>(undefined);
 
-  static navId = 'ProfileDetail';
-  userName: string = '';
+  static readonly navId = 'ProfileDetail';
 
   constructor() {
     effect(() => {
@@ -86,6 +84,7 @@ export class ProfileDetailComponent {
 
   onCountryChange(country: any) {
     console.log('Selected:', country);
+    // save api call
   }
 
   confirm() {

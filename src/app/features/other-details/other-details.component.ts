@@ -1,8 +1,7 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, signal, viewChild } from '@angular/core';
 import { IonContent, IonNav, IonRange } from '@ionic/angular/standalone';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { GenderDetailComponent } from "./gender-detail/gender-detail.component";
-import { ProfileDetailComponent } from './profile-detail/profile-detail.component';
 @Component({
   selector: 'other-details',
   templateUrl: './other-details.component.html',
@@ -11,12 +10,11 @@ import { ProfileDetailComponent } from './profile-detail/profile-detail.componen
 })
 export class OtherDetailsComponent {
 
-  @ViewChild('nav') ionNav!: IonNav;
+  private readonly ionNav = viewChild.required<IonNav>('nav');
 
-  // genderComponent = GenderDetailComponent;
-  profileDetailComponent = ProfileDetailComponent;
-  showBackButton: boolean = false;
-  ionValue: number = 20;
+  readonly genderComponent = GenderDetailComponent;
+  readonly showBackButton = signal<boolean>(false);
+  readonly ionValue = signal<number>(20);
 
   onNavChange(event: CustomEvent<void>) {
     const ionNavElement = event.target as HTMLIonNavElement;
@@ -25,29 +23,29 @@ export class OtherDetailsComponent {
     active.then((view) => {
       const componentName = view?.component?.navId;
       if (!componentName) {
-        this.showBackButton = false;
+        this.showBackButton.set(false);
         return
       }
 
       if (componentName === 'GenderDetail') {
-        this.showBackButton = false;
-        this.ionValue = 20;
+        this.showBackButton.set(false);
+        this.ionValue.set(20);
       } else if (componentName === 'AgeDetail') {
-        this.showBackButton = true;
-        this.ionValue = 40;
+        this.showBackButton.set(true);
+        this.ionValue.set(40);
       } else if (componentName === 'InterestDetail') {
-        this.showBackButton = true;
-        this.ionValue = 60;
+        this.showBackButton.set(true);
+        this.ionValue.set(60);
       } else if (componentName === 'ProfileDetail') {
-        this.showBackButton = true;
-        this.ionValue = 80;
+        this.showBackButton.set(true);
+        this.ionValue.set(80);
       }
     });
   }
 
 
   goBack() {
-    this.ionNav?.pop();
+    this.ionNav()?.pop();
   }
 
 }

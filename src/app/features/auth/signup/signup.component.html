@@ -2,9 +2,21 @@
   <ion-img src="assets/icon/signup/signup-bg.png" alt="sign up image"></ion-img>
   <div class="ion-padding">
     <h2 class="title">Sign Up</h2>
-    <ionic-input label="Email" type="email" [(ngModel)]="email" name="email"></ionic-input>
-    <ionic-input label="Password" type="password" [(ngModel)]="password" name="password"></ionic-input>
-    <ionic-input label="Confirm Password" type="password" [(ngModel)]="confirmPassword" name="cPassword"></ionic-input>
+
+    <ionic-signal-input label="Name" name="name" [value]="getVal('name')" (valueChange)="setVal('name', $event)">
+    </ionic-signal-input>
+
+    <ionic-signal-input label="Email" type="email" name="email" [value]="getVal('email')"
+      (valueChange)="setVal('email', $event)">
+    </ionic-signal-input>
+
+    <ionic-signal-input label="Password" type="password" name="password" [value]="getVal('password')"
+      (valueChange)="setVal('password', $event)">
+    </ionic-signal-input>
+
+    <ionic-signal-input label="Confirm Password" type="password" name="cPassword" [value]="getVal('confirmPassword')"
+      (valueChange)="setVal('confirmPassword', $event)">
+    </ionic-signal-input>
 
     <ionic-checkbox class="checkbox-container" label="I agree to the terms and conditions" [(ngModel)]="accepted">
     </ionic-checkbox>

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { IonFooter, IonNavLink, IonContent } from '@ionic/angular/standalone';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
@@ -12,20 +12,29 @@ import { SportType } from 'src/app/shared/models/shared.model';
   imports: [IonNavLink, IonicButtonComponent, IonFooter, IonicChipComponent, IonContent]
 })
 export class InterestDetailComponent {
-  static navId = 'InterestDetail';
+  static readonly navId = 'InterestDetail';
 
-  profileComponent = ProfileDetailComponent;
-  sports = Object.values(SportType);
-  selectedSports: SportType[] = [SportType.Football, SportType.Running];
+  readonly profileComponent = ProfileDetailComponent;
+  readonly sports = computed<SportType[]>(() =>
+    Object.values(SportType)
+  );
+  readonly selectedSports = signal<SportType[]>([
+    SportType.Football,
+    SportType.Running
+  ]);
 
-  toggleSportSelection(sport: SportType) {
-    const index = this.selectedSports.indexOf(sport);
+  toggleSportSelection(sport: SportType): void {
+    this.selectedSports.update(previousSelected =>
+      previousSelected.includes(sport)
+        ? previousSelected.filter(item => item !== sport)
+        : [...previousSelected, sport]
+    );
+  }
 
-    if (index > -1) {
-      this.selectedSports.splice(index, 1);
-    } else {
-      this.selectedSports.push(sport);
-    }
+  getChipClass(sport: SportType): string {
+    return this.selectedSports().includes(sport)
+      ? 'interest-chip selected'
+      : 'interest-chip';
   }
 
 }

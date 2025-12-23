@@ -13,15 +13,15 @@ import { SplashScreen } from '@capacitor/splash-screen';
 })
 export class AppComponent {
 
-  globalToast = viewChild.required<IonicToastComponent>('globalToast');
+  private readonly globalToast = viewChild.required<IonicToastComponent>('globalToast');
 
-  private toastService = inject(IonicToastService);
-  private themeService = inject(ThemeService);
-  private userService = inject(UserService);
+  private readonly toastService = inject(IonicToastService);
+  private readonly themeService = inject(ThemeService);
+  private readonly userService = inject(UserService);
 
   constructor() {
     SplashScreen.show();
-    this.userService.initializeUser();
+    // this.userService.initializeUser();
     effect(() => {
       const toastInstance = this.globalToast();
       if (toastInstance) {

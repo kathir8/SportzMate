@@ -3,10 +3,10 @@ import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/
 import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline, thumbsDownOutline, thumbsUpOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { IonicBadgeComponent } from 'src/app/shared/components/ionic-badge/ionic-badge.component';
-import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
-import { MateListItem } from '../models/mate.model';
-import { MyInvites, RequestedList } from '../../../invites/models/invite.model';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
+import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
+import { MyInvites, RequestedList } from '../../../invites/models/invite.model';
+import { MateListItem } from '../models/mate.model';
 
 @Component({
   selector: 'app-mate-basic',
@@ -15,25 +15,14 @@ import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-c
   imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg, IonicChipComponent]
 })
 export class MateBasicComponent<T extends MateListItem | MyInvites | RequestedList> {
-  DATE_FORMATS = DATE_FORMATS;
+  readonly DATE_FORMATS = DATE_FORMATS;
 
-  icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };
-  mate = input<T>();
-  dynamicClass = input<string>('');
-  isAccepted = output<boolean>();
+  readonly icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };
+  readonly mate = input<T>();
+  readonly dynamicClass = input<string>('');
+  readonly isAccepted = output<boolean>();
 
-
-  getDistanceOrDuration(): string | null {
-    const m = this.mate();
-    return m && 'distanceOrDuration' in m ? m.distanceOrDuration : null;
-  }
-
-  getChatCount(): number | null {
-    const m = this.mate();
-    return m && 'chatCount' in m ? m.chatCount : null;
-  }
-
-   badgeInfo = computed(() => {
+  readonly badgeInfo = computed(() => {
     const m = this.mate();
     if (!m) return null;
 
@@ -48,8 +37,4 @@ export class MateBasicComponent<T extends MateListItem | MyInvites | RequestedLi
     return null;
   });
 
-  acceptOrReject(){
-
-  }
- 
 }

@@ -2,11 +2,11 @@ import { Component, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
 import { add } from 'ionicons/icons';
+import { IonicVirtualScrollComponent } from "src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component";
+import { MyInvites } from '../../../invites/models/invite.model';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { MateListItem } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
-import { MyInvites } from '../../../invites/models/invite.model';
-import { IonicVirtualScrollComponent } from "src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component";
 
 @Component({
   selector: 'app-mate-list-view',
@@ -15,12 +15,10 @@ import { IonicVirtualScrollComponent } from "src/app/shared/components/ionic-vir
   imports: [NoMateFoundComponent, IonContent,  MateBasicComponent, IonicVirtualScrollComponent]
 })
 export class MateListViewComponent<T extends MateListItem | MyInvites> {
-  private router = inject(Router);
-  icons = { add };
+  private readonly router = inject(Router);
+  readonly icons = { add };
 
-  responseList = input<T[]>([]);
-  dynamicClass = input<string>('from-mate-list');
-
+  readonly responseList = input<T[]>([]);
 
   openMateDetail(item: T) {
     this.router.navigate(['dashboard/match', item.id, 'mate']);

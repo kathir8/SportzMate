@@ -20,7 +20,7 @@ export class IonicSignalInputComponent {
   clearInput = input(false);
 
   // Two-way signal (Model)
-  value = model<any>(null);
+  value = model.required<any>();
   blur = output<void>();
 
   onChange = (v: any) => { };

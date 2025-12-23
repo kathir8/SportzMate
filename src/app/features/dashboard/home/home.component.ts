@@ -5,41 +5,38 @@ import { IonAvatar, IonContent, IonIcon, IonImg, IonLabel, IonRefresher, IonRefr
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
 import { firstValueFrom } from 'rxjs';
-import { IonicInputComponent } from "src/app/shared/components/ionic-input/ionic-input.component";
+import { IonicSignalInputComponent } from "src/app/shared/components/ionic-signal-input/ionic-signal-input.component";
 import { MateListViewComponent } from "./mate-stuff/mate-list-view/mate-list-view.component";
 import { MateMapViewComponent } from "./mate-stuff/mate-map-view/mate-map-view.component";
 import { Coordinates, MateListItem } from './mate-stuff/models/mate.model';
 import { RangeFabComponent } from './range-fab/range-fab.component';
 import { HomeApiService } from './services/home-api-service';
 import { HomeService } from './services/home-service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent, IonicInputComponent]
+  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent, IonicSignalInputComponent]
 
 })
 export class HomeComponent {
 
-  public homeService = inject(HomeService);
-  private homeApi = inject(HomeApiService);
-  private router = inject(Router);
+  public readonly homeService = inject(HomeService);
+  private readonly homeApi = inject(HomeApiService);
 
 
-  icons = { navigateCircleOutline, navigateSharp };
+  readonly icons = { navigateCircleOutline, navigateSharp };
 
-  segmentView = signal<'list' | 'map'>('list');
-  current = signal<Coordinates>({ lat: 13.0827, lng: 80.2707 }); // (fallback to Chennai if geolocation fails)
-  loading = signal(true);
-  mates = signal<MateListItem[]>([]);
-  searchInvites = signal<string>('');
-  rawSearchTerm = signal<string>('');
-  debouncedSearchInvites = signal<string>('');
+  readonly segmentView = signal<'list' | 'map'>('list');
+  readonly current = signal<Coordinates>({ lat: 13.0827, lng: 80.2707 }); // (fallback to Chennai if geolocation fails)
+  private loading = signal(true);
+  private mates = signal<MateListItem[]>([]);
+  readonly rawSearchTerm = signal<string>('');
+  private debouncedSearchInvites = signal<string>('');
 
 
-  rangeFilteredMates = computed<MateListItem[]>(() => {
+  private rangeFilteredMates = computed<MateListItem[]>(() => {
     const mates = this.mates();
     const cur = this.current();
     const range = this.homeService.rangeKm();
@@ -57,7 +54,7 @@ export class HomeComponent {
     return filtered;
   });
 
-  visiblePlayers = computed<MateListItem[]>(() => {
+  readonly visiblePlayers = computed<MateListItem[]>(() => {
     let filtered = this.rangeFilteredMates();
     const searchTerm = this.debouncedSearchInvites().toLowerCase().trim();
 
@@ -90,14 +87,14 @@ export class HomeComponent {
   }
 
 
-  getCurrentPosition(): Promise<GeolocationPosition> {
+  private getCurrentPosition(): Promise<GeolocationPosition> {
     return new Promise((resolve, reject) => {
       if (!navigator.geolocation) reject('No geolocation');
       navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 });
     });
   }
 
-  async refreshData(): Promise<void> {
+  private async refreshData(): Promise<void> {
     this.loading.set(true);
 
     try {
@@ -121,7 +118,7 @@ export class HomeComponent {
   }
 
   // compute distance between two lat/lon in km (Haversine)
-  distanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
+  private distanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
     const R = 6371; // km
     const dLat = this.deg2rad(lat2 - lat1);
     const dLon = this.deg2rad(lon2 - lon1);
@@ -132,7 +129,7 @@ export class HomeComponent {
     return R * c;
   }
 
-  deg2rad(deg: number) { return deg * (Math.PI / 180); }
+  private deg2rad(deg: number) { return deg * (Math.PI / 180); }
 
   async doRefresh(event: CustomEvent) {
     await this.refreshData();
@@ -140,6 +137,9 @@ export class HomeComponent {
       event.detail.complete(); // hide spinner
     }, 2500);
   }
- 
+
+  updateSearchTerm(value: string): void {
+    this.rawSearchTerm.set(value);
+  }
 
 }

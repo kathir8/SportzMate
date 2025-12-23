@@ -1,15 +1,38 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
-import { IonHeader, IonToolbar, IonButtons, IonButton, IonIcon } from '@ionic/angular/standalone';
+import { Component, input, output } from '@angular/core';
+import { IonButton, IonButtons, IonHeader, IonIcon, IonToolbar } from '@ionic/angular/standalone';
 import { chevronBackOutline } from 'ionicons/icons';
+
 @Component({
   selector: 'app-header',
+  standalone: true,
+  imports: [IonHeader, IonToolbar, IonButtons, IonButton, IonIcon],
   templateUrl: './header.component.html',
-  styleUrls: ['./header.component.scss'],
-  imports: [IonHeader, IonToolbar, IonButtons, IonButton, IonIcon]
+  styleUrls: ['./header.component.scss']
 })
 export class HeaderComponent {
-  icons = { chevronBackOutline };
-  @Input() showBackButton = true;
-  @Input() headerClass = '';
-  @Output() backClicked = new EventEmitter<null>();
+
+  /* ------------------------------------
+   Icons (static config)
+  ------------------------------------- */
+  readonly icons = {
+    chevronBackOutline
+  };
+
+  /* ------------------------------------
+   Inputs (Parent → Child)
+  ------------------------------------- */
+  showBackButton = input<boolean>(true);
+  headerClass = input<string>('');
+
+  /* ------------------------------------
+   Outputs (Child → Parent)
+  ------------------------------------- */
+  backClicked = output<void>();
+
+  /* ------------------------------------
+   Event handler
+  ------------------------------------- */
+  emitBackClick(): void {
+    this.backClicked.emit();
+  }
 }

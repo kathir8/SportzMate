@@ -12,14 +12,15 @@ import { SplashScreen } from '@capacitor/splash-screen';
   providedIn: 'root',
 })
 export class UserService {
-  private userApi = inject(UserApiService);
-  private userStore = inject(UserStore);
-  private auth = inject(AuthService);
-  private router = inject(Router);
+  private readonly userApi = inject(UserApiService);
+  private readonly userStore = inject(UserStore);
+  private readonly auth = inject(AuthService);
+  private readonly router = inject(Router);
 
 
   initializeUser() {
     const cached = this.userStore.loadFromCache();
+    this.initializeGoogle();
 
     if (!cached) {
       this.redirectToLogin();
@@ -70,8 +71,13 @@ export class UserService {
   }
 
   private redirectToLogin() {
+    this.initializeGoogle();
     this.auth.logout();
     this.router.navigateByUrl('/login', { replaceUrl: true });
     SplashScreen.hide();
+  }
+
+  private initializeGoogle(){
+    this.auth.initializeSocialLogin();
   }
 }

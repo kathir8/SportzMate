@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, Output } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { IonChip } from '@ionic/angular/standalone';
 
 @Component({
@@ -9,15 +9,22 @@ import { IonChip } from '@ionic/angular/standalone';
 })
 export class IonicChipComponent {
 
-  @Input() color: 'primary' | 'secondary' | 'tertiary' | 'success' | 'danger' | 'warning' | 'light' | 'medium' | 'dark' = 'primary';
-  @Input() outline:boolean = false;
-  @Input() disabled:boolean = false;
-  @Input() dynamicClass: any = {};
+  color = input<
+    'primary' | 'secondary' | 'tertiary' |
+    'success' | 'danger' | 'warning' |
+    'light' | 'medium' | 'dark'
+  >('primary');
 
-  @Output() ionClick = new EventEmitter<void>();
+  outline = input<boolean>(false);
+  disabled = input<boolean>(false);
 
-  onClick() {
-    this.ionClick.emit();
+  dynamicClass = input<string>('');
+
+  ionClick = output<void>();
+
+  onClick(): void {
+    if (!this.disabled()) {
+      this.ionClick.emit();
+    }
   }
-
 }

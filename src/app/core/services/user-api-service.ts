@@ -8,25 +8,13 @@ import { User } from '@angular/fire/auth';
   providedIn: 'root',
 })
 export class UserApiService {
-  private api = inject(ApiService);
+  private readonly api = inject(ApiService);
 
   checkUserExist(email: string): Observable<boolean> {
-    return this.api.get<boolean>(`/api/checkUserExist/${email}`);
+    return this.api.get<boolean>(`/api/checkuserexistmailid/${email}`);
   }
 
   createUser(user: User): Observable<UserExist> {
-     const userDetail:UserExist = {
-      name : 'Kathiravan',
-      email : 'ilayakathi@gmail.com',
-      profile : '',
-      customProfile : '',
-      id : '12',
-      age: 25,
-      gender: 'male',
-      interest: [],
-      exist:true
-    }
-    return of(userDetail);
     return this.api.post<UserExist>('/api/createUser', user);
   }
 
@@ -39,18 +27,6 @@ export class UserApiService {
   }
 
    getUserDetail(id: string): Observable<UserExist> {
-    const userDetail:UserExist = {
-      name : 'Kathiravan',
-      email : 'sukn99@gmail.com',
-      profile : '',
-      customProfile : '',
-      id : id,
-      age: 25,
-      gender: 'male',
-      interest: [],
-      exist:true
-    }
-    return of(userDetail);
     return this.api.get<UserExist>(`/api/users/${id}`);
   }
 
