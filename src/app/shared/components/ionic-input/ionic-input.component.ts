@@ -11,24 +11,24 @@ import { IonInput, IonInputPasswordToggle, IonLabel } from '@ionic/angular/stand
 export class IonicInputComponent {
 
   // Signal Inputs
-  label = input('');
-  type = input<'text' | 'number' | 'email' | 'password'>('text');
-  dynamicClass = input('');
-  placeholder = input('');
-  readonly = input(false);
-  disabled = input(false);
-  clearInput = input(false);
+  readonly label = input('');
+  readonly type = input<'text' | 'number' | 'email' | 'password'>('text');
+  readonly dynamicClass = input('');
+  readonly placeholder = input('');
+  readonly readonly = input(false);
+  readonly disabled = input(false);
+  readonly clearInput = input(false);
 
   // Two-way signal (Model)
-  value = model.required<any>();
-  blur = output<void>();
+  readonly value = model.required<any>();
+  readonly blur = output<void>();
 
-  onChange = (v: any) => { };
-  onTouched = () => { };
+  private onChange = (v: any) => { };
+  private onTouched = () => { };
 
-  writeValue(v: any) { this.value.set(v); }
-  registerOnChange(fn: any) { this.onChange = fn; }
-  registerOnTouched(fn: any) { this.onTouched = fn; }
+  private writeValue(v: any) { this.value.set(v); }
+  private registerOnChange(fn: any) { this.onChange = fn; }
+  private registerOnTouched(fn: any) { this.onTouched = fn; }
 
   onInputChange(event: any) {
     const val = event.detail.value;
