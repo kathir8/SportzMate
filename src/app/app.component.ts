@@ -21,7 +21,7 @@ export class AppComponent {
 
   constructor() {
     SplashScreen.show();
-    // this.userService.initializeUser();
+    this.userService.initializeUser();
     effect(() => {
       const toastInstance = this.globalToast();
       if (toastInstance) {

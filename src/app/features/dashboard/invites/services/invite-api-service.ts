@@ -238,7 +238,7 @@ export class InviteApiService {
 
   fetchNearby(lat: number, lng: number) { return this.api.get<Invite[]>(`/api/invites/near?lat=${lat}&lng=${lng}`); }
   fetchById(id: string) { return this.api.get<Invite>(`/api/invites/${id}`); }
-  createInvite(payload: Partial<Invite>) { return this.api.post<Invite>('/api/invites', payload); }
+  // createInvite(payload: Partial<Invite>) { return this.api.post<Invite>('/api/invites', payload); }
   joinInvite(id: string, uid: string) { return this.api.post(`/api/invites/${id}/join`, { uid }); }
   leaveInvite(id: string, uid: string) { return this.api.post(`/api/invites/${id}/leave`, { uid }); }
 

@@ -11,6 +11,7 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { UserService } from '../../other-details/services/user-service';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
+import { UserExistApiResp, UserRegisterApiResp } from 'src/app/core/model/user.model';
 
 
 @Component({
@@ -42,7 +43,7 @@ export class LoginComponent {
     try {
       // this.loading.set(true);
       const user: User = await this.auth.loginViaGoogle();
-      this.fetchUser(user);
+      this.userExist(user);
 
     } catch (err) {
       const msg = err === 'NoUser' ? 'No user data received from Google login' : 'Google login error';
@@ -68,9 +69,8 @@ export class LoginComponent {
     }
   }
 
-  private fetchUser(user: User) {
-    if (!user.emailVerified) {
-      this.toast.show("Please verify your email before logging in.");
+  private fetchUser(user: User): void {
+    if (!this.emailVerifyCheck(user.emailVerified)) {
       return;
     }
 
@@ -79,6 +79,44 @@ export class LoginComponent {
     } else {
       this.toast.show("User not found");
     }
+  }
+
+  private userExist(user: User): void {
+    if (!this.emailVerifyCheck(user.emailVerified)) {
+      return;
+    }
+    if (user.uid && user.email) {
+      this.userService.isuserExist(user.email).subscribe((res: UserExistApiResp) => {
+        if (res.rspFlag === 'Y') {
+          this.fetchUser(user);
+        } else {
+          this.createUser(user);
+        }
+      });
+    } else {
+      this.toast.show("email id not exist.");
+    }
+  }
+
+  private createUser(user: User) {
+    if (user.uid && user.email) {
+      this.userService.registerUser(user).subscribe((res: UserRegisterApiResp) => {
+        if(res.resFlag === 'Y'){
+
+        }else{
+      this.toast.show(res.resMsg);
+        }
+      })
+    } else {
+      this.toast.show("email id not exist.");
+    }
+  }
+
+  private emailVerifyCheck(isVerfied: boolean) {
+    if (!isVerfied) {
+      this.toast.show("Please verify your email before logging in.");
+    }
+    return isVerfied;
   }
 
   private loginValidation(): boolean {

@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { UserApiService } from '../../../core/services/user-api-service';
 import { Router } from '@angular/router';
-import { UserExist } from '../../../core/model/user.model';
+import { UserExist, UserExistApiResp, UserRegisterApi, UserRegisterApiResp } from '../../../core/model/user.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { Observable, of } from 'rxjs';
 import { User } from '@angular/fire/auth';
@@ -54,9 +54,17 @@ export class UserService {
   }
 
 
-  isuserExist(email: string): Observable<boolean> {
-    return of(false);
-    return this.userApi.checkUserExist(email);
+  isuserExist(emailId: string): Observable<UserExistApiResp> {
+    return this.userApi.checkUserExist({ emailId });
+  }
+
+  registerUser(user: User): Observable<UserRegisterApiResp> {
+    const request = {} as UserRegisterApi;
+    request.name = user.displayName || '';
+    request.email = user.email!
+    request.fcmID = user.uid!
+    request.profileImage = user.photoURL || '';
+    return this.userApi.userRegistration(request);
   }
 
   saveUser(user: User) {
@@ -77,7 +85,7 @@ export class UserService {
     SplashScreen.hide();
   }
 
-  private initializeGoogle(){
+  private initializeGoogle() {
     this.auth.initializeSocialLogin();
   }
 }

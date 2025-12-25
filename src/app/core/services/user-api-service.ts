@@ -1,8 +1,8 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
-import { ApiService } from 'src/app/core/services/api.service';
-import { UserDetail, UserExist } from '../model/user.model';
 import { User } from '@angular/fire/auth';
+import { Observable } from 'rxjs';
+import { ApiService } from 'src/app/core/services/api.service';
+import { UserDetail, UserExist, UserExistApi, UserExistApiResp, UserRegisterApi, UserRegisterApiResp } from '../model/user.model';
 
 @Injectable({
   providedIn: 'root',
@@ -10,24 +10,28 @@ import { User } from '@angular/fire/auth';
 export class UserApiService {
   private readonly api = inject(ApiService);
 
-  checkUserExist(email: string): Observable<boolean> {
-    return this.api.get<boolean>(`/api/checkuserexistmailid/${email}`);
+  checkUserExist(request: UserExistApi): Observable<UserExistApiResp> {
+    return this.api.post<UserExistApi, UserExistApiResp>(`checkuserexistmailid`, request);
+  }
+
+  userRegistration(request: UserRegisterApi): Observable<UserRegisterApiResp> {
+    return this.api.post<UserRegisterApi, UserRegisterApiResp>(`userregistration`, request);
   }
 
   createUser(user: User): Observable<UserExist> {
-    return this.api.post<UserExist>('/api/createUser', user);
+    return this.api.post<User, UserExist>('createUser', user);
   }
 
-  updateUser(payload: Partial<UserDetail>) {
-    return this.api.post<UserDetail>('/api/users', payload);
+  updateUser(payload: Partial<UserDetail>): Observable<UserExist> {
+    return this.api.post<UserDetail, UserExist>('users', payload);
   }
 
   searchUsers(q: string) {
-    return this.api.get<UserDetail[]>(`/api/users/search?q=${encodeURIComponent(q)}`);
+    return this.api.get<UserDetail[]>(`users/search?q=${encodeURIComponent(q)}`);
   }
 
-   getUserDetail(id: string): Observable<UserExist> {
-    return this.api.get<UserExist>(`/api/users/${id}`);
+  getUserDetail(id: string): Observable<UserExist> {
+    return this.api.get<UserExist>(`users/${id}`);
   }
 
 }

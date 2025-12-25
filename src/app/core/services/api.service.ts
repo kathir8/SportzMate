@@ -8,10 +8,10 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  private readonly baseUrl = 'http://sportzmate-api-288678239216.us-central1.run.app/sportmate/';
+  private readonly baseUrl = 'https://sportzmate-api-288678239216.us-central1.run.app/sportmate';
 
-  get<T>(endpoint: string, params?: Record<string, any>): Observable<T> {
-    return this.http.get<T>(`${this.baseUrl}/${endpoint}`, { params })
+  get<TResponse>(endpoint: string, params?: Record<string, any>): Observable<TResponse> {
+    return this.http.get<TResponse>(`${this.baseUrl}/${endpoint}`, { params })
       .pipe(
         catchError(err => {
           console.error('API Error', err);
@@ -20,8 +20,8 @@ export class ApiService {
       );
   }
 
-  post<T>(endpoint: string, body: any): Observable<T> {
-    return this.http.post<T>(`${this.baseUrl}/${endpoint}`, body).pipe(
+  post<TRequest, TResponse>(endpoint: string, body: any): Observable<TResponse> {
+    return this.http.post<TResponse>(`${this.baseUrl}/${endpoint}`, body).pipe(
       catchError(err => {
         console.error('API Error', err);
         return throwError(() => err);
