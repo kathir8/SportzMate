@@ -22,11 +22,11 @@ export class ProfileDetailComponent {
 
   static readonly navId = 'ProfileDetail';
 
+  private readonly currentUser = this.userStore.getCurrent();
+
   constructor() {
     effect(() => {
-      const user = this.userStore.getCurrent();
-      if (user?.customProfile) this.profileImage.set(user.customProfile);
-      else this.profileImage.set(user?.profile);
+      if (this.currentUser()?.profileImage) this.profileImage.set(this.currentUser()!.profileImage);
     })
   }
 
@@ -46,7 +46,7 @@ export class ProfileDetailComponent {
 
       this.profileImage.set(image.dataUrl);
 
-      const uid = this.userStore.getCurrent()?.id;
+      const uid = this.currentUser()!.userID;
       if (!uid) return;
 
       // Upload to Firebase

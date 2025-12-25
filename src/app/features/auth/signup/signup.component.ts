@@ -58,8 +58,8 @@ export class SignupComponent {
       return
     }
 
-    const isUserExist = await firstValueFrom(this.userService.isuserExist(this.signup().email));
-    if (isUserExist) {
+    // const isUserExist = await firstValueFrom(this.userService.isuserExist(this.signup().email));
+    if (true) {
       this.toast.show("This email already has an account. Please login instead.");
       this.router.navigate(['/auth/login']);
     }

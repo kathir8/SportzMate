@@ -1,6 +1,7 @@
-import { Component, signal } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { IonCol, IonFooter, IonGrid, IonIcon, IonImg, IonNavLink, IonRow } from '@ionic/angular/standalone';
 import { checkmarkOutline } from 'ionicons/icons';
+import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { AgeDetailComponent } from '../age-detail/age-detail.component';
 
@@ -12,15 +13,26 @@ import { AgeDetailComponent } from '../age-detail/age-detail.component';
 
 })
 export class GenderDetailComponent {
+  private readonly userStore = inject(UserStore);
   static readonly navId = 'GenderDetail';
   readonly icons = { checkmarkOutline };
+  readonly currentUser = this.userStore.getCurrent()!;
 
-  readonly selectedGender = signal<string>('male');
+  constructor() {
+    this.selectGender('male');
+  }
 
   readonly ageComponent = AgeDetailComponent;
 
 
-  selectGender(type: string) {
-    this.selectedGender.set(type);
+  selectGender(type: 'male' | 'female'): void {
+    this.currentUser.update(user => {
+      if (!user) return user;
+
+      return {
+        ...user,
+        gender: type
+      };
+    });
   }
 }

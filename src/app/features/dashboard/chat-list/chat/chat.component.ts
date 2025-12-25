@@ -14,7 +14,7 @@ import { ChatMessage, ChatService } from './chat.service';
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
-  imports: [IonContent, FormsModule, DatePipe, IonIcon, IonicInputComponent ]
+  imports: [IonContent, FormsModule, DatePipe, IonIcon, IonicInputComponent]
 })
 export class ChatComponent {
 
@@ -23,10 +23,15 @@ export class ChatComponent {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
 
+  private readonly currentUser = this.userStore.getCurrent();
+
+  readonly currentUid = computed(() => {
+    return this.currentUser()!.userID;
+  });
+
   readonly icons = { happyOutline, attachOutline, sendOutline, closeOutline };
 
-  readonly currentUid = signal(this.userStore.getCurrent()?.id ?? 'unknown');
-  private readonly receiverUid = signal('');
+  private readonly receiverUid = signal(0);
   readonly showEmojiPicker = signal(false);
   readonly emojiList = signal([
     "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇",
@@ -67,7 +72,7 @@ export class ChatComponent {
   ngOnInit() {
     const idParam = this.route.snapshot.paramMap.get('id');
     if (idParam) {
-      this.receiverUid.set(idParam);
+      this.receiverUid.set(parseInt(idParam));
     } else {
       this.handleBack();
     }
@@ -90,11 +95,11 @@ export class ChatComponent {
     this.newMessage.set('');
   }
 
-  getMsgSide(senderId: string): 'sender' | 'reciever' {
+  getMsgSide(senderId: number): 'sender' | 'reciever' {
     return senderId === this.currentUid() ? 'sender' : 'reciever';
   }
 
-  isMessageFirstInGroup(currentSenderIsMe: string, index: number): boolean {
+  isMessageFirstInGroup(currentSenderIsMe: number, index: number): boolean {
     // 1. Check if it's the very first message
     if (index === 0) {
       return true;

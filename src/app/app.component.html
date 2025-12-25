@@ -1,4 +1,10 @@
 <ionic-toast #globalToast></ionic-toast>
 <ion-app>
+
+  @if (isLoading()) {
+  <div class="global-spinner">
+    <ion-spinner name="crescent"></ion-spinner>
+  </div>
+  }
   <ion-router-outlet></ion-router-outlet>
 </ion-app>

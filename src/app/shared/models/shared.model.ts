@@ -9,3 +9,10 @@ export enum SportType {
   Yoga = 'Yoga',
   Basketball = 'Basketball',
 }
+
+export interface SportsList{
+  sportID:number;
+  sportsName:string;
+  sportsIcon:string;
+  sportsImg:string;
+}

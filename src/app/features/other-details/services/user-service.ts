@@ -1,12 +1,12 @@
 import { inject, Injectable } from '@angular/core';
-import { UserApiService } from '../../../core/services/user-api-service';
-import { Router } from '@angular/router';
-import { UserExist, UserExistApiResp, UserRegisterApi, UserRegisterApiResp } from '../../../core/model/user.model';
-import { UserStore } from 'src/app/core/stores/user-store';
-import { Observable, of } from 'rxjs';
 import { User } from '@angular/fire/auth';
-import { AuthService } from 'src/app/core/services/auth.service';
+import { Router } from '@angular/router';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { Observable } from 'rxjs';
+import { AuthService } from 'src/app/core/services/auth.service';
+import { UserStore } from 'src/app/core/stores/user-store';
+import { UserDeleteApiResp, UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../../../core/model/user.model';
+import { UserApiService } from '../../../core/services/user-api-service';
 
 @Injectable({
   providedIn: 'root',
@@ -26,6 +26,7 @@ export class UserService {
       this.redirectToLogin();
       return;
     }
+    this.auth.updateUid(cached.fcmID);
     this.navigateAfterUserLoad();
   }
 
@@ -53,18 +54,30 @@ export class UserService {
     SplashScreen.hide();
   }
 
-
-  isuserExist(emailId: string): Observable<UserExistApiResp> {
-    return this.userApi.checkUserExist({ emailId });
-  }
-
-  registerUser(user: User): Observable<UserRegisterApiResp> {
-    const request = {} as UserRegisterApi;
+  registerUser(user: User, fromGoogle?: boolean): void {
+    const request = new UserRegisterApi();
     request.name = user.displayName || '';
     request.email = user.email!
     request.fcmID = user.uid!
     request.profileImage = user.photoURL || '';
-    return this.userApi.userRegistration(request);
+    request.userLoginFlag = fromGoogle ? 'Y' : 'N';
+    this.userApi.userRegistration(request).subscribe((res: UserRegisterApiResp) => {
+      if (res.resFlag === 'Y') {
+        localStorage.removeItem("signupEmail");
+        localStorage.removeItem("signupPassword");
+        localStorage.removeItem("signupName");
+        this.updateUserDetails(res.userDetailsDto);
+      }
+    });
+  }
+
+  deleteUser(email: string) {
+    this.userApi.deleteUser(email).subscribe((res: UserDeleteApiResp) => {
+      if (res.rspMsg) {
+        this.userStore.clear();
+        this.redirectToLogin();
+      }
+    });
   }
 
   saveUser(user: User) {
@@ -76,6 +89,12 @@ export class UserService {
         this.router.navigate(['/other-details'], { replaceUrl: true });
       });
     }
+  }
+
+  private updateUserDetails(user: UserDetail) {
+    this.userStore.setCurrent(user);
+    this.auth.updateUid(user.fcmID);
+    this.navigateAfterUserLoad();
   }
 
   private redirectToLogin() {

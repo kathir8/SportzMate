@@ -1,22 +1,22 @@
 // user.store.ts
-import { Injectable, signal, computed } from '@angular/core';
+import { Injectable, signal, computed, WritableSignal } from '@angular/core';
 import { UserDetail } from '../model/user.model';
 import { SportType } from 'src/app/shared/models/shared.model';
 
 @Injectable({ providedIn: 'root' })
 export class UserStore {
-  private current = signal<UserDetail | null>(null);
+  private readonly current = signal<UserDetail | null>(null);
   loading = signal(false);
 
-  isOnboarded = computed(() => !!this.current()?.name && !!this.current()?.interest?.length);
+  readonly isOnboarded = computed(() => !!this.current()?.name && !!this.current()?.interest?.length);
 
   setCurrent(user: UserDetail): void {
     this.current.set(user);
     localStorage.setItem('userDetail', JSON.stringify(user));  // CACHE
   }
 
-  getCurrent(): UserDetail | null {
-    return this.current();
+  getCurrent(): WritableSignal<UserDetail | null> {
+    return this.current;
   }
 
   loadFromCache(): UserDetail | null {

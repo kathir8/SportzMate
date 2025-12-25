@@ -1,6 +1,5 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
-import { initializeApp } from '@angular/fire/app';
-import { getAuth, GoogleAuthProvider, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithCredential, signInWithEmailAndPassword, signInWithEmailLink, updatePassword, updateProfile, User } from '@angular/fire/auth';
+import { Auth, GoogleAuthProvider, isSignInWithEmailLink, onAuthStateChanged, sendSignInLinkToEmail, signInWithCredential, signInWithEmailAndPassword, signInWithEmailLink, updatePassword, updateProfile, User } from '@angular/fire/auth';
 import { SocialLogin } from "@capgo/capacitor-social-login";
 import { environment } from 'src/environments/environment';
 
@@ -9,15 +8,12 @@ window.addEventListener('unhandledrejection', (ev) => {
 });
 @Injectable({ providedIn: 'root' })
 export class AuthService {
-  private readonly firebase = initializeApp(environment.firebaseConfig);
-  
+  private readonly auth = inject(Auth);
+
   private readonly uid = signal<string | null>(null);
   private readonly token = signal<string | null>(null);
 
   isLoggedIn = computed(() => this.uid() !== null);
-
-  loginResponse: any;
-  refresh_Access_token: any;
 
 
   constructor() {
@@ -25,30 +21,22 @@ export class AuthService {
   }
 
   private listenToAuthState() {
-    const auth = getAuth(this.firebase);
 
-    onAuthStateChanged(auth, async (currentUser: User | null) => {
+    onAuthStateChanged(this.auth, async (currentUser: User | null) => {
       try {
         if (currentUser) {
-          // update uid signal
-          this.uid.set(currentUser.uid);
 
           // refresh and store token
           const idToken = await currentUser.getIdToken(true);
-          this.token.set(idToken);
-          this.refresh_Access_token = idToken; // keep for backward compatibility
+          this.updateUidAndToken(currentUser.uid, idToken);
         } else {
           // signed out
-          this.uid.set(null);
-          this.token.set(null);
-          this.refresh_Access_token = undefined;
+          this.updateUidAndToken();
         }
       } catch (err) {
         console.error('Error in auth state handler', err);
         // On unexpected error, clear signals to force "signed out" state
-        this.uid.set(null);
-        this.token.set(null);
-        this.refresh_Access_token = undefined;
+        this.updateUidAndToken();
       }
     });
   }
@@ -85,22 +73,15 @@ export class AuthService {
         throw new Error('NoUser');
       }
 
-      this.loginResponse = user.result;
-
       const credential = GoogleAuthProvider.credential(
         user.result.idToken,
         user.result.accessToken
       );
 
-      const auth = getAuth(this.firebase);
-      const firebaseUser = await signInWithCredential(auth, credential);
-
-      const uid = firebaseUser.user.uid;
-      this.uid.set(uid);
-
+      const firebaseUser = await signInWithCredential(this.auth, credential);
       const idToken = await firebaseUser.user.getIdToken();
-      this.token.set(idToken);
-      this.refresh_Access_token = idToken;
+
+      this.updateUidAndToken(firebaseUser.user.uid, idToken);
 
       return firebaseUser.user;
     } catch (error) {
@@ -111,16 +92,13 @@ export class AuthService {
 
   async login(email: string, password: string): Promise<User> {
     try {
-      const auth = getAuth(this.firebase);
-      const result = await signInWithEmailAndPassword(auth, email, password);
-
       // signals will be updated by onAuthStateChanged, but set them eagerly as well
-      this.uid.set(result.user.uid);
+      const result = await signInWithEmailAndPassword(this.auth, email, password);
       const idToken = await result.user.getIdToken();
-      this.token.set(idToken);
-      this.refresh_Access_token = idToken;
 
+      this.updateUidAndToken(result.user.uid, idToken);
       return result.user;
+
     } catch (error) {
       console.error('Login error', error);
       throw error;
@@ -128,14 +106,13 @@ export class AuthService {
   }
 
   async sendVerification(email: string, password: string, name: string): Promise<boolean> {
-    const auth = getAuth(this.firebase);
 
     try {
       const actionCodeSettings = {
         url: window.location.href,
         handleCodeInApp: true
       };
-      await sendSignInLinkToEmail(auth, email, actionCodeSettings);
+      await sendSignInLinkToEmail(this.auth, email, actionCodeSettings);
 
       localStorage.setItem('signupEmail', email);
       localStorage.setItem('signupPassword', password);
@@ -148,10 +125,9 @@ export class AuthService {
   }
 
   async userClickEmailVerify(): Promise<User | null | undefined> {
-    const auth = getAuth(this.firebase);
     const url = window.location.href;
 
-    if (isSignInWithEmailLink(auth, url)) {
+    if (isSignInWithEmailLink(this.auth, url)) {
       const email = localStorage.getItem('signupEmail');
       const password = localStorage.getItem('signupPassword');
       const displayName = localStorage.getItem('signupName');
@@ -161,7 +137,7 @@ export class AuthService {
       }
 
       try {
-        const result = await signInWithEmailLink(auth, email, url);
+        const result = await signInWithEmailLink(this.auth, email, url);
         const user = result.user;
 
         // set password and profile
@@ -182,14 +158,10 @@ export class AuthService {
 
   async logout(): Promise<boolean> {
     try {
-      const auth = getAuth(this.firebase);
-      await auth.signOut();
+      await this.auth.signOut();
 
       // clear internal state
-      this.uid.set(null);
-      this.token.set(null);
-      this.refresh_Access_token = undefined;
-      this.loginResponse = undefined;
+      this.updateUidAndToken();
 
       // try to sign out from Google plugin (best-effort)
       await SocialLogin.logout({ provider: 'google' }).catch((e: any) => {
@@ -199,13 +171,20 @@ export class AuthService {
       return true;
     } catch (err) {
       console.error('Logout failed', err);
-      this.uid.set(null);
-      this.token.set(null);
+      this.updateUidAndToken();
       return false;
     }
   }
 
 
+  updateUid(uid: string | null = null) {
+    this.uid.set(uid);
+  }
+
+  private updateUidAndToken(uid: string | null = null, token: string | null = null) {
+    this.updateUid(uid);
+    this.token.set(token);
+  }
   validateEmail(email?: string): string {
     if (!email) return 'Please enter your email';
     const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;

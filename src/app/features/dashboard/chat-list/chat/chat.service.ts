@@ -1,4 +1,4 @@
-import { inject, Injectable } from '@angular/core';
+import { computed, inject, Injectable } from '@angular/core';
 import { addDoc, collection, collectionData, CollectionReference, doc, Firestore, getDoc, orderBy, query, serverTimestamp, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom, Observable } from 'rxjs';
 import { UserStore } from 'src/app/core/stores/user-store';
@@ -6,8 +6,8 @@ import { UserStore } from 'src/app/core/stores/user-store';
 
 export interface ChatMessage {
   id?: string;
-  senderId: string;
-  receiverId: string;
+  senderId: number;
+  receiverId: number;
   text: string;
   timestamp: Timestamp;
   read: boolean;
@@ -21,14 +21,19 @@ export class ChatService {
   private readonly firestore = inject(Firestore);
   private readonly userStore = inject(UserStore);
 
+  private readonly currentUser = this.userStore.getCurrent();
+
+  readonly currentUid = computed(() => {
+    return this.currentUser()?.userID;
+  });
 
   // Create a unique room ID for two users
-  getRoomId(uid1: string, uid2: string): string {
+  getRoomId(uid1: number, uid2: number): string {
     return [uid1, uid2].sort().join('_');
   }
 
   // Send Message
-  async sendMessage(roomId: string, senderId: string, text: string) {
+  async sendMessage(roomId: string, senderId: number, text: string) {
 
     try {
       const chatRef = collection(this.firestore, `messages/${roomId}/chat`);
@@ -57,13 +62,11 @@ export class ChatService {
   }
 
   async createGroup(name: string, members: string[]) {
-    const createdBy = this.userStore.getCurrent()?.id ?? 'unknown';
-
     const groupsRef = collection(this.firestore, 'groups');
     const docRef = await addDoc(groupsRef, {
       name,
       members,
-      createdBy,
+      createdBy: this.currentUid(),
       createdAt: serverTimestamp(),
     });
 
@@ -86,7 +89,7 @@ export class ChatService {
 
   async sendGroupMessage(groupId: string, text: string, audioUrl?: string, durationSec?: number) {
     if (!groupId) throw new Error('groupId required');
-    const senderId = this.userStore.getCurrent()?.id;
+    const senderId = this.currentUid();
     if (!senderId) throw new Error('User not authenticated');
 
     const chatRef = collection(this.firestore, `groups/${groupId}/chat`);

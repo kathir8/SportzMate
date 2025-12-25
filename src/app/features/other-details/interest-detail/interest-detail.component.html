@@ -2,9 +2,9 @@
   <h2 class="title"> What Sport are<br> you interested in ?</h2>
 
   <div class="sports-container">
-    @for (sport of sports(); track sport) {
-    <ionic-chip (ionClick)="toggleSportSelection(sport)" [dynamicClass]="getChipClass(sport)">
-      {{sport}}
+    @for (sport of sports(); track sport.sportID) {
+    <ionic-chip (ionClick)="toggleSportSelection(sport.sportID)" [dynamicClass]="getChipClass(sport.sportID)">
+      {{sport.sportsName}}
     </ionic-chip>
     }
   </div>

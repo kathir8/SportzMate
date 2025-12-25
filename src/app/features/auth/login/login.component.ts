@@ -8,10 +8,9 @@ import { Credential } from 'src/app/core/model/login.model';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { SignalService } from 'src/app/core/services/signal.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
+import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { UserService } from '../../other-details/services/user-service';
-import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
-import { UserExistApiResp, UserRegisterApiResp } from 'src/app/core/model/user.model';
 
 
 @Component({
@@ -86,27 +85,7 @@ export class LoginComponent {
       return;
     }
     if (user.uid && user.email) {
-      this.userService.isuserExist(user.email).subscribe((res: UserExistApiResp) => {
-        if (res.rspFlag === 'Y') {
-          this.fetchUser(user);
-        } else {
-          this.createUser(user);
-        }
-      });
-    } else {
-      this.toast.show("email id not exist.");
-    }
-  }
-
-  private createUser(user: User) {
-    if (user.uid && user.email) {
-      this.userService.registerUser(user).subscribe((res: UserRegisterApiResp) => {
-        if(res.resFlag === 'Y'){
-
-        }else{
-      this.toast.show(res.resMsg);
-        }
-      })
+      this.userService.registerUser(user, true);
     } else {
       this.toast.show("email id not exist.");
     }

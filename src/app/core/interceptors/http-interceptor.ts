@@ -1,9 +1,10 @@
-import { HttpInterceptorFn, HttpRequest, HttpHandlerFn, HttpErrorResponse } from '@angular/common/http';
+import { HttpErrorResponse, HttpHandlerFn, HttpInterceptorFn, HttpRequest } from '@angular/common/http';
 import { inject } from '@angular/core';
-import { getAuth } from 'firebase/auth';
+import { Auth } from '@angular/fire/auth';
 import { from, throwError } from 'rxjs';
-import { catchError, switchMap } from 'rxjs/operators';
+import { catchError, finalize, switchMap } from 'rxjs/operators';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
+import { GlobalLoadingService } from '../services/global-loading-service';
 
 const SKIP_AUTH_URLS: readonly string[] = [
     '/login',
@@ -15,38 +16,56 @@ function shouldSkipAuth(url: string): boolean {
     return SKIP_AUTH_URLS.some(skip => url.includes(skip));
 }
 
+let offlineToastShown = false;
+
 export const authInterceptor: HttpInterceptorFn = (
     request: HttpRequest<unknown>,
     next: HttpHandlerFn
 ) => {
 
-    if (shouldSkipAuth(request.url)) {
-        return next(request);
-    }
-
-    const auth = getAuth();
-    const user = auth.currentUser;
-
-    if (!user) {
-        return next(request);
-    }
-
+    const loader = inject(GlobalLoadingService);
     const toast = inject(IonicToastService);
+    const auth = inject(Auth);
 
-    return from(user.getIdToken()).pipe(
-        switchMap((token: string) => {
-            const modifiedRequest = request.clone({
-                setHeaders: {
-                    Authorization: `Bearer ${token}`,
-                    'Content-Type': 'application/json',
-                    'X-Client-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
-                    'X-Request-Time-UTC': new Date().toISOString()
-                }
-            });
+    loader.start();
 
-            return next(modifiedRequest);
-        }),
+    let handledRequest$;
+
+    if (shouldSkipAuth(request.url)) {
+        handledRequest$ = next(request);
+    } else {
+        const user = auth.currentUser;
+
+        if (!user) {
+            handledRequest$ = next(request);
+        } else {
+            handledRequest$ = from(user.getIdToken()).pipe(
+                switchMap((token: string) => {
+                    const modifiedRequest = request.clone({
+                        setHeaders: {
+                            Authorization: `Bearer ${token}`,
+                            'Content-Type': 'application/json',
+                            'X-Client-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
+                            'X-Request-Time-UTC': new Date().toISOString()
+                        }
+                    });
+                    return next(modifiedRequest);
+                })
+            );
+        }
+    }
+
+    return handledRequest$.pipe(
         catchError((error: HttpErrorResponse) => {
+
+            if (error.status === 0) {
+                loader.reset();
+                if (!offlineToastShown) {
+                    offlineToastShown = true;
+                    toast.show('No internet connection. Please check your network.');
+                    return throwError(() => error);
+                }
+            }
             console.error('[HTTP ERROR]', {
                 url: request.url,
                 status: error.status,
@@ -62,6 +81,9 @@ export const authInterceptor: HttpInterceptorFn = (
             toast.show(message);
 
             return throwError(() => error);
+        }),
+        finalize(() => {
+            loader.stop();
         })
     );
 };
