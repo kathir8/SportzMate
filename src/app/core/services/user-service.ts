@@ -6,6 +6,7 @@ import { AuthService } from 'src/app/core/services/auth.service';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { UserDeleteApiResp, UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../model/user.model';
 import { UserApiService } from './user-api-service';
+import { GlobalLoadingService } from './global-loading-service';
 
 @Injectable({
   providedIn: 'root',
@@ -15,6 +16,7 @@ export class UserService {
   private readonly userStore = inject(UserStore);
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
+  private readonly loader = inject(GlobalLoadingService);
 
 
   initializeUser() {
@@ -34,7 +36,7 @@ export class UserService {
     this.userApi.getUserDetail(uid).subscribe((user: UserExist) => {
       if (!user.exist) {
         this.redirectToLogin();
-
+        this.loader.stop();
         return;
       }
 
@@ -51,6 +53,8 @@ export class UserService {
 
     this.router.navigateByUrl(routePath, { replaceUrl: true });
     SplashScreen.hide();
+    this.loader.stop();
+
   }
 
   registerUser(user: User, fromGoogle: boolean = false): void {

@@ -110,10 +110,6 @@ export class ChatComponent {
     return previousMessage.senderId !== currentSenderIsMe;
   }
 
-  updateMessage(value: string): void {
-    this.newMessage.set(value);
-  }
-
   handleBack() {
     this.router.navigate(['/dashboard/chat']);
   }

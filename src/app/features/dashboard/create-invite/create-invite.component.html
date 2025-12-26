@@ -40,7 +40,7 @@
   </ion-row>
 
   <ion-item lines="none" class="input-item textarea">
-    <ion-textarea placeholder="Description" [value]="getVal('description')"
+    <ion-textarea placeholder="Description" [value]="getVal('description')" maxlength="100"
       (ionInput)="setVal('description', $event)"></ion-textarea>
   </ion-item>
 

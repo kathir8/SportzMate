@@ -17,7 +17,7 @@
     </div>
   </div>
 
-  <ionic-input placeholder="Search Invites" [value]="rawSearchTerm()" (valueChange)="updateSearchTerm($event)" dynamicClass="mate-search" [clearInput]="true"></ionic-input>
+  <ionic-input placeholder="Search Invites" [(value)]="rawSearchTerm" dynamicClass="mate-search" [clearInput]="true"></ionic-input>
 
   <ion-segment [(ngModel)]="segmentView" class="segment-wrapper">
     <ion-segment-button value="list" content-id="list">

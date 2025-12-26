@@ -11,6 +11,7 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { UserService } from '../../../core/services/user-service';
+import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
 
 
 @Component({
@@ -23,6 +24,8 @@ export class LoginComponent {
   private readonly auth = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly toast = inject(IonicToastService);
+  private readonly loader = inject(GlobalLoadingService);
+  
 
   readonly icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
 
@@ -31,7 +34,7 @@ export class LoginComponent {
 
   async loginViaGoogle() {
     try {
-      // this.loading.set(true);
+      this.loader.start();
       const user: User = await this.auth.loginViaGoogle();
       this.userExist(user);
 
@@ -39,7 +42,7 @@ export class LoginComponent {
       const msg = err === 'NoUser' ? 'No user data received from Google login' : 'Google login error';
       this.toast.show(msg);
     } finally {
-      // this.loading.set(false);
+      this.loader.stop();
     }
   }
 
@@ -49,13 +52,15 @@ export class LoginComponent {
       return;
     }
     try {
-
+      this.loader.start();
       const user: User = await this.auth.login(this.credentials().email!, this.credentials().password!);
       this.fetchUser(user);
 
     } catch (error: any) {
       const msg = error.code === 'auth/invalid-credential' ? 'Incorrect mail / password' : 'Login failed';
       this.toast.show(msg);
+    }finally {
+      this.loader.stop();
     }
   }
 
@@ -67,6 +72,7 @@ export class LoginComponent {
     if (user.uid) {
       this.userService.fetchUserDetail(user.uid);
     } else {
+      this.loader.stop();
       this.toast.show("User not found");
     }
   }
@@ -79,12 +85,13 @@ export class LoginComponent {
       this.userService.registerUser(user, true);
     } else {
       this.toast.show("email id not exist.");
+      this.loader.stop();
     }
   }
 
   private emailVerifyCheck(isVerfied: boolean) {
     if (!isVerfied) {
-      this.toast.show("Please verify your email before logging in.");
+      this.toast.show("Verify your email before logging in.");
     }
     return isVerfied;
   }

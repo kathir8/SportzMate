@@ -3,22 +3,19 @@
   <div class="ion-padding">
     <h2 class="title">Sign Up</h2>
 
-    <ionic-input label="Name" name="name" [value]="getVal('name')" (valueChange)="setVal('name', $event)">
+    <ionic-input label="Name" name="name" path="name" [source]="signup">
     </ionic-input>
 
-    <ionic-input label="Email" type="email" name="email" [value]="getVal('email')"
-      (valueChange)="setVal('email', $event)">
+    <ionic-input label="Email" type="email" name="email" path="email" [source]="signup">
     </ionic-input>
 
-    <ionic-input label="Password" type="password" name="password" [value]="getVal('password')"
-      (valueChange)="setVal('password', $event)">
+    <ionic-input label="Password" type="password" name="password" path="password" [source]="signup">
     </ionic-input>
 
-    <ionic-input label="Confirm Password" type="password" name="cPassword" [value]="getVal('confirmPassword')"
-      (valueChange)="setVal('confirmPassword', $event)">
+    <ionic-input label="Confirm Password" type="password" name="cPassword" [(value)]="cPassword">
     </ionic-input>
 
-    <ionic-checkbox class="checkbox-container" label="I agree to the terms and conditions" [(ngModel)]="accepted">
+    <ionic-checkbox class="checkbox-container" label="I agree to the terms and conditions" [(value)]="accepted">
     </ionic-checkbox>
 
     <ionic-button (ionClick)="sendVerification()">Verify</ionic-button>

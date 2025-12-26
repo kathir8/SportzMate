@@ -4,5 +4,4 @@ export interface Credential {
 }
 export interface Signup extends Credential {
     name: string;
-    confirmPassword: string;
 }

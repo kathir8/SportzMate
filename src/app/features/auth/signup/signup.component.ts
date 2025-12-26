@@ -1,11 +1,10 @@
 import { Component, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
 import { IonContent, IonImg } from '@ionic/angular/standalone';
-import { firstValueFrom } from 'rxjs';
+import { SignalPathDirective } from 'src/app/core/directives/signal-path.directive';
 import { Signup } from 'src/app/core/model/login.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { SignalService } from 'src/app/core/services/signal.service';
+import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicCheckboxComponent } from 'src/app/shared/components/ionic-checkbox/ionic-checkbox.component';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
@@ -16,16 +15,17 @@ import { UserService } from '../../../core/services/user-service';
   selector: 'app-signup',
   templateUrl: './signup.component.html',
   styleUrls: ['./signup.component.scss'],
-  imports: [IonContent, FormsModule, IonicButtonComponent, IonicCheckboxComponent, IonImg, IonicInputComponent ]
+  imports: [IonContent, FormsModule, IonicButtonComponent, IonicCheckboxComponent, IonImg, IonicInputComponent, SignalPathDirective]
 })
 export class SignupComponent {
-  private readonly router = inject(Router);
   private readonly toast = inject(IonicToastService);
   private readonly auth = inject(AuthService);
   private readonly userService = inject(UserService);
-  private readonly signalService = inject(SignalService);
+  private readonly loader = inject(GlobalLoadingService);
+
 
   readonly accepted = signal(false);
+  readonly cPassword = signal<string>('');
   readonly signup = signal<Signup>({} as Signup)
 
   async ngOnInit() {
@@ -43,27 +43,12 @@ export class SignupComponent {
   }
 
 
-  getVal(path: string, fallback: any = '') {
-    return this.signalService.getDeepValue(this.signup, path, fallback);
-  }
-
-  setVal(path: string, event: any) {
-    this.signalService.updateDeepValue(this.signup, path, event);
-  }
-
-
   async sendVerification() {
 
     if (!this.signUpValidation()) {
       return
     }
-
-    // const isUserExist = await firstValueFrom(this.userService.isuserExist(this.signup().email));
-    if (true) {
-      this.toast.show("This email already has an account. Please login instead.");
-      this.router.navigate(['/auth/login']);
-    }
-
+    this.loader.start();
     try {
       const verificationMailSent = await this.auth.sendVerification(this.signup().email, this.signup().password, this.signup().name);
       if (verificationMailSent) {
@@ -71,6 +56,8 @@ export class SignupComponent {
       }
     } catch (err) {
       this.toast.show("Failed to send verification email.");
+    } finally {
+      this.loader.stop();
     }
 
   }
@@ -78,7 +65,7 @@ export class SignupComponent {
 
   private signUpValidation(): boolean {
     if (!this.signup().name) {
-      this.toast.show("Please enter your name.");
+      this.toast.show("Enter your name.");
       return false;
     }
 
@@ -94,13 +81,13 @@ export class SignupComponent {
       return false;
     }
 
-    if (this.signup().password !== this.signup().confirmPassword) {
+    if (this.signup().password !== this.cPassword()) {
       this.toast.show("Passwords do not match.");
       return false;
     }
 
     if (!this.accepted()) {
-      this.toast.show("Please accept the terms and conditions.");
+      this.toast.show("Accept the terms and conditions.");
       return false;
     }
     return true;

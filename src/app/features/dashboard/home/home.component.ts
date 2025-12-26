@@ -138,8 +138,4 @@ export class HomeComponent {
     }, 2500);
   }
 
-  updateSearchTerm(value: string): void {
-    this.rawSearchTerm.set(value);
-  }
-
 }
