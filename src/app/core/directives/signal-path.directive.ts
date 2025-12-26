@@ -1,7 +1,6 @@
-import { Directive, Inject, Input, OnInit, Optional } from '@angular/core';
-import { WritableSignal } from '@angular/core';
-import { SignalService } from 'src/app/core/services/signal.service';
+import { Directive, Inject, Input, OnInit, Optional, WritableSignal } from '@angular/core';
 import { SignalHost } from 'src/app/core/model/signal.model';
+import { SignalService } from 'src/app/core/services/signal.service';
 
 @Directive({
   selector: '[path]'

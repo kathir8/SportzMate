@@ -8,10 +8,10 @@ import { SignalService } from 'src/app/core/services/signal.service';
   templateUrl: './ionic-input.component.html',
   styleUrls: ['./ionic-input.component.scss'],
   imports: [IonLabel, IonInput, IonInputPasswordToggle],
-   providers: [
+  providers: [
     {
       provide: SignalHost,
-    useExisting: forwardRef(() => IonicInputComponent)
+      useExisting: forwardRef(() => IonicInputComponent)
     }
   ]
 })
@@ -47,9 +47,9 @@ export class IonicInputComponent {
   private writeValue(v: any) { this.value.set(v); }
   private registerOnChange(fn: any) { this.onChange = fn; }
   private registerOnTouched(fn: any) { this.onTouched = fn; }
- 
 
-  constructor(){
+
+  constructor() {
     effect(() => {
       if (!this.path || !this.source) return;
       const value = this.signalService.getDeepValue(
@@ -65,7 +65,7 @@ export class IonicInputComponent {
 
   onInputChange(event: CustomEvent) {
     if (this.isUpdatingFromSignal) return;
-     const val = event.detail.value;
+    const val = event.detail.value;
     this.value.set(val);
     this.onChange(val);
     this.valueChange.emit(val);
