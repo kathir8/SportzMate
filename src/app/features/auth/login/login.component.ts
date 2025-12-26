@@ -10,7 +10,7 @@ import { SignalService } from 'src/app/core/services/signal.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
-import { UserService } from '../../other-details/services/user-service';
+import { UserService } from '../../../core/services/user-service';
 
 
 @Component({
@@ -27,7 +27,7 @@ export class LoginComponent {
 
   readonly icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
 
-  readonly credentials = signal<Partial<Credential>>({});
+  readonly credentials = signal<Credential>({} as Credential);
 
 
   getVal(path: string, fallback: any = '') {

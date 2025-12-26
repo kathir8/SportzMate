@@ -88,7 +88,7 @@ export class CommonStore {
             sportsImg: ''
           },
         ]
-        this._sports.set([]);
+        this._sports.set(sport);
       }
     });
 

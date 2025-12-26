@@ -10,7 +10,7 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 import { IonicCheckboxComponent } from 'src/app/shared/components/ionic-checkbox/ionic-checkbox.component';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
-import { UserService } from '../../other-details/services/user-service';
+import { UserService } from '../../../core/services/user-service';
 
 @Component({
   selector: 'app-signup',

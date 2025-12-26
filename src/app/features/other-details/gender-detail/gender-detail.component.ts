@@ -4,6 +4,7 @@ import { checkmarkOutline } from 'ionicons/icons';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { AgeDetailComponent } from '../age-detail/age-detail.component';
+import { SignalService } from 'src/app/core/services/signal.service';
 
 @Component({
   selector: 'app-gender-detail',
@@ -14,9 +15,10 @@ import { AgeDetailComponent } from '../age-detail/age-detail.component';
 })
 export class GenderDetailComponent {
   private readonly userStore = inject(UserStore);
+  private readonly signalService = inject(SignalService);
   static readonly navId = 'GenderDetail';
   readonly icons = { checkmarkOutline };
-  readonly currentUser = this.userStore.getCurrent()!;
+  readonly currentUser = this.userStore.getCurrent();
 
   constructor() {
     this.selectGender('male');
@@ -26,13 +28,9 @@ export class GenderDetailComponent {
 
 
   selectGender(type: 'male' | 'female'): void {
-    this.currentUser.update(user => {
-      if (!user) return user;
 
-      return {
-        ...user,
-        gender: type
-      };
+    this.signalService.patchSignal(this.currentUser, {
+      gender: type,
     });
   }
 }

@@ -1,11 +1,11 @@
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { IonFooter, IonNavLink, IonContent } from '@ionic/angular/standalone';
+import { IonContent, IonFooter, IonNavLink } from '@ionic/angular/standalone';
+import { CommonStore } from 'src/app/core/stores/common-store';
+import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { ProfileDetailComponent } from '../profile-detail/profile-detail.component';
-import { SportsList, SportType } from 'src/app/shared/models/shared.model';
-import { UserStore } from 'src/app/core/stores/user-store';
-import { CommonStore } from 'src/app/core/stores/common-store';
+import { SignalService } from 'src/app/core/services/signal.service';
 
 @Component({
   selector: 'app-interest-detail',
@@ -17,6 +17,7 @@ export class InterestDetailComponent {
   static readonly navId = 'InterestDetail';
   private readonly userStore = inject(UserStore);
   private readonly commonStore = inject(CommonStore);
+  private readonly signalService = inject(SignalService);
 
 
   readonly profileComponent = ProfileDetailComponent;
@@ -25,11 +26,11 @@ export class InterestDetailComponent {
 
   readonly currentUser = this.userStore.getCurrent()!;
 
-  constructor(){
+  constructor() {
     this.commonStore.loadSports();
-    effect(()=>{
+    effect(() => {
       console.log(this.sports());
-      
+
     })
   }
 
@@ -50,13 +51,8 @@ export class InterestDetailComponent {
 
 
   updateInterest(): void {
-    this.currentUser.update(user => {
-      if (!user) return user;
-
-      return {
-        ...user,
-        interest: this.selectedSports()
-      };
+    this.signalService.patchSignal(this.currentUser, {
+      interest: this.selectedSports()
     });
   }
 

@@ -3,6 +3,7 @@ import { IonContent, IonFooter, IonNavLink } from '@ionic/angular/standalone';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { InterestDetailComponent } from '../interest-detail/interest-detail.component';
+import { SignalService } from 'src/app/core/services/signal.service';
 
 @Component({
   selector: 'app-age-detail',
@@ -14,6 +15,7 @@ export class AgeDetailComponent {
   static readonly navId = 'AgeDetail';
 
   private readonly userStore = inject(UserStore);
+  private readonly signalService = inject(SignalService);
 
   readonly interestComponent = InterestDetailComponent;
   private readonly scrollContainer = viewChild<ElementRef<HTMLDivElement>>('scrollContainer');
@@ -82,13 +84,8 @@ export class AgeDetailComponent {
 
 
   updateAge(): void {
-    this.currentUser.update(user => {
-      if (!user) return user;
-
-      return {
-        ...user,
-        age: this.selectedAge()
-      };
+    this.signalService.patchSignal(this.currentUser, {
+      age: this.selectedAge()
     });
   }
 }

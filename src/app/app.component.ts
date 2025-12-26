@@ -3,7 +3,7 @@ import { SplashScreen } from '@capacitor/splash-screen';
 import { IonApp, IonRouterOutlet, IonSpinner } from '@ionic/angular/standalone';
 import { IonicToastComponent } from 'src/app/shared/components/ionic-toast/ionic-toast.component';
 import { GlobalLoadingService } from './core/services/global-loading-service';
-import { UserService } from './features/other-details/services/user-service';
+import { UserService } from './core/services/user-service';
 import { IonicToastService } from './shared/components/ionic-toast/ionic-toast.service';
 import { ThemeService } from './shared/services/theme.service';
 

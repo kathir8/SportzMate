@@ -2,11 +2,10 @@ import { inject, Injectable } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { Router } from '@angular/router';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { Observable } from 'rxjs';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserStore } from 'src/app/core/stores/user-store';
-import { UserDeleteApiResp, UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../../../core/model/user.model';
-import { UserApiService } from '../../../core/services/user-api-service';
+import { UserDeleteApiResp, UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../model/user.model';
+import { UserApiService } from './user-api-service';
 
 @Injectable({
   providedIn: 'root',

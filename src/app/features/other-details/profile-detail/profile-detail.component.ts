@@ -6,7 +6,7 @@ import { IonAvatar, IonContent, IonFooter, IonImg } from '@ionic/angular/standal
 import { UserStore } from 'src/app/core/stores/user-store';
 import { CountryDropdownComponent } from "src/app/shared/components/country-dropdown/country-dropdown.component";
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
-import { UserService } from '../services/user-service';
+import { UserService } from '../../../core/services/user-service';
 
 @Component({
   selector: 'app-profile-detail',
@@ -83,8 +83,13 @@ export class ProfileDetailComponent {
   }
 
   onCountryChange(country: any) {
-    console.log('Selected:', country);
-    // save api call
+    this.currentUser.update(user => {
+      if (!user) return user;
+      return {
+        ...user,
+        countryName : country.code
+      }
+    });
   }
 
   confirm() {

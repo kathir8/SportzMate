@@ -7,7 +7,7 @@ export class SignalService {
 
   getDeepValue<T>(source: T, path: string, defaultValue: any = ''): any {
 
-   const data = (typeof source === 'function') ? (source as any)() : source;
+    const data = (typeof source === 'function') ? (source as any)() : source;
     if (!data) return defaultValue;
     const value = path.split('.').reduce((acc, key) => (acc as any)?.[key], data);
     return value !== undefined && value !== null ? value : defaultValue;
@@ -39,6 +39,30 @@ export class SignalService {
       current[keys[keys.length - 1]] = value;
 
       return newState;
+    });
+  }
+
+  patchSignal<T extends object | null>(
+    signal: WritableSignal<T>,
+    patches: Record<string, any>
+  ) {
+    signal.update(prev => {
+      if (!prev) return prev;
+      const root: any = structuredClone(prev);
+
+      for (const path in patches) {
+        const keys = path.split('.');
+        let current = root;
+
+        for (let i = 0; i < keys.length - 1; i++) {
+          current[keys[i]] ??= {};
+          current = current[keys[i]];
+        }
+
+        current[keys[keys.length - 1]] = patches[path];
+      }
+
+      return root;
     });
   }
 }
