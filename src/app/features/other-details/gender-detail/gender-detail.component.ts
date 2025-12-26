@@ -19,16 +19,14 @@ export class GenderDetailComponent {
   static readonly navId = 'GenderDetail';
   readonly icons = { checkmarkOutline };
   readonly currentUser = this.userStore.getCurrent();
-
+  
   constructor() {
-    this.selectGender('male');
+    this.selectGender(this.currentUser()?.gender || 'male');
   }
 
   readonly ageComponent = AgeDetailComponent;
 
-
   selectGender(type: 'male' | 'female'): void {
-
     this.signalService.patchSignal(this.currentUser, {
       gender: type,
     });

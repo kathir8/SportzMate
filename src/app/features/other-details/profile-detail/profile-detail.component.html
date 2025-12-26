@@ -10,7 +10,7 @@
     }
   </ion-avatar>
   <div class="profile-details-container">
-    <country-dropdown (countryChange)="onCountryChange($event)"></country-dropdown>
+    <country-dropdown [selectedCountryCode]="selectedCountry()" (countryChange)="onCountryChange($event)"></country-dropdown>
   </div>
 </ion-content>
 

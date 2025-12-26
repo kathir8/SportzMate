@@ -20,6 +20,8 @@ export class ProfileDetailComponent {
   private readonly userStore = inject(UserStore);
   readonly profileImage = signal<string | undefined>(undefined);
 
+  readonly selectedCountry = signal<string>('IND');
+
   static readonly navId = 'ProfileDetail';
 
   private readonly currentUser = this.userStore.getCurrent();
@@ -27,6 +29,7 @@ export class ProfileDetailComponent {
   constructor() {
     effect(() => {
       if (this.currentUser()?.profileImage) this.profileImage.set(this.currentUser()!.profileImage);
+      if (this.currentUser()?.countryName) this.selectedCountry.set(this.currentUser()!.countryName);
     })
   }
 

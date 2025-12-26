@@ -1,4 +1,4 @@
-import { Component, output, signal } from '@angular/core';
+import { Component, computed, input, model, output, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonLabel } from '@ionic/angular/standalone';
 import { NgSelectModule } from '@ng-select/ng-select';
@@ -13,13 +13,16 @@ import { COUNTRIES, Country } from './country-list';
 })
 export class CountryDropdownComponent {
   readonly countryChange = output<Country>();
-  readonly countries = COUNTRIES;
-  readonly selectedCountryCode = signal<string>('in');
+  readonly countries = signal<Country[]>(COUNTRIES);
+  readonly selectedCountryCode = model<string>('IND');
 
+    readonly selectedCountry = computed(() =>
+    this.countries().find(c => c.code === this.selectedCountryCode()) ?? 'IND'
+  );
 
   // Generate flag URL dynamically
-  getFlagUrl(code: string) {
-    return `/assets/flags/4x3/${code}.svg`;
+  getFlagUrl(flag: string) {
+    return `/assets/flags/4x3/${flag}.svg`;
   }
 
   onSelectionChange(country: Country | null): void {

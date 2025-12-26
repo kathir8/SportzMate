@@ -5,9 +5,9 @@ export class UserDetail {
   age?: string = '';
   email: string = '';
   countryName: string = '';
-  userLoginFlag: string = '';
+  userLoginFlag: boolean = false;
   fcmID: string = '';
-  interest: number[] = [];
+  interest: string = '';
   userID: number = 0;
 }
 

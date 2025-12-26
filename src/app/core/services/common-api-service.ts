@@ -10,6 +10,6 @@ export class CommonApiService {
   private readonly api = inject(ApiService);
 
   getSports(): Observable<SportsListResp> {
-    return this.api.get<SportsListResp>('sports');
+    return this.api.get<SportsListResp>('sportslist');
   }
 }

@@ -1,9 +1,11 @@
 import { inject, Injectable, signal } from '@angular/core';
+import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { SportsList } from 'src/app/shared/models/shared.model';
 import { CommonApiService } from '../services/common-api-service';
 
 export interface SportsListResp {
-  resMsg: string;
+  rspFlg: boolean;
+  rspMsg: string;
   sportsList: SportsList[];
 }
 @Injectable({
@@ -16,79 +18,18 @@ export class CommonStore {
 
   readonly sports = this._sports.asReadonly();
 
+  private readonly toast = inject(IonicToastService);
+
   loadSports(): SportsList[] {
     if (this._sports().length > 0) {
       return this._sports();
     }
 
-    this.commonApi.getSports().subscribe({
-
-      next: (res: SportsListResp) => {
-        if (res.resMsg === 'success') {
-          this._sports.set(res.sportsList);
-        } else {
-          console.log('API responded but business failed');
-        }
-      },
-      error: (err) => {
-
-        const sport = [
-          {
-            sportID: 1,
-            sportsName: 'Badminton',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-          {
-            sportID: 2,
-            sportsName: 'Cricket',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-          {
-            sportID: 3,
-            sportsName: 'Cycling',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-          {
-            sportID: 4,
-            sportsName: 'Tennis',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-          {
-            sportID: 5,
-            sportsName: 'Football',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-          {
-            sportID: 6,
-            sportsName: 'Running',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-          {
-            sportID: 7,
-            sportsName: 'Swimming',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-          {
-            sportID: 8,
-            sportsName: 'Yoga',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-          {
-            sportID: 9,
-            sportsName: 'Basketball',
-            sportsIcon: '',
-            sportsImg: ''
-          },
-        ]
-        this._sports.set(sport);
+    this.commonApi.getSports().subscribe((res: SportsListResp) => {
+      if (res.rspFlg) {
+        this._sports.set(res.sportsList);
+      } else {
+        this.toast.show(res.rspMsg);
       }
     });
 

@@ -53,15 +53,16 @@ export class UserService {
     SplashScreen.hide();
   }
 
-  registerUser(user: User, fromGoogle?: boolean): void {
+  registerUser(user: User, fromGoogle: boolean = false): void {
     const request = new UserRegisterApi();
     request.name = user.displayName || '';
     request.email = user.email!
     request.fcmID = user.uid!
     request.profileImage = user.photoURL || '';
-    request.userLoginFlag = fromGoogle ? 'Y' : 'N';
+    request.userLoginFlag = fromGoogle;
+    request.interest = '';
     this.userApi.userRegistration(request).subscribe((res: UserRegisterApiResp) => {
-      if (res.resFlag === 'Y') {
+      if (res.resFlag) {
         localStorage.removeItem("signupEmail");
         localStorage.removeItem("signupPassword");
         localStorage.removeItem("signupName");

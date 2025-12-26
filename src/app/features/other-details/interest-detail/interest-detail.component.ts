@@ -22,29 +22,27 @@ export class InterestDetailComponent {
 
   readonly profileComponent = ProfileDetailComponent;
   readonly sports = computed(() => this.commonStore.sports());
-  readonly selectedSports = signal<number[]>([]);
 
   readonly currentUser = this.userStore.getCurrent()!;
+  readonly selectedSports = signal<string[]>(this.currentUser()?.interest?.split(',') || []);
 
   constructor() {
     this.commonStore.loadSports();
-    effect(() => {
-      console.log(this.sports());
-
-    })
   }
 
   toggleSportSelection(ID: number): void {
+    const sportID = String(ID);
     this.selectedSports.update(previousSelected =>
-      previousSelected.includes(ID)
-        ? previousSelected.filter(item => item !== ID)
-        : [...previousSelected, ID]
+      previousSelected.includes(sportID)
+        ? previousSelected.filter(item => item !== sportID)
+        : [...previousSelected, sportID]
     );
     this.updateInterest();
   }
 
   getChipClass(ID: number): string {
-    return this.selectedSports().includes(ID)
+    const sportID = String(ID);
+    return this.selectedSports().includes(sportID)
       ? 'interest-chip selected'
       : 'interest-chip';
   }
@@ -52,7 +50,7 @@ export class InterestDetailComponent {
 
   updateInterest(): void {
     this.signalService.patchSignal(this.currentUser, {
-      interest: this.selectedSports()
+      interest: this.selectedSports().join(',')
     });
   }
 
