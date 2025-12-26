@@ -4,9 +4,9 @@ import { FormsModule } from '@angular/forms';
 import { RouterLink } from '@angular/router';
 import { IonContent, IonFooter, IonIcon, IonImg, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram } from 'ionicons/icons';
+import { SignalPathDirective } from 'src/app/core/directives/signal-path.directive';
 import { Credential } from 'src/app/core/model/login.model';
 import { AuthService } from 'src/app/core/services/auth.service';
-import { SignalService } from 'src/app/core/services/signal.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
@@ -17,26 +17,17 @@ import { UserService } from '../../../core/services/user-service';
   selector: 'app-login',
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss'],
-  imports: [FormsModule, IonContent, IonIcon, IonFooter, IonToolbar, IonTitle, RouterLink, IonicButtonComponent, IonImg, IonicInputComponent]
+  imports: [FormsModule, IonContent, IonIcon, IonFooter, IonToolbar, IonTitle, RouterLink, IonicButtonComponent, IonImg, IonicInputComponent, SignalPathDirective]
 })
 export class LoginComponent {
   private readonly auth = inject(AuthService);
   private readonly userService = inject(UserService);
   private readonly toast = inject(IonicToastService);
-  private readonly signalService = inject(SignalService);
 
   readonly icons = { chevronForward, heartOutline, logoFacebook, logoGoogle, logoInstagram };
 
+  readonly name = signal<string>('');
   readonly credentials = signal<Credential>({} as Credential);
-
-
-  getVal(path: string, fallback: any = '') {
-    return this.signalService.getDeepValue(this.credentials, path, fallback);
-  }
-
-  setVal(path: string, event: any) {
-    this.signalService.updateDeepValue(this.credentials, path, event);
-  }
 
   async loginViaGoogle() {
     try {
@@ -52,8 +43,8 @@ export class LoginComponent {
     }
   }
 
+ 
   async next() {
-    console.log(this.credentials());
     if (!this.loginValidation()) {
       return;
     }

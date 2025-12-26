@@ -2,13 +2,13 @@
 
   <h2 class="title">Log In</h2>
 
-  <ionic-input label="Email" type="email" name="email" [value]="getVal('emails')"
-    (valueChange)="setVal('emails', $event)">
+  <ionic-input label="Email" path="email" [source]="credentials">
   </ionic-input>
 
-  <ionic-input label="Password" type="password" name="password" [value]="getVal('password')"
-    (valueChange)="setVal('password', $event)">
+
+  <ionic-input label="Password" path="password" [source]="credentials">
   </ionic-input>
+
 
   <ionic-button (ionClick)="next()">Next</ionic-button>
 
