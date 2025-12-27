@@ -4,11 +4,17 @@ import { CreateInviteApiService } from './create-invite-api.service';
 
 
 export interface InviteForm {
-  name: string;
+  eventName: string;
   location: string;
   players: number;
   datetime: number;
-  description: string;
+  eventDesc: string;
+  latitude:number;
+  longitude:number;
+  sportIdFk:number;
+  totalVacancy:number;
+  userID:number;
+  eventDateTime:number;
 };
 
 export interface InviteFormApiResp extends InviteForm {

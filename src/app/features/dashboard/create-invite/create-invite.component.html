@@ -2,7 +2,7 @@
   <ion-img src="https://ionicframework.com/docs/img/demos/thumbnail.svg" alt="invite" class="sheet-img"></ion-img>
   <ion-item lines="none" class="input-item">
     <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
-    <ion-input placeholder="Invite Name" [value]="getVal('name')" (valueChange)="setVal('name', $event)">
+    <ion-input placeholder="Invite Name" [value]="getVal('eventName')" (ionInput)="setVal('eventName', $event.detail.value)">
     </ion-input>
   </ion-item>
 
@@ -41,7 +41,7 @@
 
   <ion-item lines="none" class="input-item textarea">
     <ion-textarea placeholder="Description" [value]="getVal('description')" maxlength="100"
-      (ionInput)="setVal('description', $event)"></ion-textarea>
+      (ionInput)="setVal('description', $event.detail.value)"></ion-textarea>
   </ion-item>
 
   <ionic-button class="post-btn" (ionClick)="submit()">Post</ionic-button>

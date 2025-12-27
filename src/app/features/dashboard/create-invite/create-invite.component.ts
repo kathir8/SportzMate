@@ -33,13 +33,7 @@ export class CreateInviteComponent {
   readonly MAX_PLAYERS = 30;
 
 
-  readonly form = signal<InviteForm>({
-    name: '',
-    location: '',
-    players: this.MIN_PLAYERS,
-    datetime: 0,
-    description: ''
-  });
+  readonly form = signal<InviteForm>({} as InviteForm);
 
   readonly formattedDateTime = computed(() => {
     const ts = this.form().datetime;
@@ -47,8 +41,12 @@ export class CreateInviteComponent {
   });
 
 
+  constructor(){
+    this.form().players = this.MIN_PLAYERS;
+  }
+
   getVal(path: string, fallback: any = '') {
-    return this.signalService.getDeepValue(this.form, path, fallback);
+    return this.signalService.getDeepValue(this.form(), path, fallback);
   }
 
   setVal(path: string, event: any) {
@@ -109,6 +107,9 @@ export class CreateInviteComponent {
 
 
   submit() {
+    console.log(this.form());
+    return;
+    
     if (!this.formValidation()) {
       return;
     }
@@ -128,7 +129,7 @@ export class CreateInviteComponent {
     if (!this.form()) {
       return false;
     }
-    if (!this.form().name) {
+    if (!this.form().eventName) {
       this.toast.show('Enter invite name');
       return false;
     }

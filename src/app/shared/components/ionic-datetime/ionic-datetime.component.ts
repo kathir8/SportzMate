@@ -2,6 +2,7 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { IonButton, IonButtons, IonContent, IonPicker, IonPickerColumn, IonPickerColumnOption, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import type { PickerColumnValue } from '@ionic/core';
 import { toUtcTimestamp } from '../../utils/date-utils';
+import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'ionic-datetime',
@@ -9,7 +10,7 @@ import { toUtcTimestamp } from '../../utils/date-utils';
   styleUrls: ['./ionic-datetime.component.scss'],
   imports: [IonContent, IonToolbar, IonButtons, IonButton, IonPicker,
     IonPickerColumn,
-    IonPickerColumnOption]
+    IonPickerColumnOption, JsonPipe]
 })
 export class IonicDateTimeComponent {
   private modalCtrl = inject(ModalController);
@@ -53,6 +54,8 @@ export class IonicDateTimeComponent {
       String(i).padStart(2, '0')
     )
   );
+
+  readonly meridiems = computed(() => ['AM', 'PM']);
 
   readonly isPastSelection = computed(() => {
     if (!this.day() || !this.month() || !this.year()) return true;

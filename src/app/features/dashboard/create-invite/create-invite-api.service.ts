@@ -10,6 +10,6 @@ export class CreateInviteApiService {
   private readonly api = inject(ApiService);
 
   createEvent(request: InviteForm): Observable<InviteFormApiResp> {
-    return this.api.post<InviteForm, InviteFormApiResp>(`createevent`, request);
+    return this.api.post<InviteForm, InviteFormApiResp>(`event/create`, request);
   }
 }
