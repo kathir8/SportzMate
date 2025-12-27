@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { MateDetail, MateListItem } from '../mate-stuff/models/mate.model';
+import { eventListApi, eventListApiResp, MateDetail, MateListItem } from '../mate-stuff/models/mate.model';
 import { SportType } from 'src/app/shared/models/shared.model';
 
 @Injectable({
@@ -121,10 +121,11 @@ export class HomeApiService {
     }
   ];
 
-  getMates(): Observable<MateListItem[]> {
-    // return this.api.get<MateListItem[]>('mates');
-    return of(this.sampleMateData);
+  getMates(eventList:eventListApi): Observable<eventListApiResp> {
+    return this.api.post<eventListApi, eventListApiResp>('event/eventList', eventList);
+    // return of(this.sampleMateData);
   }
+
 
   getMateById(id: number): Observable<MateDetail> {
     // return this.api.get<MateDetail>(`mates/${id}`);

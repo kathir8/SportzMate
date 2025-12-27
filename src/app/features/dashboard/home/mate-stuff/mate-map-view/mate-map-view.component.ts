@@ -23,7 +23,7 @@ export class MateMapViewComponent {
 
   // players currently within radius
   readonly visiblePlayers = input<MateListItem[]>([]);
-  readonly current = input.required<{ lat: number; lng: number }>();
+  readonly coords = input.required<{ lat: number; lng: number }>();
 
 
   private readonly mapElement = viewChild.required<ElementRef<HTMLElement>>('mapRef');
@@ -42,7 +42,7 @@ export class MateMapViewComponent {
   constructor() {
     effect(() => {
       const players = this.visiblePlayers();
-      const cur = this.current();
+      const cur = this.coords();
 
       if (!cur || !players.length) return;
 

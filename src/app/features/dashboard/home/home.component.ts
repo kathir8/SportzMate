@@ -4,33 +4,33 @@ import { FormsModule } from '@angular/forms';
 import { IonAvatar, IonContent, IonIcon, IonImg, IonLabel, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonTitle } from '@ionic/angular/standalone';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
-import { firstValueFrom } from 'rxjs';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { MateListViewComponent } from "./mate-stuff/mate-list-view/mate-list-view.component";
 import { MateMapViewComponent } from "./mate-stuff/mate-map-view/mate-map-view.component";
-import { Coordinates, MateListItem } from './mate-stuff/models/mate.model';
+import { Coordinates, eventListApi, eventListApiResp, MateListItem } from './mate-stuff/models/mate.model';
 import { RangeFabComponent } from './range-fab/range-fab.component';
 import { HomeApiService } from './services/home-api-service';
 import { HomeService } from './services/home-service';
+import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
 
 @Component({
   selector: 'app-home',
   templateUrl: './home.component.html',
   styleUrls: ['./home.component.scss'],
-  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent, IonicInputComponent ]
+  imports: [IonContent, IonTitle, IonIcon, NgSelectModule, IonImg, IonAvatar, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, CommonModule, RangeFabComponent, MateListViewComponent, MateMapViewComponent, IonRefresher, IonRefresherContent, IonicInputComponent]
 
 })
 export class HomeComponent {
 
   public readonly homeService = inject(HomeService);
   private readonly homeApi = inject(HomeApiService);
+  private readonly loader = inject(GlobalLoadingService);
 
 
   readonly icons = { navigateCircleOutline, navigateSharp };
 
   readonly segmentView = signal<'list' | 'map'>('list');
-  readonly current = signal<Coordinates>({ lat: 13.0827, lng: 80.2707 }); // (fallback to Chennai if geolocation fails)
-  private loading = signal(true);
+  readonly coords = signal<Coordinates>({ lat: 13.0827, lng: 80.2707 }); // (fallback to Chennai if geolocation fails)
   private mates = signal<MateListItem[]>([]);
   readonly rawSearchTerm = signal<string>('');
   private debouncedSearchInvites = signal<string>('');
@@ -38,7 +38,7 @@ export class HomeComponent {
 
   private rangeFilteredMates = computed<MateListItem[]>(() => {
     const mates = this.mates();
-    const cur = this.current();
+    const cur = this.coords();
     const range = this.homeService.rangeKm();
 
     if (!mates.length || !cur.lat || !cur.lng) return [];
@@ -94,26 +94,43 @@ export class HomeComponent {
     });
   }
 
-  private async refreshData(): Promise<void> {
-    this.loading.set(true);
+  private async refreshData(event?: CustomEvent): Promise<void> {
+    this.loader.start();
 
     try {
       // Update location
       const pos = await this.getCurrentPosition();
-      this.current.set({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      this.coords.set({ lat: pos.coords.latitude, lng: pos.coords.longitude });
     } catch (err) {
       console.warn('Geolocation failed — using fallback.', err);
     }
 
+    this.getMatesList(event);
+  }
+
+  private getMatesList(event?: CustomEvent) {
     try {
-      // Fetch mates from API
-      const newMates = await firstValueFrom(this.homeApi.getMates());
-      this.mates.set(newMates);
+      const obj: eventListApi = {
+        latitude: this.coords().lat,
+        longitude: this.coords().lng,
+        radius: this.homeService.rangeKm(),
+        userId: 0,
+        page: 0,
+        size: 25
+      }
+
+      this.homeApi.getMates(obj).subscribe((res: eventListApiResp) => {
+        console.log(res);
+        this.mates.set(res.events);
+      })
     } catch (err) {
       console.error('Failed to load mates', err);
-      this.mates.set([]); // fallback empty
+      this.mates.set([]);
     } finally {
-      this.loading.set(false);
+      this.loader.stop();
+      if (event) {
+        event.detail.complete(); // hide spinner
+      }
     }
   }
 
@@ -131,11 +148,8 @@ export class HomeComponent {
 
   private deg2rad(deg: number) { return deg * (Math.PI / 180); }
 
-  async doRefresh(event: CustomEvent) {
-    await this.refreshData();
-    setTimeout(() => {
-      event.detail.complete(); // hide spinner
-    }, 2500);
+  doRefresh(event: CustomEvent) {
+    this.refreshData(event);
   }
 
 }

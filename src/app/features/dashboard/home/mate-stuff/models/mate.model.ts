@@ -1,4 +1,4 @@
-import { SportType } from "src/app/shared/models/shared.model";
+import { SportType } from 'src/app/shared/models/shared.model';
 
 export interface MateListItem {
     id: number;
@@ -20,3 +20,21 @@ export interface MateDetail extends MateListItem {
 }
 
 export interface Coordinates { lat: number; lng: number; }
+
+
+
+export interface eventListApi {
+    latitude: number,
+    longitude: number,
+    radius: number,
+    userId: number,
+    page: number,
+    size: number
+}
+
+
+export interface eventListApiResp extends eventListApi {
+    events: MateListItem[]
+    message: string,
+    pageSize: number,
+}
