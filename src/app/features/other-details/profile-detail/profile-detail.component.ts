@@ -90,13 +90,13 @@ export class ProfileDetailComponent {
       if (!user) return user;
       return {
         ...user,
-        countryName : country.code
+        countryName: country.code
       }
     });
   }
 
   confirm() {
-    this.router.navigate(['/dashboard/home']);
+    this.userService.updateUser(this.currentUser()!);
   }
 
 }

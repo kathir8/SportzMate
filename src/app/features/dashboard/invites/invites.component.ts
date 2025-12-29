@@ -2,7 +2,7 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonLabel, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView } from '@ionic/angular/standalone';
 import { MateListViewComponent } from "../home/mate-stuff/mate-list-view/mate-list-view.component";
-import { GroupInvites, MyInvites } from './models/invite.model';
+import { GroupInvites, myEventsApiResp, MyInvites } from './models/invite.model';
 import { MyGroupListComponent } from "./my-group-list/my-group-list.component";
 import { InviteApiService } from './services/invite-api-service';
 @Component({
@@ -31,8 +31,8 @@ export class InvitesComponent {
   }
 
   private loadMyInvites() {
-    this.invitesApiService.getMyInvites().subscribe(res => {
-      this.myInvitesList.set(res);
+    this.invitesApiService.getMyInvites().subscribe((res:myEventsApiResp) => {
+      this.myInvitesList.set(res.events);
     });
   }
 

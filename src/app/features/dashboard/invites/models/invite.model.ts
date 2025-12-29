@@ -12,6 +12,24 @@ export interface MyInvites {
     participants: number[];
     chatCount:number
 }
+
+export interface myEventsApi{
+    userId:number;
+    page:number;
+    size:number;
+}
+
+export interface myEventsApiResp{
+    userId:number;
+    pageSize:number;
+    currentPage:number;
+    totalElements:number;
+    totalPages:number;
+    hasNext:number;
+    hasPrevious:number;
+    message:string;
+    events:MyInvites[];
+}
 export interface GroupInvites {
     id: number;
     name: string;

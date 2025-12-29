@@ -18,8 +18,8 @@ export class UserApiService {
     return this.api.post<User, UserExist>('createUser', user);
   }
 
-  updateUser(payload: Partial<UserDetail>): Observable<UserExist> {
-    return this.api.post<UserDetail, UserExist>('users', payload);
+  updateUser(payload: UserDetail): Observable<UserRegisterApiResp> {
+    return this.api.post<UserDetail, UserRegisterApiResp>('updateuser', payload);
   }
 
   searchUsers(q: string) {

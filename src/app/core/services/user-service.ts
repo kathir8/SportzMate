@@ -64,7 +64,7 @@ export class UserService {
     request.fcmID = user.uid!
     request.profileImage = user.photoURL || '';
     request.userLoginFlag = fromGoogle;
-    request.interest = '';
+    request.interestedSportsIds = '';
     this.userApi.userRegistration(request).subscribe((res: UserRegisterApiResp) => {
       if (res.resFlag) {
         localStorage.removeItem("signupEmail");
@@ -72,6 +72,12 @@ export class UserService {
         localStorage.removeItem("signupName");
         this.updateUserDetails(res.userDetailsDto);
       }
+    });
+  }
+
+  updateUser(user:UserDetail){
+    this.userApi.updateUser(user).subscribe((res: UserRegisterApiResp) => {
+      this.router.navigate(['/dashboard/home']);
     });
   }
 

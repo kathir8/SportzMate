@@ -24,7 +24,7 @@ export class InterestDetailComponent {
   readonly sports = computed(() => this.commonStore.sports());
 
   readonly currentUser = this.userStore.getCurrent()!;
-  readonly selectedSports = signal<string[]>(this.currentUser()?.interest?.split(',') || []);
+  readonly selectedSports = signal<string[]>(this.currentUser()?.interestedSportsIds?.split(',') || []);
 
   constructor() {
     this.commonStore.loadSports();
@@ -50,7 +50,7 @@ export class InterestDetailComponent {
 
   updateInterest(): void {
     this.signalService.patchSignal(this.currentUser, {
-      interest: this.selectedSports().join(',')
+      interestedSportsIds: this.selectedSports().join(',')
     });
   }
 

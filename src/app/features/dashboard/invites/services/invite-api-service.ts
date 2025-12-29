@@ -2,17 +2,24 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { SportType } from 'src/app/shared/models/shared.model';
-import { GroupDetail, GroupInvites, Invite, MyInvites } from '../models/invite.model';
+import { GroupDetail, GroupInvites, Invite, myEventsApi, myEventsApiResp, MyInvites } from '../models/invite.model';
+import { UserStore } from 'src/app/core/stores/user-store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class InviteApiService {
   private readonly api = inject(ApiService);
+  private readonly userStore = inject(UserStore);
+  private readonly current = this.userStore.getCurrent();
 
-
-  getMyInvites(): Observable<MyInvites[]> {
-    return this.api.get<MyInvites[]>(`myInvites`);
+  getMyInvites(page = 0, size = 0): Observable<myEventsApiResp> {
+    const obj : myEventsApi = {  
+  userId:this.current()!.userID,
+  page,
+  size
+    }
+    return this.api.post<myEventsApi, myEventsApiResp>(`event/myEvents`, obj);
 
     const myInvitesData: MyInvites[] = [
       {

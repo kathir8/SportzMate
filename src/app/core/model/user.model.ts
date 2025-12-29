@@ -7,7 +7,7 @@ export class UserDetail {
   countryName: string = '';
   userLoginFlag: boolean = false;
   fcmID: string = '';
-  interest: string = '';
+  interestedSportsIds: string = '';
   userID: number = 0;
 }
 
