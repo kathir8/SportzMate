@@ -32,30 +32,14 @@ export class HomeComponent {
   readonly segmentView = signal<'list' | 'map'>('list');
   readonly coords = signal<Coordinates>({ lat: 13.0827, lng: 80.2707 }); // (fallback to Chennai if geolocation fails)
   private mates = signal<MateListItem[]>([]);
+  private readonly visiblePlayersBase = signal<MateListItem[]>([]);
+
   readonly rawSearchTerm = signal<string>('');
   private debouncedSearchInvites = signal<string>('');
-
-
-  private rangeFilteredMates = computed<MateListItem[]>(() => {
-    const mates = this.mates();
-    const cur = this.coords();
-    const range = this.homeService.rangeKm();
-
-    if (!mates.length || !cur.lat || !cur.lng) return [];
-
-    // Calculate distance and filter by radius
-    const filtered = mates
-      .map((p) => ({
-        ...p,
-        distanceKm: this.distanceKm(cur.lat!, cur.lng!, p.coords.lat, p.coords.lng)
-      }))
-      .filter((p) => p.distanceKm! <= range);
-
-    return filtered;
-  });
+  private readonly previousRangeKm = signal<number>(this.homeService.rangeKm());
 
   readonly visiblePlayers = computed<MateListItem[]>(() => {
-    let filtered = this.rangeFilteredMates();
+    let filtered = this.visiblePlayersBase();
     const searchTerm = this.debouncedSearchInvites().toLowerCase().trim();
 
     // Filter by Search Term 
@@ -79,6 +63,24 @@ export class HomeComponent {
       }, 500);
 
       onCleanup(() => clearTimeout(timeout));
+    });
+
+    effect(() => {
+      const currentRange = this.homeService.rangeKm();
+      const previousRange = this.previousRangeKm();
+
+      if (currentRange === previousRange) return;
+
+      if (currentRange < previousRange) {
+        // 🔽 Range reduced → local filtering only
+        this.updateMatesWithDistance();
+      } else {
+        // 🔼 Range increased → API call
+        this.getMatesList();
+      }
+
+      // update previous value
+      this.previousRangeKm.set(currentRange);
     });
   }
 
@@ -108,6 +110,32 @@ export class HomeComponent {
     this.getMatesList(event);
   }
 
+  private updateMatesWithDistance(): void {
+    const range = this.homeService.rangeKm();
+    const cur = this.coords();
+    const mates = this.mates();
+
+    if (!mates.length || !cur.lat || !cur.lng) {
+      this.visiblePlayersBase.set([]);
+      return;
+    }
+
+    const filtered = mates
+      .map(p => ({
+        ...p,
+        distanceKm: this.distanceKm(
+          cur.lat!,
+          cur.lng!,
+          p.coords.lat,
+          p.coords.lng
+        )
+      }))
+      .filter(p => p.distanceKm! <= range);
+
+    this.visiblePlayersBase.set(filtered);
+  }
+
+
   private getMatesList(event?: CustomEvent) {
     try {
       const obj: eventListApi = {
@@ -121,11 +149,11 @@ export class HomeComponent {
 
       this.homeApi.getMates(obj).subscribe((res: eventListApiResp) => {
         console.log(res);
-        this.mates.set(res.events);
+        this.visiblePlayersBase.set(res.events);
       })
     } catch (err) {
       console.error('Failed to load mates', err);
-      this.mates.set([]);
+      this.visiblePlayersBase.set([]);
     } finally {
       this.loader.stop();
       if (event) {
