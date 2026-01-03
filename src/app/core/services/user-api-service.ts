@@ -22,6 +22,12 @@ export class UserApiService {
     return this.api.post<UserDetail, UserRegisterApiResp>('updateuser', payload);
   }
 
+  uploadImage(file: File, imageType: string): Observable<UserRegisterApiResp> {
+    const formData = new FormData();
+    formData.append('file', file);
+    return this.api.post<FormData, UserRegisterApiResp>('uploadImage', formData, { imageType });
+  }
+
   searchUsers(q: string) {
     return this.api.get<UserDetail[]>(`users/search?q=${encodeURIComponent(q)}`);
   }
@@ -31,7 +37,7 @@ export class UserApiService {
   }
 
   deleteUser(emailId: string): Observable<UserDeleteApiResp> {
-    return this.api.post<User, UserDeleteApiResp>(`deleteuser`, { emailId });
+    return this.api.post<{ emailId: string }, UserDeleteApiResp>(`deleteuser`, { emailId });
   }
 
 }

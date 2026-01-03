@@ -1,6 +1,7 @@
 <ion-content class="ion-padding outer-container">
   <h2 class="title">Profile Details</h2>
-  <ion-avatar style="width: 120px; height: 120px; margin: auto;" (click)="selectProfileImage()">
+  {{profileImage()}}
+  <ion-avatar style="width: 120px; height: 120px; margin: auto;" (click)="openImageSelector()">
     @if(profileImage()){
     <img [src]="profileImage()" />
     }@else {
@@ -9,6 +10,11 @@
     </div>
     }
   </ion-avatar>
+
+  <app-image-source
+  #sheet
+  (sourceSelected)="onSourceSelected($event)"/>
+
   <div class="profile-details-container">
     <country-dropdown [selectedCountryCode]="selectedCountry()" (countryChange)="onCountryChange($event)"></country-dropdown>
   </div>

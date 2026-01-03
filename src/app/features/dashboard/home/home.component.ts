@@ -148,7 +148,6 @@ export class HomeComponent {
       }
 
       this.homeApi.getMates(obj).subscribe((res: eventListApiResp) => {
-        console.log(res);
         this.visiblePlayersBase.set(res.events);
       })
     } catch (err) {

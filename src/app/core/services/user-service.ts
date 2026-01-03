@@ -75,10 +75,14 @@ export class UserService {
     });
   }
 
-  updateUser(user:UserDetail){
+  updateUser(user: UserDetail) {
     this.userApi.updateUser(user).subscribe((res: UserRegisterApiResp) => {
-      this.router.navigate(['/dashboard/home']);
+      this.updateUserDetails(res.userDetailsDto);
     });
+  }
+
+  uploadProfileImage(profileImg: File) {
+    return this.userApi.uploadImage(profileImg, 'profile-images')
   }
 
   deleteUser(email: string) {

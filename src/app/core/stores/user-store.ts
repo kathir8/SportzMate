@@ -8,7 +8,7 @@ export class UserStore {
   private readonly current = signal<UserDetail | null>(null);
   loading = signal(false);
 
-  readonly isOnboarded = computed(() => !!this.current()?.name && !!this.current()?.interestedSportsIds?.length);
+  readonly isOnboarded = computed(() => !!this.current()?.name && !!this.current()?.countryName); 
 
   setCurrent(user: UserDetail): void {
     this.current.set(user);

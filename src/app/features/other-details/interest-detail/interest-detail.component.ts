@@ -6,6 +6,7 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { ProfileDetailComponent } from '../profile-detail/profile-detail.component';
 import { SignalService } from 'src/app/core/services/signal.service';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-interest-detail',
@@ -18,13 +19,14 @@ export class InterestDetailComponent {
   private readonly userStore = inject(UserStore);
   private readonly commonStore = inject(CommonStore);
   private readonly signalService = inject(SignalService);
+  private readonly commonService = inject(CommonService);
 
 
   readonly profileComponent = ProfileDetailComponent;
   readonly sports = computed(() => this.commonStore.sports());
 
   readonly currentUser = this.userStore.getCurrent()!;
-  readonly selectedSports = signal<string[]>(this.currentUser()?.interestedSportsIds?.split(',') || []);
+  readonly selectedSports = signal<string[]>(this.commonService.csvToArray(this.currentUser()?.interestedSportsIds));
 
   constructor() {
     this.commonStore.loadSports();

@@ -20,8 +20,8 @@ export class ApiService {
       );
   }
 
-  post<TRequest, TResponse>(endpoint: string, body: any): Observable<TResponse> {
-    return this.http.post<TResponse>(`${this.baseUrl}/${endpoint}`, body).pipe(
+  post<TRequest, TResponse>(endpoint: string, body: TRequest, params?:Record<string, string>): Observable<TResponse> {
+    return this.http.post<TResponse>(`${this.baseUrl}/${endpoint}`, body, {params}).pipe(
       catchError(err => {
         console.error('API Error', err);
         return throwError(() => err);

@@ -2,15 +2,12 @@ import { Component, computed, inject, signal } from '@angular/core';
 import { IonButton, IonButtons, IonContent, IonPicker, IonPickerColumn, IonPickerColumnOption, IonToolbar, ModalController } from '@ionic/angular/standalone';
 import type { PickerColumnValue } from '@ionic/core';
 import { toUtcTimestamp } from '../../utils/date-utils';
-import { JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'ionic-datetime',
   templateUrl: './ionic-datetime.component.html',
   styleUrls: ['./ionic-datetime.component.scss'],
-  imports: [IonContent, IonToolbar, IonButtons, IonButton, IonPicker,
-    IonPickerColumn,
-    IonPickerColumnOption, JsonPipe]
+  imports: [IonContent, IonToolbar, IonButtons, IonButton, IonPicker, IonPickerColumn, IonPickerColumnOption]
 })
 export class IonicDateTimeComponent {
   private modalCtrl = inject(ModalController);
