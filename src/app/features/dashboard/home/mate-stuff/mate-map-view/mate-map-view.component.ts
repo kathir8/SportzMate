@@ -1,13 +1,13 @@
-import { Component, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
+import { Component, effect, ElementRef, inject, input, signal, viewChild, ViewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { chatboxOutline, thumbsUpOutline } from 'ionicons/icons';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
-import { SportType } from 'src/app/shared/models/shared.model';
 import { HomeService } from '../../services/home-service';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { Coordinates, MateListItem } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
+import { SportType } from 'src/app/shared/models/shared.model';
 
 @Component({
   selector: 'app-mate-map-view',
@@ -29,13 +29,11 @@ export class MateMapViewComponent {
   private readonly mapElement = viewChild.required<ElementRef<HTMLElement>>('mapRef');
   private readonly carouselRef = viewChild<ElementRef<HTMLDivElement>>('carouselRef');
 
-
-  private readonly map = signal<google.maps.Map | null>(null);
-  private readonly circle = signal<google.maps.Circle | null>(null);
-  private readonly userMarker = signal<google.maps.Marker | null>(null);
-
-  private readonly markers = signal<google.maps.Marker[]>([]);
-  private readonly badgeMarkers = signal<google.maps.Marker[]>([]);
+  map!: google.maps.Map;
+  userMarker!: google.maps.Marker;
+  markers: google.maps.Marker[] = [];
+  badgeMarkers: google.maps.Marker[] = [];
+  circle!: google.maps.Circle;
 
   readonly selectedPlayerId = signal<number | null>(null);
 
@@ -45,25 +43,24 @@ export class MateMapViewComponent {
       const cur = this.coords();
 
       if (!cur || !players.length) return;
-
-      if (!this.map()) {
+      // Initialize or update map
+      if (!this.map) {
         this.initMap(cur);
       } else {
         this.updateUserLocation(cur);
       }
-
       this.loadNearbyPlayers(players, cur);
     });
 
     effect(() => {
       const r = this.homeService.rangeKm(); // if this returns a signal value
-      this.circle()?.setRadius(r * 1000);
+      if (this.circle) this.circle.setRadius(r * 1000);
     });
 
   }
 
   private initMap(center: Coordinates) {
-    const mapEl = this.mapElement().nativeElement;
+    const mapEl = this.mapElement().nativeElement as HTMLElement;
     const map = new google.maps.Map(mapEl, {
       center,
       zoom: 13,
@@ -71,10 +68,10 @@ export class MateMapViewComponent {
       disableDefaultUI: false
     });
 
-    this.map.set(map);
+    this.map = map;
 
     // marker for current location
-    this.userMarker.set(new google.maps.Marker({
+    this.userMarker = new google.maps.Marker({
       map,
       position: center,
       title: 'You',
@@ -86,11 +83,10 @@ export class MateMapViewComponent {
         strokeWeight: 2,
         strokeColor: 'white'
       }
-    })
-    );
+    });
 
     // circle showing radius
-    this.circle.set(new google.maps.Circle({
+    this.circle = new google.maps.Circle({
       map,
       center,
       strokeColor: '#2E86DE',
@@ -99,16 +95,15 @@ export class MateMapViewComponent {
       fillColor: '#2E86DE',
       fillOpacity: 0.08,
       radius: this.homeService.rangeKm() * 1000
-    })
-    );
+    });
 
     (this as any)._circle = this.circle;
   }
 
   private updateUserLocation(center: Coordinates) {
-    this.map()?.setCenter(center);
-    this.circle()?.setCenter(center);
-    this.userMarker()?.setPosition(center);
+    this.map.setCenter(center);
+    this.circle.setCenter(center);
+    this.userMarker.setPosition(center);
   }
 
 
@@ -120,25 +115,27 @@ export class MateMapViewComponent {
     // create markers for visible players
     players.forEach(item => this.addPlayerMarker(item));
 
-
     // update circle radius & center
-    this.circle()?.setCenter(center);
-    this.circle()?.setRadius(this.homeService.rangeKm() * 1000);
+    if (this.circle) {
+      this.circle.setCenter(center);
+      this.circle.setRadius(this.homeService.rangeKm() * 1000);
+    }
 
     // update user marker position if available
-    this.userMarker()?.setPosition(center);
-
+    if (this.userMarker) {
+      this.userMarker.setPosition(center);
+    }
 
     // fit bounds around user + visible players
     const bounds = new google.maps.LatLngBounds();
     bounds.extend(center);
     players.forEach(v => bounds.extend(v.coords));
     if (players.length) {
-      this.map()?.fitBounds(bounds, 120);
+      this.map.fitBounds(bounds, 120);
     } else {
       // when no players, keep a sane zoom
-      this.map()?.setCenter(center);
-      this.map()?.setZoom(13);
+      this.map.setCenter(center);
+      this.map.setZoom(13);
     }
   }
 
@@ -154,7 +151,7 @@ export class MateMapViewComponent {
 
       const marker = new google.maps.Marker({
         position: player.coords,
-        map: this.map(),
+        map: this.map,
         title: player.name,
         zIndex: 100,
         icon: {
@@ -166,7 +163,7 @@ export class MateMapViewComponent {
       });
 
       marker.addListener('click', () => this.openMateDetail(player.id));
-      this.markers.update(list => [...list, marker]);
+      this.markers.push(marker);
 
     } catch (err) {
       console.error('Marker icon failed', err);
@@ -330,10 +327,10 @@ export class MateMapViewComponent {
 
   // remove markers
   clearMarkers() {
-    this.markers().forEach(m => m.setMap(null));
-    this.badgeMarkers().forEach(m => m.setMap(null));
-    this.markers.set([]);
-    this.badgeMarkers.set([]);
+    this.markers.forEach(m => m.setMap(null));
+    this.badgeMarkers.forEach(m => m.setMap(null));
+    this.markers = [];
+    this.badgeMarkers = [];
   }
 
   // small utility to produce emoji per game
@@ -404,13 +401,13 @@ export class MateMapViewComponent {
 
         // update all markers for selection
         this.visiblePlayers().forEach(v => {
-          const marker = this.markers().find(m => m.getTitle() === v.name);
+          const marker = this.markers.find(m => m.getTitle() === v.name);
           if (marker) this.updateMarkerIcon(v, marker);
         });
 
         // pan map to centered player
         const player = this.visiblePlayers().find(v => v.id === id);
-        if (player) this.map()?.panTo(player.coords);
+        if (player) this.map.panTo(player.coords);
       }
     }
   }
