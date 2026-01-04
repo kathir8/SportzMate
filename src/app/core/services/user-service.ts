@@ -76,8 +76,8 @@ export class UserService {
   }
 
   updateUser(user: UserDetail) {
-    this.userApi.updateUser(user).subscribe((res: UserRegisterApiResp) => {
-      this.updateUserDetails(res.userDetailsDto);
+    this.userApi.updateUser(user).subscribe((res: UserDetail) => {
+      this.updateUserDetails(res);
     });
   }
 

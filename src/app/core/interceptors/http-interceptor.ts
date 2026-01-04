@@ -41,10 +41,12 @@ export const authInterceptor: HttpInterceptorFn = (
         } else {
             handledRequest$ = from(user.getIdToken()).pipe(
                 switchMap((token: string) => {
+                    const isFormData = request.body instanceof FormData;
+
                     const modifiedRequest = request.clone({
                         setHeaders: {
                             Authorization: `Bearer ${token}`,
-                            'Content-Type': 'application/json',
+                            ...(isFormData ? {} : { 'Content-Type': 'application/json' }),
                             'X-Client-Timezone': Intl.DateTimeFormat().resolvedOptions().timeZone,
                             'X-Request-Time-UTC': new Date().toISOString()
                         }

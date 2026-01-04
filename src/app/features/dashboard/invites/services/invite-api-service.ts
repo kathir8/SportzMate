@@ -14,13 +14,13 @@ export class InviteApiService {
   private readonly current = this.userStore.getCurrent();
 
   getMyInvites(page = 0, size = 0): Observable<myEventsApiResp> {
-    const obj : myEventsApi = {  
-  userId:this.current()!.userID,
-  page,
-  size
+    const obj: myEventsApi = {
+      userId: this.current()!.userID, // 6
+      page,
+      size
     }
-    return this.api.post<myEventsApi, myEventsApiResp>(`event/myEvents`, obj);
-
+    // return this.api.post<myEventsApi, myEventsApiResp>(`event/myInvites`, obj);
+    const resp = {} as myEventsApiResp;
     const myInvitesData: MyInvites[] = [
       {
         id: 1,
@@ -45,7 +45,8 @@ export class InviteApiService {
         chatCount: 10
       }
     ];
-    // return of(myInvitesData);
+    resp.events = myInvitesData;
+    return of(resp);
   }
 
   getGroupInvites(): Observable<GroupInvites[]> {

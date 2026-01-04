@@ -18,14 +18,14 @@ export class UserApiService {
     return this.api.post<User, UserExist>('createUser', user);
   }
 
-  updateUser(payload: UserDetail): Observable<UserRegisterApiResp> {
-    return this.api.post<UserDetail, UserRegisterApiResp>('updateuser', payload);
+  updateUser(payload: UserDetail): Observable<UserDetail> {
+    return this.api.post<UserDetail, UserDetail>('updateuser', payload);
   }
 
-  uploadImage(file: File, imageType: string): Observable<UserRegisterApiResp> {
+  uploadImage(file: File, imagetype: string): Observable<UserRegisterApiResp> {
     const formData = new FormData();
     formData.append('file', file);
-    return this.api.post<FormData, UserRegisterApiResp>('uploadImage', formData, { imageType });
+    return this.api.post<FormData, UserRegisterApiResp>('uploadimage', formData, { imagetype });
   }
 
   searchUsers(q: string) {

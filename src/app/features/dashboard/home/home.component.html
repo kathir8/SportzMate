@@ -8,7 +8,7 @@
     <ion-title class="title">Choose Your<br> Sports Mate Today !</ion-title>
     <div class="profile-container">
       <ion-avatar class="profile-wrapper">
-        <ion-img src="assets/icon/signup/profile.png" alt="user" class="profile-pic"></ion-img>
+        <ion-img [src]="currentUser()!.profileImage || 'assets/icon/signup/profile.png'" alt="user" class="profile-pic"></ion-img>
       </ion-avatar>
       <div class="online-indicator"></div>
       <div class="icon-overlay">
