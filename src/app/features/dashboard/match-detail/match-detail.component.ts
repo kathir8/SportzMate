@@ -4,7 +4,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonFooter, IonTitle } from '@ionic/angular/standalone';
 import { HeaderComponent } from 'src/app/shared/components/header/header.component';
 import { MateDetailContainerComponent } from "../home/mate-stuff/mate-detail-container/mate-detail-container.component";
-import { GroupInviteComponent } from '../invites/my-group-list/group-invite/group-invite.component';
+import { GroupInviteComponent } from '../requests/my-group-list/group-invite/group-invite.component';
 
 type MatchType = 'group' | 'mate';
 

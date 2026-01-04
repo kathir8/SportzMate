@@ -2,7 +2,7 @@ import { Component, input, signal } from '@angular/core';
 import { IonicVirtualScrollComponent } from 'src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component';
 import { MateBasicComponent } from "../../../home/mate-stuff/mate-basic/mate-basic.component";
 import { NoMateFoundComponent } from "../../../home/mate-stuff/no-mate-found/no-mate-found.component";
-import { RequestedList } from '../../models/invite.model';
+import { RequestedList } from '../../models/requests.model';
 
 @Component({
   selector: 'app-group-invite-list',

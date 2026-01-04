@@ -1,0 +1,24 @@
+<ion-content class="ion-padding invites-page" [scrollY]="false">
+  <ion-segment [(ngModel)]="segmentView" class="segment-wrapper">
+    <ion-segment-button value="myRequests" content-id="myRequests">
+      <ion-label>My Requests</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="joinRequests" content-id="joinRequests">
+      <ion-label>Join Requests</ion-label>
+    </ion-segment-button>
+  </ion-segment>
+
+  <ion-segment-view>
+    <ion-segment-content id="myRequests" value="myRequests">
+      @if(segmentView() === 'myRequests'){
+      <app-mate-list-view [responseList]="myRequestsList()"></app-mate-list-view>
+      }
+    </ion-segment-content>
+    <ion-segment-content id="joinRequests" value="joinRequests">
+      @if(segmentView() === 'joinRequests'){
+      <app-mate-list-view [responseList]="joinRequest()" [dynamicClass]="'from-join-requests'"></app-mate-list-view>
+      }
+    </ion-segment-content>
+  </ion-segment-view>
+
+</ion-content>

@@ -50,14 +50,14 @@ export const routes: Routes = [
           import('./features/dashboard/chat-list/chat/chat.component').then(m => m.ChatComponent)
       },
       {
-        path: 'invites',
+        path: 'requests',
         loadComponent: () =>
-          import('./features/dashboard/invites/invites.component').then(m => m.InvitesComponent)
+          import('./features/dashboard/requests/requests.component').then(m => m.RequestsComponent)
       },
       {
-        path: 'invites/group/:id',
+        path: 'requests/group/:id',
         loadComponent: () =>
-          import('./features/dashboard/invites/my-group-list/group-invite/group-invite.component').then(m => m.GroupInviteComponent)
+          import('./features/dashboard/requests/my-group-list/group-invite/group-invite.component').then(m => m.GroupInviteComponent)
       },
       {
         path: 'events',

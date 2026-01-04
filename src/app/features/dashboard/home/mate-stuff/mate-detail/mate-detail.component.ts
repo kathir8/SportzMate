@@ -4,7 +4,7 @@ import { IonGrid, IonIcon } from '@ionic/angular/standalone';
 import { calendarOutline, mailOpenOutline, timeOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
-import { GroupDetail } from '../../../invites/models/invite.model';
+import { GroupDetail } from '../../../requests/models/requests.model';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { MateDetail } from '../models/mate.model';
 @Component({

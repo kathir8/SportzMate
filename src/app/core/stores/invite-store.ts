@@ -1,7 +1,7 @@
 // invite.store.ts
 import { Injectable, signal, computed } from '@angular/core';
-import { Invite } from 'src/app/features/dashboard/invites/models/invite.model';
-import { InviteApiService } from 'src/app/features/dashboard/invites/services/invite-api-service';
+import { Invite } from 'src/app/features/dashboard/requests/models/requests.model';
+import { InviteApiService } from 'src/app/features/dashboard/requests/services/invite-api-service';
 
 @Injectable({ providedIn: 'root' })
 export class InviteStore {

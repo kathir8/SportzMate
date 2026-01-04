@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { SportType } from 'src/app/shared/models/shared.model';
-import { GroupDetail, GroupInvites, Invite, myEventsApi, myEventsApiResp, MyInvites } from '../models/invite.model';
+import { GroupDetail, JoinRequests, Invite, myEventsApi, myEventsApiResp, MyRequests } from '../models/requests.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 
 @Injectable({
@@ -13,15 +13,15 @@ export class InviteApiService {
   private readonly userStore = inject(UserStore);
   private readonly current = this.userStore.getCurrent();
 
-  getMyInvites(page = 0, size = 0): Observable<myEventsApiResp> {
+  getMyRequests(page = 0, size = 0): Observable<myEventsApiResp> {
     const obj: myEventsApi = {
       userId: this.current()!.userID, // 6
       page,
       size
     }
-    // return this.api.post<myEventsApi, myEventsApiResp>(`event/myInvites`, obj);
+    // return this.api.post<myEventsApi, myEventsApiResp>(`event/myRequests`, obj);
     const resp = {} as myEventsApiResp;
-    const myInvitesData: MyInvites[] = [
+    const myRequests: MyRequests[] = [
       {
         id: 1,
         profileImg: 'assets/avatars/avatar1.jfif',
@@ -45,14 +45,14 @@ export class InviteApiService {
         chatCount: 10
       }
     ];
-    resp.events = myInvitesData;
+    resp.events = myRequests;
     return of(resp);
   }
 
-  getGroupInvites(): Observable<GroupInvites[]> {
-    // return this.api.get<MyInvites[]>(`approveInvites`);
+  getJoinRequests(): Observable<JoinRequests[]> {
+    // return this.api.get<MyRequests[]>(`joinRequests`);
 
-    const myGroupData: GroupInvites[] = [
+    const joinRequests: JoinRequests[] = [
       {
         id: 1,
         profileImg: 'assets/avatars/avatar1.jfif',
@@ -60,7 +60,7 @@ export class InviteApiService {
         location: 'Newyork',
         eventDateTime: 1761408000000,
         requiredMembers: 8,
-        participants: [],
+        participants: [1, 2, 3, 4, 5, 6, 7, 8],
         sport: SportType.Badminton,
         chatCount: 2
       },
@@ -76,7 +76,7 @@ export class InviteApiService {
         chatCount: 10
       }
     ];
-    return of(myGroupData);
+    return of(joinRequests);
   }
 
 
@@ -244,10 +244,10 @@ export class InviteApiService {
 
   }
 
-  fetchNearby(lat: number, lng: number) { return this.api.get<Invite[]>(`/api/invites/near?lat=${lat}&lng=${lng}`); }
-  fetchById(id: string) { return this.api.get<Invite>(`/api/invites/${id}`); }
+  fetchNearby(lat: number, lng: number) { return this.api.get<Invite[]>(`/api/requests/near?lat=${lat}&lng=${lng}`); }
+  fetchById(id: string) { return this.api.get<Invite>(`/api/requests/${id}`); }
   // createInvite(payload: Partial<Invite>) { return this.api.post<Invite>('/api/invites', payload); }
-  joinInvite(id: string, uid: string) { return this.api.post(`/api/invites/${id}/join`, { uid }); }
-  leaveInvite(id: string, uid: string) { return this.api.post(`/api/invites/${id}/leave`, { uid }); }
+  joinInvite(id: string, uid: string) { return this.api.post(`/api/requests/${id}/join`, { uid }); }
+  leaveInvite(id: string, uid: string) { return this.api.post(`/api/requests/${id}/leave`, { uid }); }
 
 }

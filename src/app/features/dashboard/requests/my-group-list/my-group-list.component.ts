@@ -4,7 +4,7 @@ import { IonContent } from '@ionic/angular/standalone';
 import { IonicVirtualScrollComponent } from "src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component";
 import { MateBasicComponent } from "../../home/mate-stuff/mate-basic/mate-basic.component";
 import { NoMateFoundComponent } from "../../home/mate-stuff/no-mate-found/no-mate-found.component";
-import { GroupInvites } from '../models/invite.model';
+import { JoinRequests } from '../models/requests.model';
 
 @Component({
   selector: 'app-my-group-list',
@@ -15,9 +15,9 @@ import { GroupInvites } from '../models/invite.model';
 export class MyGroupListComponent {
   private readonly router = inject(Router);
 
-  readonly responseList = input<GroupInvites[]>([]);
+  readonly responseList = input<JoinRequests[]>([]);
 
-  openGroup(item: GroupInvites) {
+  openGroup(item: JoinRequests) {
     this.router.navigate(['dashboard/match', item.id, 'group']);
   }
 

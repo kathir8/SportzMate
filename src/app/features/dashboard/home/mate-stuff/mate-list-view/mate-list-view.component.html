@@ -5,7 +5,7 @@
   </ionic-virtual-scroll>
 
   <ng-template #mateTemplate let-item>
-    <app-mate-basic [mate]="item" [dynamicClass]="'from-mate-list'">
+    <app-mate-basic [mate]="item" [dynamicClass]="dynamicClass()" (isAccepted)="acceptOrReject($event)">
     </app-mate-basic>
   </ng-template>
 

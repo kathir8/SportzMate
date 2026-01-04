@@ -75,7 +75,8 @@
         }
     }
 
-    &.from-mate-list {
+    &.from-mate-list,
+    &.from-join-requests {
         .mate-img {
             --size: 73px;
         }

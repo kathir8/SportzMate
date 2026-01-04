@@ -6,20 +6,12 @@
   </ion-col>
   <ion-col class="detail-container">
     <ion-label class="name-place">{{mate()?.name}}, {{mate()?.location}}</ion-label>
-    @if(dynamicClass() !== 'from-group-invite-list'){
     <div class="time-wrapper">
       <ion-icon [icon]="icons.calendarClear"></ion-icon>
       <ion-label class="time-text">{{mate()?.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
     </div>
-    }
-    @if(dynamicClass() === 'from-group-invite-list'){
-    <ionic-chip [outline]="true" color="primary" (ionClick)="isAccepted.emit(true)">
-      Accept <ion-icon [icon]="icons.thumbsUpOutline"></ion-icon>
-    </ionic-chip>
-    <ionic-chip [outline]="true" color="primary" (ionClick)="isAccepted.emit(false)">
-      Reject <ion-icon [icon]="icons.thumbsDownOutline"></ion-icon>
-    </ionic-chip>
-    }@else if(dynamicClass() !== 'from-mate-detail'){
+    
+    @if(dynamicClass() !== 'from-mate-detail'){
     <div class="badge-wrapper">
       <ionic-badge dynamicClass="members-cnt primary">
         <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.requiredMembers}}
@@ -29,11 +21,20 @@
       </ionic-badge>
     </div>
     }
+
+    @if(dynamicClass() === 'from-join-requests'){
+    <ionic-chip [dynamicClass]="dynamicClass()" [outline]="true" color="primary" (click)="acceptOrReject(true, $event)">
+      Accept <ion-icon [icon]="icons.thumbsUpOutline"></ion-icon>
+    </ionic-chip>
+    <ionic-chip [dynamicClass]="dynamicClass()" [outline]="true" color="primary" (click)="acceptOrReject(false, $event)">
+      Reject <ion-icon [icon]="icons.thumbsDownOutline"></ion-icon>
+    </ionic-chip>
+    }
+
   </ion-col>
-  @if(dynamicClass() !== 'from-group-invite-list'){
   <ion-col size="auto" class="game-detail">
 
-    @if (badgeInfo()) {
+    <!-- @if (badgeInfo()) {
     <ionic-badge dynamicClass="badge-info">
       @if (badgeInfo()?.type === 'distance') {
       {{ badgeInfo()?.value }}
@@ -42,11 +43,10 @@
       <ionic-badge dynamicClass="chat-number">{{ badgeInfo()?.value }}</ionic-badge>
       }
     </ionic-badge>
-    }
+    } -->
 
     @if(dynamicClass() !== 'from-mate-detail'){
     <ion-icon class="sport-icon" [icon]="icons.bicycleOutline"></ion-icon>
     }
   </ion-col>
-  }
 </ion-row>

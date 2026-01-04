@@ -2,7 +2,7 @@ import { Component, computed, effect, inject, input, output, signal, TemplateRef
 import { IonicAccordionComponent, IonicAccordionItem } from 'src/app/shared/components/ionic-accordion/ionic-accordion.component';
 import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ionic-button.component";
 import { MateDetailComponent } from "../../../home/mate-stuff/mate-detail/mate-detail.component";
-import { GroupDetail, RequestedList } from '../../models/invite.model';
+import { GroupDetail, RequestedList } from '../../models/requests.model';
 import { InviteApiService } from '../../services/invite-api-service';
 import { GroupInviteListComponent } from '../group-invite-list/group-invite-list.component';
 
