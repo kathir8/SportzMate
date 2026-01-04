@@ -1,5 +1,6 @@
 import { SportType } from "src/app/shared/models/shared.model";
 import { Coordinates } from "../../home/mate-stuff/models/mate.model";
+import { UserDetail } from "src/app/core/model/user.model";
 
 export interface MyRequests {
     name: string;
@@ -7,10 +8,11 @@ export interface MyRequests {
     sport: SportType;
     eventDateTime: number;
     profileImg: string;
-    requiredMembers: number;
-    participants: number[];
+    totalVacancy: number;
+    currentVacancy: number;
     chatCount: number;
     eventIdPk:number;
+    invitedUser?:UserDetail;
 }
 
 export interface myEventsApi {
@@ -36,8 +38,8 @@ export interface JoinRequests {
     sport: SportType;
     eventDateTime: number;
     profileImg: string;
-    requiredMembers: number;
-    participants: number[];
+    totalVacancy: number;
+    currentVacancy: number;
     chatCount: number;
     eventIdPk:number;
 }
@@ -50,8 +52,8 @@ export interface GroupDetail {
     eventDateTime: number;
     distanceOrDuration: string;
     profileImg: string;
-    requiredMembers: number;
-    participants: number[];
+    totalVacancy: number;
+    currentVacancy: number;
     coords: Coordinates;
     distanceKm?: number;
     description: string;
@@ -67,8 +69,9 @@ export interface RequestedList {
     sport: SportType;
     eventDateTime: number;
     distanceOrDuration: string;
-    requiredMembers: number;
-    participants: number[];
+    totalVacancy: number;
+    currentVacancy: number;
+    participants?: number[];
     coords: Coordinates;
     distanceKm?: number;
     description: string;
@@ -82,7 +85,7 @@ export interface Invite {
     startAt: string;       // ISO date
     location: { lat: number, lng: number, placeName?: string };
     participants: string[]; // array of UIDs
-    requiredMembers?: number;
+    totalVacancy?: number;
     createdAt?: string;
     updatedAt?: string;
 }

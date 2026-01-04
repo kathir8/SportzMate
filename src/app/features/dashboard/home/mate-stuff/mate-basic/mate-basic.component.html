@@ -1,7 +1,7 @@
 <ion-row class="row-container" [class]="dynamicClass()">
   <ion-col size="auto">
     <ion-thumbnail class="mate-img">
-      <ion-img alt="profile" [src]="mate()?.profileImg"></ion-img>
+      <ion-img [src]="mate()?.profileImg || 'assets/icon/signup/profile.png'" alt="profile"></ion-img>
     </ion-thumbnail>
   </ion-col>
   <ion-col class="detail-container">
@@ -14,10 +14,10 @@
     @if(dynamicClass() !== 'from-mate-detail'){
     <div class="badge-wrapper">
       <ionic-badge dynamicClass="members-cnt primary">
-        <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.requiredMembers}}
+        <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.totalVacancy}}
       </ionic-badge>
       <ionic-badge dynamicClass="members-cnt secondary">
-        <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.participants?.length}}
+        <ion-icon [icon]="icons.peopleOutline" class="members-cnt-icon"></ion-icon> {{mate()?.currentVacancy}}
       </ionic-badge>
     </div>
     }

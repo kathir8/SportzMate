@@ -20,7 +20,11 @@ export class EventsComponent {
 
   private loadMyEvents() {
     this.eventsApiService.getMyEvents().subscribe((res: myEventsApiResp) => {
-      this.myEventsList.set(res.events);
+      const event = res.events;
+      event.forEach(e=>{
+        e.name = e.invitedUser?.name!;
+      })
+      this.myEventsList.set(event);
     });
   }
 

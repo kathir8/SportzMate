@@ -7,7 +7,8 @@ export interface MateListItem {
     eventDateTime: number;
     distanceOrDuration: string;
     profileImg: string;
-    requiredMembers: number;
+    totalVacancy: number;
+    currentVacancy: number;
     participants: number[];
     coords: Coordinates;
     distanceKm?: number;
