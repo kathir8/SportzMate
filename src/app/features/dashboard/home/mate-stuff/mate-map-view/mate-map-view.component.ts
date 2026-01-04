@@ -146,7 +146,7 @@ export class MateMapViewComponent {
         player.profileImg,
         this.gameEmoji(player.sport),
         player.name,
-        player.id
+        player.eventIdPk
       );
 
       const marker = new google.maps.Marker({
@@ -162,7 +162,7 @@ export class MateMapViewComponent {
         }
       });
 
-      marker.addListener('click', () => this.openMateDetail(player.id));
+      marker.addListener('click', () => this.openMateDetail(player.eventIdPk));
       this.markers.push(marker);
 
     } catch (err) {
@@ -351,7 +351,7 @@ export class MateMapViewComponent {
 
   // clicking a bottom-card photo should center & open popup
   openMateDetail(id: number) {
-    this.router.navigate(['dashboard/match', id, 'mate']);
+    this.router.navigate(['dashboard/match', id]);
   }
 
   async updateMarkerIcon(player: MateListItem, marker: google.maps.Marker) {
@@ -360,7 +360,7 @@ export class MateMapViewComponent {
         player.profileImg,
         this.gameEmoji(player.sport),
         player.name,
-        player.id
+        player.eventIdPk
       );
 
       marker.setIcon({
@@ -406,7 +406,7 @@ export class MateMapViewComponent {
         });
 
         // pan map to centered player
-        const player = this.visiblePlayers().find(v => v.id === id);
+        const player = this.visiblePlayers().find(v => v.eventIdPk === id);
         if (player) this.map.panTo(player.coords);
       }
     }

@@ -23,7 +23,7 @@ export class InviteApiService {
     const resp = {} as myEventsApiResp;
     const myRequests: MyRequests[] = [
       {
-        id: 1,
+        eventIdPk: 1,
         profileImg: 'assets/avatars/avatar1.jfif',
         name: 'Kathir Office',
         location: 'Newyork',
@@ -34,7 +34,7 @@ export class InviteApiService {
         chatCount: 2
       },
       {
-        id: 2,
+        eventIdPk: 2,
         profileImg: 'assets/avatars/avatar1.jfif',
         name: 'Emma',
         location: 'Chicago',
@@ -54,7 +54,7 @@ export class InviteApiService {
 
     const joinRequests: JoinRequests[] = [
       {
-        id: 1,
+        eventIdPk: 1,
         profileImg: 'assets/avatars/avatar1.jfif',
         name: 'Kathir Office',
         location: 'Newyork',
@@ -65,7 +65,7 @@ export class InviteApiService {
         chatCount: 2
       },
       {
-        id: 2,
+        eventIdPk: 2,
         profileImg: 'assets/avatars/avatar1.jfif',
         name: 'Emma',
         location: 'Chicago',

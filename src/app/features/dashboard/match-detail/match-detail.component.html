@@ -3,18 +3,13 @@
 </app-header>
 
 <ion-content class="ion-padding mate-detail-page">
-  @if(isGroup()){
-  <app-group-invite [groupId]="id()" (footerReady)="footerTpl.set($event)"
-    (headingName)="headingText.set($event)"></app-group-invite>
-  }@else {
   <app-mate-detail-container [mateId]="id()" (footerReady)="footerTpl.set($event)"
     (headingName)="headingText.set($event)"></app-mate-detail-container>
-  }
 
 </ion-content>
 
 
-@if (footerTpl()) {
+@if (showInterestBtn() && footerTpl()) {
 <ion-footer class="footer">
   <ng-container [ngTemplateOutlet]="footerTpl()">
   </ng-container>

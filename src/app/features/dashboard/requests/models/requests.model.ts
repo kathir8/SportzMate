@@ -2,7 +2,6 @@ import { SportType } from "src/app/shared/models/shared.model";
 import { Coordinates } from "../../home/mate-stuff/models/mate.model";
 
 export interface MyRequests {
-    id: number;
     name: string;
     location: string;
     sport: SportType;
@@ -10,7 +9,8 @@ export interface MyRequests {
     profileImg: string;
     requiredMembers: number;
     participants: number[];
-    chatCount: number
+    chatCount: number;
+    eventIdPk:number;
 }
 
 export interface myEventsApi {
@@ -31,7 +31,6 @@ export interface myEventsApiResp {
     events: MyRequests[];
 }
 export interface JoinRequests {
-    id: number;
     name: string;
     location: string;
     sport: SportType;
@@ -39,7 +38,8 @@ export interface JoinRequests {
     profileImg: string;
     requiredMembers: number;
     participants: number[];
-    chatCount: number
+    chatCount: number;
+    eventIdPk:number;
 }
 
 export interface GroupDetail {

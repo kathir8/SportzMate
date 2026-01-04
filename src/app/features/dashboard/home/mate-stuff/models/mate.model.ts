@@ -1,7 +1,6 @@
 import { SportType } from 'src/app/shared/models/shared.model';
 
 export interface MateListItem {
-    id: number;
     name: string;
     location: string;
     sport: SportType;
@@ -11,7 +10,8 @@ export interface MateListItem {
     requiredMembers: number;
     participants: number[];
     coords: Coordinates;
-    distanceKm?: number
+    distanceKm?: number;
+    eventIdPk:number;
 }
 
 export interface MateDetail extends MateListItem {

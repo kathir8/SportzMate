@@ -17,6 +17,7 @@ import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
 export class MateListViewComponent<T extends MateListItem | MyRequests> {
   private readonly router = inject(Router);
   readonly icons = { add };
+  showInterestBtn = input<boolean>(true);
 
   private readonly selectedMate = signal<RequestedList>({} as RequestedList);
 
@@ -24,11 +25,11 @@ export class MateListViewComponent<T extends MateListItem | MyRequests> {
   readonly responseList = input<T[]>([]);
 
   openMateDetail(item: T) {
-    this.router.navigate(['dashboard/match', item.id, 'mate']);
+    this.router.navigate(['dashboard/match', item.eventIdPk, this.showInterestBtn()]);
   }
 
   trackById(index: number, item: T) {
-    return item.id || index;
+    return item.eventIdPk || index;
   }
 
    acceptOrReject(payload: { accepted: boolean; event: MouseEvent }) {

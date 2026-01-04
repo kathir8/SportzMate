@@ -4,8 +4,8 @@
   @if(visiblePlayers().length){
   <div class="bottom-area">
     <div class="cards-wrapper" #carouselRef (scroll)="onCarouselScroll()">
-      @for(item of visiblePlayers(); track item.id){
-      <div class="card" id="{{'card-' + item.id}}" (click)="openMateDetail(item.id)">
+      @for(item of visiblePlayers(); track item.eventIdPk){
+      <div class="card" id="{{'card-' + item.eventIdPk}}" (click)="openMateDetail(item.eventIdPk)">
         <app-mate-basic [mate]="item" dynamicClass="from-mate-map"></app-mate-basic>
         <ionic-chip [outline]="true" color="primary" (ionClick)="interested()">
           Interested <ion-icon [icon]="icons.thumbsUpOutline"></ion-icon>

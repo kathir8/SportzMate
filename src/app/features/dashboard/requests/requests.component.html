@@ -11,12 +11,12 @@
   <ion-segment-view>
     <ion-segment-content id="myRequests" value="myRequests">
       @if(segmentView() === 'myRequests'){
-      <app-mate-list-view [responseList]="myRequestsList()"></app-mate-list-view>
+      <app-mate-list-view [responseList]="myRequestsList()" [showInterestBtn]="false"></app-mate-list-view>
       }
     </ion-segment-content>
     <ion-segment-content id="joinRequests" value="joinRequests">
       @if(segmentView() === 'joinRequests'){
-      <app-mate-list-view [responseList]="joinRequest()" [dynamicClass]="'from-join-requests'"></app-mate-list-view>
+      <app-mate-list-view [responseList]="joinRequest()" [showInterestBtn]="false" [dynamicClass]="'from-join-requests'"></app-mate-list-view>
       }
     </ion-segment-content>
   </ion-segment-view>

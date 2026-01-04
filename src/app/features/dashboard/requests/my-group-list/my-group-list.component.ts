@@ -18,7 +18,7 @@ export class MyGroupListComponent {
   readonly responseList = input<JoinRequests[]>([]);
 
   openGroup(item: JoinRequests) {
-    this.router.navigate(['dashboard/match', item.id, 'group']);
+    this.router.navigate(['dashboard/match', item.id]);
   }
 
 }
