@@ -3,7 +3,7 @@
 </app-header>
 
 <ion-content class="ion-padding mate-detail-page">
-  <app-mate-detail-container [mateId]="id()" (footerReady)="footerTpl.set($event)"
+  <app-mate-detail-container [eventId]="id()" (footerReady)="footerTpl.set($event)"
     (headingName)="headingText.set($event)"></app-mate-detail-container>
 
 </ion-content>

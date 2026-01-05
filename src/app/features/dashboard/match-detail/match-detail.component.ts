@@ -40,7 +40,8 @@ export class MatchDetailComponent implements OnInit {
 
 
   handleBack() {
-    this.router.navigate(['/dashboard/home']);
+    const url = this.showInterestBtn() ? '/dashboard/home' : '/dashboard/requests';
+    this.router.navigate([url]);
   }
 
 }

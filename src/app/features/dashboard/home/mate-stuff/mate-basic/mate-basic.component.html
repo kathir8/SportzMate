@@ -1,7 +1,7 @@
 <ion-row class="row-container" [class]="dynamicClass()">
   <ion-col size="auto">
     <ion-thumbnail class="mate-img">
-      <ion-img [src]="mate()?.profileImg || 'assets/icon/signup/profile.png'" alt="profile"></ion-img>
+      <ion-img [src]="commonService.showProfileImage(mate()?.profileImg)" alt="profile"></ion-img>
     </ion-thumbnail>
   </ion-col>
   <ion-col class="detail-container">

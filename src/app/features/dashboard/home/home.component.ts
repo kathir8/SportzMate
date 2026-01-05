@@ -13,6 +13,8 @@ import { HomeApiService } from './services/home-api-service';
 import { HomeService } from './services/home-service';
 import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
 import { UserStore } from 'src/app/core/stores/user-store';
+import { Router } from '@angular/router';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-home',
@@ -27,7 +29,8 @@ export class HomeComponent {
   private readonly homeApi = inject(HomeApiService);
   private readonly userStore = inject(UserStore);
   private readonly loader = inject(GlobalLoadingService);
-
+  private readonly router = inject(Router);
+  readonly commonService = inject(CommonService);
 
   readonly icons = { navigateCircleOutline, navigateSharp };
 
@@ -181,6 +184,10 @@ export class HomeComponent {
 
   doRefresh(event: CustomEvent) {
     this.refreshData(event);
+  }
+
+  profileView(){
+    this.router.navigate(['profile']);
   }
 
 }

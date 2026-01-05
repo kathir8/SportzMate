@@ -12,4 +12,8 @@ export class CommonService {
       .filter(Boolean) ?? [];
   }
 
+  showProfileImage(profileImage? : string){
+    return profileImage || 'assets/icon/signup/profile.png'
+  }
+
 }

@@ -1,0 +1,38 @@
+<app-header (backClicked)="handleBack()">
+  <ion-title class="header-title" slot="start">Profile Details</ion-title>
+</app-header>
+
+<ion-content class="ion-padding profile-view">
+   <div class="profile-header">
+  <app-profile-image [profileImage]="currentUser()!.profileImage"/>
+   <h2>{{ currentUser()!.name }}</h2>
+    <p>{{ currentUser()!.age }} yrs • {{ currentUser()!.gender }}</p>
+  </div>
+
+
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>Personal Info</ion-card-title>
+    </ion-card-header>
+
+    <ion-card-content>
+      <ion-item lines="none">
+        <ion-icon [icon]="icons.flagOutline" slot="start"></ion-icon>
+        <ion-label>Country</ion-label>
+        <ion-note slot="end">{{ currentUser()!.countryName }}</ion-note>
+      </ion-item>
+    </ion-card-content>
+  </ion-card>
+
+  <div>Interested Details</div>
+
+  <div class="sports-container">
+    @for (sport of sports(); track sport.sportID) {
+    <ionic-chip [dynamicClass]="'interest-chip selected'">
+      {{sport.sportsName}}
+    </ionic-chip>
+    }
+  </div>
+ <hr>
+  <!-- interestedSportsIds: {{currentUser()!.interestedSportsIds}} -->
+</ion-content>

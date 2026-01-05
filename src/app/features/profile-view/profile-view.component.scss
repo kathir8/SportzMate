@@ -1,0 +1,36 @@
+$containerPaddingX: 16px;
+
+.profile-view {
+    --padding-start:#{$containerPaddingX};
+    --padding-end:#{$containerPaddingX};
+
+
+    .profile-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+
+
+  h2 {
+    margin-top: 12px;
+    font-weight: 600;
+  }
+
+  p {
+    color: var(--ion-color-medium);
+    margin: 4px 0 0;
+  }
+}
+
+
+
+.sports-container {
+        grid-template-columns: repeat(3, 1fr);
+        justify-items: stretch;
+        align-items: stretch;
+        margin-top: 50px;
+        display: grid;
+        gap: 12px;
+    }
+}

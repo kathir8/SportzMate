@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, inject, input, output } from '@angular/core';
 import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
 import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline, thumbsDownOutline, thumbsUpOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
@@ -7,6 +7,7 @@ import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-c
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { MyRequests, RequestedList } from '../../../requests/models/requests.model';
 import { MateListItem } from '../models/mate.model';
+import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-mate-basic',
@@ -15,6 +16,7 @@ import { MateListItem } from '../models/mate.model';
   imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg, IonicChipComponent]
 })
 export class MateBasicComponent<T extends MateListItem | MyRequests | RequestedList> {
+  readonly commonService = inject(CommonService);
   readonly DATE_FORMATS = DATE_FORMATS;
 
   readonly icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };

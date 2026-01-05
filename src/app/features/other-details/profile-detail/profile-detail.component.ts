@@ -1,20 +1,21 @@
 import { Component, effect, inject, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { CameraSource, Photo } from '@capacitor/camera';
-import { IonAvatar, IonContent, IonFooter, IonImg } from '@ionic/angular/standalone';
+import { IonContent, IonFooter } from '@ionic/angular/standalone';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { CountryDropdownComponent } from "src/app/shared/components/country-dropdown/country-dropdown.component";
 import { ImageSourceComponent } from "src/app/shared/components/image-source/image-source.component";
 import { ImageSourceService } from 'src/app/shared/components/image-source/image-source.service';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
+import { ProfileImageComponent } from "src/app/shared/components/profile-image/profile-image.component";
 import { UserService } from '../../../core/services/user-service';
 
 @Component({
   selector: 'app-profile-detail',
   templateUrl: './profile-detail.component.html',
   styleUrls: ['./profile-detail.component.scss'],
-  imports: [IonFooter, IonicButtonComponent, FormsModule, CountryDropdownComponent, IonImg, IonContent, IonAvatar, ImageSourceComponent]
+  imports: [IonFooter, IonicButtonComponent, FormsModule, CountryDropdownComponent, IonContent, ImageSourceComponent, ProfileImageComponent]
 })
 export class ProfileDetailComponent {
   private readonly userService = inject(UserService);

@@ -1,6 +1,5 @@
 import { Component, input, signal } from '@angular/core';
 import { IonicVirtualScrollComponent } from 'src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component';
-import { MateBasicComponent } from "../../../home/mate-stuff/mate-basic/mate-basic.component";
 import { NoMateFoundComponent } from "../../../home/mate-stuff/no-mate-found/no-mate-found.component";
 import { RequestedList } from '../../models/requests.model';
 
@@ -8,7 +7,7 @@ import { RequestedList } from '../../models/requests.model';
   selector: 'app-group-invite-list',
   templateUrl: './group-invite-list.component.html',
   styleUrls: ['./group-invite-list.component.scss'],
-  imports: [NoMateFoundComponent, MateBasicComponent, IonicVirtualScrollComponent],
+  imports: [NoMateFoundComponent, IonicVirtualScrollComponent],
 })
 export class GroupInviteListComponent {
 

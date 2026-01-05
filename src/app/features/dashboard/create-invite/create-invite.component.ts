@@ -1,6 +1,6 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { IonCol, IonContent, IonIcon, IonImg, IonInput, IonItem, IonRow, IonTextarea, ModalController } from '@ionic/angular/standalone';
+import { IonCol, IonContent, IonIcon, IonInput, IonItem, IonRow, IonTextarea, ModalController } from '@ionic/angular/standalone';
 import { calendarClearOutline, caretDownOutline, caretUpOutline, locationSharp, personOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
@@ -17,7 +17,7 @@ import { CreateInviteService, InviteForm, InviteFormApiResp } from './create-inv
   selector: 'app-create-invite',
   templateUrl: './create-invite.component.html',
   styleUrls: ['./create-invite.component.scss'],
-  imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, FormsModule, IonImg, IonicButtonComponent]
+  imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, FormsModule, IonicButtonComponent]
 })
 export class CreateInviteComponent {
   private readonly modalCtrl = inject(ModalController);

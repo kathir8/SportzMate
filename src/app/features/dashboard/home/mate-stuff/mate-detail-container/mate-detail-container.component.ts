@@ -19,13 +19,13 @@ export class MateDetailContainerComponent {
   readonly footerReady = output<TemplateRef<unknown>>();
 
   readonly mate = signal<MateDetail>({} as MateDetail);
-  readonly mateId = input<number>(0);
+  readonly eventId = input<number>(0);
   readonly headingName = output<string>();
 
   constructor() {
     effect(() => {
-      if (this.mateId()) {
-        this.homeApi.getMateById(this.mateId()).subscribe((res) => {
+      if (this.eventId()) {
+        this.homeApi.getMateById(this.eventId()).subscribe((res) => {
           if (res) {
             this.mate.set(res);
             this.headingName.emit(res.sport);
@@ -35,6 +35,11 @@ export class MateDetailContainerComponent {
     });
   }
 
+  requestJoin(){
+    console.log(this.mate());
+    console.log(this.eventId());
+    
+  }
 
   ngAfterViewInit() {
     this.footerReady.emit(this.footerTemplate()!);
