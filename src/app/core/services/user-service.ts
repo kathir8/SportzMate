@@ -111,8 +111,12 @@ export class UserService {
     this.navigateAfterUserLoad();
   }
 
-  private redirectToLogin() {
+  redirectToLogin() {
     this.initializeGoogle();
+    this.logOut();
+  }
+
+  logOut() {
     this.auth.logout();
     this.router.navigateByUrl('/login', { replaceUrl: true });
     SplashScreen.hide();

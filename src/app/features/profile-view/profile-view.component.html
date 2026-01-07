@@ -3,9 +3,9 @@
 </app-header>
 
 <ion-content class="ion-padding profile-view">
-   <div class="profile-header">
-  <app-profile-image [profileImage]="currentUser()!.profileImage"/>
-   <h2>{{ currentUser()!.name }}</h2>
+  <div class="profile-header">
+    <app-profile-image [profileImage]="currentUser()!.profileImage" />
+    <h2>{{ currentUser()!.name }}</h2>
     <p>{{ currentUser()!.age }} yrs • {{ currentUser()!.gender }}</p>
   </div>
 
@@ -22,8 +22,12 @@
 </ion-content>
 <ion-footer class="footer">
   <ion-toolbar class="footer-toolbar">
-    <ionic-button>Edit Profile</ionic-button>
-    <ionic-button fill="outline">Log out</ionic-button>
-    <ionic-button color="danger">Delete account</ionic-button>
+    <ionic-button (ionClick)="editProfile()">Edit Profile</ionic-button>
+    <ionic-button fill="outline" (ionClick)="userService.redirectToLogin()">Log out</ionic-button>
+    <ionic-button color="danger" (ionClick)="confirmLogOut.set(true)">Delete account</ionic-button>
   </ion-toolbar>
 </ion-footer>
+
+<ionic-alert [isOpen]="confirmLogOut()" [heading]="alertHeading()" [buttons]="alertButtons()"
+  (dismissed)="onAlertDismissed($event)">
+</ionic-alert>
