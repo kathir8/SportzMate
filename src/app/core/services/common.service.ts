@@ -12,7 +12,12 @@ export class CommonService {
       .filter(Boolean) ?? [];
   }
 
-  showProfileImage(profileImage? : string){
+  wrapWithSymbol(value: string | number, delimiter: string = ','): string {
+    return value ? `${delimiter}${value}${delimiter}` : ``;
+  }
+
+
+  showProfileImage(profileImage?: string) {
     return profileImage || 'assets/icon/signup/profile.png'
   }
 

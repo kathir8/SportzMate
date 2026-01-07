@@ -1,36 +1,44 @@
 $containerPaddingX: 16px;
 
 .profile-view {
-    --padding-start:#{$containerPaddingX};
-    --padding-end:#{$containerPaddingX};
+  --padding-start:#{$containerPaddingX};
+  --padding-end:#{$containerPaddingX};
 
 
-    .profile-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  margin-bottom: 20px;
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
 
 
-  h2 {
-    margin-top: 12px;
-    font-weight: 600;
+    h2 {
+      margin-top: 12px;
+      font-weight: 600;
+      margin-bottom: 0;
+    }
+
+    p {
+      color: var(--ion-color-medium);
+      margin: 4px 0 0;
+    }
   }
 
-  p {
-    color: var(--ion-color-medium);
-    margin: 4px 0 0;
+
+
+  .sports-container {
+    grid-template-columns: repeat(3, 1fr);
+    justify-items: stretch;
+    align-items: stretch;
+    display: grid;
+    gap: 12px;
   }
 }
 
-
-
-.sports-container {
-        grid-template-columns: repeat(3, 1fr);
-        justify-items: stretch;
-        align-items: stretch;
-        margin-top: 50px;
-        display: grid;
-        gap: 12px;
-    }
+.footer {
+  &-toolbar {
+    --background: #fff;
+    --border-color: #C0DCEA;
+    padding: 5px 20px;
+  }
 }

@@ -9,30 +9,21 @@
     <p>{{ currentUser()!.age }} yrs • {{ currentUser()!.gender }}</p>
   </div>
 
-
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>Personal Info</ion-card-title>
-    </ion-card-header>
-
-    <ion-card-content>
-      <ion-item lines="none">
-        <ion-icon [icon]="icons.flagOutline" slot="start"></ion-icon>
-        <ion-label>Country</ion-label>
-        <ion-note slot="end">{{ currentUser()!.countryName }}</ion-note>
-      </ion-item>
-    </ion-card-content>
-  </ion-card>
-
-  <div>Interested Details</div>
+  <h4>Country : <b>{{ selectedCountry()!.name }}</b></h4>
+  <h4>Interested Details :</h4>
 
   <div class="sports-container">
-    @for (sport of sports(); track sport.sportID) {
+    @for (sport of selectedSports(); track sport) {
     <ionic-chip [dynamicClass]="'interest-chip selected'">
-      {{sport.sportsName}}
+      {{sport}}
     </ionic-chip>
     }
   </div>
- <hr>
-  <!-- interestedSportsIds: {{currentUser()!.interestedSportsIds}} -->
 </ion-content>
+<ion-footer class="footer">
+  <ion-toolbar class="footer-toolbar">
+    <ionic-button>Edit Profile</ionic-button>
+    <ionic-button fill="outline">Log out</ionic-button>
+    <ionic-button color="danger">Delete account</ionic-button>
+  </ion-toolbar>
+</ion-footer>

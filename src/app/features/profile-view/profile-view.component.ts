@@ -1,31 +1,42 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonContent, IonTitle, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonItem, IonIcon, IonLabel, IonNote } from '@ionic/angular/standalone';
-import { flagOutline } from 'ionicons/icons';
+import { IonContent, IonTitle, IonFooter, IonToolbar } from '@ionic/angular/standalone';
+import { CommonService } from 'src/app/core/services/common.service';
 import { CommonStore } from 'src/app/core/stores/common-store';
 import { UserStore } from 'src/app/core/stores/user-store';
+import { COUNTRIES, Country } from 'src/app/shared/components/country-dropdown/country-list';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
-import { ProfileImageComponent } from "src/app/shared/components/profile-image/profile-image.component";
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
+import { ProfileImageComponent } from "src/app/shared/components/profile-image/profile-image.component";
+import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ionic-button.component";
 
 @Component({
   selector: 'app-profile-view',
   templateUrl: './profile-view.component.html',
   styleUrls: ['./profile-view.component.scss'],
-  imports: [HeaderComponent, IonTitle, IonContent, ProfileImageComponent, IonCard, IonCardHeader, IonCardContent, IonCardTitle, IonItem, IonIcon, IonLabel, IonNote, IonicChipComponent],
+  imports: [HeaderComponent, IonTitle, IonContent, ProfileImageComponent, IonicChipComponent, IonFooter, IonicButtonComponent, IonToolbar],
 })
 export class ProfileViewComponent {
 
   private readonly userStore = inject(UserStore);
   private readonly router = inject(Router);
   private readonly commonStore = inject(CommonStore);
+  private readonly commonService = inject(CommonService);
+
 
   readonly currentUser = this.userStore.getCurrent();
   readonly sports = computed(() => this.commonStore.sports());
+  readonly countries = signal<Country[]>(COUNTRIES);
+  readonly selectedCountry = computed(() => this.countries().find(c => c.code === this.currentUser()!.countryName));
+  readonly selectedSports = computed(() => {
+    const selSports = this.commonService.wrapWithSymbol(this.currentUser()!.interestedSportsIds) || ',1,2,3,';
+    return this.sports().filter(x => selSports.includes(this.commonService.wrapWithSymbol(x.sportID))).map(x => x.sportsName);
+  });
 
 
-  readonly icons = { flagOutline };
-
+  constructor() {
+    this.commonStore.loadSports();
+  }
 
 
   handleBack() {
