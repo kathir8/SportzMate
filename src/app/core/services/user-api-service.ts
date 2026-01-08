@@ -2,7 +2,8 @@ import { inject, Injectable } from '@angular/core';
 import { User } from '@angular/fire/auth';
 import { Observable } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
-import { UserDeleteApiResp, UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../model/user.model';
+import { UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../model/user.model';
+import { ApiResp } from 'src/app/shared/models/shared.model';
 
 @Injectable({
   providedIn: 'root',
@@ -36,8 +37,8 @@ export class UserApiService {
     return this.api.get<UserExist>(`users/${id}`);
   }
 
-  deleteUser(emailId: string): Observable<UserDeleteApiResp> {
-    return this.api.post<{ emailId: string }, UserDeleteApiResp>(`deleteuser`, { emailId });
+  deleteUser(emailId: string): Observable<ApiResp> {
+    return this.api.post<{ emailId: string }, ApiResp>(`deleteuser`, { emailId });
   }
 
 }

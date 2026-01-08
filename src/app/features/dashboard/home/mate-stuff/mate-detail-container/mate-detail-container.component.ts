@@ -2,7 +2,9 @@ import { Component, effect, inject, input, output, signal, TemplateRef, viewChil
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { HomeApiService } from '../../services/home-api-service';
 import { MateDetailComponent } from "../mate-detail/mate-detail.component";
-import { MateDetail } from '../models/mate.model';
+import { MateDetail, requestJoinApi } from '../models/mate.model';
+import { UserStore } from 'src/app/core/stores/user-store';
+import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 
 @Component({
   selector: 'app-mate-detail-container',
@@ -14,6 +16,9 @@ import { MateDetail } from '../models/mate.model';
 export class MateDetailContainerComponent {
 
   private readonly homeApi = inject(HomeApiService);
+  private readonly userStore = inject(UserStore);
+  private readonly toast = inject(IonicToastService);
+
 
   private readonly footerTemplate = viewChild<TemplateRef<unknown>>('footer');
   readonly footerReady = output<TemplateRef<unknown>>();
@@ -21,6 +26,9 @@ export class MateDetailContainerComponent {
   readonly mate = signal<MateDetail>({} as MateDetail);
   readonly eventId = input<number>(0);
   readonly headingName = output<string>();
+
+  private readonly currentUser = this.userStore.getCurrent()!;
+
 
   constructor() {
     effect(() => {
@@ -35,10 +43,19 @@ export class MateDetailContainerComponent {
     });
   }
 
-  requestJoin(){
-    console.log(this.mate());
-    console.log(this.eventId());
-    
+  requestJoin() {
+    const obj: requestJoinApi = {
+      eventId: this.eventId(),
+      userId: this.currentUser()!.userID
+    }
+    this.homeApi.requestJoin(obj).subscribe((res) => {
+      if (res.rspFlg) {
+
+      } else {
+        this.toast.show(res.rspMsg);
+      }
+    });
+
   }
 
   ngAfterViewInit() {

@@ -1,3 +1,5 @@
+import { ApiResp } from "src/app/shared/models/shared.model";
+
 export class UserDetail {
   name: string = '';
   profileImage: string = '';
@@ -19,14 +21,9 @@ export class UserRegisterApi extends UserDetail {
   password: string = '';
 }
 
-export interface UserRegisterApiResp {
+export interface UserRegisterApiResp extends ApiResp {
 
   resMsg: string;
   resFlag: string;
   userDetailsDto: UserDetail;
-}
-
-
-export interface UserDeleteApiResp {
-  rspMsg: string;
 }

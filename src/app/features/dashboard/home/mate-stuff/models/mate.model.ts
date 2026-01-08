@@ -1,4 +1,4 @@
-import { SportType } from 'src/app/shared/models/shared.model';
+import { ApiResp, SportType } from 'src/app/shared/models/shared.model';
 
 export interface MateListItem {
     name: string;
@@ -38,4 +38,14 @@ export interface eventListApiResp extends eventListApi {
     events: MateListItem[]
     message: string,
     pageSize: number,
+}
+
+
+export interface requestJoinApi {
+    eventId: number,
+    userId: number,
+}
+
+export interface requestJoinApiResp extends ApiResp{
+
 }

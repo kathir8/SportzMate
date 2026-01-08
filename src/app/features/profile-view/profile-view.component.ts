@@ -29,21 +29,15 @@ export class ProfileViewComponent {
 
 
   readonly confirmLogOut = signal<boolean>(false);
-  readonly alertHeading = signal<string>('Confirm Action');
+  readonly alertHeading = signal<string>('Are you sure you want to delete your account!');
   readonly alertButtons = signal<ReadonlyArray<AlertButton>>([
     {
       text: 'Cancel',
-      role: 'cancel',
-      handler: () => {
-        console.log('Cancelled');
-      }
+      role: false
     },
     {
       text: 'OK',
-      role: 'confirm',
-      handler: () => {
-        console.log('Confirmed');
-      }
+      role: true
     }
   ]);
 
@@ -70,12 +64,11 @@ export class ProfileViewComponent {
     this.router.navigate(['/other-details']);
   }
 
-  deleteAccount() {
-    this.userService.deleteUser(this.currentUser()!.email);
-  }
-
   onAlertDismissed(detail: any): void {
-    console.log('Dismissed with role:', detail.role);
-    this.confirmLogOut.set(false);
+    if (detail.role) {
+      this.userService.deleteUser(this.currentUser()!.email);
+    } else {
+      this.confirmLogOut.set(false);
+    }
   }
 }

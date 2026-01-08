@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { SplashScreen } from '@capacitor/splash-screen';
 import { AuthService } from 'src/app/core/services/auth.service';
 import { UserStore } from 'src/app/core/stores/user-store';
-import { UserDeleteApiResp, UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../model/user.model';
-import { UserApiService } from './user-api-service';
+import { ApiResp } from 'src/app/shared/models/shared.model';
+import { UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../model/user.model';
 import { GlobalLoadingService } from './global-loading-service';
+import { UserApiService } from './user-api-service';
 
 @Injectable({
   providedIn: 'root',
@@ -86,9 +87,8 @@ export class UserService {
   }
 
   deleteUser(email: string) {
-    this.userApi.deleteUser(email).subscribe((res: UserDeleteApiResp) => {
+    this.userApi.deleteUser(email).subscribe((res: ApiResp) => {
       if (res.rspMsg) {
-        this.userStore.clear();
         this.redirectToLogin();
       }
     });
@@ -118,6 +118,7 @@ export class UserService {
 
   logOut() {
     this.auth.logout();
+     this.userStore.clear();
     this.router.navigateByUrl('/login', { replaceUrl: true });
     SplashScreen.hide();
   }

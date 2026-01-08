@@ -1,3 +1,8 @@
+export interface ApiResp {
+  rspFlg: boolean,
+  rspMsg: string,
+}
+
 export enum SportType {
   Badminton = 'Badminton',
   Cricket = 'Cricket',
@@ -10,9 +15,9 @@ export enum SportType {
   Basketball = 'Basketball',
 }
 
-export interface SportsList{
-  sportID:number;
-  sportsName:string;
-  sportsIcon:string;
-  sportsImg:string;
+export interface SportsList {
+  sportID: number;
+  sportsName: string;
+  sportsIcon: string;
+  sportsImg: string;
 }
