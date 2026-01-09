@@ -33,11 +33,11 @@ export class ProfileViewComponent {
   readonly alertButtons = signal<ReadonlyArray<AlertButton>>([
     {
       text: 'Cancel',
-      role: false
+      role: 'cancel'
     },
     {
       text: 'OK',
-      role: true
+      role: 'ok'
     }
   ]);
 
@@ -65,7 +65,7 @@ export class ProfileViewComponent {
   }
 
   onAlertDismissed(detail: any): void {
-    if (detail.role) {
+    if (detail.role === 'ok') {
       this.userService.deleteUser(this.currentUser()!.email);
     } else {
       this.confirmLogOut.set(false);
