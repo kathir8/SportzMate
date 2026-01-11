@@ -22,8 +22,5 @@ export class UserRegisterApi extends UserDetail {
 }
 
 export interface UserRegisterApiResp extends ApiResp {
-
-  resMsg: string;
-  resFlag: string;
   userDetailsDto: UserDetail;
 }

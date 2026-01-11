@@ -77,7 +77,7 @@ export const authInterceptor: HttpInterceptorFn = (
             const message =
                 error.status === 0
                     ? 'Network error. Please check your internet.'
-                    : error.error?.resMsg ??
+                    : error.error?.rspMsg ??
                     'Something went wrong. Please try again.';
 
             toast.show(message);

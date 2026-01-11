@@ -38,8 +38,8 @@ export class ApiService {
     );
   }
 
-  delete<T>(endpoint: string): Observable<T> {
-    return this.http.delete<T>(`${this.baseUrl}/${endpoint}`).pipe(
+  delete<TRequest, TResponse>(endpoint: string,body: TRequest): Observable<TResponse> {
+    return this.http.delete<TResponse>(`${this.baseUrl}/${endpoint}`, {body}).pipe(
       catchError(err => {
         console.error('API Error', err);
         return throwError(() => err);

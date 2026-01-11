@@ -55,14 +55,14 @@ export const routes: Routes = [
           import('./features/dashboard/requests/requests.component').then(m => m.RequestsComponent)
       },
       {
-        path: 'requests/group/:id',
-        loadComponent: () =>
-          import('./features/dashboard/requests/my-group-list/group-invite/group-invite.component').then(m => m.GroupInviteComponent)
-      },
-      {
         path: 'events',
         loadComponent: () =>
           import('./features/dashboard/events/events.component').then(m => m.EventsComponent)
+      },
+      {
+        path: 'events/:id',
+        loadComponent: () =>
+          import('./features/dashboard/events/my-event/my-event.component').then(m => m.MyEventComponent)
       },
       {
         path: 'match/:id/:showInterestBtn',

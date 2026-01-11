@@ -1,0 +1,18 @@
+$containerPaddingX: 16px;
+
+ion-accordion {
+  border-radius: 8px;
+  overflow: hidden;
+  .content{
+    color: #000;
+  }
+}
+
+
+.footer {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    background-color: white;
+    padding-bottom: 30px;
+    box-shadow: none;
+}

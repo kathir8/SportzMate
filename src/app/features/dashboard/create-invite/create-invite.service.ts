@@ -1,6 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CreateInviteApiService } from './create-invite-api.service';
+import { ApiResp } from 'src/app/shared/models/shared.model';
 
 
 export interface InviteForm {
@@ -17,8 +18,7 @@ export interface InviteForm {
   eventDateTime:number;
 };
 
-export interface InviteFormApiResp extends InviteForm {
-  resFlag: boolean;
+export interface InviteFormApiResp extends ApiResp {
 }
 @Injectable({
   providedIn: 'root',

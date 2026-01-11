@@ -114,13 +114,11 @@ export class CreateInviteComponent {
       return;
     }
 
-    this.loader.start();
     this.createInviteService.createEvent(this.form()).subscribe((res: InviteFormApiResp) => {
-      if (res.resFlag) {
+      if (res.rspFlg) {
         this.modalCtrl.dismiss(this.form);
-        this.loader.stop();
       }
-    });;
+    });
 
 
   }

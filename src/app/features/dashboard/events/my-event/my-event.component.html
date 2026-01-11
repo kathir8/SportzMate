@@ -1,0 +1,11 @@
+<app-header headerClass="from-mate-detail" (backClicked)="handleBack()">
+  <ion-title class="header-title" slot="start">{{headingText()}}</ion-title>
+</app-header>
+
+<ion-content class="ion-padding my-event-page">
+<ionic-accordion [items]="accordionItems()"></ionic-accordion>
+</ion-content>
+
+<ion-footer class="footer">
+  <ionic-button (ionClick)="cancelEvent()">Cancel event</ionic-button>
+</ion-footer>

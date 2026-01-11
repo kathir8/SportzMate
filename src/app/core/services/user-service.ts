@@ -67,7 +67,7 @@ export class UserService {
     request.userLoginFlag = fromGoogle;
     request.interestedSportsIds = '';
     this.userApi.userRegistration(request).subscribe((res: UserRegisterApiResp) => {
-      if (res.resFlag) {
+      if (res.rspFlg) {
         localStorage.removeItem("signupEmail");
         localStorage.removeItem("signupPassword");
         localStorage.removeItem("signupName");

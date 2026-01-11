@@ -22,10 +22,15 @@ export class MateListViewComponent<T extends MateListItem | MyRequests> {
   private readonly selectedMate = signal<RequestedList>({} as RequestedList);
 
   dynamicClass = input<string>('from-mate-list');
+  fromMyEvents = input<boolean>(false);
   readonly responseList = input<T[]>([]);
 
   openMateDetail(item: T) {
-    this.router.navigate(['dashboard/match', item.eventIdPk, this.showInterestBtn()]);
+    if(this.fromMyEvents()){
+      this.router.navigate(['dashboard/events', item.eventIdPk]);
+    }else{
+      this.router.navigate(['dashboard/match', item.eventIdPk, this.showInterestBtn()]);
+    }
   }
 
   trackById(index: number, item: T) {

@@ -1,0 +1,17 @@
+<ion-content class="cancel-sheet">
+  <h6 class="title">What are the reason for cancelling the Game ?</h6>
+
+  <div class="reason-container">
+    @for (reason of reasons(); track reason) {
+    <ionic-chip (ionClick)="updateReason(reason)" [dynamicClass]="getChipClass(reason)">
+      {{reason}}
+    </ionic-chip>
+    }
+  </div>
+  @if(selectedReason() === 'Other'){
+    <ion-textarea class="textarea" placeholder="Reason for cancel" [(ngModel)]="deleteReason" maxlength="100"/>
+  }
+
+  <ionic-button class="post-btn" (ionClick)="submit()">Submit</ionic-button>
+
+</ion-content>

@@ -1,7 +1,9 @@
+$containerPaddingX: 16px;
+
 ion-content {
-  --padding-start: 16px;
+  --padding-start: $containerPaddingX;
+  --padding-end: $containerPaddingX;
   --background: #fff;
-  --padding-end: 16px;
   --padding-top: 40px;
 }
 
@@ -9,18 +11,13 @@ ion-content {
   color: #000;
   height: auto;
 
-  .sheet-img {
-    margin: 0 auto 16px auto;
-    display: block;
-    width: 100px;
-  }
-
   .input-item {
     --background: #f5f5f5;
     margin-bottom: 10px;
     border-radius: 12px;
   }
-  .button-container{
+
+  .button-container {
     justify-content: center;
     padding-top: 10px;
     display: flex;

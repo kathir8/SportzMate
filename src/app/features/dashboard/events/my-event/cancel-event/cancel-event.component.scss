@@ -1,0 +1,37 @@
+ion-content {
+    --padding-start: 16px;
+    --background: #fff;
+    --padding-end: 16px;
+    --padding-top: 40px;
+}
+
+.cancel-sheet {
+    color: #000;
+    height: auto;
+
+    .title {
+        line-height: 24px;
+        font-weight: 600;
+        font-size: 18px;
+    }
+
+    .reason-container {
+        grid-template-columns: repeat(2, 1fr);
+        justify-items: center;
+        margin-top: 50px;
+        margin-bottom: 50px;
+        display: grid;
+        gap: 12px;
+    }
+
+    .button-container {
+        justify-content: center;
+        padding-top: 10px;
+        display: flex;
+    }
+
+    .textarea {
+        --min-height: 80px;
+        padding: 10px 0;
+    }
+}
