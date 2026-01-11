@@ -2,7 +2,7 @@ import { inject, Injectable } from '@angular/core';
 import { Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { SportType } from 'src/app/shared/models/shared.model';
-import { GroupDetail, JoinRequests, Invite, myEventsApi, myEventsApiResp, MyRequests } from '../models/requests.model';
+import { GroupDetail, JoinRequests, Invite, myEventsApiResp, MyRequests, myRequestsApi, myRequestsApiResp, EventsApi, JoinRequestsApiResp } from '../models/requests.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 
 @Injectable({
@@ -13,70 +13,75 @@ export class InviteApiService {
   private readonly userStore = inject(UserStore);
   private readonly current = this.userStore.getCurrent();
 
-  getMyRequests(page = 0, size = 0): Observable<myEventsApiResp> {
-    const obj: myEventsApi = {
-      userId: this.current()!.userID, // 6
+  getMyRequests(page = 0, size = 5): Observable<myRequestsApiResp> {
+    const obj: EventsApi = {
+      userId: this.current()!.userID,
       page,
-      size
+      size,
     }
-    // return this.api.post<myEventsApi, myEventsApiResp>(`event/myRequests`, obj);
-    const resp = {} as myEventsApiResp;
-    const myRequests: MyRequests[] = [
-      {
-        eventIdPk: 1,
-        profileImg: 'assets/avatars/avatar1.jfif',
-        name: 'Kathir Office',
-        location: 'Newyork',
-        eventDateTime: 1761408000000,
-        totalVacancy: 8,
-        currentVacancy : 8,
-        sport: SportType.Badminton,
-        chatCount: 2
-      },
-      {
-        eventIdPk: 2,
-        profileImg: 'assets/avatars/avatar1.jfif',
-        name: 'Emma',
-        location: 'Chicago',
-        eventDateTime: 1761408000000,
-        totalVacancy: 8,
-        currentVacancy: 2,
-        sport: SportType.Cycling,
-        chatCount: 10
-      }
-    ];
-    resp.events = myRequests;
-    return of(resp);
+    return this.api.post<EventsApi, myRequestsApiResp>(`eventApproval/myRequestedEvents`, obj);
+    // const resp = {} as myEventsApiResp;
+    // const myRequests: MyRequests[] = [
+    //   {
+    //     eventIdPk: 1,
+    //     profileImg: 'assets/avatars/avatar1.jfif',
+    //     name: 'Kathir Office',
+    //     location: 'Newyork',
+    //     eventDateTime: 1761408000000,
+    //     totalVacancy: 8,
+    //     currentVacancy : 8,
+    //     sport: SportType.Badminton,
+    //     chatCount: 2
+    //   },
+    //   {
+    //     eventIdPk: 2,
+    //     profileImg: 'assets/avatars/avatar1.jfif',
+    //     name: 'Emma',
+    //     location: 'Chicago',
+    //     eventDateTime: 1761408000000,
+    //     totalVacancy: 8,
+    //     currentVacancy: 2,
+    //     sport: SportType.Cycling,
+    //     chatCount: 10
+    //   }
+    // ];
+    // resp.events = myRequests;
+    // return of(resp);
   }
 
-  getJoinRequests(): Observable<JoinRequests[]> {
-    // return this.api.get<MyRequests[]>(`joinRequests`);
+  getJoinRequests(page = 0, size = 5): Observable<JoinRequestsApiResp> {
+      const obj = {
+      eventCreatorUserId:  6, //this.current()!.userID,
+      page,
+      size,
+    }
+    return this.api.post<any, JoinRequestsApiResp>(`eventApproval/myEventsRequestsReceived`,obj);
 
-    const joinRequests: JoinRequests[] = [
-      {
-        eventIdPk: 1,
-        profileImg: 'assets/avatars/avatar1.jfif',
-        name: 'Kathir Office',
-        location: 'Newyork',
-        eventDateTime: 1761408000000,
-        totalVacancy: 8,
-        currentVacancy : 8,
-        sport: SportType.Badminton,
-        chatCount: 2
-      },
-      {
-        eventIdPk: 2,
-        profileImg: 'assets/avatars/avatar1.jfif',
-        name: 'Emma',
-        location: 'Chicago',
-        eventDateTime: 1761408000000,
-        totalVacancy: 8,
-        currentVacancy: 2,
-        sport: SportType.Cycling,
-        chatCount: 10
-      }
-    ];
-    return of(joinRequests);
+    // const joinRequests: JoinRequests[] = [
+    //   {
+    //     eventIdPk: 1,
+    //     profileImg: 'assets/avatars/avatar1.jfif',
+    //     name: 'Kathir Office',
+    //     location: 'Newyork',
+    //     eventDateTime: 1761408000000,
+    //     totalVacancy: 8,
+    //     currentVacancy : 8,
+    //     sport: SportType.Badminton,
+    //     chatCount: 2
+    //   },
+    //   {
+    //     eventIdPk: 2,
+    //     profileImg: 'assets/avatars/avatar1.jfif',
+    //     name: 'Emma',
+    //     location: 'Chicago',
+    //     eventDateTime: 1761408000000,
+    //     totalVacancy: 8,
+    //     currentVacancy: 2,
+    //     sport: SportType.Cycling,
+    //     chatCount: 10
+    //   }
+    // ];
+    // return of(joinRequests);
   }
 
 

@@ -15,10 +15,41 @@ export interface MyRequests {
     invitedUser?:UserDetail;
 }
 
-export interface myEventsApi {
+export interface EventsApi {
     userId: number;
     page: number;
     size: number;
+}
+
+export interface myRequestsApi extends EventsApi {
+    statusFilter:string;
+    eventStatusFilter:string;
+}
+
+export interface myRequestsApiResp{
+ userId: number;
+    pageSize: number;
+    currentPage: number;
+    totalElements: number;
+    totalPages: number;
+    hasNext: number;
+    hasPrevious: number;
+    message: string;
+    events: MyRequests[];
+    requestedEvents: MyRequests[];
+}
+
+export interface JoinRequestsApiResp{
+ userId: number;
+    pageSize: number;
+    currentPage: number;
+    totalElements: number;
+    totalPages: number;
+    hasNext: number;
+    hasPrevious: number;
+    message: string;
+    events: MyRequests[];
+    receivedRequests: MyRequests[];
 }
 
 export interface myEventsApiResp {

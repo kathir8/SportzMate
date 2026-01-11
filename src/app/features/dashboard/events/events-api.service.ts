@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { myEventsApi, myEventsApiResp } from '../requests/models/requests.model';
+import { EventsApi, myEventsApiResp } from '../requests/models/requests.model';
 import { ApiService } from 'src/app/core/services/api.service';
 import { UserStore } from 'src/app/core/stores/user-store';
 
@@ -14,13 +14,13 @@ export class EventsApiService {
   private readonly current = this.userStore.getCurrent();
 
   getMyEvents(page = 0, size = 0): Observable<myEventsApiResp> {
-    const obj: myEventsApi = {
+    const obj: EventsApi = {
       userId: 6, // this.current()!.userID,
       page,
       size
     }
 
-    return this.api.post<myEventsApi, myEventsApiResp>(`event/myEvents`, obj);
+    return this.api.post<EventsApi, myEventsApiResp>(`event/myEvents`, obj);
 
   }
 }
