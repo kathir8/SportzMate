@@ -52,7 +52,7 @@ export class HomeComponent {
     // Filter by Search Term 
     if (searchTerm) {
       filtered = filtered.filter((p) =>
-        p.name.toLowerCase().includes(searchTerm) || p.location.toLowerCase().includes(searchTerm)
+        p.eventName.toLowerCase().includes(searchTerm) || p.location.toLowerCase().includes(searchTerm)
       );
     }
 

@@ -21,7 +21,7 @@ export class GroupInviteListComponent {
   acceptOrReject(accept: boolean) {
     setTimeout(() => {
       if (accept && this.selectedMate()) {
-        console.log(this.selectedMate().name);
+        console.log(this.selectedMate().eventName);
       }
     });
   }

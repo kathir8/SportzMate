@@ -1,11 +1,11 @@
 <ion-row class="row-container" [class]="dynamicClass()">
   <ion-col size="auto">
     <ion-thumbnail class="mate-img">
-      <ion-img [src]="commonService.showProfileImage(mate()?.profileImg)" alt="profile"></ion-img>
+      <ion-img [src]="commonService.showProfileImage(mate()?.profileImage)" alt="profile"></ion-img>
     </ion-thumbnail>
   </ion-col>
   <ion-col class="detail-container">
-    <ion-label class="name-place">{{mate()?.name}}, {{mate()?.location}}</ion-label>
+    <ion-label class="name-place">{{mate()?.eventName}}, {{mate()?.location}}</ion-label>
     <div class="time-wrapper">
       <ion-icon [icon]="icons.calendarClear"></ion-icon>
       <ion-label class="time-text">{{mate()?.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>

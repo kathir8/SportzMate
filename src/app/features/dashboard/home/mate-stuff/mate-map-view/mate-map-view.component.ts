@@ -143,16 +143,16 @@ export class MateMapViewComponent {
   private async addPlayerMarker(player: MateListItem) {
     try {
       const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
-        player.profileImg,
+        player.profileImage,
         this.gameEmoji(player.sport),
-        player.name,
+        player.eventName,
         player.eventIdPk
       );
 
       const marker = new google.maps.Marker({
         position: player.coords,
         map: this.map,
-        title: player.name,
+        title: player.eventName,
         zIndex: 100,
         icon: {
           url,
@@ -357,9 +357,9 @@ export class MateMapViewComponent {
   async updateMarkerIcon(player: MateListItem, marker: google.maps.Marker) {
     try {
       const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
-        player.profileImg,
+        player.profileImage,
         this.gameEmoji(player.sport),
-        player.name,
+        player.eventName,
         player.eventIdPk
       );
 
@@ -401,7 +401,7 @@ export class MateMapViewComponent {
 
         // update all markers for selection
         this.visiblePlayers().forEach(v => {
-          const marker = this.markers.find(m => m.getTitle() === v.name);
+          const marker = this.markers.find(m => m.getTitle() === v.eventName);
           if (marker) this.updateMarkerIcon(v, marker);
         });
 

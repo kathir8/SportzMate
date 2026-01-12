@@ -1,5 +1,5 @@
 <ion-content class="ion-padding list-view">
-  <ionic-virtual-scroll [items]="responseList()" [dynamicListClass]="'sports-mate-list'"
+  <ionic-virtual-scroll [items]="displayList()" [dynamicListClass]="'sports-mate-list'"
     [dynamicGridClass]="'primary-details'" [itemTemplate]="mateTemplate" [noDataTemplate]="emptyTemplate"
     [onItemClick]="openMateDetail.bind(this)">
   </ionic-virtual-scroll>

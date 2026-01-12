@@ -5,7 +5,7 @@ import { Injectable, WritableSignal } from '@angular/core';
 })
 export class SignalService {
 
-   updateDeepValue<T extends object, P extends string>(
+  updateDeepValue<T extends object, P extends string>(
     signal: WritableSignal<T>,
     path: P,
     value: any
@@ -27,7 +27,7 @@ export class SignalService {
     });
   }
 
-  getDeepValue<T>(obj: T, path: string='', defaultValue: any = ''): any {
+  getDeepValue<T>(obj: T, path: string = '', defaultValue: any = ''): any {
     if (!obj) return defaultValue;
     const value = path.split('.').reduce((acc, key) => (acc as any)?.[key], obj);
     return value !== undefined && value !== null ? value : defaultValue;
@@ -56,4 +56,89 @@ export class SignalService {
       return root;
     });
   }
+
+
+  setList<T>(
+    signalList: WritableSignal<readonly T[]>,
+    list: readonly T[]
+  ): void {
+    signalList.set([...list]);
+  }
+
+  addItem<T>(
+    signalList: WritableSignal<readonly T[]>,
+    item: T
+  ): void {
+    signalList.update(list => [...list, item]);
+  }
+
+
+  prependItem<T>(
+    signalList: WritableSignal<readonly T[]>,
+    item: T
+  ): void {
+    signalList.update(list => [item, ...list]);
+  }
+
+  removeItemByKey<T, K extends keyof T>(
+    signalList: WritableSignal<readonly T[]>,
+    key: K,
+    value: T[K]
+  ): void {
+
+    signalList.update(list =>
+      list.filter(item => item[key] !== value)
+    );
+  }
+
+  updateItemByKey<T, K extends keyof T>(
+    signalList: WritableSignal<readonly T[]>,
+    key: K,
+    value: T[K],
+    updater: (item: T) => T
+  ): void {
+    signalList.update(list =>
+      list.map(item =>
+        item[key] === value ? updater(item) : item
+      )
+    );
+  }
+
+  appendPage<T>(
+    signalList: WritableSignal<readonly T[]>,
+    pageItems: readonly T[]
+  ): void {
+    signalList.update(list => [...list, ...pageItems]);
+  }
+
+  clearList<T>(
+    signalList: WritableSignal<readonly T[]>
+  ): void {
+    signalList.set([]);
+  }
+
+  resetSignal<T>(
+    signal: WritableSignal<T>,
+    initialValue: T
+  ): void {
+    signal.set(initialValue);
+  }
+
+  existsByKey<T, K extends keyof T>(
+    list: readonly T[],
+    key: K,
+    value: T[K]
+  ): boolean {
+    return list.some(item => item[key] === value);
+  }
+
+  updateIfChanged<T>(
+    signal: WritableSignal<T>,
+    value: T
+  ): void {
+    if (signal() !== value) {
+      signal.set(value);
+    }
+  }
+
 }

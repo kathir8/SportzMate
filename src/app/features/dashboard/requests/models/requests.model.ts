@@ -1,18 +1,19 @@
-import { SportType } from "src/app/shared/models/shared.model";
+import { ApiResp, EventBasic, ScrollList, SportType } from "src/app/shared/models/shared.model";
 import { Coordinates } from "../../home/mate-stuff/models/mate.model";
 import { UserDetail } from "src/app/core/model/user.model";
 
-export interface MyRequests {
-    name: string;
-    location: string;
-    sport: SportType;
-    eventDateTime: number;
-    profileImg: string;
-    totalVacancy: number;
-    currentVacancy: number;
-    chatCount: number;
-    eventIdPk:number;
-    invitedUser?:UserDetail;
+export interface Requests extends EventBasic {
+    approvalId: number;
+    remarks: string;
+    requestDateTime: number;
+    responseDateTime: number;
+    status: string;
+}
+export interface MyRequests extends Requests {
+    eventCreatorEmail: string;
+    eventCreatorId: number;
+    eventCreatorName: string;
+    eventCreatorProfileImage: string;
 }
 
 export interface EventsApi {
@@ -22,80 +23,78 @@ export interface EventsApi {
 }
 
 export interface myRequestsApi extends EventsApi {
-    statusFilter:string;
-    eventStatusFilter:string;
+    statusFilter: string;
+    eventStatusFilter: string;
 }
 
-export interface myRequestsApiResp{
- userId: number;
-    pageSize: number;
-    currentPage: number;
-    totalElements: number;
-    totalPages: number;
-    hasNext: number;
-    hasPrevious: number;
-    message: string;
-    events: MyRequests[];
+export interface myRequestsApiResp extends ScrollList {
+    userId: number;
     requestedEvents: MyRequests[];
 }
 
-export interface JoinRequestsApiResp{
- userId: number;
-    pageSize: number;
-    currentPage: number;
-    totalElements: number;
-    totalPages: number;
-    hasNext: number;
-    hasPrevious: number;
-    message: string;
-    events: MyRequests[];
-    receivedRequests: MyRequests[];
-}
-
-export interface myEventsApiResp {
+export interface JoinRequestsApiResp extends ScrollList {
     userId: number;
-    pageSize: number;
-    currentPage: number;
-    totalElements: number;
-    totalPages: number;
-    hasNext: number;
-    hasPrevious: number;
+    message: string;
+    receivedRequests: JoinRequests[];
+}
+
+export interface myEventsApiResp extends ScrollList {
+    userId: number;
     message: string;
     events: MyRequests[];
 }
-export interface JoinRequests {
-    name: string;
-    location: string;
-    sport: SportType;
-    eventDateTime: number;
-    profileImg: string;
-    totalVacancy: number;
-    currentVacancy: number;
-    chatCount: number;
-    eventIdPk:number;
+export interface JoinRequests extends Requests {
+    activeStatus: string;
+    interestedUserAge: number;
+    interestedUserEmail: string;
+    interestedUserGender: string;
+    interestedUserId: number;
+    interestedUserName: string;
+    interestedUserProfileImage: string;
 }
 
-export interface GroupDetail {
-    id: number;
-    name: string;
-    location: string;
-    sport: SportType;
-    eventDateTime: number;
-    distanceOrDuration: string;
-    profileImg: string;
-    totalVacancy: number;
-    currentVacancy: number;
-    coords: Coordinates;
-    distanceKm?: number;
-    description: string;
-    members: number[];
-    requestedMembers: RequestedList[]
+export enum AcceptReject {
+    'Accept' = 'ACCEPTED',
+    'Reject' = 'REJECTED',
+    'Pending' = 'PENDING',
 }
+
+export interface ProcessRequestApi {
+    approvalId: number;
+    eventCreatorId: number;
+    action: AcceptReject;
+}
+
+export interface ProcessRequestApiResp extends ApiResp {
+    approvalId: number;
+    eventId: number;
+    interestedUserId: number,
+    status: string,
+    responseDateTime: number
+}
+
+// export interface GroupDetail {
+//     id: number;
+//     name: string;
+//     eventName: string;
+//     location: string;
+//     sport: SportType;
+//     eventDateTime: number;
+//     distanceOrDuration: string;
+//     profileImg: string;
+//     totalVacancy: number;
+//     currentVacancy: number;
+//     coords: Coordinates;
+//     distanceKm?: number;
+//     description: string;
+//     members: number[];
+//     requestedMembers: RequestedList[]
+// }
 
 export interface RequestedList {
     id: number;
-    name: string;
-    profileImg: string;
+    eventName: string;
+    profileImage: string;
     location: string;
     sport: SportType;
     eventDateTime: number;
