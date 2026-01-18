@@ -11,7 +11,8 @@ export const  environment = {
     projectId: "sportzmate-89ad8",
     storageBucket: "sportzmate-89ad8.firebasestorage.app",
     messagingSenderId: "853532937748",
-    appId: "1:853532937748:web:2d7d1674c275d133c0e101"
+    appId: "1:853532937748:web:2d7d1674c275d133c0e101",
+    oldApiAndroidManifestXml:'AIzaSyC28c4uH5Tgpjv3dDNcI3QkPv3MFX8L324'
   }
 };
 

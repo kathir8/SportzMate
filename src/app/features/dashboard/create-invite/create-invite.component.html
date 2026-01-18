@@ -4,11 +4,17 @@
     <ion-input placeholder="Invite Name" [value]="getVal('eventName')" (ionInput)="setVal('eventName', $event.detail.value)">
     </ion-input>
   </ion-item>
-
+ lat- {{latitude }}
+ lon - {{longitude }}
   <ion-item lines="none" class="input-item">
     <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
-    <ion-input placeholder="Choose the Location" [value]="getVal('location')"
-      (valueChange)="setVal('location', $event)"></ion-input>
+    <ion-input
+    #searchBar
+    placeholder="Search location"
+    type="text">
+  </ion-input>
+    <!-- <ion-input placeholder="Choose the Location" [value]="getVal('location')"
+      (valueChange)="setVal('location', $event)"></ion-input> -->
   </ion-item>
 
   <ion-item lines="none" class="input-item">
