@@ -7,14 +7,10 @@
  lat- {{latitude }}
  lon - {{longitude }}
   <ion-item lines="none" class="input-item">
-    <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
-    <ion-input
-    #searchBar
-    placeholder="Search location"
-    type="text">
-  </ion-input>
+     <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
+     <ion-input #googleSearchInput placeholder="Start location"></ion-input>
     <!-- <ion-input placeholder="Choose the Location" [value]="getVal('location')"
-      (valueChange)="setVal('location', $event)"></ion-input> -->
+      (valueChange)="setVal('location', $event)" debounce="800" (ionInput)="onSearchChange($event)"></ion-input> -->
   </ion-item>
 
   <ion-item lines="none" class="input-item">

@@ -1,18 +1,17 @@
-import { Component, computed, ElementRef, inject, NgZone, signal, ViewChild } from '@angular/core';
+import { Component, computed, inject, NgZone, signal, viewChild } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonCol, IonContent, IonIcon, IonInput, IonItem, IonRow, IonTextarea, ModalController } from '@ionic/angular/standalone';
 import { calendarClearOutline, caretDownOutline, caretUpOutline, locationSharp, personOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
 import { SignalService } from 'src/app/core/services/signal.service';
+import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicDateTimeComponent } from "src/app/shared/components/ionic-datetime/ionic-datetime.component";
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
 import { DateTimePickerResult, formatToLocalTime } from 'src/app/shared/utils/date-utils';
 import { CreateInviteService, InviteForm, InviteFormApiResp } from './create-invite.service';
-
-declare const google: any; // Prevents "google is not defined" error
 
 @Component({
   selector: 'app-create-invite',
@@ -27,14 +26,16 @@ export class CreateInviteComponent {
   private readonly loader = inject(GlobalLoadingService);
   private readonly toast = inject(IonicToastService);
   private readonly createInviteService = inject(CreateInviteService);
+  private readonly userStore = inject(UserStore);
 
-  // declare google: typeof google;
+  private readonly currentUser = this.userStore.getCurrent();
+
+  declare google: typeof google;
 
   latitude: number | null = null;
   longitude: number | null = null;
 
-@ViewChild('searchBar') searchBar!: IonInput;
-
+  private readonly searchInput = viewChild.required<IonInput>('googleSearchInput');
 
 
   readonly icons = { personOutline, locationSharp, calendarClearOutline, caretUpOutline, caretDownOutline };
@@ -50,12 +51,43 @@ export class CreateInviteComponent {
   });
 
 
-  constructor(private ngZone : NgZone) {
+  places: any[] = [];
+  query: string = '';
+
+  constructor(private ngZone: NgZone) {
     this.form().players = this.MIN_PLAYERS;
   }
 
-  ngAfterViewInit(): void {
-    this.initAutocomplete();
+
+  ngOnInit(): void {
+    console.log(this.currentUser()!.countryName);
+  }
+
+  async ngAfterViewInit() {
+    const nativeEl = await this.searchInput().getInputElement();
+
+    // Attach Google's UI Widget to that element
+    const autocomplete = new google.maps.places.Autocomplete(nativeEl, {
+      componentRestrictions: { country: 'IN' },
+      fields: ['geometry', 'formatted_address'] // This replaces getDetails call!
+    });
+
+    // Google handles the dropdown. You just listen for when they click a row.
+    autocomplete.addListener('place_changed', () => {
+      console.log("ome");
+
+      this.ngZone.run(() => {
+        const place = autocomplete.getPlace();
+
+        if (place.geometry && place.geometry.location) {
+          this.latitude = place.geometry.location.lat();
+          this.longitude = place.geometry.location.lng();
+
+          console.log('Coordinates:', this.latitude, this.longitude);
+          console.log('Full Address:', place.formatted_address);
+        }
+      });
+    });
   }
 
 
@@ -77,26 +109,6 @@ export class CreateInviteComponent {
 
   private updateFormManually(key: keyof InviteForm, value: any) {
     this.form.update(f => ({ ...f, [key]: value }));
-  }
-
-  private async initAutocomplete() {
-    // Get the native input element from the Ion-Input component
-    const inputElement = await this.searchBar.getInputElement();
-   const autocomplete = new google.maps.places.Autocomplete(inputElement, {
-      fields: ['geometry', 'formatted_address'],
-      types: ['address']
-    });
-
-    autocomplete.addListener('place_changed', () => {
-      this.ngZone.run(() => {
-        const place = autocomplete.getPlace();
-        if (place.geometry && place.geometry.location) {
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-        }
-      });
-    });
-  
   }
 
 
