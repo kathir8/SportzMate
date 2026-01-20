@@ -13,6 +13,7 @@
 /* You can add your global custom CSS below */
 @use "@fontsource/open-sans";
 @use "./ion-overwrite";
+@use "./z-index" as zInd;
 
 /* Core CSS required for Ionic components to work properly */
 @import "@ionic/angular/css/core.css";
@@ -50,7 +51,7 @@
     /* 2. Control height and alignment (Crucial for bottom sheet) */
     --height: 1100px;
     // --max-height: 70%; /* Matches your 0.7 initialBreakpoint */
-    z-index: 9999 !important;
+    z-index: #{zInd.$modal} !important;
     /* 3. Apply top rounded corners */
     --border-radius: 20px 20px 0 0;
 
@@ -77,7 +78,7 @@
 .global-spinner {
     position: fixed;
     inset: 0;
-    z-index: 9999;
+    z-index: #{zInd.$loader};
     display: flex;
     align-items: center;
     justify-content: center;
@@ -94,7 +95,7 @@
 
 /* Ensure the Google Autocomplete dropdown is always on top of Ionic components */
 .pac-container {
-  z-index: 9999 !important;
+  z-index: #{zInd.$mapAutocomplete} !important;
   border-radius: 8px !important;
   border: none !important;
   box-shadow: 0 4px 12px #00000026 !important;

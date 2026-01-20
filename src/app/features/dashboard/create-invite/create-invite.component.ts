@@ -1,41 +1,30 @@
-import { Component, computed, inject, NgZone, signal, viewChild } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonCol, IonContent, IonIcon, IonInput, IonItem, IonRow, IonTextarea, ModalController } from '@ionic/angular/standalone';
 import { calendarClearOutline, caretDownOutline, caretUpOutline, locationSharp, personOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
-import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
 import { SignalService } from 'src/app/core/services/signal.service';
-import { UserStore } from 'src/app/core/stores/user-store';
+import { AddressInfo, GoogleLocationInputComponent } from "src/app/shared/components/google-location-input/google-location-input.component";
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicDateTimeComponent } from "src/app/shared/components/ionic-datetime/ionic-datetime.component";
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
-import { DateTimePickerResult, formatToLocalTime } from 'src/app/shared/utils/date-utils';
+import { formatToLocalTime } from 'src/app/shared/utils/date-utils';
 import { CreateInviteService, InviteForm, InviteFormApiResp } from './create-invite.service';
 
 @Component({
   selector: 'app-create-invite',
   templateUrl: './create-invite.component.html',
   styleUrls: ['./create-invite.component.scss'],
-  imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, FormsModule, IonicButtonComponent]
+  imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, FormsModule, IonicButtonComponent, GoogleLocationInputComponent]
 })
 export class CreateInviteComponent {
   private readonly modalCtrl = inject(ModalController);
   private readonly bottomSheet = inject(BottomSheetService);
   private readonly signalService = inject(SignalService);
-  private readonly loader = inject(GlobalLoadingService);
   private readonly toast = inject(IonicToastService);
   private readonly createInviteService = inject(CreateInviteService);
-  private readonly userStore = inject(UserStore);
 
-  private readonly currentUser = this.userStore.getCurrent();
-
-  declare google: typeof google;
-
-  latitude: number | null = null;
-  longitude: number | null = null;
-
-  private readonly searchInput = viewChild.required<IonInput>('googleSearchInput');
 
 
   readonly icons = { personOutline, locationSharp, calendarClearOutline, caretUpOutline, caretDownOutline };
@@ -46,49 +35,22 @@ export class CreateInviteComponent {
   readonly form = signal<InviteForm>({} as InviteForm);
 
   readonly formattedDateTime = computed(() => {
-    const ts = this.form().datetime;
+    const ts = this.form().eventDateTime;
     return ts ? formatToLocalTime(ts, DATE_FORMATS.DATE_TIME) : '';
   });
 
 
-  places: any[] = [];
-  query: string = '';
-
-  constructor(private ngZone: NgZone) {
-    this.form().players = this.MIN_PLAYERS;
+  onLocationSelected(data: AddressInfo): void {
+    this.updateFormManually('location', data.address);
+    this.updateFormManually('latitude', data.latitude);
+    this.updateFormManually('longitude', data.longitude);
   }
 
-
-  ngOnInit(): void {
-    console.log(this.currentUser()!.countryName);
+  onLocationCleared(): void {
+    this.updateFormManually('latitude', null);
+    this.updateFormManually('longitude', null);
   }
 
-  async ngAfterViewInit() {
-    const nativeEl = await this.searchInput().getInputElement();
-
-    // Attach Google's UI Widget to that element
-    const autocomplete = new google.maps.places.Autocomplete(nativeEl, {
-      componentRestrictions: { country: 'IN' },
-      fields: ['geometry', 'formatted_address'] // This replaces getDetails call!
-    });
-
-    // Google handles the dropdown. You just listen for when they click a row.
-    autocomplete.addListener('place_changed', () => {
-      console.log("ome");
-
-      this.ngZone.run(() => {
-        const place = autocomplete.getPlace();
-
-        if (place.geometry && place.geometry.location) {
-          this.latitude = place.geometry.location.lat();
-          this.longitude = place.geometry.location.lng();
-
-          console.log('Coordinates:', this.latitude, this.longitude);
-          console.log('Full Address:', place.formatted_address);
-        }
-      });
-    });
-  }
 
 
   getVal(path: string, fallback: any = '') {
@@ -107,16 +69,16 @@ export class CreateInviteComponent {
     this.form.update(f => ({ ...f, [key]: value }));
   }
 
-  private updateFormManually(key: keyof InviteForm, value: any) {
+  private updateFormManually<K extends keyof InviteForm>(key: K, value: InviteForm[K]) {
     this.form.update(f => ({ ...f, [key]: value }));
   }
 
 
   async openDateTimePickerModel() {
-    const result = await this.bottomSheet.open<DateTimePickerResult>(IonicDateTimeComponent,
+    const result = await this.bottomSheet.open<number>(IonicDateTimeComponent,
       {
         componentProps: {
-          initialTimestamp: this.form().datetime || null
+          initialTimestamp: this.form().eventDateTime || null
         }
       }
     );
@@ -126,7 +88,7 @@ export class CreateInviteComponent {
     const { data, role } = result;
 
     if (role === 'confirm' && data) {
-      this.updateFormManually('datetime', data);
+      this.updateFormManually('eventDateTime', data);
     }
   }
 
@@ -139,28 +101,26 @@ export class CreateInviteComponent {
     }
 
     value = Math.min(this.MAX_PLAYERS, Math.max(this.MIN_PLAYERS, value));
-    this.updateFormManually('players', value);
+    this.updateFormManually('totalVacancy', value);
 
     input.value = value;
   }
 
   updatePlayers(isIncrease?: boolean) {
-    const current = this.form().players || this.MIN_PLAYERS;
+    const current = this.form().totalVacancy || 0;
     const next = isIncrease ? current + 1 : current - 1;
     const value = Math.min(this.MAX_PLAYERS, Math.max(this.MIN_PLAYERS, next))
-    this.updateFormManually('players', value);
+    this.updateFormManually('totalVacancy', value);
   }
 
 
   submit() {
-    console.log(this.form());
-    return;
-
     if (!this.formValidation()) {
       return;
     }
 
     this.createInviteService.createEvent(this.form()).subscribe((res: InviteFormApiResp) => {
+      this.toast.show(res.rspMsg);
       if (res.rspFlg) {
         this.modalCtrl.dismiss(this.form);
       }
@@ -183,13 +143,28 @@ export class CreateInviteComponent {
       return false;
     }
 
-    if (!this.form().datetime) {
+    if (!this.form().latitude || !this.form().longitude) {
+      this.toast.show('There is no coordinates to this location');
+      return false;
+    }
+
+    if (!this.form().eventDateTime) {
       this.toast.show('Choose date and time');
       return false;
     }
 
-    if (!this.form().players) {
-      this.toast.show('Choose No. of players');
+    if (this.form().eventDateTime < new Date().getTime()) {
+      this.toast.show('Choose future date and time');
+      return false;
+    }
+
+    if (!this.form().totalVacancy) {
+      this.toast.show('Choose No. of players required');
+      return false;
+    }
+
+    if (!this.form().eventDesc) {
+      this.toast.show('Enter description');
       return false;
     }
 

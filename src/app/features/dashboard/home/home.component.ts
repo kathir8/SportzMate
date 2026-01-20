@@ -110,6 +110,7 @@ export class HomeComponent {
       // Update location
       const pos = await this.getCurrentPosition();
       this.coords.set({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      this.getCountryFromCoords();
     } catch (err) {
       console.warn('Geolocation failed — using fallback.', err);
     }
@@ -181,6 +182,24 @@ export class HomeComponent {
   }
 
   private deg2rad(deg: number) { return deg * (Math.PI / 180); }
+
+  private getCountryFromCoords(){
+const geocoder = new google.maps.Geocoder();
+
+    geocoder.geocode({ location: this.coords() }, (results, status) => {
+      if (status === 'OK' && results?.[0]) {
+        const countryComponent = results[0].address_components.find(comp => 
+          comp.types.includes('country')
+        );
+        
+        if (countryComponent) {
+          console.log("Country detected:", countryComponent.short_name);
+          console.log("Country detected:", countryComponent);
+          this.userStore.updateCurrent('currentLocationCountry',countryComponent.short_name);
+        }
+      }
+    });
+  }
 
   doRefresh(event: CustomEvent) {
     this.refreshData(event);

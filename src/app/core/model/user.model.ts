@@ -11,6 +11,7 @@ export class UserDetail {
   fcmID: string = '';
   interestedSportsIds: string = '';
   userID: number = 0;
+  currentLocationCountry: string = '';
 }
 
 export class UserExist extends UserDetail {

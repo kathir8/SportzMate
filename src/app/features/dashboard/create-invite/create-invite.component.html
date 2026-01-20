@@ -1,16 +1,14 @@
 <ion-content class="invite-sheet">
   <ion-item lines="none" class="input-item">
     <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
-    <ion-input placeholder="Invite Name" [value]="getVal('eventName')" (ionInput)="setVal('eventName', $event.detail.value)">
+    <ion-input placeholder="Invite Name" [value]="getVal('eventName')"
+      (ionInput)="setVal('eventName', $event.detail.value)">
     </ion-input>
   </ion-item>
- lat- {{latitude }}
- lon - {{longitude }}
+  
   <ion-item lines="none" class="input-item">
-     <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
-     <ion-input #googleSearchInput placeholder="Start location"></ion-input>
-    <!-- <ion-input placeholder="Choose the Location" [value]="getVal('location')"
-      (valueChange)="setVal('location', $event)" debounce="800" (ionInput)="onSearchChange($event)"></ion-input> -->
+    <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
+    <google-location-input (locationSelected)="onLocationSelected($event)" (locationCleared)="onLocationCleared()" />
   </ion-item>
 
   <ion-item lines="none" class="input-item">
@@ -23,26 +21,26 @@
     <ion-col size="10">
       <ion-item lines="none" class="input-item">
         <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
-        <ion-input placeholder="No of Players" type="number" [value]="getVal('players')"
+        <ion-input placeholder="No. of Players Required" type="number" [value]="getVal('totalVacancy')"
           (ionInput)="updatePlayersFromInput($event)"></ion-input>
       </ion-item>
     </ion-col>
 
     <ion-col class="button-container" size="2">
       <ionic-button shape='round' expand="default" size="small" fill="outline"
-        [disabled]="form().players <= MIN_PLAYERS" (ionClick)="updatePlayers()">
+        [disabled]="form().totalVacancy <= MIN_PLAYERS" (ionClick)="updatePlayers()">
         <ion-icon slot="icon-only" [icon]="icons.caretDownOutline"></ion-icon>
       </ionic-button>
       <ionic-button shape='round' expand="default" size="small" fill="outline"
-        [disabled]="form().players >= MAX_PLAYERS" (ionClick)="updatePlayers(true)">
+        [disabled]="form().totalVacancy >= MAX_PLAYERS" (ionClick)="updatePlayers(true)">
         <ion-icon slot="icon-only" [icon]="icons.caretUpOutline"></ion-icon>
       </ionic-button>
     </ion-col>
   </ion-row>
 
   <ion-item lines="none" class="input-item textarea">
-    <ion-textarea placeholder="Description" [value]="getVal('description')" maxlength="100"
-      (ionInput)="setVal('description', $event.detail.value)"></ion-textarea>
+    <ion-textarea placeholder="Description" [value]="getVal('eventDesc')" maxlength="100"
+      (ionInput)="setVal('eventDesc', $event.detail.value)"></ion-textarea>
   </ion-item>
 
   <ionic-button (ionClick)="submit()">Post</ionic-button>
