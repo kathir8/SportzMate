@@ -5,7 +5,13 @@
       (ionInput)="setVal('eventName', $event.detail.value)">
     </ion-input>
   </ion-item>
-  
+
+  <ion-item lines="none" class="input-item">
+    <ion-icon [icon]="icons.fitnessOutline" slot="start"></ion-icon>
+    <ionic-select placeholder="Select sport" [options]="sportOptions()" [value]="getVal('sportIdFk')" [hideArrow]="true"
+      (valueChange)="onSportSelected($event)" />
+  </ion-item>
+
   <ion-item lines="none" class="input-item">
     <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
     <google-location-input (locationSelected)="onLocationSelected($event)" (locationCleared)="onLocationCleared()" />

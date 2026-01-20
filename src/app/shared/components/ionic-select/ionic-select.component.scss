@@ -1,0 +1,5 @@
+/* This targets the arrow icon specifically */
+ion-select.hideArrow::part(icon) {
+  display: none;
+  opacity: 0;
+}

@@ -12,6 +12,7 @@ export interface InviteForm {
   latitude:number | null;
   longitude:number | null;
   totalVacancy:number;
+  sportIdFk:number;
   userID:number;
   eventDateTime:number;
 };

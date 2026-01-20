@@ -1,12 +1,15 @@
 import { Component, computed, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonCol, IonContent, IonIcon, IonInput, IonItem, IonRow, IonTextarea, ModalController } from '@ionic/angular/standalone';
-import { calendarClearOutline, caretDownOutline, caretUpOutline, locationSharp, personOutline } from 'ionicons/icons';
+import { calendarClearOutline, caretDownOutline, caretUpOutline, locationSharp, personOutline, fitnessOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { SignalService } from 'src/app/core/services/signal.service';
+import { CommonStore } from 'src/app/core/stores/common-store';
 import { AddressInfo, GoogleLocationInputComponent } from "src/app/shared/components/google-location-input/google-location-input.component";
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicDateTimeComponent } from "src/app/shared/components/ionic-datetime/ionic-datetime.component";
+import { IonicSelectComponent } from "src/app/shared/components/ionic-select/ionic-select.component";
+import { mapToIonicSelectOptions } from 'src/app/shared/components/ionic-select/select-option.mapper';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
 import { formatToLocalTime } from 'src/app/shared/utils/date-utils';
@@ -16,7 +19,7 @@ import { CreateInviteService, InviteForm, InviteFormApiResp } from './create-inv
   selector: 'app-create-invite',
   templateUrl: './create-invite.component.html',
   styleUrls: ['./create-invite.component.scss'],
-  imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, FormsModule, IonicButtonComponent, GoogleLocationInputComponent]
+  imports: [IonContent, IonItem, IonIcon, IonInput, IonRow, IonCol, IonTextarea, FormsModule, IonicButtonComponent, GoogleLocationInputComponent, IonicSelectComponent]
 })
 export class CreateInviteComponent {
   private readonly modalCtrl = inject(ModalController);
@@ -24,31 +27,38 @@ export class CreateInviteComponent {
   private readonly signalService = inject(SignalService);
   private readonly toast = inject(IonicToastService);
   private readonly createInviteService = inject(CreateInviteService);
+  private readonly commonStore = inject(CommonStore);
 
 
 
-  readonly icons = { personOutline, locationSharp, calendarClearOutline, caretUpOutline, caretDownOutline };
+  readonly icons = { personOutline, locationSharp, calendarClearOutline, caretUpOutline, caretDownOutline, fitnessOutline };
   readonly MIN_PLAYERS = 1;
   readonly MAX_PLAYERS = 30;
 
 
   readonly form = signal<InviteForm>({} as InviteForm);
 
+  private readonly sports = computed(() => this.commonStore.sports());
+  readonly selectedSportId = signal<number | null>(null);
+
+
   readonly formattedDateTime = computed(() => {
     const ts = this.form().eventDateTime;
     return ts ? formatToLocalTime(ts, DATE_FORMATS.DATE_TIME) : '';
   });
 
+  readonly sportOptions = computed(() =>
+    mapToIonicSelectOptions(
+      this.sports(),
+      sport => sport.sportsName,
+      sport => sport.sportID
+    )
+  );
 
-  onLocationSelected(data: AddressInfo): void {
-    this.updateFormManually('location', data.address);
-    this.updateFormManually('latitude', data.latitude);
-    this.updateFormManually('longitude', data.longitude);
-  }
 
-  onLocationCleared(): void {
-    this.updateFormManually('latitude', null);
-    this.updateFormManually('longitude', null);
+
+  constructor() {
+    this.commonStore.loadSports();
   }
 
 
@@ -73,6 +83,23 @@ export class CreateInviteComponent {
     this.form.update(f => ({ ...f, [key]: value }));
   }
 
+
+  onSportSelected(sportId: number | null): void {
+    if (sportId) {
+      this.updateFormManually('sportIdFk', sportId);
+    }
+  }
+
+  onLocationSelected(data: AddressInfo): void {
+    this.updateFormManually('location', data.address);
+    this.updateFormManually('latitude', data.latitude);
+    this.updateFormManually('longitude', data.longitude);
+  }
+
+  onLocationCleared(): void {
+    this.updateFormManually('latitude', null);
+    this.updateFormManually('longitude', null);
+  }
 
   async openDateTimePickerModel() {
     const result = await this.bottomSheet.open<number>(IonicDateTimeComponent,
@@ -126,15 +153,20 @@ export class CreateInviteComponent {
       }
     });
 
-
   }
 
   private formValidation(): boolean {
     if (!this.form()) {
       return false;
     }
+
     if (!this.form().eventName) {
       this.toast.show('Enter invite name');
+      return false;
+    }
+
+     if (!this.form().sportIdFk) {
+      this.toast.show('Select sport type');
       return false;
     }
 

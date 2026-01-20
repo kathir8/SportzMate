@@ -1,12 +1,12 @@
-import { Component, computed, effect, inject, signal } from '@angular/core';
+import { Component, computed, inject, signal } from '@angular/core';
 import { IonContent, IonFooter, IonNavLink } from '@ionic/angular/standalone';
+import { CommonService } from 'src/app/core/services/common.service';
+import { SignalService } from 'src/app/core/services/signal.service';
 import { CommonStore } from 'src/app/core/stores/common-store';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { ProfileDetailComponent } from '../profile-detail/profile-detail.component';
-import { SignalService } from 'src/app/core/services/signal.service';
-import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-interest-detail',
