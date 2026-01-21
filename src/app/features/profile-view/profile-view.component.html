@@ -4,9 +4,9 @@
 
 <ion-content class="ion-padding profile-view">
   <div class="profile-header">
-    <app-profile-image [profileImage]="currentUser()!.profileImage" />
-    <h2>{{ currentUser()!.name }}</h2>
-    <p>{{ currentUser()!.age }} yrs • {{ currentUser()!.gender }}</p>
+    <app-profile-image [profileImage]="profileUser()!.profileImage" />
+    <h2>{{ profileUser()!.name }}</h2>
+    <p>{{ profileUser()!.age }} yrs • {{ profileUser()!.gender }}</p>
   </div>
 
   <h4>Country : <b>{{ selectedCountry()!.name }}</b></h4>
@@ -20,6 +20,7 @@
     }
   </div>
 </ion-content>
+@if (isMyProfile()) {
 <ion-footer class="footer">
   <ion-toolbar class="footer-toolbar">
     <ionic-button (ionClick)="editProfile()">Edit profile</ionic-button>
@@ -27,6 +28,7 @@
     <ionic-button color="danger" (ionClick)="confirmLogOut.set(true)">Delete account</ionic-button>
   </ion-toolbar>
 </ion-footer>
+}
 
 <ionic-alert [isOpen]="confirmLogOut()" [heading]="alertHeading()" [buttons]="alertButtons()"
   (dismissed)="onAlertDismissed($event)">

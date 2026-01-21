@@ -1,7 +1,9 @@
+import { Location } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, IonFooter, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import type { AlertButton } from '@ionic/core';
+import { UserDetail } from 'src/app/core/model/user.model';
 import { CommonService } from 'src/app/core/services/common.service';
 import { UserService } from 'src/app/core/services/user-service';
 import { CommonStore } from 'src/app/core/stores/common-store';
@@ -23,9 +25,20 @@ export class ProfileViewComponent {
 
   private readonly userStore = inject(UserStore);
   private readonly router = inject(Router);
+  private readonly location = inject(Location);
   private readonly commonStore = inject(CommonStore);
   private readonly commonService = inject(CommonService);
   readonly userService = inject(UserService);
+
+
+  private readonly routedProfileUser = signal<UserDetail | null>(
+    (this.location.getState() as { profileUser?: UserDetail })?.profileUser ?? null);
+
+  readonly isMyProfile = computed(() => this.routedProfileUser() === null);
+
+  readonly profileUser = computed<UserDetail>(() =>
+    this.routedProfileUser() ?? this.userStore.getCurrent()()!
+  );
 
 
   readonly confirmLogOut = signal<boolean>(false);
@@ -57,7 +70,11 @@ export class ProfileViewComponent {
 
 
   handleBack() {
-    this.router.navigate(['/dashboard/home']);
+    if (this.isMyProfile()) {
+      this.router.navigate(['/dashboard/home']);
+    } else {
+      this.location.back();
+    }
   }
 
   editProfile() {

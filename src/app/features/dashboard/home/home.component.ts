@@ -150,7 +150,7 @@ export class HomeComponent {
         latitude: this.coords().lat,
         longitude: this.coords().lng,
         radius: this.homeService.rangeKm(),
-        userId: 0,
+        userId: this.currentUser()!.userID,
         page: 0,
         size: 25
       }
@@ -183,19 +183,19 @@ export class HomeComponent {
 
   private deg2rad(deg: number) { return deg * (Math.PI / 180); }
 
-  private getCountryFromCoords(){
-const geocoder = new google.maps.Geocoder();
+  private getCountryFromCoords() {
+    const geocoder = new google.maps.Geocoder();
 
     geocoder.geocode({ location: this.coords() }, (results, status) => {
       if (status === 'OK' && results?.[0]) {
-        const countryComponent = results[0].address_components.find(comp => 
+        const countryComponent = results[0].address_components.find(comp =>
           comp.types.includes('country')
         );
-        
+
         if (countryComponent) {
           console.log("Country detected:", countryComponent.short_name);
           console.log("Country detected:", countryComponent);
-          this.userStore.updateCurrent('currentLocationCountry',countryComponent.short_name);
+          this.userStore.updateCurrent('currentLocationCountry', countryComponent.short_name);
         }
       }
     });
@@ -205,7 +205,7 @@ const geocoder = new google.maps.Geocoder();
     this.refreshData(event);
   }
 
-  profileView(){
+  profileView() {
     this.router.navigate(['profile']);
   }
 

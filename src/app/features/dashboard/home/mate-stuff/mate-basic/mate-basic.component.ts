@@ -9,6 +9,7 @@ import { EventBasic } from 'src/app/shared/models/shared.model';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { AcceptOrReject } from '../models/mate.model';
 import { Requests } from '../../../requests/models/requests.model';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-mate-basic',
@@ -18,7 +19,9 @@ import { Requests } from '../../../requests/models/requests.model';
 })
 export class MateBasicComponent<T extends Requests | EventBasic> {
   readonly commonService = inject(CommonService);
+  private readonly router = inject(Router);
   readonly DATE_FORMATS = DATE_FORMATS;
+
 
   readonly icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };
   readonly mate = input<T>();
@@ -41,11 +44,17 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
   // });
 
 
-  acceptOrReject(accepted: boolean, event: MouseEvent):void {
-     this.isAccepted.emit({
+  acceptOrReject(accepted: boolean, event: MouseEvent): void {
+    this.isAccepted.emit({
       item: this.mate()! as Requests,
       accepted,
       event,
     });
+  }
+
+  profileInfo() {
+    //   this.router.navigate(['profile'], {
+    //   state: { profileUser: this.mate() }
+    // });
   }
 }

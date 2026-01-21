@@ -149,7 +149,7 @@ export class HomeApiService {
   ];
 
   getMates(eventList:eventListApi): Observable<eventListApiResp> {
-    // return this.api.post<eventListApi, eventListApiResp>('event/eventList', eventList);
+    return this.api.post<eventListApi, eventListApiResp>('event/eventList', eventList);
     const resp = {} as eventListApiResp;
     resp.events = this.sampleMateData;
     return of(resp);

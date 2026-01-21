@@ -1,6 +1,6 @@
 <ion-row class="row-container" [class]="dynamicClass()">
   <ion-col size="auto">
-    <ion-thumbnail class="mate-img">
+    <ion-thumbnail class="mate-img" (click)="profileInfo()">
       <ion-img [src]="commonService.showProfileImage(mate()?.profileImage)" alt="profile"></ion-img>
     </ion-thumbnail>
   </ion-col>
