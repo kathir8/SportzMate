@@ -4,12 +4,12 @@
 
 <ion-content class="ion-padding profile-view">
   <div class="profile-header">
-    <app-profile-image [profileImage]="profileUser()!.profileImage" />
-    <h2>{{ profileUser()!.name }}</h2>
-    <p>{{ profileUser()!.age }} yrs • {{ profileUser()!.gender }}</p>
+    <app-profile-image [profileImage]="profileUser()?.profileImage" />
+    <h2>{{ profileUser()?.name }}</h2>
+    <p>{{ profileUser()?.age }} yrs • {{ profileUser()?.gender }}</p>
   </div>
 
-  <h4>Country : <b>{{ selectedCountry()!.name }}</b></h4>
+  <h4>Country : <b>{{ selectedCountry()?.name }}</b></h4>
   <h4>Interested Details :</h4>
 
   <div class="sports-container">

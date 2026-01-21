@@ -1,6 +1,6 @@
 <ion-row class="row-container" [class]="dynamicClass()">
   <ion-col size="auto">
-    <ion-thumbnail class="mate-img" (click)="profileInfo()">
+    <ion-thumbnail class="mate-img" (click)="profileInfo($event)">
       <ion-img [src]="commonService.showProfileImage(mate()?.profileImage)" alt="profile"></ion-img>
     </ion-thumbnail>
   </ion-col>
@@ -33,17 +33,6 @@
 
   </ion-col>
   <ion-col size="auto" class="game-detail">
-
-    <!-- @if (badgeInfo()) {
-    <ionic-badge dynamicClass="badge-info">
-      @if (badgeInfo()?.type === 'distance') {
-      {{ badgeInfo()?.value }}
-      } @else {
-      <ion-icon class="chat-icon" [icon]="icons.chatboxEllipses"></ion-icon>
-      <ionic-badge dynamicClass="chat-number">{{ badgeInfo()?.value }}</ionic-badge>
-      }
-    </ionic-badge>
-    } -->
 
     @if(dynamicClass() !== 'from-mate-detail'){
     <ion-icon class="sport-icon" [icon]="icons.bicycleOutline"></ion-icon>

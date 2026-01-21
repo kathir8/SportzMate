@@ -1,8 +1,10 @@
 import { Location } from '@angular/common';
 import { Component, computed, inject, signal } from '@angular/core';
+import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Router } from '@angular/router';
 import { IonContent, IonFooter, IonTitle, IonToolbar } from '@ionic/angular/standalone';
 import type { AlertButton } from '@ionic/core';
+import { of, switchMap } from 'rxjs';
 import { UserDetail } from 'src/app/core/model/user.model';
 import { CommonService } from 'src/app/core/services/common.service';
 import { UserService } from 'src/app/core/services/user-service';
@@ -14,6 +16,7 @@ import { IonicAlertComponent } from "src/app/shared/components/ionic-alert/ionic
 import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ionic-button.component";
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { ProfileImageComponent } from "src/app/shared/components/profile-image/profile-image.component";
+import { ProfileViewService } from './profile-view.service';
 
 @Component({
   selector: 'app-profile-view',
@@ -28,17 +31,35 @@ export class ProfileViewComponent {
   private readonly location = inject(Location);
   private readonly commonStore = inject(CommonStore);
   private readonly commonService = inject(CommonService);
+  private readonly profileViewService = inject(ProfileViewService);
   readonly userService = inject(UserService);
 
 
-  private readonly routedProfileUser = signal<UserDetail | null>(
-    (this.location.getState() as { profileUser?: UserDetail })?.profileUser ?? null);
+  private readonly routedUserID = signal<number | null>(
+    (this.location.getState() as { userID?: number })?.userID ?? null);
 
-  readonly isMyProfile = computed(() => this.routedProfileUser() === null);
+  readonly isMyProfile = computed(() => this.routedUserID() === null);
 
-  readonly profileUser = computed<UserDetail>(() =>
-    this.routedProfileUser() ?? this.userStore.getCurrent()()!
+
+  private readonly otherProfileUser = toSignal(
+    toObservable(this.routedUserID).pipe(
+      switchMap((userID: number | null) => {
+        if (userID === null) {
+          return of(null);
+        }
+        return this.profileViewService.fetchUserDetails(userID);
+      })
+    ),
+    { initialValue: null }
   );
+
+
+  readonly profileUser = computed<UserDetail | null>(() => {
+    return this.routedUserID()
+      ? this.otherProfileUser()
+      : this.userStore.getCurrent()();
+  });
+
 
 
   readonly confirmLogOut = signal<boolean>(false);

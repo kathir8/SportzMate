@@ -52,9 +52,10 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
     });
   }
 
-  profileInfo() {
-    //   this.router.navigate(['profile'], {
-    //   state: { profileUser: this.mate() }
+  profileInfo(event: MouseEvent) {
+    event.stopPropagation();
+    // this.router.navigate(['profile'], {
+    //   state: { userID: this.mate()!.eventCreatorId }
     // });
   }
 }

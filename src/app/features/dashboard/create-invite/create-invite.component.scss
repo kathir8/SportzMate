@@ -1,8 +1,8 @@
 $containerPaddingX: 16px;
 
 ion-content {
-  --padding-start: $containerPaddingX;
-  --padding-end: $containerPaddingX;
+  --padding-start: #{$containerPaddingX};
+  --padding-end: #{$containerPaddingX};
   --background: #fff;
   --padding-top: 40px;
 }

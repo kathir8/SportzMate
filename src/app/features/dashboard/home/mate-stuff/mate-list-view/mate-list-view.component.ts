@@ -2,15 +2,15 @@ import { Component, effect, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent } from '@ionic/angular/standalone';
 import { add } from 'ionicons/icons';
+import { SignalService } from 'src/app/core/services/signal.service';
+import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { IonicVirtualScrollComponent } from "src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component";
 import { EventBasic } from 'src/app/shared/models/shared.model';
-import { JoinRequests, ProcessRequestApiResp, RequestedList, Requests } from '../../../requests/models/requests.model';
-import { MateBasicComponent } from "../mate-basic/mate-basic.component";
-import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
-import { AcceptOrReject } from '../models/mate.model';
+import { ProcessRequestApiResp, Requests } from '../../../requests/models/requests.model';
 import { InviteApiService } from '../../../requests/services/invite-api-service';
-import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
-import { SignalService } from 'src/app/core/services/signal.service';
+import { MateBasicComponent } from "../mate-basic/mate-basic.component";
+import { AcceptOrReject } from '../models/mate.model';
+import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
 
 @Component({
   selector: 'app-mate-list-view',
