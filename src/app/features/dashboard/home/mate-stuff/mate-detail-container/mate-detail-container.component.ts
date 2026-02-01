@@ -1,10 +1,11 @@
 import { Component, effect, inject, input, output, signal, TemplateRef, viewChild } from '@angular/core';
+import { CommonService } from 'src/app/core/services/common.service';
+import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ionic-button.component';
+import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { HomeApiService } from '../../services/home-api-service';
 import { MateDetailComponent } from "../mate-detail/mate-detail.component";
 import { MateDetail, requestJoinApi } from '../models/mate.model';
-import { UserStore } from 'src/app/core/stores/user-store';
-import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { CommonStore } from 'src/app/core/stores/common-store';
 
 @Component({
@@ -20,6 +21,7 @@ export class MateDetailContainerComponent {
   private readonly userStore = inject(UserStore);
   private readonly toast = inject(IonicToastService);
   private readonly commonStore = inject(CommonStore);
+  private readonly commonService = inject(CommonService);
 
 
   private readonly footerTemplate = viewChild<TemplateRef<unknown>>('footer');
@@ -39,7 +41,7 @@ export class MateDetailContainerComponent {
         this.homeApi.getMateById(this.eventId()).subscribe((res) => {
           if (res) {
             this.mate.set(res);
-            this.headingName.emit(res.sport);
+            this.headingName.emit(this.commonService.selectedSports(res.sportId)?.sportsName || '');
           }
         });
       }

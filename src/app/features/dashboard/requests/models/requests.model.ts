@@ -1,6 +1,5 @@
-import { ApiResp, EventBasic, ScrollList, SportType } from "src/app/shared/models/shared.model";
-import { Coordinates } from "../../home/mate-stuff/models/mate.model";
-import { UserDetail } from "src/app/core/model/user.model";
+import { ProfileInfo } from "src/app/core/model/user.model";
+import { ApiResp, Coordinates, EventBasic, ScrollList, SportType } from "src/app/shared/models/shared.model";
 
 export interface Requests extends EventBasic {
     approvalId: number;
@@ -10,10 +9,7 @@ export interface Requests extends EventBasic {
     status: string;
 }
 export interface MyRequests extends Requests {
-    eventCreatorEmail: string;
-    eventCreatorId: number;
-    eventCreatorName: string;
-    eventCreatorProfileImage: string;
+    eventCreator:ProfileInfo;
 }
 
 export interface EventsApi {
@@ -45,12 +41,7 @@ export interface myEventsApiResp extends ScrollList {
 }
 export interface JoinRequests extends Requests {
     activeStatus: string;
-    interestedUserAge: number;
-    interestedUserEmail: string;
-    interestedUserGender: string;
-    interestedUserId: number;
-    interestedUserName: string;
-    interestedUserProfileImage: string;
+    interestedUser:ProfileInfo;
 }
 
 export enum AcceptReject {

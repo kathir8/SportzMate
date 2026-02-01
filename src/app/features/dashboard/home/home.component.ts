@@ -1,20 +1,21 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 import { IonAvatar, IonContent, IonIcon, IonImg, IonLabel, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonTitle } from '@ionic/angular/standalone';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
+import { CommonService } from 'src/app/core/services/common.service';
+import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
+import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
+import { Coordinates } from 'src/app/shared/models/shared.model';
 import { MateListViewComponent } from "./mate-stuff/mate-list-view/mate-list-view.component";
 import { MateMapViewComponent } from "./mate-stuff/mate-map-view/mate-map-view.component";
-import { Coordinates, eventListApi, eventListApiResp, MateListItem } from './mate-stuff/models/mate.model';
+import { eventListApi, eventListApiResp, MateListItem } from './mate-stuff/models/mate.model';
 import { RangeFabComponent } from './range-fab/range-fab.component';
 import { HomeApiService } from './services/home-api-service';
 import { HomeService } from './services/home-service';
-import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
-import { UserStore } from 'src/app/core/stores/user-store';
-import { Router } from '@angular/router';
-import { CommonService } from 'src/app/core/services/common.service';
 
 @Component({
   selector: 'app-home',
@@ -35,7 +36,7 @@ export class HomeComponent {
   readonly icons = { navigateCircleOutline, navigateSharp };
 
   readonly segmentView = signal<'list' | 'map'>('list');
-  readonly coords = signal<Coordinates>({ lat: 13.0827, lng: 80.2707 }); // (fallback to Chennai if geolocation fails)
+  readonly coords = signal<Coordinates>({ latitude: 13.0827, longitude: 80.2707 }); // (fallback to Chennai if geolocation fails)
   private mates = signal<MateListItem[]>([]);
   private readonly visiblePlayersBase = signal<MateListItem[]>([]);
   readonly currentUser = this.userStore.getCurrent();
@@ -109,7 +110,7 @@ export class HomeComponent {
     try {
       // Update location
       const pos = await this.getCurrentPosition();
-      this.coords.set({ lat: pos.coords.latitude, lng: pos.coords.longitude });
+      this.coords.set({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
       this.getCountryFromCoords();
     } catch (err) {
       console.warn('Geolocation failed — using fallback.', err);
@@ -123,7 +124,7 @@ export class HomeComponent {
     const cur = this.coords();
     const mates = this.mates();
 
-    if (!mates.length || !cur.lat || !cur.lng) {
+    if (!mates.length || !cur.latitude || !cur.longitude) {
       this.visiblePlayersBase.set([]);
       return;
     }
@@ -132,10 +133,10 @@ export class HomeComponent {
       .map(p => ({
         ...p,
         distanceKm: this.distanceKm(
-          cur.lat!,
-          cur.lng!,
-          p.coords.lat,
-          p.coords.lng
+          cur.latitude!,
+          cur.longitude!,
+          p.latitude,
+          p.longitude
         )
       }))
       .filter(p => p.distanceKm! <= range);
@@ -147,8 +148,8 @@ export class HomeComponent {
   private getMatesList(event?: CustomEvent) {
     try {
       const obj: eventListApi = {
-        latitude: this.coords().lat,
-        longitude: this.coords().lng,
+        latitude: this.coords().latitude,
+        longitude: this.coords().longitude,
         radius: this.homeService.rangeKm(),
         userId: this.currentUser()!.userID,
         page: 0,
@@ -169,7 +170,7 @@ export class HomeComponent {
     }
   }
 
-  // compute distance between two lat/lon in km (Haversine)
+  // compute distance between two latitude/longitude in km (Haversine)
   private distanceKm(lat1: number, lon1: number, lat2: number, lon2: number) {
     const R = 6371; // km
     const dLat = this.deg2rad(lat2 - lat1);
@@ -186,7 +187,7 @@ export class HomeComponent {
   private getCountryFromCoords() {
     const geocoder = new google.maps.Geocoder();
 
-    geocoder.geocode({ location: this.coords() }, (results, status) => {
+    geocoder.geocode({ location: this.commonService.convertToLatLng(this.coords()) }, (results, status) => {
       if (status === 'OK' && results?.[0]) {
         const countryComponent = results[0].address_components.find(comp =>
           comp.types.includes('country')

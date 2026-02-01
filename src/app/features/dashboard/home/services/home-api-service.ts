@@ -10,7 +10,7 @@ import { SportType } from 'src/app/shared/models/shared.model';
 export class HomeApiService {
   private api = inject(ApiService);
 
-  private sampleMateData: MateListItem[] = [
+  private sampleMateData: any[] = [
     {
       eventId: 1,
       eventDescription:'',
@@ -22,7 +22,6 @@ export class HomeApiService {
       eventDateTime: 1761408000000,
       totalVacancy: 8,
       currentVacancy:6,
-      participants: [1, 2, 3, 4, 5, 6, 7, 8],
       sport: SportType.Cycling,
       coords: { "lat": 13.0901, "lng": 80.2650 }
     },
@@ -149,7 +148,7 @@ export class HomeApiService {
   ];
 
   getMates(eventList:eventListApi): Observable<eventListApiResp> {
-    return this.api.post<eventListApi, eventListApiResp>('event/eventList', eventList);
+    // return this.api.post<eventListApi, eventListApiResp>('event/eventList', eventList);
     const resp = {} as eventListApiResp;
     resp.events = this.sampleMateData;
     return of(resp);

@@ -33,16 +33,19 @@ export interface ScrollList {
 }
 
 
-export interface EventBasic {
-  currentVacancy: number;
-    totalVacancy: number;
-    eventDateTime: number;
-    eventDescription: string;
-    eventId: number;
-    eventName: string;
-    location: string;
-        eventStatus: string;
-    profileImage:string;
-    sportType: number;
 
+export interface EventBasic extends Coordinates {
+  currentVacancy: number;
+  totalVacancy: number;
+  eventDateTime: number;
+  eventDescription: string;
+  eventId: number;
+  eventName: string;
+  location: string;
+  eventStatus: string;
+  profileImage: string;
+  sportType: number;
 }
+
+export interface Coordinates { latitude: number; longitude: number; }
+export interface GeoLatLng { lat: number; lng: number; }

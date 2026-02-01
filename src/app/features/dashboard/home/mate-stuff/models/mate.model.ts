@@ -1,13 +1,16 @@
-import { ApiResp, EventBasic, ScrollList, SportType } from 'src/app/shared/models/shared.model';
+import { ProfileInfo } from 'src/app/core/model/user.model';
+import { ApiResp, Coordinates, EventBasic, ScrollList } from 'src/app/shared/models/shared.model';
 import { Requests } from '../../../requests/models/requests.model';
 
 export interface MateListItem extends EventBasic {
-    sport: SportType;
-    profileImage: string;
-    participants: number[];
-    coords: Coordinates;
+    // sport: SportType;
+    // profileImage: string;
+    // participants: number[];
+    // coords: Coordinates;
     distanceKm?: number;
+    sportId:number;
     eventId: number;
+    invitedUser:ProfileInfo;
 }
 
 export interface MateDetail extends MateListItem {
@@ -15,11 +18,7 @@ export interface MateDetail extends MateListItem {
     members: number[];
 }
 
-export interface Coordinates { lat: number; lng: number; }
-
-export interface eventListApi {
-    latitude: number,
-    longitude: number,
+export interface eventListApi extends Coordinates {
     radius: number,
     userId: number,
     page: number,
@@ -30,7 +29,6 @@ export interface eventListApi {
 export interface eventListApiResp extends eventListApi, ScrollList {
     events: MateListItem[]
     message: string,
-    pageSize: number,
 }
 
 

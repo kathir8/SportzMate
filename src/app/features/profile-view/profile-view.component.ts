@@ -35,13 +35,17 @@ export class ProfileViewComponent {
   readonly userService = inject(UserService);
 
 
+  private readonly routedProfileUser = signal<UserDetail | null>(
+    (this.location.getState() as { profileUser?: UserDetail })?.profileUser ?? null
+  );
+
   private readonly routedUserID = signal<number | null>(
     (this.location.getState() as { userID?: number })?.userID ?? null);
 
-  readonly isMyProfile = computed(() => this.routedUserID() === null);
+  readonly isMyProfile = computed(() => !this.routedProfileUser() && !this.routedUserID());
 
 
-  private readonly otherProfileUser = toSignal(
+  private readonly otherProfileFromApi = toSignal(
     toObservable(this.routedUserID).pipe(
       switchMap((userID: number | null) => {
         if (userID === null) {
@@ -54,13 +58,20 @@ export class ProfileViewComponent {
   );
 
 
-  readonly profileUser = computed<UserDetail | null>(() => {
-    return this.routedUserID()
-      ? this.otherProfileUser()
-      : this.userStore.getCurrent()();
+  readonly profileUser = computed<UserDetail>(() => {
+    // Case 1: other profile object sent
+    if (this.routedProfileUser()) {
+      return this.routedProfileUser()!;
+    }
+
+    // Case 2: other profile via API
+    if (this.routedUserID()) {
+      return this.otherProfileFromApi()!;
+    }
+
+    // Case 3: own profile
+    return this.userStore.getCurrent()()!;
   });
-
-
 
   readonly confirmLogOut = signal<boolean>(false);
   readonly alertHeading = signal<string>('Are you sure you want to delete your account!');
@@ -83,11 +94,6 @@ export class ProfileViewComponent {
     const selSports = this.commonService.wrapWithSymbol(this.currentUser()!.interestedSportsIds) || ',1,2,3,';
     return this.sports().filter(x => selSports.includes(this.commonService.wrapWithSymbol(x.sportID))).map(x => x.sportsName);
   });
-
-
-  constructor() {
-    this.commonStore.loadSports();
-  }
 
 
   handleBack() {

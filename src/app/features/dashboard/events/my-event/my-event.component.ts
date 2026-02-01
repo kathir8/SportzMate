@@ -1,15 +1,16 @@
-import { Component, computed, effect, inject, output, signal, TemplateRef, viewChild } from '@angular/core';
+import { Component, computed, effect, inject, signal } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonFooter, IonTitle } from "@ionic/angular/standalone";
+import { CommonService } from 'src/app/core/services/common.service';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { IonicAccordionComponent, IonicAccordionItem } from 'src/app/shared/components/ionic-accordion/ionic-accordion.component';
 import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ionic-button.component";
+import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
 import { MateDetailComponent } from "../../home/mate-stuff/mate-detail/mate-detail.component";
 import { MateDetail } from '../../home/mate-stuff/models/mate.model';
 import { HomeApiService } from '../../home/services/home-api-service';
 import { RequestedList } from '../../requests/models/requests.model';
 import { GroupInviteListComponent } from '../../requests/my-group-list/group-invite-list/group-invite-list.component';
-import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
 import { CancelEventComponent } from './cancel-event/cancel-event.component';
 
 @Component({
@@ -26,6 +27,7 @@ export class MyEventComponent {
 
   private readonly homeApi = inject(HomeApiService);
   private readonly bottomSheet = inject(BottomSheetService);
+  private readonly commonService = inject(CommonService);
 
   readonly mate = signal<MateDetail>({} as MateDetail);
   private readonly requestedMembers = signal<RequestedList[]>([]);
@@ -57,7 +59,7 @@ export class MyEventComponent {
         this.homeApi.getMateById(this.eventId()).subscribe((res) => {
           if (res) {
             this.mate.set(res);
-            this.headingText.set(res.sport);
+            this.headingText.set(this.commonService.selectedSports(res.sportId)?.sportsName || '');
           }
         });
       }

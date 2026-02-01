@@ -1,13 +1,14 @@
-import { Component, effect, ElementRef, inject, input, signal, viewChild, ViewChild } from '@angular/core';
+import { Component, computed, effect, ElementRef, inject, input, signal, viewChild } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { chatboxOutline, thumbsUpOutline } from 'ionicons/icons';
+import { CommonService } from 'src/app/core/services/common.service';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
+import { Coordinates, GeoLatLng } from 'src/app/shared/models/shared.model';
 import { HomeService } from '../../services/home-service';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
-import { Coordinates, MateListItem } from '../models/mate.model';
+import { MateListItem } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
-import { SportType } from 'src/app/shared/models/shared.model';
 
 @Component({
   selector: 'app-mate-map-view',
@@ -18,13 +19,15 @@ import { SportType } from 'src/app/shared/models/shared.model';
 export class MateMapViewComponent {
   private readonly router = inject(Router);
   private readonly homeService = inject(HomeService);
+  private readonly commonService = inject(CommonService);
 
   readonly icons = { thumbsUpOutline, chatboxOutline };
 
   // players currently within radius
   readonly visiblePlayers = input<MateListItem[]>([]);
-  readonly coords = input.required<{ lat: number; lng: number }>();
-
+  readonly coordinates = input.required<Coordinates>();
+  private readonly coords = computed(() => this.commonService.convertToLatLng( this.coordinates()));
+  
 
   private readonly mapElement = viewChild.required<ElementRef<HTMLElement>>('mapRef');
   private readonly carouselRef = viewChild<ElementRef<HTMLDivElement>>('carouselRef');
@@ -59,7 +62,7 @@ export class MateMapViewComponent {
 
   }
 
-  private initMap(center: Coordinates) {
+  private initMap(center: GeoLatLng) {
     const mapEl = this.mapElement().nativeElement as HTMLElement;
     const map = new google.maps.Map(mapEl, {
       center,
@@ -100,7 +103,7 @@ export class MateMapViewComponent {
     (this as any)._circle = this.circle;
   }
 
-  private updateUserLocation(center: Coordinates) {
+  private updateUserLocation(center: GeoLatLng) {
     this.map.setCenter(center);
     this.circle.setCenter(center);
     this.userMarker.setPosition(center);
@@ -108,7 +111,7 @@ export class MateMapViewComponent {
 
 
   // compute visible players within radius and render markers + bottom cards
-  loadNearbyPlayers(players: MateListItem[], center: Coordinates) {
+  loadNearbyPlayers(players: MateListItem[], center: GeoLatLng) {
     // clear existing markers
     this.clearMarkers();
 
@@ -129,7 +132,7 @@ export class MateMapViewComponent {
     // fit bounds around user + visible players
     const bounds = new google.maps.LatLngBounds();
     bounds.extend(center);
-    players.forEach(v => bounds.extend(v.coords));
+    players.forEach(v => bounds.extend(this.AssignLatLng(v)));
     if (players.length) {
       this.map.fitBounds(bounds, 120);
     } else {
@@ -139,18 +142,21 @@ export class MateMapViewComponent {
     }
   }
 
+  private AssignLatLng(player:MateListItem){
+    return {lat : player.latitude, lng : player.longitude}
+  }
 
   private async addPlayerMarker(player: MateListItem) {
     try {
       const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
         player.profileImage,
-        this.gameEmoji(player.sport),
+        this.gameEmoji(player.sportId),
         player.eventName,
         player.eventId
       );
 
       const marker = new google.maps.Marker({
-        position: player.coords,
+        position: this.AssignLatLng(player),
         map: this.map,
         title: player.eventName,
         zIndex: 100,
@@ -334,19 +340,8 @@ export class MateMapViewComponent {
   }
 
   // small utility to produce emoji per game
-  private gameEmoji(g: SportType) {
-    switch (g) {
-      case 'Badminton': return '🏸';
-      case 'Cricket': return '🏏';
-      case 'Cycling': return '🚴';
-      case 'Tennis': return '🎾';
-      case 'Football': return '⚽';
-      case 'Running': return '🏃';
-      case 'Swimming': return '🏊';
-      case 'Yoga': return '🧘';
-      case 'Basketball': return '🏀';
-      default: return '🎯';
-    }
+  private gameEmoji(id: number) {
+    return this.commonService.selectedSports(id)?.sportsIcon || '🎯'
   }
 
   // clicking a bottom-card photo should center & open popup
@@ -358,7 +353,7 @@ export class MateMapViewComponent {
     try {
       const { url, width, height, anchorX, anchorY } = await this.createCompositeMarkerIcon(
         player.profileImage,
-        this.gameEmoji(player.sport),
+        this.gameEmoji(player.sportId),
         player.eventName,
         player.eventId
       );
@@ -407,7 +402,7 @@ export class MateMapViewComponent {
 
         // pan map to centered player
         const player = this.visiblePlayers().find(v => v.eventId === id);
-        if (player) this.map.panTo(player.coords);
+        if (player) this.map.panTo(this.AssignLatLng(player));
       }
     }
   }

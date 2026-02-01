@@ -1,4 +1,5 @@
 import { Component, inject, input, output } from '@angular/core';
+import { Router } from '@angular/router';
 import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
 import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline, thumbsDownOutline, thumbsUpOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
@@ -7,9 +8,8 @@ import { IonicBadgeComponent } from 'src/app/shared/components/ionic-badge/ionic
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { EventBasic } from 'src/app/shared/models/shared.model';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
-import { AcceptOrReject } from '../models/mate.model';
 import { Requests } from '../../../requests/models/requests.model';
-import { Router } from '@angular/router';
+import { AcceptOrReject } from '../models/mate.model';
 
 @Component({
   selector: 'app-mate-basic',
@@ -28,22 +28,6 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
   readonly dynamicClass = input<string>('');
   readonly isAccepted = output<AcceptOrReject>();
 
-  // readonly badgeInfo = computed(() => {
-  //   const m = this.mate();
-  //   if (!m) return null;
-
-  //   if ('distanceOrDuration' in m) {
-  //     return { type: 'distance', value: m.distanceOrDuration };
-  //   }
-
-  //   if ('chatCount' in m) {
-  //     return { type: 'chat', value: m.chatCount };
-  //   }
-
-  //   return null;
-  // });
-
-
   acceptOrReject(accepted: boolean, event: MouseEvent): void {
     this.isAccepted.emit({
       item: this.mate()! as Requests,
@@ -54,8 +38,24 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
 
   profileInfo(event: MouseEvent) {
     event.stopPropagation();
-    // this.router.navigate(['profile'], {
-    //   state: { userID: this.mate()!.eventCreatorId }
-    // });
+
+    const m = this.mate();
+    if (!m) return null;
+
+    if ('eventCreator' in m) {
+      return this.router.navigate(['profile'], {
+        state: { profileUser: m.eventCreator }
+      });
+    }
+
+    if ('interestedUser' in m) {
+      return this.router.navigate(['profile'], {
+        state: { profileUser: m.interestedUser }
+      });
+    }
+
+    return this.router.navigate(['profile'], {
+      state: { userID: m.eventId }
+    });
   }
 }

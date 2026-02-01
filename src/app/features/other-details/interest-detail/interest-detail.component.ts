@@ -28,10 +28,6 @@ export class InterestDetailComponent {
   readonly currentUser = this.userStore.getCurrent()!;
   readonly selectedSports = signal<string[]>(this.commonService.csvToArray(this.currentUser()?.interestedSportsIds));
 
-  constructor() {
-    this.commonStore.loadSports();
-  }
-
   toggleSportSelection(ID: number): void {
     const sportID = String(ID);
     this.selectedSports.update(previousSelected =>

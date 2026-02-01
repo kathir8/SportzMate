@@ -56,14 +56,6 @@ export class CreateInviteComponent {
     )
   );
 
-
-
-  constructor() {
-    this.commonStore.loadSports();
-  }
-
-
-
   getVal(path: string, fallback: any = '') {
     return this.signalService.getDeepValue(this.form(), path, fallback);
   }
