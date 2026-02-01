@@ -54,7 +54,7 @@ export class InviteApiService {
   ProcessJoinRequests(detail:Requests, isAccepted:boolean):Observable<ProcessRequestApiResp>{
     const obj: ProcessRequestApi = {
       approvalId: detail.approvalId,
-      eventCreatorId: detail.eventIdPk,
+      eventCreatorId: detail.eventId,
       action: isAccepted ? AcceptReject.Accept : AcceptReject.Reject
     }
     return this.api.post<any, ProcessRequestApiResp>(`eventApproval/processRequest`, obj)

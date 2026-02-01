@@ -11,6 +11,7 @@ import { InviteApiService } from '../../../requests/services/invite-api-service'
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { AcceptOrReject } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
+import { CommonStore } from 'src/app/core/stores/common-store';
 
 @Component({
   selector: 'app-mate-list-view',
@@ -23,6 +24,8 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
   private readonly toast = inject(IonicToastService);
   private readonly inviteApiService = inject(InviteApiService);
   private readonly signalService = inject(SignalService);
+  private readonly commonStore = inject(CommonStore);
+
   readonly icons = { add };
   showInterestBtn = input<boolean>(true);
 
@@ -37,18 +40,30 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
         this.signalService.setList(this.displayList, this.responseList())
       }
     })
+
+    effect(() => {
+      const eventId = this.commonStore.matchActionEventId();
+      if (!eventId) return;
+
+      if (this.displayList()?.length) {
+        this.signalService.removeItemByKey(this.displayList, 'eventId', eventId);
+      }
+
+      this.commonStore.clearMatchActionEventId();
+    })
+
   }
 
   openMateDetail(item: T) {
     if (this.fromMyEvents()) {
-      this.router.navigate(['dashboard/events', item.eventIdPk]);
+      this.router.navigate(['dashboard/events', item.eventId]);
     } else {
-      this.router.navigate(['dashboard/match', item.eventIdPk, this.showInterestBtn()]);
+      this.router.navigate(['dashboard/match', item.eventId, this.showInterestBtn()]);
     }
   }
 
   trackById(index: number, item: T) {
-    return item.eventIdPk || index;
+    return item.eventId || index;
   }
 
   acceptOrReject(payload: AcceptOrReject) {
@@ -56,7 +71,7 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
     this.inviteApiService.ProcessJoinRequests(payload.item, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
       this.toast.show(res.rspMsg);
       if (res.rspFlg) {
-        this.signalService.removeItemByKey(this.displayList, 'eventIdPk', res.eventId);
+        this.signalService.removeItemByKey(this.displayList, 'eventId', res.eventId);
       }
     });
   }

@@ -38,8 +38,7 @@ export interface EventBasic {
     totalVacancy: number;
     eventDateTime: number;
     eventDescription: string;
-    eventIdPk: number;
-    // eventId: number;
+    eventId: number;
     eventName: string;
     location: string;
         eventStatus: string;

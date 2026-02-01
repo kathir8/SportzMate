@@ -146,7 +146,7 @@ export class MateMapViewComponent {
         player.profileImage,
         this.gameEmoji(player.sport),
         player.eventName,
-        player.eventIdPk
+        player.eventId
       );
 
       const marker = new google.maps.Marker({
@@ -162,7 +162,7 @@ export class MateMapViewComponent {
         }
       });
 
-      marker.addListener('click', () => this.openMateDetail(player.eventIdPk));
+      marker.addListener('click', () => this.openMateDetail(player.eventId));
       this.markers.push(marker);
 
     } catch (err) {
@@ -360,7 +360,7 @@ export class MateMapViewComponent {
         player.profileImage,
         this.gameEmoji(player.sport),
         player.eventName,
-        player.eventIdPk
+        player.eventId
       );
 
       marker.setIcon({
@@ -406,7 +406,7 @@ export class MateMapViewComponent {
         });
 
         // pan map to centered player
-        const player = this.visiblePlayers().find(v => v.eventIdPk === id);
+        const player = this.visiblePlayers().find(v => v.eventId === id);
         if (player) this.map.panTo(player.coords);
       }
     }

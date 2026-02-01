@@ -40,6 +40,7 @@ export class CreateInviteComponent {
 
   private readonly sports = computed(() => this.commonStore.sports());
   readonly selectedSportId = signal<number | null>(null);
+  readonly isSportsLoaded = computed(() => this.sports().length > 0);
 
 
   readonly formattedDateTime = computed(() => {

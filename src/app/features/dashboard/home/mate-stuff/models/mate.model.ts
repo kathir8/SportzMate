@@ -7,7 +7,7 @@ export interface MateListItem extends EventBasic {
     participants: number[];
     coords: Coordinates;
     distanceKm?: number;
-    eventIdPk: number;
+    eventId: number;
 }
 
 export interface MateDetail extends MateListItem {
@@ -40,7 +40,7 @@ export interface requestJoinApi {
 }
 
 export interface requestJoinApiResp extends ApiResp {
-
+  status : 'PENDING'
 }
 
 export interface AcceptOrReject {

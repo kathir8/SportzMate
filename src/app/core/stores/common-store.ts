@@ -18,6 +18,18 @@ export class CommonStore {
 
   private readonly toast = inject(IonicToastService);
 
+  private readonly _matchActionEventId = signal<number | null>(null);
+
+  readonly matchActionEventId = this._matchActionEventId.asReadonly();
+
+  setMatchActionEventId(eventId: number) {
+    this._matchActionEventId.set(eventId);
+  }
+
+  clearMatchActionEventId() {
+    this._matchActionEventId.set(null);
+  }
+  
   loadSports(): SportsList[] {
     if (this._sports().length > 0) {
       return this._sports();

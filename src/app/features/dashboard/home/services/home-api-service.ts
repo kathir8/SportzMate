@@ -12,7 +12,7 @@ export class HomeApiService {
 
   private sampleMateData: MateListItem[] = [
     {
-      eventIdPk: 1,
+      eventId: 1,
       eventDescription:'',
       eventStatus:'Ready',
       sportType:3,
@@ -27,7 +27,7 @@ export class HomeApiService {
       coords: { "lat": 13.0901, "lng": 80.2650 }
     },
     {
-      eventIdPk: 2,
+      eventId: 2,
       profileImage: 'assets/avatars/avatar2.jfif',
       eventName: 'Amelia',
       location: 'Naperville',
@@ -42,7 +42,7 @@ export class HomeApiService {
       coords: { "lat": 13.0752, "lng": 80.2905 }
     },
     {
-      eventIdPk: 3,
+      eventId: 3,
       profileImage: 'assets/avatars/avatar3.jfif',
       eventName: 'Karthikeyan Rajasekar buhari',
       location: 'Anna Nagar West Extension',
@@ -57,7 +57,7 @@ export class HomeApiService {
       coords: { "lat": 13.0705, "lng": 80.2555 }
     },
     {
-      eventIdPk: 4,
+      eventId: 4,
       profileImage: 'assets/avatars/avatar4.jpg',
       eventName: 'Karthik',
       location: 'Chicago',
@@ -72,7 +72,7 @@ export class HomeApiService {
       coords: { "lat": 13.0450, "lng": 80.2489 }
     },
     {
-      eventIdPk: 5,
+      eventId: 5,
       profileImage: 'assets/avatars/avatar2.jfif',
       eventName: 'Elizabeth Taylor',
       location: 'Naperville',
@@ -87,7 +87,7 @@ export class HomeApiService {
       coords: { "lat": 13.0600, "lng": 80.2950 }
     },
     {
-      eventIdPk: 6,
+      eventId: 6,
       profileImage: 'assets/avatars/avatar1.jfif',
       eventName: 'Judy',
       location: 'Bolingbrook',
@@ -102,7 +102,7 @@ export class HomeApiService {
       coords: { "lat": 13.1005, "lng": 80.3055 }
     },
     {
-      eventIdPk: 7,
+      eventId: 7,
       profileImage: 'assets/avatars/avatar3.jfif',
       eventName: 'Christian Bale',
       location: 'Chicago',
@@ -117,7 +117,7 @@ export class HomeApiService {
       coords: { "lat": 13.1420, "lng": 80.2005 }
     },
     {
-      eventIdPk: 8,
+      eventId: 8,
       profileImage: 'assets/avatars/avatar4.jpg',
       eventName: 'Arjun',
       location: 'Naperville',
@@ -132,7 +132,7 @@ export class HomeApiService {
       coords: { "lat": 13.0255, "lng": 80.3205 }
     },
     {
-      eventIdPk: 9,
+      eventId: 9,
       profileImage: 'assets/avatars/avatar1.jfif',
       eventName: 'Nisha',
       location: 'Bolingbrook',
@@ -158,7 +158,7 @@ export class HomeApiService {
 
   getMateById(id: number): Observable<MateDetail> {
     // return this.api.get<MateDetail>(`mates/${id}`);
-    const selectedMate = (this.sampleMateData.find(x => x.eventIdPk === id) as MateDetail);
+    const selectedMate = (this.sampleMateData.find(x => x.eventId === id) as MateDetail);
     selectedMate.description = `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`;
     selectedMate.members = [1, 2, 3, 4, 5];
     return of(selectedMate);

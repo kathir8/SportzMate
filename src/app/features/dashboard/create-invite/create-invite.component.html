@@ -8,8 +8,12 @@
 
   <ion-item lines="none" class="input-item">
     <ion-icon [icon]="icons.fitnessOutline" slot="start"></ion-icon>
-    <ionic-select placeholder="Select sport" [options]="sportOptions()" [value]="getVal('sportIdFk')" [hideArrow]="true"
-      (valueChange)="onSportSelected($event)" />
+    @if(isSportsLoaded()){
+      <ionic-select placeholder="Select sport" [options]="sportOptions()" [value]="getVal('sportIdFk')" [hideArrow]="true"
+        (valueChange)="onSportSelected($event)" />
+    }@else {
+      <ionic-select placeholder="Select sport" [hideArrow]="true" />
+    }
   </ion-item>
 
   <ion-item lines="none" class="input-item">

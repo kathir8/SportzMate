@@ -9,7 +9,7 @@ import { ApiResp } from 'src/app/shared/models/shared.model';
 import { CancelEventApiService } from './cancel-event-api.service';
 
 export interface deleteApi {
-  eventIdPk: number;
+  eventId: number;
   userId: number;
   deleteReason: string
 }
@@ -65,7 +65,7 @@ export class CancelEventComponent {
       return;
     }
     const obj: deleteApi = {
-      eventIdPk: this.eventId,
+      eventId: this.eventId,
       userId: this.currentUser()!.userID,
       deleteReason: this.deleteReason() || this.selectedReason()
     }

@@ -5,6 +5,7 @@ import { MateDetailComponent } from "../mate-detail/mate-detail.component";
 import { MateDetail, requestJoinApi } from '../models/mate.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
+import { CommonStore } from 'src/app/core/stores/common-store';
 
 @Component({
   selector: 'app-mate-detail-container',
@@ -18,10 +19,12 @@ export class MateDetailContainerComponent {
   private readonly homeApi = inject(HomeApiService);
   private readonly userStore = inject(UserStore);
   private readonly toast = inject(IonicToastService);
+  private readonly commonStore = inject(CommonStore);
 
 
   private readonly footerTemplate = viewChild<TemplateRef<unknown>>('footer');
   readonly footerReady = output<TemplateRef<unknown>>();
+  readonly disableBtn = signal<boolean>(false);
 
   readonly mate = signal<MateDetail>({} as MateDetail);
   readonly eventId = input<number>(0);
@@ -44,18 +47,21 @@ export class MateDetailContainerComponent {
   }
 
   requestJoin() {
+    this.disableBtn.set(true);
     const obj: requestJoinApi = {
       eventId: this.eventId(),
       userId: this.currentUser()!.userID
     }
     this.homeApi.requestJoin(obj).subscribe((res) => {
+      this.toast.show(res.rspMsg);
       if (res.rspFlg) {
+        this.commonStore.setMatchActionEventId(this.eventId());
 
-      } else {
-        this.toast.show(res.rspMsg);
+      } else if(res.status !== 'PENDING'){
+        this.disableBtn.set(false);
       }
     });
-
+    
   }
 
   ngAfterViewInit() {
