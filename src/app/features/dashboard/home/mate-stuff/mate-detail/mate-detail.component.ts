@@ -6,6 +6,7 @@ import { DATE_FORMATS } from 'src/app/core/constants';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { MateDetail } from '../models/mate.model';
+import { EventBasic } from 'src/app/shared/models/shared.model';
 @Component({
   selector: 'app-mate-detail',
   templateUrl: './mate-detail.component.html',
@@ -14,7 +15,7 @@ import { MateDetail } from '../models/mate.model';
 })
 export class MateDetailComponent {
 
-  readonly mate = input<MateDetail>({} as MateDetail);
+  readonly mate = input<EventBasic>({} as EventBasic);
 
   readonly DATE_FORMATS = DATE_FORMATS;
 

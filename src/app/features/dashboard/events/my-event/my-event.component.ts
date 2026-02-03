@@ -56,10 +56,12 @@ export class MyEventComponent {
   constructor() {
     effect(() => {
       if (this.eventId()) {
-        this.homeApi.getMateById(this.eventId()).subscribe((res) => {
+        this.homeApi.getEventDetails(this.eventId()).subscribe((res) => {
           if (res) {
-            this.mate.set(res);
-            this.headingText.set(this.commonService.selectedSports(res.sportId)?.sportsName || '');
+            // this.mate.set(res);
+            // this.headingText.set(this.commonService.selectedSports(res.sportId)?.sportsName || '');
+          }else{
+            this.handleBack();
           }
         });
       }

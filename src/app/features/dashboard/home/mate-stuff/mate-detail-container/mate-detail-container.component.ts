@@ -5,8 +5,9 @@ import { IonicButtonComponent } from 'src/app/shared/components/ionic-button/ion
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { HomeApiService } from '../../services/home-api-service';
 import { MateDetailComponent } from "../mate-detail/mate-detail.component";
-import { MateDetail, requestJoinApi } from '../models/mate.model';
+import { EventDetailApiResp, MateDetail, requestJoinApi } from '../models/mate.model';
 import { CommonStore } from 'src/app/core/stores/common-store';
+import { EventBasic } from 'src/app/shared/models/shared.model';
 
 @Component({
   selector: 'app-mate-detail-container',
@@ -28,7 +29,7 @@ export class MateDetailContainerComponent {
   readonly footerReady = output<TemplateRef<unknown>>();
   readonly disableBtn = signal<boolean>(false);
 
-  readonly mate = signal<MateDetail>({} as MateDetail);
+  readonly mate = signal<EventBasic>({} as EventBasic);
   readonly eventId = input<number>(0);
   readonly headingName = output<string>();
 
@@ -38,10 +39,12 @@ export class MateDetailContainerComponent {
   constructor() {
     effect(() => {
       if (this.eventId()) {
-        this.homeApi.getMateById(this.eventId()).subscribe((res) => {
-          if (res) {
-            this.mate.set(res);
-            this.headingName.emit(this.commonService.selectedSports(res.sportId)?.sportsName || '');
+        this.homeApi.getEventDetails(this.eventId()).subscribe((res:EventDetailApiResp) => {
+          if (res.rspFlg) {
+            this.mate.set(res.eventDetails);
+            // this.headingName.emit(this.commonService.selectedSports(res.sportId)?.sportsName || '');
+          }else{
+            // this.handleBack();
           }
         });
       }

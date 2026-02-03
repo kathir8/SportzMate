@@ -31,6 +31,9 @@ export interface eventListApiResp extends eventListApi, ScrollList {
     message: string,
 }
 
+export interface EventDetailApiResp extends ApiResp{
+ eventDetails: EventBasic;
+}
 
 export interface requestJoinApi {
     eventId: number,
