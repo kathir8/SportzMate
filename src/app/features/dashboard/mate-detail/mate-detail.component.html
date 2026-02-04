@@ -1,0 +1,113 @@
+
+@if(!fromMyEvent()){
+  <app-header headerClass="from-mate-detail" (backClicked)="handleBack()">
+  <ion-title class="header-title" slot="start">{{headingText()}}</ion-title>
+</app-header>
+}
+
+
+@if(fromMyEvent()){
+  <ng-container [ngTemplateOutlet]="mateDetail"></ng-container>
+}@else {
+  <ion-content class="ion-padding mate-detail-page">
+     <ng-container [ngTemplateOutlet]="mateDetail"></ng-container>
+  </ion-content>
+}
+
+<ng-template #mateDetail>
+  <div class="mate-detail">
+  <ion-grid class="primary-details">
+    <app-mate-basic [mate]="mate()" [dynamicClass]="dynamicClass()" [reduceSize]="true"></app-mate-basic>
+  </ion-grid>
+
+  <div class="cards-container">
+    <div class="info-card">
+      <div class="reqd-circle">
+        <span class="count">{{mate().totalVacancy}}</span>
+      </div>
+      <div class="label">Total Members</div>
+    </div>
+
+     <div class="info-card">
+      <div class="reqd-circle">
+        <span class="count">{{mate().currentVacancy}}</span>
+      </div>
+      <div class="label">Vacancy</div>
+    </div>
+
+    <div class="info-card reduce-width">
+      <ion-icon [icon]="icons.calendarOutline"></ion-icon>
+      <div class="label">{{mate().eventDateTime | localTime:DATE_FORMATS.MONTH_DAY | uppercase}}</div>
+    </div>
+
+    <div class="info-card reduce-width">
+      <ion-icon [icon]="icons.timeOutline"></ion-icon>
+      <div class="label">{{mate().eventDateTime | localTime:DATE_FORMATS.TIME}}</div>
+    </div>
+
+  </div>
+
+  <div class="description-container">
+    <div class="title">Description</div>
+    <div class="content">{{mate().eventDesc}}</div>
+  </div>
+  <div class="spacer"></div>
+
+  @if(AcceptedRequest().length){
+    <div class="members-container">
+      <div class="title">Members</div>
+  
+      <div class="profile-container">
+        <div class="profile-item active">
+          <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="profile" />
+          <ion-icon [icon]="icons.mailOpenOutline" class="mail-icon"></ion-icon>
+        </div>
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/75.jpg" alt="profile" />
+        </div>
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/25.jpg" alt="profile" />
+        </div>
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/10.jpg" alt="profile" />
+        </div>
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="profile" />
+        </div>
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/35.jpg" alt="profile" />
+        </div>
+  
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="profile" />
+        </div>
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/35.jpg" alt="profile" />
+        </div>
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="profile" />
+        </div>
+  
+        <div class="profile-item">
+          <img src="https://randomuser.me/api/portraits/women/35.jpg" alt="profile" />
+        </div>
+  
+      </div>
+    </div>
+  }
+</div>
+</ng-template>
+
+@if (!fromMyEvent() && showInterestBtn()) {
+<ion-footer class="footer">
+  <ionic-button [disabled]="disableBtn()" (ionClick)="requestJoin()">I'm Interested</ionic-button>
+</ion-footer>
+}

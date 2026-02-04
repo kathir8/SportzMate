@@ -65,9 +65,9 @@ export const routes: Routes = [
           import('./features/dashboard/events/my-event/my-event.component').then(m => m.MyEventComponent)
       },
       {
-        path: 'match/:id/:showInterestBtn',
+        path: 'match/:eventId',
         loadComponent: () =>
-          import('./features/dashboard/match-detail/match-detail.component').then(m => m.MatchDetailComponent)
+          import('./features/dashboard/mate-detail/mate-detail.component').then(m => m.MateDetailComponent)
       },
     ]
   },

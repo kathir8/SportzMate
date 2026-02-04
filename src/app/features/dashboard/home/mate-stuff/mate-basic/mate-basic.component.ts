@@ -26,6 +26,7 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
   readonly icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };
   readonly mate = input<T>();
   readonly dynamicClass = input<string>('');
+  readonly reduceSize = input<boolean>(false);
   readonly isAccepted = output<AcceptOrReject>();
 
   acceptOrReject(accepted: boolean, event: MouseEvent): void {

@@ -33,6 +33,13 @@ export interface eventListApiResp extends eventListApi, ScrollList {
 
 export interface EventDetailApiResp extends ApiResp{
  eventDetails: EventBasic;
+ acceptedRequests:number;
+ pendingRequests:number;
+ joinRequests:RequestedMember[];
+}
+
+export interface RequestedMember{
+    approvalId:number
 }
 
 export interface requestJoinApi {

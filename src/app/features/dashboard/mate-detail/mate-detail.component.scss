@@ -1,9 +1,20 @@
-$circleWidth: 40px;
+$containerPaddingX: 16px;
 
+.header-title {
+    padding-left: 10px;
+    font-weight: 500;
+    text-align: left;
+    --color: #000;
+}
 
 .mate-detail-page {
+    --padding-start:#{$containerPaddingX};
+    --padding-end:#{$containerPaddingX};
+}
 
-    .primary-details {
+
+.mate-detail{
+     .primary-details {
         margin-bottom: 35px;
     }
 
@@ -32,58 +43,13 @@ $circleWidth: 40px;
                 color: var(--ion-color-secondary);
                 justify-content: center;
                 align-items: center;
-                width: $circleWidth;
+                width: 40px;
                 border-radius: 50%;
                 font-weight: 600;
                 font-size: 20px;
                 aspect-ratio: 1;
                 display: flex;
             }
-
-
-            .profile-stack {
-                justify-content: center;
-                align-items: center;
-                position: relative;
-                display: flex;
-                right: 5px;
-                width: 60px;
-                height: 40px;
-
-                .profile-pic,
-                .extra {
-                    border-radius: 50%;
-                    position: absolute;
-                    object-fit: cover;
-                    aspect-ratio: 1;
-                    width: 32px;
-
-                    &.first {
-                        border: 2px solid var(--ion-color-primary);
-                        z-index: 3;
-                        left: 5px;
-                    }
-
-                    &.second {
-                        border: 2px solid var(--ion-color-secondary);
-                        left: 20px;
-                        z-index: 2;
-                    }
-
-                    &.third {
-                        border: 2px solid var(--ion-color-secondary);
-                        color: var(--ion-color-secondary);
-                        justify-content: end;
-                        align-items: center;
-                        padding-right: 1px;
-                        font-size: 10px;
-                        display: flex;
-                        left: 35px;
-                        z-index: 1;
-                    }
-                }
-            }
-
 
             ion-icon {
                 color: var(--ion-color-secondary);
@@ -173,6 +139,15 @@ $circleWidth: 40px;
         font-weight: 600;
         font-size: 18px;
     }
+}
+
+
+.footer {
+    padding-right:#{$containerPaddingX};
+    padding-left:#{$containerPaddingX};
+    background-color: white;
+    padding-bottom: 25px;
+    box-shadow: none;
 }
 
 

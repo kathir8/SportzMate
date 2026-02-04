@@ -1,6 +1,6 @@
 <ion-row class="row-container" [class]="dynamicClass()">
   <ion-col size="auto">
-    <ion-thumbnail class="mate-img" (click)="profileInfo($event)">
+    <ion-thumbnail class="mate-img" [class]="{'reduceSize' : reduceSize()}" (click)="profileInfo($event)">
       <ion-img [src]="commonService.showProfileImage(mate()?.profileImage)" alt="profile"></ion-img>
     </ion-thumbnail>
   </ion-col>
@@ -10,7 +10,7 @@
       <ion-icon [icon]="icons.calendarClear"></ion-icon>
       <ion-label class="time-text">{{mate()?.eventDateTime | localTime:DATE_FORMATS.DAY_MONTH_TIME }}</ion-label>
     </div>
-    
+
     @if(dynamicClass() !== 'from-mate-detail'){
     <div class="badge-wrapper">
       <ionic-badge dynamicClass="members-cnt primary">
@@ -26,15 +26,21 @@
     <ionic-chip [dynamicClass]="dynamicClass()" [outline]="true" color="primary" (click)="acceptOrReject(true, $event)">
       Accept <ion-icon [icon]="icons.thumbsUpOutline"></ion-icon>
     </ionic-chip>
-    <ionic-chip [dynamicClass]="dynamicClass()" [outline]="true" color="primary" (click)="acceptOrReject(false, $event)">
+    <ionic-chip [dynamicClass]="dynamicClass()" [outline]="true" color="primary"
+      (click)="acceptOrReject(false, $event)">
       Reject <ion-icon [icon]="icons.thumbsDownOutline"></ion-icon>
     </ionic-chip>
     }
 
   </ion-col>
   <ion-col size="auto" class="game-detail">
-
-    @if(dynamicClass() !== 'from-mate-detail'){
+    {{dynamicClass()}}
+    @if(dynamicClass() === 'from-my-request'){
+    <ionic-badge dynamicClass="members-cnt primary">
+      <!-- {{mate()!.approvalId}} -->
+      Accepted
+    </ionic-badge>
+    }@else {
     <ion-icon class="sport-icon" [icon]="icons.bicycleOutline"></ion-icon>
     }
   </ion-col>

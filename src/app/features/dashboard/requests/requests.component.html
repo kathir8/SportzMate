@@ -11,7 +11,7 @@
   <ion-segment-view>
     <ion-segment-content id="myRequests" value="myRequests">
       @if(segmentView() === 'myRequests'){
-      <app-mate-list-view [responseList]="myRequestsList()" [showInterestBtn]="false"></app-mate-list-view>
+      <app-mate-list-view [responseList]="myRequestsList()" [dynamicClass]="'from-my-request'" [showInterestBtn]="false"></app-mate-list-view>
       }
     </ion-segment-content>
     <ion-segment-content id="joinRequests" value="joinRequests">

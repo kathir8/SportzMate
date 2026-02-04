@@ -58,7 +58,15 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
     if (this.fromMyEvents()) {
       this.router.navigate(['dashboard/events', item.eventId]);
     } else {
-      this.router.navigate(['dashboard/match', item.eventId, this.showInterestBtn()]);
+      this.router.navigate(
+        ['dashboard/match', item.eventId],
+        {
+          state: {
+            fromPage: 'my-request', // or 'join-request'
+            showInterestBtn: this.showInterestBtn()
+          }
+        }
+      );
     }
   }
 
