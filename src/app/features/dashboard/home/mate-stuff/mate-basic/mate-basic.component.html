@@ -22,7 +22,7 @@
     </div>
     }
 
-    @if(dynamicClass() === 'from-join-requests'){
+    @if(dynamicClass() === 'from-join-request'){
     <ionic-chip [dynamicClass]="dynamicClass()" [outline]="true" color="primary" (click)="acceptOrReject(true, $event)">
       Accept <ion-icon [icon]="icons.thumbsUpOutline"></ion-icon>
     </ionic-chip>
@@ -34,7 +34,6 @@
 
   </ion-col>
   <ion-col size="auto" class="game-detail">
-    {{dynamicClass()}}
     @if(dynamicClass() === 'from-my-request'){
     <ionic-badge dynamicClass="members-cnt primary">
       <!-- {{mate()!.approvalId}} -->

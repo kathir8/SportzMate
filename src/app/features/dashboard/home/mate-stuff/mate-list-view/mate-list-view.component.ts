@@ -62,7 +62,7 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
         ['dashboard/match', item.eventId],
         {
           state: {
-            fromPage: 'my-request', // or 'join-request'
+            fromPage: this.dynamicClass(),
             showInterestBtn: this.showInterestBtn()
           }
         }

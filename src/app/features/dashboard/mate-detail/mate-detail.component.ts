@@ -1,8 +1,10 @@
 import { CommonModule, UpperCasePipe } from '@angular/common';
-import { Component, computed, effect, inject, input, OnInit, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Component, computed, DestroyRef, effect, inject, input, OnInit, signal } from '@angular/core';
+import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
+import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { IonContent, IonFooter, IonGrid, IonIcon, IonTitle } from '@ionic/angular/standalone';
 import { calendarOutline, mailOpenOutline, timeOutline } from 'ionicons/icons';
+import { filter } from 'rxjs';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { CommonService } from 'src/app/core/services/common.service';
 import { CommonStore } from 'src/app/core/stores/common-store';
@@ -27,6 +29,7 @@ export class MateDetailComponent implements OnInit {
 
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  private readonly destroyRef = inject(DestroyRef);
 
   private readonly homeApi = inject(HomeApiService);
   private readonly userStore = inject(UserStore);
@@ -36,6 +39,7 @@ export class MateDetailComponent implements OnInit {
 
 
   readonly showInterestBtn = signal<boolean>(true);
+  readonly fromPage = signal<string>('');
   readonly disableBtn = signal<boolean>(false);
 
   private readonly currentUser = this.userStore.getCurrent()!;
@@ -53,34 +57,33 @@ export class MateDetailComponent implements OnInit {
 
   readonly AcceptedRequest = signal<any[]>([]);
 
-  readonly dynamicClass = computed(()=>{
-    if(!!this.fromMyEvent()){
+  readonly dynamicClass = computed(() => {
+    if (!!this.fromMyEvent()) {
       return 'from-my-event';
     }
-    if(this.showInterestBtn()){
-        return 'from-mate-detail';
-      }      
-      return 'from-my-request';
+    if (this.showInterestBtn()) {
+      return 'from-mate-detail';
+    }
+    return 'from-my-request';
   });
 
   constructor() {
-
     effect(() => {
       if (this.fromMyEvent()) {
         this.eventId.set(this.fromMyEvent()!);
       }
     });
-   
+
     effect(() => {
       if (this.eventId()) {
         this.homeApi.getEventDetails(this.eventId()).subscribe((res: EventDetailApiResp) => {
           if (res.rspFlg) {
             // this.headingText.set(this.commonService.selectedSports(res.sportId)?.sportsName || '');
             this.mate.set(res.eventDetails);
-            if(res.acceptedRequests){
-              this.AcceptedRequest.set(res.joinRequests.filter(x=>x.approvalId === 3) || []);
+            if (res.acceptedRequests) {
+              this.AcceptedRequest.set(res.joinRequests.filter(x => x.approvalId === 3) || []);
             }
-           
+
           } else {
             this.handleBack();
           }
@@ -95,21 +98,33 @@ export class MateDetailComponent implements OnInit {
       return;
     }
 
-      const showInterestBtn = history.state.showInterestBtn;
+    this.initializeRouteListeners();
+  }
 
-    this.showInterestBtn.set(showInterestBtn);
+  private initializeRouteListeners(): void {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd),
+        takeUntilDestroyed(this.destroyRef))
+      .subscribe(() => {
+        const state = history.state;
 
-    const idParam = this.route.snapshot.paramMap.get('eventId');
-    if (idParam) {
-      this.eventId.set(Number(idParam));
-    } else {
-      this.handleBack();
-    }
+        if (state?.navigationId) {
+          this.fromPage.set(state.fromPage ?? null);
+          this.showInterestBtn.set(!!state.showInterestBtn);
+        }
+      });
 
-    // const showInterestBtnParam = this.route.snapshot.paramMap.get('showInterestBtn');
-    // if (showInterestBtnParam) {
-    //   this.showInterestBtn.set(showInterestBtnParam === 'true');
-    // }
+    this.route.paramMap
+      .pipe(takeUntilDestroyed(this.destroyRef))
+      .subscribe(params => {
+        const idParam = params.get('eventId');
+
+        if (idParam) {
+          this.eventId.set(Number(idParam));
+        } else {
+          this.handleBack();
+        }
+      });
   }
 
 
