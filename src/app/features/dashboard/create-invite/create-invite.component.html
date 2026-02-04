@@ -1,28 +1,26 @@
 <ion-content class="invite-sheet">
-  <ion-item lines="none" class="input-item">
-    <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
+
+ <ion-item lines="none" class="input-item">
+    <ion-icon name="person-outline" slot="start"></ion-icon>
+
     <ion-input placeholder="Invite Name" [value]="getVal('eventName')"
       (ionInput)="setVal('eventName', $event.detail.value)">
     </ion-input>
   </ion-item>
 
   <ion-item lines="none" class="input-item">
-    <ion-icon [icon]="icons.fitnessOutline" slot="start"></ion-icon>
-    @if(isSportsLoaded()){
-      <ionic-select placeholder="Select sport" [options]="sportOptions()" [value]="getVal('sportIdFk')" [hideArrow]="true"
-        (valueChange)="onSportSelected($event)" />
-    }@else {
-      <ionic-select placeholder="Select sport" [hideArrow]="true" />
-    }
+  <ion-icon name="fitness-outline" slot="start"></ion-icon>
+  <ionic-select placeholder="Select sport" [options]="sportOptions()" [value]="getVal('sportIdFk')" [hideArrow]="true"
+    (valueChange)="onSportSelected($event)" />
   </ion-item>
 
   <ion-item lines="none" class="input-item">
-    <ion-icon [icon]="icons.locationSharp" slot="start"></ion-icon>
+    <ion-icon name="location-sharp" slot="start"></ion-icon>
     <google-location-input (locationSelected)="onLocationSelected($event)" (locationCleared)="onLocationCleared()" />
   </ion-item>
 
   <ion-item lines="none" class="input-item">
-    <ion-icon [icon]="icons.calendarClearOutline" slot="start"></ion-icon>
+    <ion-icon name="calendar-clear-outline" slot="start"></ion-icon>
     <ion-input placeholder="Date & Time" readonly [value]="formattedDateTime()"
       (click)="openDateTimePickerModel()"></ion-input>
   </ion-item>
@@ -30,7 +28,7 @@
   <ion-row>
     <ion-col size="10">
       <ion-item lines="none" class="input-item">
-        <ion-icon [icon]="icons.personOutline" slot="start"></ion-icon>
+    <ion-icon name="person-outline" slot="start"></ion-icon>
         <ion-input placeholder="No. of Players Required" type="number" [value]="getVal('totalVacancy')"
           (ionInput)="updatePlayersFromInput($event)"></ion-input>
       </ion-item>
@@ -39,11 +37,11 @@
     <ion-col class="button-container" size="2">
       <ionic-button shape='round' expand="default" size="small" fill="outline"
         [disabled]="form().totalVacancy <= MIN_PLAYERS" (ionClick)="updatePlayers()">
-        <ion-icon slot="icon-only" [icon]="icons.caretDownOutline"></ion-icon>
+    <ion-icon name="caret-down-outline" slot="start"></ion-icon>
       </ionic-button>
       <ionic-button shape='round' expand="default" size="small" fill="outline"
         [disabled]="form().totalVacancy >= MAX_PLAYERS" (ionClick)="updatePlayers(true)">
-        <ion-icon slot="icon-only" [icon]="icons.caretUpOutline"></ion-icon>
+    <ion-icon name="caret-up-outline" slot="start"></ion-icon>
       </ionic-button>
     </ion-col>
   </ion-row>

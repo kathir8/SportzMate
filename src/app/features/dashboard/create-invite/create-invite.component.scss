@@ -27,3 +27,9 @@ ion-content {
     --min-height: 80px;
   }
 }
+
+
+ion-icon {
+  display: inline-block !important;
+  color: var(--ion-color-primary, #000) !important; /* Ensure it's not white on white */
+}

@@ -11,6 +11,9 @@ import { getAuth, provideAuth } from '@angular/fire/auth';
 import { getFirestore, provideFirestore } from '@angular/fire/firestore';
 import { authInterceptor } from './app/core/interceptors/http-interceptor';
 import { environment } from './environments/environment';
+import { registerIcons } from './app/core/services/icons.registry';
+
+registerIcons();
 
 bootstrapApplication(AppComponent, {
   providers: [
