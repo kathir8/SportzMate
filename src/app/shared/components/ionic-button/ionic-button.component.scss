@@ -1,3 +1,4 @@
+$icon-only-size:28.08px;
 .ionic-button {
     &:not(.round) {
         --border-radius: 10px;
@@ -18,5 +19,15 @@
         border-radius: 50%;
         height: 55px;
         width: 55px;
+    }
+
+    &.has-icon-only {
+        min-width: $icon-only-size;
+        min-height: $icon-only-size;
+        --padding-bottom: 0;
+        --padding-end: 0;
+        --padding-start: 0;
+        --padding-top: 0;
+
     }
 }

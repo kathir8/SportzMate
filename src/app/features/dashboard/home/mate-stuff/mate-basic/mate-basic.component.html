@@ -23,13 +23,7 @@
     }
 
     @if(dynamicClass() === 'from-join-request'){
-    <ionic-chip [dynamicClass]="dynamicClass()" [outline]="true" color="primary" (click)="acceptOrReject(true, $event)">
-      Accept <ion-icon [icon]="icons.thumbsUpOutline"></ion-icon>
-    </ionic-chip>
-    <ionic-chip [dynamicClass]="dynamicClass()" [outline]="true" color="primary"
-      (click)="acceptOrReject(false, $event)">
-      Reject <ion-icon [icon]="icons.thumbsDownOutline"></ion-icon>
-    </ionic-chip>
+    <app-accept-or-reject (approvalClickEmit)="acceptOrRejectEmit($event)"></app-accept-or-reject>
     }
 
   </ion-col>

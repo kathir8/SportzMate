@@ -1,13 +1,12 @@
 <div class="list-view">
-  <!-- <ionic-virtual-scroll [items]="responseList()" [dynamicListClass]="'sports-mate-list'"
+  <ionic-virtual-scroll [items]="displayList()" [dynamicListClass]="'sports-mate-list'"
     [dynamicGridClass]="'primary-details'" [itemTemplate]="mateTemplate" [noDataTemplate]="emptyTemplate"
     [onItemClick]="openMateDetail.bind(this)">
-  </ionic-virtual-scroll> -->
+  </ionic-virtual-scroll>
 </div>
 
 <ng-template #mateTemplate let-item>
-  <!-- <app-mate-basic [mate]="item" (isAccepted)="acceptOrReject($event)" [dynamicClass]="'from-join-request'">
-  </app-mate-basic> -->
+  <app-invites-mate-basic [mate]="item" (isAccepted)="acceptOrReject($event)"></app-invites-mate-basic>
 </ng-template>
 
 <ng-template #emptyTemplate>

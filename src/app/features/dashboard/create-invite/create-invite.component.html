@@ -35,13 +35,13 @@
     </ion-col>
 
     <ion-col class="button-container" size="2">
-      <ionic-button shape='round' expand="default" size="small" fill="outline"
+      <ionic-button [iconOnly]='true' shape='round' expand="default" size="small" fill="outline"
         [disabled]="form().totalVacancy <= MIN_PLAYERS" (ionClick)="updatePlayers()">
-    <ion-icon name="caret-down-outline" slot="start"></ion-icon>
+    <ion-icon class="players-icon" name="caret-down-outline"></ion-icon>
       </ionic-button>
-      <ionic-button shape='round' expand="default" size="small" fill="outline"
+      <ionic-button [iconOnly]='true' shape='round' expand="default" size="small" fill="outline"
         [disabled]="form().totalVacancy >= MAX_PLAYERS" (ionClick)="updatePlayers(true)">
-    <ion-icon name="caret-up-outline" slot="start"></ion-icon>
+    <ion-icon class="players-icon" name="caret-up-outline"></ion-icon>
       </ionic-button>
     </ion-col>
   </ion-row>

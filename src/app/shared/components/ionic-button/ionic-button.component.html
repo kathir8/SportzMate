@@ -9,6 +9,7 @@
   class="ionic-button"
   [class]="dynamicClass()"
   [class.round]="shape() === 'round'"
+  [class.has-icon-only]="iconOnly()"
   (click)="onClick()"
 >
   <ng-content></ng-content>

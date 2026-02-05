@@ -1,11 +1,11 @@
 import { Component, inject, input, output } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonCol, IonIcon, IonImg, IonLabel, IonRow, IonThumbnail } from '@ionic/angular/standalone';
-import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline, thumbsDownOutline, thumbsUpOutline } from 'ionicons/icons';
+import { bicycleOutline, calendarClear, chatboxEllipses, peopleOutline } from 'ionicons/icons';
 import { DATE_FORMATS } from 'src/app/core/constants';
 import { CommonService } from 'src/app/core/services/common.service';
+import { AcceptOrRejectComponent } from "src/app/shared/components/accept-or-reject/accept-or-reject.component";
 import { IonicBadgeComponent } from 'src/app/shared/components/ionic-badge/ionic-badge.component';
-import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { EventBasic } from 'src/app/shared/models/shared.model';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { Requests } from '../../../requests/models/requests.model';
@@ -15,7 +15,7 @@ import { AcceptOrReject } from '../models/mate.model';
   selector: 'app-mate-basic',
   templateUrl: './mate-basic.component.html',
   styleUrls: ['./mate-basic.component.scss'],
-  imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg, IonicChipComponent]
+  imports: [IonThumbnail, IonRow, IonCol, IonLabel, IonIcon, LocalTimePipe, IonicBadgeComponent, IonImg, AcceptOrRejectComponent]
 })
 export class MateBasicComponent<T extends Requests | EventBasic> {
   readonly commonService = inject(CommonService);
@@ -23,17 +23,16 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
   readonly DATE_FORMATS = DATE_FORMATS;
 
 
-  readonly icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses, thumbsUpOutline, thumbsDownOutline };
+  readonly icons = { peopleOutline, bicycleOutline, calendarClear, chatboxEllipses };
   readonly mate = input<T>();
   readonly dynamicClass = input<string>('');
   readonly reduceSize = input<boolean>(false);
   readonly isAccepted = output<AcceptOrReject>();
 
-  acceptOrReject(accepted: boolean, event: MouseEvent): void {
+  acceptOrRejectEmit(resp:AcceptOrReject): void {
     this.isAccepted.emit({
       item: this.mate()! as Requests,
-      accepted,
-      event,
+      ...resp
     });
   }
 

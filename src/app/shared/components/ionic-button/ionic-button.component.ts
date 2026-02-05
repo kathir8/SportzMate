@@ -19,6 +19,8 @@ export class IonicButtonComponent {
   readonly size = input<'small' | 'default' | 'large'>('default');
 
   readonly disabled = input<boolean>(false);
+  
+  readonly iconOnly = input<boolean>(false);
 
   readonly fill = input<'clear' | 'outline' | 'solid'>('solid');
 

@@ -56,10 +56,10 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
 
   openMateDetail(item: T) {
     if (this.fromMyEvents()) {
-      this.router.navigate(['dashboard/events', item.eventId]);
+      this.router.navigate(['dashboard/my-events', item.eventId]);
     } else {
       this.router.navigate(
-        ['dashboard/match', item.eventId],
+        ['dashboard/mate-detail', item.eventId],
         {
           state: {
             fromPage: this.dynamicClass(),
@@ -76,7 +76,7 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
 
   acceptOrReject(payload: AcceptOrReject) {
     payload.event.stopPropagation();
-    this.inviteApiService.ProcessJoinRequests(payload.item, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
+    this.inviteApiService.ProcessJoinRequests(payload.item!, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
       this.toast.show(res.rspMsg);
       if (res.rspFlg) {
         this.signalService.removeItemByKey(this.displayList, 'eventId', res.eventId);

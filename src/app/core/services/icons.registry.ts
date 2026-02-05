@@ -8,6 +8,6 @@ export function registerIcons() {
         'location-sharp': locationSharp,
         'calendar-clear-outline': calendarClearOutline,
         'caret-down-outline': caretDownOutline,
-        'caret-uo-outline': caretUpOutline
+        'caret-up-outline': caretUpOutline
     });
 }

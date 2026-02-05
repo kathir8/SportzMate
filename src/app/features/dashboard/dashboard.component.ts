@@ -31,7 +31,7 @@ export class DashboardComponent {
 
     const url = (event as NavigationEnd).url;
     // Hide tabs on these routes
-    const hideRoutes = ['/dashboard/match', '/dashboard/chat/'];
+    const hideRoutes = ['/dashboard/mate-detail', '/dashboard/chat/'];
 
     return !hideRoutes.some(r => url.startsWith(r));
   });

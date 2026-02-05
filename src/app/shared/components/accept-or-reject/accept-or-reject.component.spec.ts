@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { GroupInviteListComponent } from './group-invite-list.component';
+import { AcceptOrRejectComponent } from './accept-or-reject.component';
 
-describe('GroupInviteListComponent', () => {
-  let component: GroupInviteListComponent;
-  let fixture: ComponentFixture<GroupInviteListComponent>;
+describe('AcceptOrRejectComponent', () => {
+  let component: AcceptOrRejectComponent;
+  let fixture: ComponentFixture<AcceptOrRejectComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ GroupInviteListComponent ],
+      declarations: [ AcceptOrRejectComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(GroupInviteListComponent);
+    fixture = TestBed.createComponent(AcceptOrRejectComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

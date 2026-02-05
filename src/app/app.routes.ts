@@ -25,7 +25,7 @@ export const routes: Routes = [
   },
   {
     path: 'dashboard',
-    // canActivate: [AuthGuard],
+    canActivate: [AuthGuard],
     loadComponent: () =>
       import('./features/dashboard/dashboard.component').then(m => m.DashboardComponent),
     children: [
@@ -60,12 +60,12 @@ export const routes: Routes = [
           import('./features/dashboard/events/events.component').then(m => m.EventsComponent)
       },
       {
-        path: 'events/:id',
+        path: 'my-events/:eventId',
         loadComponent: () =>
           import('./features/dashboard/events/my-event/my-event.component').then(m => m.MyEventComponent)
       },
       {
-        path: 'match/:eventId',
+        path: 'mate-detail/:eventId',
         loadComponent: () =>
           import('./features/dashboard/mate-detail/mate-detail.component').then(m => m.MateDetailComponent)
       },

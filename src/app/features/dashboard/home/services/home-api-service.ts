@@ -1,5 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { Observable, of } from 'rxjs';
+import { map, Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { SportType } from 'src/app/shared/models/shared.model';
 import { EventDetailApiResp, eventListApi, eventListApiResp, requestJoinApi, requestJoinApiResp } from '../mate-stuff/models/mate.model';
@@ -13,15 +13,15 @@ export class HomeApiService {
   private sampleMateData: any[] = [
     {
       eventId: 1,
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       profileImage: 'assets/avatars/avatar1.jfif',
       eventName: 'Meera Jasmine',
       location: 'Chicago',
       eventDateTime: 1761408000000,
       totalVacancy: 8,
-      currentVacancy:6,
+      currentVacancy: 6,
       sport: SportType.Cycling,
       coords: { "lat": 13.0901, "lng": 80.2650 }
     },
@@ -32,11 +32,11 @@ export class HomeApiService {
       location: 'Naperville',
       eventDateTime: 1761408000000,
       totalVacancy: 3,
-      currentVacancy:2,
+      currentVacancy: 2,
       participants: [1, 2, 3, 4],
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       sport: SportType.Badminton,
       coords: { "lat": 13.0752, "lng": 80.2905 }
     },
@@ -47,11 +47,11 @@ export class HomeApiService {
       location: 'Anna Nagar West Extension',
       eventDateTime: 1761408000000,
       totalVacancy: 4,
-      currentVacancy:4,
+      currentVacancy: 4,
       participants: [1, 2, 3, 4],
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       sport: SportType.Running,
       coords: { "lat": 13.0705, "lng": 80.2555 }
     },
@@ -62,11 +62,11 @@ export class HomeApiService {
       location: 'Chicago',
       eventDateTime: 1761408000000,
       totalVacancy: 8,
-      currentVacancy:4,
+      currentVacancy: 4,
       participants: [1, 2, 3, 4, 5, 6],
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       sport: SportType.Football,
       coords: { "lat": 13.0450, "lng": 80.2489 }
     },
@@ -77,11 +77,11 @@ export class HomeApiService {
       location: 'Naperville',
       eventDateTime: 1761408000000,
       totalVacancy: 3,
-      currentVacancy:2,
+      currentVacancy: 2,
       participants: [1, 2, 3, 4],
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       sport: SportType.Badminton,
       coords: { "lat": 13.0600, "lng": 80.2950 }
     },
@@ -92,11 +92,11 @@ export class HomeApiService {
       location: 'Bolingbrook',
       eventDateTime: 1761408000000,
       totalVacancy: 4,
-      currentVacancy:4,
+      currentVacancy: 4,
       participants: [1, 2, 3, 4],
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       sport: SportType.Swimming,
       coords: { "lat": 13.1005, "lng": 80.3055 }
     },
@@ -107,11 +107,11 @@ export class HomeApiService {
       location: 'Chicago',
       eventDateTime: 1761408000000,
       totalVacancy: 8,
-      currentVacancy:4,
+      currentVacancy: 4,
       participants: [1, 2, 3, 4, 5, 6, 7, 8],
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       sport: SportType.Cycling,
       coords: { "lat": 13.1420, "lng": 80.2005 }
     },
@@ -122,11 +122,11 @@ export class HomeApiService {
       location: 'Naperville',
       eventDateTime: 1761408000000,
       totalVacancy: 3,
-      currentVacancy:2,
+      currentVacancy: 2,
       participants: [1, 2, 3, 4],
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       sport: SportType.Swimming,
       coords: { "lat": 13.0255, "lng": 80.3205 }
     },
@@ -137,17 +137,17 @@ export class HomeApiService {
       location: 'Bolingbrook',
       eventDateTime: 1761408000000,
       totalVacancy: 4,
-      currentVacancy:4,
+      currentVacancy: 4,
       participants: [1, 2, 3, 4],
-      eventDescription:'',
-      eventStatus:'Ready',
-      sportType:3,
+      eventDescription: '',
+      eventStatus: 'Ready',
+      sportType: 3,
       sport: SportType.Running,
       coords: { "lat": 13.1550, "lng": 80.2455 }
     }
   ];
 
-  getMates(eventList:eventListApi): Observable<eventListApiResp> {
+  getMates(eventList: eventListApi): Observable<eventListApiResp> {
     // return this.api.post<eventListApi, eventListApiResp>('event/eventList', eventList);
     const resp = {} as eventListApiResp;
     resp.events = this.sampleMateData;
@@ -156,10 +156,25 @@ export class HomeApiService {
 
 
   getEventDetails(eventId: number): Observable<EventDetailApiResp> {
-    return this.api.post<{eventId: number} ,EventDetailApiResp>(`eventApproval/getEventDetails`, {eventId});
+    return this.api.post<{ eventId: number }, EventDetailApiResp>(`eventApproval/getEventDetails`, { eventId })
+      .pipe(
+        map(response => {
+          if (!response.rspFlg || !response.joinRequests || !response.joinRequests.length) {
+            return response;
+          }
+
+          return {
+            ...response,
+            joinRequests: response.joinRequests.map((jr, index) => ({
+              ...jr,
+              id: index + 1
+            }))
+          };
+        })
+      );;
   }
 
-   requestJoin(reqObj:requestJoinApi): Observable<requestJoinApiResp> {
+  requestJoin(reqObj: requestJoinApi): Observable<requestJoinApiResp> {
     return this.api.post<requestJoinApi, requestJoinApiResp>('eventApproval/requestJoin', reqObj);
   }
 }

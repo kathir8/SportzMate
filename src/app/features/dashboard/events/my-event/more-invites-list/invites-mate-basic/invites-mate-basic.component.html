@@ -1,0 +1,11 @@
+<ion-row class="row-container">
+  <ion-col size="auto">
+    <ion-thumbnail class="mate-img" (click)="profileInfo()">
+      <ion-img [src]="commonService.showProfileImage(mate()?.profileImage)" alt="profile"></ion-img>
+    </ion-thumbnail>
+  </ion-col>
+  <ion-col class="detail-container">
+    <ion-text class="name-place">{{mate()?.userName}}</ion-text>
+    <app-accept-or-reject (approvalClickEmit)="acceptOrRejectEmit($event)"></app-accept-or-reject>
+  </ion-col>
+</ion-row>

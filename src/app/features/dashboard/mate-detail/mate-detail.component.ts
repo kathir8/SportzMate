@@ -49,6 +49,7 @@ export class MateDetailComponent implements OnInit {
   readonly headingText = signal<string>('');
   readonly mate = signal<EventBasic>({} as EventBasic);
 
+  readonly mateInput = input<EventBasic | null>(null);
   readonly fromMyEvent = input<number | null>(null);
 
   readonly DATE_FORMATS = DATE_FORMATS;
@@ -64,26 +65,27 @@ export class MateDetailComponent implements OnInit {
     if (this.showInterestBtn()) {
       return 'from-mate-detail';
     }
-    return 'from-my-request';
+    if(this.fromPage()){
+      return this.fromPage();
+    }
+    return '';
   });
 
   constructor() {
     effect(() => {
-      if (this.fromMyEvent()) {
-        this.eventId.set(this.fromMyEvent()!);
+      if (this.mateInput()) {
+        this.mate.set(this.mateInput()!);
+         return;
       }
-    });
 
-    effect(() => {
-      if (this.eventId()) {
+       if (this.eventId()) {
         this.homeApi.getEventDetails(this.eventId()).subscribe((res: EventDetailApiResp) => {
           if (res.rspFlg) {
             // this.headingText.set(this.commonService.selectedSports(res.sportId)?.sportsName || '');
             this.mate.set(res.eventDetails);
             if (res.acceptedRequests) {
-              this.AcceptedRequest.set(res.joinRequests.filter(x => x.approvalId === 3) || []);
+              this.AcceptedRequest.set(res.joinRequests?.filter(x => x.approvalId === 3) || []);
             }
-
           } else {
             this.handleBack();
           }
@@ -129,7 +131,7 @@ export class MateDetailComponent implements OnInit {
 
 
   handleBack() {
-    const url = this.fromMyEvent() ? '/dashboard/events' : (this.showInterestBtn() ? '/dashboard/home' : '/dashboard/requests');
+    const url = this.showInterestBtn() ? '/dashboard/home' : '/dashboard/requests';
     this.router.navigate([url]);
   }
 

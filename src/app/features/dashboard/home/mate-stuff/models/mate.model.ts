@@ -40,6 +40,7 @@ export interface EventDetailApiResp extends ApiResp{
 
 export interface RequestedMember{
     approvalId:number
+    id:number;
 }
 
 export interface requestJoinApi {
@@ -53,7 +54,7 @@ export interface requestJoinApiResp extends ApiResp {
 
 export interface AcceptOrReject {
 
-    readonly item: Requests;
+    readonly item?: Requests;
     readonly accepted: boolean;
     readonly event: MouseEvent;
 

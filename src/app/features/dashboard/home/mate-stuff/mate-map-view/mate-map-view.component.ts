@@ -346,7 +346,7 @@ export class MateMapViewComponent {
 
   // clicking a bottom-card photo should center & open popup
   openMateDetail(id: number) {
-    this.router.navigate(['dashboard/match', id],
+    this.router.navigate(['dashboard/mate-detail', id],
        {
     state: {
       showInterestBtn:true
