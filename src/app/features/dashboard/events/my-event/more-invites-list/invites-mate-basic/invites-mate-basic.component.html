@@ -8,4 +8,7 @@
     <ion-text class="name-place">{{mate()?.userName}}</ion-text>
     <app-accept-or-reject (approvalClickEmit)="acceptOrRejectEmit($event)"></app-accept-or-reject>
   </ion-col>
+   <ion-col size="auto">
+     <ion-icon size="large" [icon]="icons.chatbubbleEllipsesOutline" color="primary" (click)="openChat(mate().currentUid)"></ion-icon>
+  </ion-col>
 </ion-row>

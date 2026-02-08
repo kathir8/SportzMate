@@ -3,10 +3,11 @@ import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { IonContent, IonIcon } from '@ionic/angular/standalone';
+import { IonContent, IonIcon, IonTitle } from '@ionic/angular/standalone';
 import { attachOutline, closeOutline, happyOutline, sendOutline } from 'ionicons/icons';
 import { switchMap } from 'rxjs';
 import { UserStore } from 'src/app/core/stores/user-store';
+import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { ChatMessage, ChatService } from './chat.service';
 
@@ -14,7 +15,7 @@ import { ChatMessage, ChatService } from './chat.service';
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
-  imports: [IonContent, FormsModule, DatePipe, IonIcon, IonicInputComponent]
+  imports: [IonTitle, IonContent, FormsModule, DatePipe, IonIcon, IonicInputComponent, HeaderComponent]
 })
 export class ChatComponent {
 
@@ -22,6 +23,8 @@ export class ChatComponent {
   private readonly userStore = inject(UserStore);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
+  // private readonly navHistory = inject(NavigationHistoryService);
+
 
   private readonly currentUser = this.userStore.getCurrent();
 

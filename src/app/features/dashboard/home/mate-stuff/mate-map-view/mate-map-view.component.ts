@@ -26,8 +26,8 @@ export class MateMapViewComponent {
   // players currently within radius
   readonly visiblePlayers = input<MateListItem[]>([]);
   readonly coordinates = input.required<Coordinates>();
-  private readonly coords = computed(() => this.commonService.convertToLatLng( this.coordinates()));
-  
+  private readonly coords = computed(() => this.commonService.convertToLatLng(this.coordinates()));
+
 
   private readonly mapElement = viewChild.required<ElementRef<HTMLElement>>('mapRef');
   private readonly carouselRef = viewChild<ElementRef<HTMLDivElement>>('carouselRef');
@@ -142,8 +142,8 @@ export class MateMapViewComponent {
     }
   }
 
-  private AssignLatLng(player:MateListItem){
-    return {lat : player.latitude, lng : player.longitude}
+  private AssignLatLng(player: MateListItem) {
+    return { lat: player.latitude, lng: player.longitude }
   }
 
   private async addPlayerMarker(player: MateListItem) {
@@ -347,11 +347,11 @@ export class MateMapViewComponent {
   // clicking a bottom-card photo should center & open popup
   openMateDetail(id: number) {
     this.router.navigate(['dashboard/mate-detail', id],
-       {
-    state: {
-      showInterestBtn:true
-    }
-  }
+      {
+        state: {
+          showInterestBtn: true
+        }
+      }
     );
   }
 

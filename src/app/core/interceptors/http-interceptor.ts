@@ -64,7 +64,7 @@ export const authInterceptor: HttpInterceptorFn = (
                 loader.reset();
                 if (!offlineToastShown) {
                     offlineToastShown = true;
-                    toast.show('No internet connection. Please check your network.');
+                    // toast.show('No internet connection. Please check your network.');
                     return throwError(() => error);
                 }
             }
