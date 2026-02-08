@@ -60,11 +60,12 @@ export const authInterceptor: HttpInterceptorFn = (
     return handledRequest$.pipe(
         catchError((error: HttpErrorResponse) => {
 
-            if (error.status === 0) {
+            
+            if (error.status === 0 && !navigator.onLine) {
                 loader.reset();
                 if (!offlineToastShown) {
                     offlineToastShown = true;
-                    // toast.show('No internet connection. Please check your network.');
+                    toast.show('No internet connection. Please check your network.');
                     return throwError(() => error);
                 }
             }
@@ -74,11 +75,7 @@ export const authInterceptor: HttpInterceptorFn = (
                 message: error.message
             });
 
-            const message =
-                error.status === 0
-                    ? 'Network error. Please check your internet.'
-                    : error.error?.rspMsg ??
-                    'Something went wrong. Please try again.';
+            const message = error.error?.rspMsg ?? 'Something went wrong. Please try again.';
 
             toast.show(message);
 
