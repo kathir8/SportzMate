@@ -4,4 +4,94 @@ $containerPaddingX: 0px;
     --background: var(--background-color);
     --padding-start:#{$containerPaddingX};
     --padding-end:#{$containerPaddingX};
+
+    .chat-list-outer-container {
+        overflow-y: auto;
+        flex: 1 1 0%;
+        .no-chat-found{
+            line-height: 17.5px;
+            font-size: 12.25px;
+            text-align: center;
+            color: #6b7280;
+            padding: 28px;
+        }
+
+        .chat-list {
+            border-bottom: 1px solid #f9fafb;
+            align-items: center;
+            padding: 10.5px;
+            display: flex;
+
+            .member-icon {
+                position: relative;
+                flex-shrink: 0;
+                height: 42px;
+                width: 42px;
+
+                img {
+                    border-radius: 9999px;
+                    object-fit: cover;
+                    height: 100%;
+                    width: 100%;
+                }
+            }
+
+            .member-content {
+                flex: 1 1 0%;
+                min-width: 0%;
+
+                .member-outer-container {
+                    justify-content: space-between;
+                    align-items: baseline;
+                    display: flex;
+
+                    .member-name {
+                        font-weight: 400;
+                        font-size: 17px;
+                        color: #111b21;
+                    }
+
+                    .last-message-time {
+                        font-size: 10.5px;
+                        line-height: 14px;
+                        color: #667781;
+
+                        &.unread {
+                            font-weight: 500;
+                            color: #ff4e18;
+                        }
+                    }
+                }
+
+                .member-message-container {
+                    justify-content: space-between;
+                    align-items: center;
+                    display: flex;
+
+                    .member-message {
+                        line-height: 17.5px;
+                        font-size: 12.25px;
+                        padding-right: 7px;
+                        color: #667781;
+
+                        .unread-count {
+                            justify-content: center;
+                            background: #ff4e18;
+                            border-radius: 9999px;
+                            padding-right: 3.5px;
+                            padding-left: 3.5px;
+                            align-items: center;
+                            font-size: 10.5px;
+                            line-height: 14px;
+                            font-weight: 500;
+                            min-width: 20px;
+                            height: 17.5px;
+                            display: flex;
+                            color: #fff;
+                        }
+                    }
+                }
+            }
+        }
+    }
 }

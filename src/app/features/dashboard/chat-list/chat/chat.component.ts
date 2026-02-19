@@ -114,6 +114,6 @@ export class ChatComponent {
   }
 
   handleBack() {
-    this.router.navigate(['/dashboard/chat']);
+    this.router.navigate(['/dashboard/chat-list']);
   }
 }

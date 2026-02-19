@@ -1,4 +1,50 @@
+<app-header headerClass="from-mate-detail" [showBackButton]="false">
+  <ion-title class="header-title" slot="start">Chats</ion-title>
+</app-header>
 <ion-content class="ion-padding chat-page">
+
+  <div class="chat-list-outer-container">
+    @if(filteredChats.length === 0){
+    <div class="no-chat-found">
+      No chats found
+    </div>
+    }@else {
+
+    @for(chat of filteredChats(); track chat.chatId) {
+
+        @let otherUserId = getOtherUserId(chat);
+        @let otherUser = chat.participantDetails[otherUserId];
+        @let unread = getUnreadCount(chat);
+
+    <div (click)="openChat('ZImljsDYntQLvi3y9NPgdxsDdqF3')" class="chat-list">
+      <div class="member-icon">
+        <img [src]="otherUser.photoUrl" />
+      </div>
+      <div class="member-content">
+        <div class="member-outer-container">
+          <span class="member-name truncate">
+            {{otherUser.name}}
+          </span>
+          <span class="last-message-time" [class.unread]="unread > 0">
+            {{formatTime(chat.lastMessageTime)}}
+          </span>
+        </div>
+        <div class="member-message-container">
+          <span class="member-message truncate">
+            {{chat.lastMessage}}
+          </span>
+          @if(unread > 0){
+          <span class="unread-count">
+            {{unread}}
+          </span>
+          }
+        </div>
+      </div>
+
+    </div>
+    }
+    }
+  </div>
   <button (click)="openChat('ZImljsDYntQLvi3y9NPgdxsDdqF3')">chat</button>
   <br><br><br><br><br><br>
   <button>group chat</button>

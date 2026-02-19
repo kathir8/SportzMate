@@ -104,3 +104,9 @@
     padding: 6px 8px !important;
   }
 }
+
+.truncate{
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+}

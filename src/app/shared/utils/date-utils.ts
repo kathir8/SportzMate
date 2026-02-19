@@ -1,3 +1,4 @@
+import { isToday, isYesterday } from 'date-fns';
 import { formatInTimeZone, fromZonedTime } from 'date-fns-tz';
 import { DATE_FORMATS } from 'src/app/core/constants';
 
@@ -52,3 +53,32 @@ export function toUtcTimestamp(result: DateTimePickerResult): number {
 
     return utcDate.getTime();
 }
+
+
+export function formatChatListTime(utcMs: number): string {
+    try {
+        const utcDate = new Date(utcMs);
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+        // Convert to local time zone
+        const localDate = new Date(
+            formatInTimeZone(utcDate, tz, DATE_FORMATS.DATE_TIME)
+        );
+
+        if (isToday(localDate)) {
+            return formatInTimeZone(utcDate, tz, DATE_FORMATS.TIME);
+        }
+
+        if (isYesterday(localDate)) {
+            return 'Yesterday';
+        }
+
+        return formatInTimeZone(utcDate, tz, DATE_FORMATS.DATE_ONLY);
+
+    } catch (err) {
+        console.error('Chat time formatting failed:', err);
+        return '';
+    }
+}
+
+
