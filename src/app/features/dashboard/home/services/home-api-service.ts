@@ -3,12 +3,16 @@ import { map, Observable, of } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { SportType } from 'src/app/shared/models/shared.model';
 import { EventDetailApiResp, eventListApi, eventListApiResp, requestJoinApi, requestJoinApiResp } from '../mate-stuff/models/mate.model';
+import { UserStore } from 'src/app/core/stores/user-store';
 
 @Injectable({
   providedIn: 'root'
 })
 export class HomeApiService {
   private api = inject(ApiService);
+    private readonly userStore = inject(UserStore);
+  private readonly currentUser = this.userStore.getCurrent();
+
 
   private sampleMateData: any[] = [
     {
@@ -148,7 +152,7 @@ export class HomeApiService {
   ];
 
   getMates(eventList: eventListApi): Observable<eventListApiResp> {
-    // return this.api.post<eventListApi, eventListApiResp>('event/eventList', eventList);
+    return this.api.post<eventListApi, eventListApiResp>('event/eventList', eventList);
     const resp = {} as eventListApiResp;
     resp.events = this.sampleMateData;
     return of(resp);
@@ -156,7 +160,9 @@ export class HomeApiService {
 
 
   getEventDetails(eventId: number): Observable<EventDetailApiResp> {
-    return this.api.post<{ eventId: number }, EventDetailApiResp>(`eventApproval/getEventDetails`, { eventId })
+    return this.api.post<{ eventId: number, userId: number }, EventDetailApiResp>(`eventApproval/getEventDetails`, { eventId,
+      userId : this.currentUser()!.userID
+     })
       .pipe(
         map(response => {
           if (!response.rspFlg || !response.joinRequests || !response.joinRequests.length) {

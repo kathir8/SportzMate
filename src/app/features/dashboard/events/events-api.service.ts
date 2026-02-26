@@ -15,7 +15,7 @@ export class EventsApiService {
 
   getMyEvents(page = 0, size = 0): Observable<myEventsApiResp> {
     const obj: EventsApi = {
-      userId: 6, // this.current()!.userID,
+      userId: this.current()!.userID,
       page,
       size
     }

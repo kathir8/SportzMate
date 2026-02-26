@@ -10,6 +10,10 @@
         height: 30px;
         width: 50px;
 
+        &.event-status{
+        width: 65px;
+    }
+
         &.primary {
             --background: #FFE1D3;
             --color: #FF9463;

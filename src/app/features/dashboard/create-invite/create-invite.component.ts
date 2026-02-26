@@ -79,7 +79,7 @@ export class CreateInviteComponent {
 
   onSportSelected(sportId: number | null): void {
     if (sportId) {
-      this.updateFormManually('sportIdFk', sportId);
+      this.updateFormManually('sportId', sportId);
     }
   }
 
@@ -158,7 +158,7 @@ export class CreateInviteComponent {
       return false;
     }
 
-     if (!this.form().sportIdFk) {
+     if (!this.form().sportId) {
       this.toast.show('Select sport type');
       return false;
     }

@@ -81,7 +81,7 @@ export class MateDetailComponent implements OnInit {
        if (this.eventId()) {
         this.homeApi.getEventDetails(this.eventId()).subscribe((res: EventDetailApiResp) => {
           if (res.rspFlg) {
-            // this.headingText.set(this.commonService.selectedSports(res.sportId)?.sportsName || '');
+            this.headingText.set(this.commonService.selectedSports(res.eventDetails?.sportId)?.sportsName || '');
             this.mate.set(res.eventDetails);
             if (res.acceptedRequests) {
               this.AcceptedRequest.set(res.joinRequests?.filter(x => x.approvalId === 3) || []);

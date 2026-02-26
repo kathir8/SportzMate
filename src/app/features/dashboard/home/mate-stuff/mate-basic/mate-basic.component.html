@@ -29,9 +29,8 @@
   </ion-col>
   <ion-col size="auto" class="game-detail">
     @if(dynamicClass() === 'from-my-request'){
-    <ionic-badge dynamicClass="members-cnt primary">
-      <!-- {{mate()!.approvalId}} -->
-      Accepted
+    <ionic-badge dynamicClass="members-cnt primary event-status">
+      {{eventStatus()}}
     </ionic-badge>
     }@else {
     <ion-icon class="sport-icon" [icon]="icons.bicycleOutline"></ion-icon>

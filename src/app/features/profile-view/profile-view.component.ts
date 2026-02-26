@@ -95,6 +95,15 @@ export class ProfileViewComponent {
     return this.sports().filter(x => selSports.includes(this.commonService.wrapWithSymbol(x.sportID))).map(x => x.sportsName);
   });
 
+  // gender string with first letter capitalized for display purposes
+  readonly displayGender = computed(() => {
+    const g = this.profileUser().gender;
+    if (!g) {
+      return '';
+    }
+    return g.charAt(0).toUpperCase() + g.slice(1);
+  });
+
 
   handleBack() {
     if (this.isMyProfile()) {

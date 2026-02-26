@@ -14,7 +14,8 @@ export class EventsComponent {
   readonly myEventsList = signal<MyRequests[]>([]);
   private readonly eventsApiService = inject(EventsApiService);
 
-  constructor() {
+
+  ionViewWillEnter() {
     this.loadMyEvents();
   }
 

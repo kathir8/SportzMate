@@ -58,4 +58,15 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
       state: { userID: m.eventId }
     });
   }
+
+
+   eventStatus() {
+    const m = this.mate();
+    if (!m) return null;
+
+    if ('status' in m) {
+      return m.status;
+    }
+    return null;
+  }
 }

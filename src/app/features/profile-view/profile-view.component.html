@@ -6,7 +6,7 @@
   <div class="profile-header">
     <app-profile-image [profileImage]="profileUser().profileImage" />
     <h2>{{ profileUser().name }}</h2>
-    <p>{{ profileUser().age }} yrs • {{ profileUser().gender }}</p>
+    <p>{{ profileUser().age }} yrs • {{ displayGender() }}</p>
   </div>
 
   <h4>Country : <b>{{ selectedCountry()!.name }}</b></h4>
