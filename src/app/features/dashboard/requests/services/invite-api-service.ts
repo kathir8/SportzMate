@@ -35,7 +35,7 @@ export class InviteApiService {
 
   getJoinRequests(page = 0, size = 5): Observable<JoinRequestsApiResp> {
     const obj = {
-      eventCreatorUserId: 6, //this.current()!.userID,
+      eventCreatorUserId: this.current()!.userID,
       page,
       size,
     }
@@ -44,176 +44,21 @@ export class InviteApiService {
         map((response: JoinRequestsApiResp) => ({
           ...response,
           receivedRequests: this.commonService.updateEventProfileImage(
-            response.receivedRequests,
+            (response.receivedRequests.filter(x => x.status !== AcceptReject.Accepted) || []),
             false
           ),
         }))
       );
   }
 
-  ProcessJoinRequests(detail:Requests, isAccepted:boolean):Observable<ProcessRequestApiResp>{
+  ProcessJoinRequests(detail: Requests, isAccepted: boolean): Observable<ProcessRequestApiResp> {
     const obj: ProcessRequestApi = {
       approvalId: detail.approvalId,
       eventCreatorId: this.current()!.userID,
-      action: isAccepted ? AcceptReject.Accept : AcceptReject.Reject
+      action: isAccepted ? AcceptReject.Accepted : AcceptReject.Rejected
     }
     return this.api.post<any, ProcessRequestApiResp>(`eventApproval/processRequest`, obj)
   }
-
-
-  // getGroupDetailById(id: number): Observable<GroupDetail> {
-
-
-  //   // return this.api.get<MateDetail>(`mates/${id}`);
-  //   const groupData:GroupDetail = {
-  //     id: id,
-  //     profileImg: 'assets/avatars/avatar1.jfif',
-  //     name: 'Meera Jasmine',
-  //     location: 'Chicago',
-  //     eventDateTime: 1761408000000,
-  //     totalVacancy: 8,
-  //     currentVacancy : 8,
-  //     distanceOrDuration: '600 M',
-  //     sport: SportType.Cycling,
-  //     coords: { "lat": 13.0901, "lng": 80.2650 },
-  //     description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //     members: [1, 2, 3, 4, 5],
-  //     requestedMembers: [
-  //       {
-  //         id: 1,
-  //         profileImg: 'assets/avatars/avatar2.jfif',
-  //         eventName: 'Kathir Office',
-  //         location: 'Newyork',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy : 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 2,
-  //         profileImg: 'assets/avatars/avatar3.jfif',
-  //         eventName: 'Emma',
-  //         location: 'Chicago',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy : 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 1,
-  //         profileImg: 'assets/avatars/avatar2.jfif',
-  //         eventName: 'Kathir Office',
-  //         location: 'Newyork',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy : 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 2,
-  //         profileImg: 'assets/avatars/avatar3.jfif',
-  //         eventName: 'Emma',
-  //         location: 'Chicago',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy : 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 1,
-  //         profileImg: 'assets/avatars/avatar2.jfif',
-  //         eventName: 'Kathir Office',
-  //         location: 'Newyork',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy : 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 2,
-  //         profileImg: 'assets/avatars/avatar3.jfif',
-  //         eventName: 'Emma',
-  //         location: 'Chicago',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy : 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 1,
-  //         profileImg: 'assets/avatars/avatar2.jfif',
-  //         eventName: 'Kathir Office',
-  //         location: 'Newyork',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy : 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 2,
-  //         profileImg: 'assets/avatars/avatar3.jfif',
-  //         eventName: 'Emma',
-  //         location: 'Chicago',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy : 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 1,
-  //         profileImg: 'assets/avatars/avatar2.jfif',
-  //         eventName: 'Kathir Office',
-  //         location: 'Newyork',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy: 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //       {
-  //         id: 2,
-  //         profileImg: 'assets/avatars/avatar3.jfif',
-  //         eventName: 'Emma',
-  //         location: 'Chicago',
-  //         eventDateTime: 1761408000000,
-  //         totalVacancy: 8,
-  //         currentVacancy: 8,
-  //         distanceOrDuration: '600 M',
-  //         sport: SportType.Cycling,
-  //         coords: { "lat": 13.0901, "lng": 80.2650 },
-  //         description: `It is a long established fact that a reader will be distracted by the readable content of a page when looking at its layout. The point of using Lorem Ipsum is that it has a more-or-less normal distribution of letters, as opposed to using 'Content here`,
-  //       },
-  //     ]
-  //   };
-  //   return of(groupData);
-
-  // }
 
   fetchNearby(lat: number, lng: number) { return this.api.get<Invite[]>(`/api/requests/near?lat=${lat}&lng=${lng}`); }
   fetchById(id: string) { return this.api.get<Invite>(`/api/requests/${id}`); }

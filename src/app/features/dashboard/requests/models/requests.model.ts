@@ -45,8 +45,8 @@ export interface JoinRequests extends Requests {
 }
 
 export enum AcceptReject {
-    'Accept' = 'ACCEPTED',
-    'Reject' = 'REJECTED',
+    'Accepted' = 'ACCEPTED',
+    'Rejected' = 'REJECTED',
     'Pending' = 'PENDING',
 }
 

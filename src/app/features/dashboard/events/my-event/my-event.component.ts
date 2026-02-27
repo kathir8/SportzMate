@@ -12,6 +12,7 @@ import { MateDetailComponent } from '../../mate-detail/mate-detail.component';
 import { MoreInvitesListComponent } from './more-invites-list/more-invites-list.component';
 import { CancelEventComponent } from './cancel-event/cancel-event.component';
 import { CommonService } from 'src/app/core/services/common.service';
+import { AcceptReject } from '../../requests/models/requests.model';
 
 @Component({
   selector: 'app-my-event',
@@ -62,10 +63,10 @@ export class MyEventComponent {
       if (this.eventId()) {
         this.homeApi.getEventDetails(this.eventId()).subscribe((res: EventDetailApiResp) => {
           if (res.rspFlg) {
-            // this.headingText.set(this.commonService.selectedSports(res.sportId)?.sportsName || '');
+            this.headingText.set(this.commonService.selectedSports(res.eventDetails.sportId)?.sportsName || '');
             this.mate.set(res.eventDetails);
-            if (res.pendingRequests) {
-              this.requestedMembers.set(res.joinRequests?.filter(x => x.approvalId === 1) || []);
+            if (res.totalRequests) {
+              this.requestedMembers.set(this.getOrderedRequestedMembers(res.joinRequests || []));
             }
           } else {
             this.handleBack();
@@ -82,6 +83,22 @@ export class MyEventComponent {
     } else {
       this.handleBack();
     }
+  }
+
+  private getOrderedRequestedMembers(joinRequests: RequestedMember[]): RequestedMember[] {
+
+    const pendingRequests: RequestedMember[] = [];
+    const acceptedRequests: RequestedMember[] = [];
+
+    for (const request of joinRequests) {
+      if (request.status === AcceptReject.Pending) {
+        pendingRequests.push(request);
+      } else if (request.status === AcceptReject.Accepted) {
+        acceptedRequests.push(request);
+      }
+    }
+
+    return [...pendingRequests, ...acceptedRequests];
   }
 
   handleBack() {

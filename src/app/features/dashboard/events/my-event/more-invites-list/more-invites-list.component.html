@@ -6,7 +6,7 @@
 </div>
 
 <ng-template #mateTemplate let-item>
-  <app-invites-mate-basic [mate]="item" (isAccepted)="acceptOrReject($event)"></app-invites-mate-basic>
+  <app-invites-mate-basic [mate]="item.interestedUser" (isAccepted)="acceptOrReject($event)"></app-invites-mate-basic>
 </ng-template>
 
 <ng-template #emptyTemplate>

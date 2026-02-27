@@ -1,3 +1,4 @@
+import { JsonPipe } from '@angular/common';
 import { Component, inject, input, output } from '@angular/core';
 import { Router } from '@angular/router';
 import { IonCol, IonImg, IonRow, IonText, IonThumbnail, IonIcon } from "@ionic/angular/standalone";
@@ -10,7 +11,7 @@ import { AcceptOrRejectComponent } from "src/app/shared/components/accept-or-rej
   selector: 'app-invites-mate-basic',
   templateUrl: './invites-mate-basic.component.html',
   styleUrls: ['./invites-mate-basic.component.scss'],
-  imports: [IonIcon, IonText, IonRow, IonCol, IonThumbnail, IonImg, AcceptOrRejectComponent]
+  imports: [IonIcon, IonText, IonRow, IonCol, IonThumbnail, IonImg, AcceptOrRejectComponent, JsonPipe]
 })
 export class InvitesMateBasicComponent {
   private readonly router = inject(Router);
@@ -31,9 +32,9 @@ export class InvitesMateBasicComponent {
 
 
   profileInfo() {
-    //  return this.router.navigate(['profile'], {
-    //   state: { profileUser: m.user }
-    // });
+     return this.router.navigate(['profile'], {
+      state: { profileUser: this.mate() }
+    });
   }
 
    openChat(id: string) {
