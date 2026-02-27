@@ -5,9 +5,10 @@
     </ion-thumbnail>
   </ion-col>
   <ion-col class="detail-container">
-    <!-- {{mate() | json}} -->
     <ion-text class="name-place">{{mate()?.name}}</ion-text>
-    <app-accept-or-reject (approvalClickEmit)="acceptOrRejectEmit($event)"></app-accept-or-reject>
+    @if(status() !== AcceptReject.Accepted){
+      <app-accept-or-reject (approvalClickEmit)="acceptOrRejectEmit($event)"></app-accept-or-reject>
+    }
   </ion-col>
    <ion-col size="auto">
      <ion-icon size="large" [icon]="icons.chatbubbleEllipsesOutline" color="primary" (click)="openChat(mate().currentUid)"></ion-icon>

@@ -5,6 +5,7 @@ import { IonCol, IonImg, IonRow, IonText, IonThumbnail, IonIcon } from "@ionic/a
 import { chatbubbleEllipsesOutline } from 'ionicons/icons';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AcceptOrReject } from 'src/app/features/dashboard/home/mate-stuff/models/mate.model';
+import { AcceptReject } from 'src/app/features/dashboard/requests/models/requests.model';
 import { AcceptOrRejectComponent } from "src/app/shared/components/accept-or-reject/accept-or-reject.component";
 
 @Component({
@@ -20,12 +21,14 @@ export class InvitesMateBasicComponent {
   readonly icons = { chatbubbleEllipsesOutline };
 
   readonly mate = input<any>();
-
+  readonly status = input<string>('');
+  readonly approvalId = input<number>();
+  readonly AcceptReject = AcceptReject;
   readonly isAccepted = output<AcceptOrReject>();
 
   acceptOrRejectEmit(resp: AcceptOrReject): void {
     this.isAccepted.emit({
-      item: this.mate()!,
+      item: { ...this.mate()! , approvalId: this.approvalId() },
       ...resp
     });
   }
