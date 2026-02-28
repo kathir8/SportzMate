@@ -44,7 +44,7 @@ export class InviteApiService {
         map((response: JoinRequestsApiResp) => ({
           ...response,
           receivedRequests: this.commonService.updateEventProfileImage(
-            (response.receivedRequests.filter(x => x.status !== AcceptReject.Accepted) || []),
+            (response.receivedRequests.filter(x => x.status === AcceptReject.Pending) || []),
             false
           ),
         }))
