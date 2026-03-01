@@ -6,6 +6,7 @@ import { GlobalLoadingService } from './core/services/global-loading-service';
 import { UserService } from './core/services/user-service';
 import { IonicToastService } from './shared/components/ionic-toast/ionic-toast.service';
 import { ThemeService } from './shared/services/theme.service';
+import { PushNotificationService } from './core/services/push-notification.service';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +17,7 @@ export class AppComponent {
 
   private readonly globalToast = viewChild.required<IonicToastComponent>('globalToast');
 
+  private readonly pushService = inject(PushNotificationService);
   private readonly toastService = inject(IonicToastService);
   private readonly loader = inject(GlobalLoadingService);
   private readonly themeService = inject(ThemeService);
@@ -26,6 +28,7 @@ export class AppComponent {
 
   constructor() {
     SplashScreen.show();
+    this.pushService.initializePush();
     this.userService.initializeUser();
     effect(() => {
       const toastInstance = this.globalToast();
