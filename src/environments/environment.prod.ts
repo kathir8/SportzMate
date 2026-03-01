@@ -1,6 +1,6 @@
 export const environment = {
   production: true,
-  googleWebClientId: "853532937748-7fb6egmr2jhqt726pb641t995io06rda.apps.googleusercontent.com",
+  googleWebClientId: "1077081120161-n9el6e38t4mlj6o2mokuomgqma3mo9pe.apps.googleusercontent.com",
   firebaseConfig: {
     apiKey: "AIzaSyAndy7XYPM3jk_zy_Fyp6l4oeJHTjXhfVM",
     authDomain: "sportzmate-89ad8.firebaseapp.com",
