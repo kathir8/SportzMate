@@ -1,4 +1,4 @@
-import { Component, input, output } from '@angular/core';
+import { Component, computed, input, model, output } from '@angular/core';
 import { IonChip } from '@ionic/angular/standalone';
 
 @Component({
@@ -21,6 +21,14 @@ export class IonicChipComponent {
   readonly dynamicClass = input<string>('');
 
   readonly ionClick = output<void>();
+
+  readonly selected = model<boolean>(false);
+  readonly selectedColor = input<string>('primary');
+
+
+  readonly computedColor = computed(() =>
+    this.selected() ? this.selectedColor() : this.color()
+  );
 
   onClick(): void {
     if (!this.disabled()) {

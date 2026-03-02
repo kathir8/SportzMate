@@ -66,7 +66,7 @@ export class MyEventComponent {
             this.headingText.set(this.commonService.selectedSports(res.eventDetails.sportId)?.sportsName || '');
             this.mate.set(res.eventDetails);
             if (res.totalRequests) {
-              this.requestedMembers.set(this.getOrderedRequestedMembers(res.joinRequests || []));
+              this.requestedMembers.set(res.joinRequests || []);
             }
           } else {
             this.handleBack();
@@ -83,22 +83,6 @@ export class MyEventComponent {
     } else {
       this.handleBack();
     }
-  }
-
-  private getOrderedRequestedMembers(joinRequests: RequestedMember[]): RequestedMember[] {
-
-    const pendingRequests: RequestedMember[] = [];
-    const acceptedRequests: RequestedMember[] = [];
-
-    for (const request of joinRequests) {
-      if (request.status === AcceptReject.Pending) {
-        pendingRequests.push(request);
-      } else if (request.status === AcceptReject.Accepted) {
-        acceptedRequests.push(request);
-      }
-    }
-
-    return [...pendingRequests, ...acceptedRequests];
   }
 
   handleBack() {

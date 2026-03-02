@@ -1,4 +1,12 @@
 <div class="list-view">
+  <div class="filter-section">
+    @for(f of filters(); track f.status){
+    <ionic-chip color="medium" [outline]="selectedFilter() !== f.status" [selected]="selectedFilter() === f.status"
+      selectedColor="primary" (ionClick)="setFilter(f.status)">
+      {{ f.label }}
+    </ionic-chip>
+    }
+  </div>
   <ionic-virtual-scroll [items]="displayList()" [dynamicListClass]="'sports-mate-list'"
     [dynamicGridClass]="'primary-details'" [itemTemplate]="mateTemplate" [noDataTemplate]="emptyTemplate"
     [onItemClick]="openMateDetail.bind(this)">
@@ -6,7 +14,8 @@
 </div>
 
 <ng-template #mateTemplate let-item>
-  <app-invites-mate-basic [mate]="item.interestedUser" [status]="item.status" [approvalId]="item.approvalId" (isAccepted)="acceptOrReject($event)"></app-invites-mate-basic>
+  <app-invites-mate-basic [mate]="item.interestedUser" [status]="item.status" [approvalId]="item.approvalId"
+    (isAccepted)="acceptOrReject($event)"></app-invites-mate-basic>
 </ng-template>
 
 <ng-template #emptyTemplate>
