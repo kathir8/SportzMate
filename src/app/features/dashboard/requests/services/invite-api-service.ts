@@ -14,9 +14,10 @@ export class InviteApiService {
   private readonly commonService = inject(CommonService);
   private readonly current = this.userStore.getCurrent();
 
-  getMyRequests(page = 0, size = 5): Observable<myRequestsApiResp> {
+  getMyRequests(statusFilter: AcceptReject, page = 0, size = 5): Observable<myRequestsApiResp> {
     const obj: EventsApi = {
       userId: this.current()!.userID,
+      statusFilter,
       page,
       size,
     }
@@ -36,6 +37,7 @@ export class InviteApiService {
   getJoinRequests(page = 0, size = 5): Observable<JoinRequestsApiResp> {
     const obj = {
       eventCreatorUserId: this.current()!.userID,
+      statusFilter: AcceptReject.Pending,
       page,
       size,
     }
@@ -43,10 +45,7 @@ export class InviteApiService {
       .pipe(
         map((response: JoinRequestsApiResp) => ({
           ...response,
-          receivedRequests: this.commonService.updateEventProfileImage(
-            (response.receivedRequests.filter(x => x.status === AcceptReject.Pending) || []),
-            false
-          ),
+          receivedRequests: this.commonService.updateEventProfileImage(response.receivedRequests,false),
         }))
       );
   }

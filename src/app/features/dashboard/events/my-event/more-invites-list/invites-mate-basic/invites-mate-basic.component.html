@@ -6,11 +6,11 @@
   </ion-col>
   <ion-col class="detail-container">
     <ion-text class="name-place">{{mate()?.name}}</ion-text>
-    @if(status() !== AcceptReject.Accepted){
+    @if(status() === AcceptReject.Pending){
       <app-accept-or-reject (approvalClickEmit)="acceptOrRejectEmit($event)"></app-accept-or-reject>
     }
   </ion-col>
    <ion-col size="auto">
-     <ion-icon size="large" [icon]="icons.chatbubbleEllipsesOutline" color="primary" (click)="openChat(mate().currentUid)"></ion-icon>
+     <ion-icon size="large" [icon]="icons.chatbubbleEllipsesOutline" color="primary" (click)="openChat(mate().fcmID)"></ion-icon>
   </ion-col>
 </ion-row>

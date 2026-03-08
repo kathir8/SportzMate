@@ -1,12 +1,5 @@
 <div class="list-view">
-  <div class="filter-section">
-    @for(f of filters(); track f.status){
-    <ionic-chip color="medium" [outline]="selectedFilter() !== f.status" [selected]="selectedFilter() === f.status"
-      selectedColor="primary" (ionClick)="setFilter(f.status)">
-      {{ f.label }}
-    </ionic-chip>
-    }
-  </div>
+  <app-status-filter (filterChange)="onFilterChange($event)"></app-status-filter>
   <ionic-virtual-scroll [items]="displayList()" [dynamicListClass]="'sports-mate-list'"
     [dynamicGridClass]="'primary-details'" [itemTemplate]="mateTemplate" [noDataTemplate]="emptyTemplate"
     [onItemClick]="openMateDetail.bind(this)">

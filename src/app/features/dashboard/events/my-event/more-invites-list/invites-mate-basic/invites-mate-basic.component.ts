@@ -40,7 +40,6 @@ export class InvitesMateBasicComponent {
   }
 
    openChat(id: string) {
-    id = 'ZImljsDYntQLvi3y9NPgdxsDdqF3';
     this.router.navigate(['dashboard/chat', id],
        {
         state: {

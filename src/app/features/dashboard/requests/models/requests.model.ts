@@ -14,12 +14,12 @@ export interface MyRequests extends Requests {
 
 export interface EventsApi {
     userId: number;
+    statusFilter?: AcceptReject;
     page: number;
     size: number;
 }
 
 export interface myRequestsApi extends EventsApi {
-    statusFilter: string;
     eventStatusFilter: string;
 }
 

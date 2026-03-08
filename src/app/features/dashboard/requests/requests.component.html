@@ -11,6 +11,7 @@
   <ion-segment-view>
     <ion-segment-content id="myRequests" value="myRequests">
       @if(segmentView() === 'myRequests'){
+        <app-status-filter (filterChange)="loadMyRequests($event)"></app-status-filter>
       <app-mate-list-view [responseList]="myRequestsList()" [dynamicClass]="'from-my-request'" [showInterestBtn]="false"></app-mate-list-view>
       }
     </ion-segment-content>

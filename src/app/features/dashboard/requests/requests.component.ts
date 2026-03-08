@@ -2,13 +2,14 @@ import { Component, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { IonContent, IonLabel, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView } from '@ionic/angular/standalone';
 import { MateListViewComponent } from "../home/mate-stuff/mate-list-view/mate-list-view.component";
-import { JoinRequests, JoinRequestsApiResp, MyRequests, myRequestsApiResp } from './models/requests.model';
+import { AcceptReject, JoinRequests, JoinRequestsApiResp, MyRequests, myRequestsApiResp } from './models/requests.model';
 import { InviteApiService } from './services/invite-api-service';
+import { StatusFilterComponent } from "src/app/shared/components/status-filter/status-filter.component";
 @Component({
   selector: 'app-requests',
   templateUrl: './requests.component.html',
   styleUrls: ['./requests.component.scss'],
-  imports: [IonContent, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, MateListViewComponent]
+  imports: [IonContent, IonSegment, IonSegmentButton, IonSegmentView, IonSegmentContent, IonLabel, FormsModule, MateListViewComponent, StatusFilterComponent]
 })
 export class RequestsComponent {
   private readonly invitesApiService = inject(InviteApiService);
@@ -22,15 +23,15 @@ export class RequestsComponent {
   constructor() {
     effect(() => {
       if (this.segmentView() === 'myRequests') {
-        this.loadMyRequests();
+        this.loadMyRequests(AcceptReject.Pending);
       } else {
         this.loadJoinRequests();
       }
     })
   }
 
-  private loadMyRequests() {
-    this.invitesApiService.getMyRequests().subscribe((res:myRequestsApiResp) => {
+  loadMyRequests(filter: AcceptReject) {
+    this.invitesApiService.getMyRequests(filter).subscribe((res:myRequestsApiResp) => {
       this.myRequestsList.set(res.requestedEvents);
     });
   }
