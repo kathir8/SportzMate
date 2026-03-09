@@ -1,5 +1,5 @@
 {
-  "name": "SportzMate",
+  "name": "sportz-mate",
   "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "https://ionicframework.com/",
@@ -24,7 +24,7 @@
     "@angular/platform-browser": "^20.3.12",
     "@angular/platform-browser-dynamic": "^20.3.12",
     "@angular/router": "^20.3.12",
-    "@capacitor/android": "7.4.3",
+    "@capacitor/android": "7.4.4",
     "@capacitor/app": "7.1.0",
     "@capacitor/camera": "^7.0.2",
     "@capacitor/core": "^7.4.4",
