@@ -1,16 +1,19 @@
 import { Timestamp } from "@angular/fire/firestore";
 
-export interface ChatDocument{
- chatId: string;
+export interface ChatDocument {
+  chatId: string;
   participants: string[];
-  participantDetails: Record<string, ParticipantDetails>;
+  participantDetails: Record<string, RecievedUser>;
   lastMessage: string;
-  lastMessageTime: Timestamp;
   updatedAt: Timestamp;
   unreadCount: Record<string, number>;
 }
 
 export interface ParticipantDetails {
   name: string;
-  photoUrl: string;
+  profileImage: string;
+}
+
+export interface RecievedUser extends ParticipantDetails { 
+  fcmID: string; 
 }

@@ -4,7 +4,7 @@
 <ion-content class="ion-padding chat-page">
 
   <div class="chat-list-outer-container">
-    @if(filteredChats.length === 0){
+    @if(filteredChats().length === 0){
     <div class="no-chat-found">
       No chats found
     </div>
@@ -16,9 +16,9 @@
         @let otherUser = chat.participantDetails[otherUserId];
         @let unread = getUnreadCount(chat);
 
-    <div (click)="openChat('ZImljsDYntQLvi3y9NPgdxsDdqF3')" class="chat-list">
+    <div (click)="openChat(otherUser)" class="chat-list">
       <div class="member-icon">
-        <img [src]="otherUser.photoUrl" />
+        <img [src]="otherUser.profileImage" />
       </div>
       <div class="member-content">
         <div class="member-outer-container">
@@ -26,7 +26,7 @@
             {{otherUser.name}}
           </span>
           <span class="last-message-time" [class.unread]="unread > 0">
-            {{formatTime(chat.lastMessageTime)}}
+            {{formatTime(chat.updatedAt)}}
           </span>
         </div>
         <div class="member-message-container">
@@ -45,7 +45,7 @@
     }
     }
   </div>
-  <button (click)="openChat('ZImljsDYntQLvi3y9NPgdxsDdqF3')">chat</button>
+  <!-- <button (click)="openChat('b6dTrM6L25SCAERwTy2NOEvyrpH2')">chat</button> -->
   <br><br><br><br><br><br>
   <button>group chat</button>
 </ion-content>

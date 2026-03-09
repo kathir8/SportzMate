@@ -39,15 +39,15 @@ export class InvitesMateBasicComponent {
     });
   }
 
-   openChat(id: string) {
-    this.router.navigate(['dashboard/chat', id],
+   openChat() {
+    this.router.navigate(['dashboard/chat'],
        {
         state: {
-          fromUrl: this.router.url
+          fromUrl: this.router.url,
+          recievedMate: { fcmID: this.mate().fcmID, profileImage: this.mate().profileImage, name: this.mate().name }
         }
       }
     );
-
   }
 
 }

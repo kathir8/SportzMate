@@ -60,16 +60,11 @@ export function formatChatListTime(utcMs: number): string {
         const utcDate = new Date(utcMs);
         const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
 
-        // Convert to local time zone
-        const localDate = new Date(
-            formatInTimeZone(utcDate, tz, DATE_FORMATS.DATE_TIME)
-        );
-
-        if (isToday(localDate)) {
+        if (isToday(utcDate)) {
             return formatInTimeZone(utcDate, tz, DATE_FORMATS.TIME);
         }
 
-        if (isYesterday(localDate)) {
+        if (isYesterday(utcDate)) {
             return 'Yesterday';
         }
 

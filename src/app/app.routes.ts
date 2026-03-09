@@ -45,7 +45,7 @@ export const routes: Routes = [
           import('./features/dashboard/chat-list/chat-list.component').then(m => m.ChatListComponent)
       },
       {
-        path: 'chat/:id',
+        path: 'chat',
         loadComponent: () =>
           import('./features/dashboard/chat-list/chat/chat.component').then(m => m.ChatComponent)
       },

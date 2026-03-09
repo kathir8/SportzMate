@@ -17,7 +17,7 @@
 
               <div class="time-container">
                 <span class="timing" [class]="getMsgSide(msg.senderId)">
-                  {{msg.timestamp.toDate() | date:'short'}}
+                  {{msg.updatedAt.toDate() | date:'short'}}
                 </span>
 
                 @if(msg.read && msg.senderId === currentUid()){

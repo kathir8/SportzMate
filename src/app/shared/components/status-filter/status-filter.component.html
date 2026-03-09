@@ -1,6 +1,6 @@
 <div class="filter-section">
     @for(f of filters(); track f.status){
-    <ionic-chip color="medium" [outline]="selectedFilter() !== f.status" [selected]="selectedFilter() === f.status"
+    <ionic-chip [dynamicClass]="'from-filter-section'" color="medium" [outline]="selectedFilter() !== f.status" [selected]="selectedFilter() === f.status"
       selectedColor="primary" (ionClick)="setFilter(f.status)">
       {{ f.label }}
     </ionic-chip>

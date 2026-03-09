@@ -37,8 +37,9 @@ $containerPaddingX: 0px;
             }
 
             .member-content {
-                flex: 1 1 0%;
+                margin-left: 10px;
                 min-width: 0%;
+                flex: 1 1 0%;
 
                 .member-outer-container {
                     justify-content: space-between;

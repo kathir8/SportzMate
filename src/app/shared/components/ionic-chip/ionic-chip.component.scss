@@ -24,7 +24,9 @@
         @include chip-base(var(--ion-color-secondary));
     }
 
-    &.from-join-request {
+    &.from-join-request,
+    &.from-filter-section {
         font-size: 12px;
     }
+
 }

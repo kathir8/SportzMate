@@ -1,15 +1,17 @@
 import { computed, inject, Injectable } from '@angular/core';
-import { addDoc, collection, collectionData, CollectionReference, doc, Firestore, getDoc, orderBy, query, serverTimestamp, Timestamp, updateDoc } from '@angular/fire/firestore';
+import { addDoc, collection, collectionData, CollectionReference, doc, Firestore, getDoc, orderBy, query, serverTimestamp, setDoc, Timestamp, updateDoc } from '@angular/fire/firestore';
 import { firstValueFrom, Observable } from 'rxjs';
+import { UserDetail } from 'src/app/core/model/user.model';
 import { UserStore } from 'src/app/core/stores/user-store';
+import { RecievedUser } from '../chat.model';
 
 
 export interface ChatMessage {
   id?: string;
-  senderId: number;
-  receiverId: number;
+  senderId: string;
+  receiverId: string;
   text: string;
-  timestamp: Timestamp;
+  updatedAt: Timestamp;
   read: boolean;
 }
 
@@ -28,14 +30,42 @@ export class ChatService {
   });
 
   // Create a unique room ID for two users
-  getRoomId(uid1: number, uid2: number): string {
+  getRoomId(uid1: string, uid2: string): string {
     return [uid1, uid2].sort().join('_');
   }
 
+
+
+  //  Call this when user opens a chat / clicks on a user to chat
+  async getOrCreateChat(currentUser: UserDetail, recievedUser: RecievedUser): Promise<string> {
+    const roomId = this.getRoomId(currentUser.fcmID, recievedUser.fcmID);
+
+    const chatDocRef = doc(this.firestore, 'messages', roomId);
+    const chatSnap = await getDoc(chatDocRef);
+
+    if (!chatSnap.exists()) {
+      // 🆕 Chat doesn't exist — create it with participants field
+      await setDoc(chatDocRef, {
+        participants: [currentUser.fcmID, recievedUser.fcmID],
+        participantDetails:{
+          [currentUser.fcmID] : { name: currentUser.name, profileImage: currentUser.profileImage ?? '' },
+          [recievedUser.fcmID] : { name: recievedUser.name, profileImage: recievedUser.profileImage ?? '' },
+        },
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+        lastMessage: ''
+      });
+    }
+
+    return roomId; // return roomId to use in sendMessage
+  }
+
   // Send Message
-  async sendMessage(roomId: string, senderId: number, text: string) {
+  async sendMessage(roomId: string, senderId: string, text: string) {
 
     try {
+
+      // 1. Add message to subcollection
       const chatRef = collection(this.firestore, `messages/${roomId}/chat`);
 
       await addDoc(chatRef, {
@@ -44,6 +74,12 @@ export class ChatService {
         timestamp: serverTimestamp(),
       });
 
+      // 2. Update parent document fields (so query can find it)
+      const roomRef = doc(this.firestore, 'messages', roomId);
+      await updateDoc(roomRef, {
+        updatedAt: serverTimestamp(),
+        lastMessage: text
+      });
     }
     catch (error: any) {
       console.error("🔥 Firestore write error:", error.code, error.message);

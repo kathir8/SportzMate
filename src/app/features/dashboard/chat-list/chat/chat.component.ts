@@ -10,6 +10,7 @@ import { UserStore } from 'src/app/core/stores/user-store';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { ChatMessage, ChatService } from './chat.service';
+import { RecievedUser } from '../chat.model';
 
 @Component({
   selector: 'app-chat',
@@ -25,16 +26,23 @@ export class ChatComponent {
   private readonly router = inject(Router);
   // private readonly navHistory = inject(NavigationHistoryService);
 
+  readonly icons = { happyOutline, attachOutline, sendOutline, closeOutline };
+
+  private readonly recievedUser = signal<RecievedUser | null>(
+    window.history.state?.recievedMate ?? null
+  );
 
   private readonly currentUser = this.userStore.getCurrent();
 
   readonly currentUid = computed(() => {
-    return this.currentUser()!.userID;
+    return this.currentUser()!.fcmID;
   });
 
-  readonly icons = { happyOutline, attachOutline, sendOutline, closeOutline };
+  readonly receiverUid = computed(() => {
+    return this.recievedUser()?.fcmID;
+  });
 
-  private readonly receiverUid = signal(0);
+
   readonly showEmojiPicker = signal(false);
   readonly emojiList = signal([
     "😀", "😃", "😄", "😁", "😆", "😅", "😂", "🤣", "😊", "😇",
@@ -58,9 +66,7 @@ export class ChatComponent {
     "🔥", "✨", "🌟", "💫", "💥", "💢", "💦", "💧", "💤", "🕳",
     "🎉", "🎊", "🎈", "🎂", "🎁", "🕯", "💣"
   ]);
-  private readonly roomId = computed(() =>
-    this.chatService.getRoomId(this.currentUid(), this.receiverUid())
-  );
+  private readonly roomId = signal('');
 
   readonly newMessage = signal('');
 
@@ -72,10 +78,9 @@ export class ChatComponent {
   );
 
 
-  ngOnInit() {
-    const idParam = this.route.snapshot.paramMap.get('id');
-    if (idParam) {
-      this.receiverUid.set(parseInt(idParam));
+  async ngOnInit() {
+    if (this.currentUid() && this.receiverUid()) {
+      this.roomId.set(await this.chatService.getOrCreateChat(this.currentUser()!, this.recievedUser()!));
     } else {
       this.handleBack();
     }
@@ -98,11 +103,11 @@ export class ChatComponent {
     this.newMessage.set('');
   }
 
-  getMsgSide(senderId: number): 'sender' | 'reciever' {
+  getMsgSide(senderId: string): 'sender' | 'reciever' {
     return senderId === this.currentUid() ? 'sender' : 'reciever';
   }
 
-  isMessageFirstInGroup(currentSenderIsMe: number, index: number): boolean {
+  isMessageFirstInGroup(currentSenderIsMe: string, index: number): boolean {
     // 1. Check if it's the very first message
     if (index === 0) {
       return true;
