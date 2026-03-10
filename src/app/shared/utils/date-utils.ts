@@ -77,3 +77,17 @@ export function formatChatListTime(utcMs: number): string {
 }
 
 
+export function formatChatMessageTime(utcMs: number): string {
+  try {
+    const utcDate = new Date(utcMs);
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+
+    return formatInTimeZone(utcDate, tz, DATE_FORMATS.TIME);
+
+  } catch (err) {
+    console.error('Message time formatting failed:', err);
+    return '';
+  }
+}
+
+

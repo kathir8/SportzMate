@@ -43,7 +43,6 @@ export class InvitesMateBasicComponent {
     this.router.navigate(['dashboard/chat'],
        {
         state: {
-          fromUrl: this.router.url,
           recievedMate: { fcmID: this.mate().fcmID, profileImage: this.mate().profileImage, name: this.mate().name }
         }
       }

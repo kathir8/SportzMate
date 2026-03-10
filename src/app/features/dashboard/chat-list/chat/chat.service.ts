@@ -12,6 +12,11 @@ export interface ChatMessage {
   receiverId: string;
   text: string;
   updatedAt: Timestamp;
+  MsgTime: Date;
+  timestamp: {
+    seconds: number;
+    nanoseconds: number;
+  };
   read: boolean;
 }
 
@@ -47,9 +52,9 @@ export class ChatService {
       // 🆕 Chat doesn't exist — create it with participants field
       await setDoc(chatDocRef, {
         participants: [currentUser.fcmID, recievedUser.fcmID],
-        participantDetails:{
-          [currentUser.fcmID] : { name: currentUser.name, profileImage: currentUser.profileImage ?? '' },
-          [recievedUser.fcmID] : { name: recievedUser.name, profileImage: recievedUser.profileImage ?? '' },
+        participantDetails: {
+          [currentUser.fcmID]: { name: currentUser.name, profileImage: currentUser.profileImage ?? '' },
+          [recievedUser.fcmID]: { name: recievedUser.name, profileImage: recievedUser.profileImage ?? '' },
         },
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),

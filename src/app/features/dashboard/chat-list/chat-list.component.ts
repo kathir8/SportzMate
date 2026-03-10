@@ -41,14 +41,6 @@ export class ChatListComponent {
 
   readonly filteredChats = toSignal(this.chatsObservable, { initialValue: [] });
 
-  constructor() {
-    effect(() => {
-      console.log('Current user FCMID:', this.currentUser()?.fcmID);
-      console.log('Filtered chats:', this.filteredChats());
-    });
-  }
-
-
   formatTime(timestamp: Timestamp): string {
       if (!timestamp) return '';
     return formatChatListTime(new Timestamp(timestamp.seconds, timestamp.nanoseconds).toMillis());
@@ -80,7 +72,6 @@ export class ChatListComponent {
      this.router.navigate(['dashboard/chat'],
        {
         state: {
-          fromUrl: this.router.url,
           recievedMate: { fcmID: mate.fcmID, profileImage: mate.profileImage, name: mate.name }
         }
       }

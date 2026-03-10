@@ -1,22 +1,23 @@
-import { DatePipe } from '@angular/common';
 import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
+import { Timestamp } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonIcon, IonTitle } from '@ionic/angular/standalone';
 import { attachOutline, closeOutline, happyOutline, sendOutline } from 'ionicons/icons';
-import { switchMap } from 'rxjs';
+import { map, switchMap } from 'rxjs';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
-import { ChatMessage, ChatService } from './chat.service';
+import { formatChatMessageTime } from 'src/app/shared/utils/date-utils';
 import { RecievedUser } from '../chat.model';
+import { ChatMessage, ChatService } from './chat.service';
 
 @Component({
   selector: 'app-chat',
   templateUrl: './chat.component.html',
   styleUrls: ['./chat.component.scss'],
-  imports: [IonTitle, IonContent, FormsModule, DatePipe, IonIcon, IonicInputComponent, HeaderComponent]
+  imports: [IonTitle, IonContent, FormsModule, IonIcon, IonicInputComponent, HeaderComponent]
 })
 export class ChatComponent {
 
@@ -24,11 +25,10 @@ export class ChatComponent {
   private readonly userStore = inject(UserStore);
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
-  // private readonly navHistory = inject(NavigationHistoryService);
 
   readonly icons = { happyOutline, attachOutline, sendOutline, closeOutline };
 
-  private readonly recievedUser = signal<RecievedUser | null>(
+  readonly recievedUser = signal<RecievedUser | null>(
     window.history.state?.recievedMate ?? null
   );
 
@@ -72,7 +72,16 @@ export class ChatComponent {
 
   readonly messages: Signal<ChatMessage[]> = toSignal(
     toObservable(this.roomId).pipe(
-      switchMap(roomId => this.chatService.getMessages(roomId))
+      switchMap(roomId => this.chatService.getMessages(roomId)),
+      map(messages =>
+        messages.map(msg => ({
+          ...msg,
+          updatedAt: new Timestamp(
+            msg.timestamp.seconds,
+            msg.timestamp.nanoseconds
+          )
+        }))
+      )
     ),
     { initialValue: [] }
   );
@@ -105,6 +114,14 @@ export class ChatComponent {
 
   getMsgSide(senderId: string): 'sender' | 'reciever' {
     return senderId === this.currentUid() ? 'sender' : 'reciever';
+  }
+
+  formatMsgTime(timestamp: Timestamp): string {
+
+    if (!timestamp) return '';
+
+    const date = timestamp.toDate();
+    return formatChatMessageTime(date.getTime());
   }
 
   isMessageFirstInGroup(currentSenderIsMe: string, index: number): boolean {
