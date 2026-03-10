@@ -1,6 +1,8 @@
+import { Location } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { IonContent, IonFooter, IonTitle } from "@ionic/angular/standalone";
+import { CommonService } from 'src/app/core/services/common.service';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
 import { IonicAccordionComponent, IonicAccordionItem } from 'src/app/shared/components/ionic-accordion/ionic-accordion.component';
 import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ionic-button.component";
@@ -9,10 +11,8 @@ import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce
 import { EventDetailApiResp, RequestedMember } from '../../home/mate-stuff/models/mate.model';
 import { HomeApiService } from '../../home/services/home-api-service';
 import { MateDetailComponent } from '../../mate-detail/mate-detail.component';
-import { MoreInvitesListComponent } from './more-invites-list/more-invites-list.component';
 import { CancelEventComponent } from './cancel-event/cancel-event.component';
-import { CommonService } from 'src/app/core/services/common.service';
-import { AcceptReject } from '../../requests/models/requests.model';
+import { MoreInvitesListComponent } from './more-invites-list/more-invites-list.component';
 
 @Component({
   selector: 'app-my-event',
@@ -24,7 +24,8 @@ import { AcceptReject } from '../../requests/models/requests.model';
 export class MyEventComponent {
 
   private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
+  private location = inject(Location);
+
 
   private readonly bottomSheet = inject(BottomSheetService);
   private readonly homeApi = inject(HomeApiService);
@@ -86,7 +87,7 @@ export class MyEventComponent {
   }
 
   handleBack() {
-    this.router.navigate(['/dashboard/events']);
+    this.location.back();
   }
 
   async cancelEvent() {

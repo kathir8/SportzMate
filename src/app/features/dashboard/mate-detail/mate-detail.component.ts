@@ -1,4 +1,4 @@
-import { CommonModule, UpperCasePipe } from '@angular/common';
+import { CommonModule, Location, UpperCasePipe } from '@angular/common';
 import { Component, computed, DestroyRef, effect, inject, input, OnInit, signal } from '@angular/core';
 import { takeUntilDestroyed } from '@angular/core/rxjs-interop';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
@@ -30,6 +30,8 @@ export class MateDetailComponent implements OnInit {
   private readonly route = inject(ActivatedRoute);
   private readonly router = inject(Router);
   private readonly destroyRef = inject(DestroyRef);
+  private location = inject(Location);
+
 
   private readonly homeApi = inject(HomeApiService);
   private readonly userStore = inject(UserStore);
@@ -65,7 +67,7 @@ export class MateDetailComponent implements OnInit {
     if (this.showInterestBtn()) {
       return 'from-mate-detail';
     }
-    if(this.fromPage()){
+    if (this.fromPage()) {
       return this.fromPage();
     }
     return '';
@@ -75,10 +77,10 @@ export class MateDetailComponent implements OnInit {
     effect(() => {
       if (this.mateInput()) {
         this.mate.set(this.mateInput()!);
-         return;
+        return;
       }
 
-       if (this.eventId()) {
+      if (this.eventId()) {
         this.homeApi.getEventDetails(this.eventId()).subscribe((res: EventDetailApiResp) => {
           if (res.rspFlg) {
             this.headingText.set(this.commonService.selectedSports(res.eventDetails?.sportId)?.sportsName || '');
@@ -131,8 +133,7 @@ export class MateDetailComponent implements OnInit {
 
 
   handleBack() {
-    const url = this.showInterestBtn() ? '/dashboard/home' : '/dashboard/requests';
-    this.router.navigate([url]);
+    this.location.back();
   }
 
 

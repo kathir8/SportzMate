@@ -1,8 +1,8 @@
+import { Location } from '@angular/common';
 import { Component, computed, inject, Signal, signal } from '@angular/core';
 import { toObservable, toSignal } from '@angular/core/rxjs-interop';
 import { Timestamp } from '@angular/fire/firestore';
 import { FormsModule } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonIcon, IonTitle } from '@ionic/angular/standalone';
 import { attachOutline, closeOutline, happyOutline, sendOutline } from 'ionicons/icons';
 import { map, switchMap } from 'rxjs';
@@ -23,8 +23,8 @@ export class ChatComponent {
 
   private readonly chatService = inject(ChatService);
   private readonly userStore = inject(UserStore);
-  private readonly route = inject(ActivatedRoute);
-  private readonly router = inject(Router);
+  private location = inject(Location);
+
 
   readonly icons = { happyOutline, attachOutline, sendOutline, closeOutline };
 
@@ -136,6 +136,6 @@ export class ChatComponent {
   }
 
   handleBack() {
-    this.router.navigate(['/dashboard/chat-list']);
+    this.location.back();
   }
 }
