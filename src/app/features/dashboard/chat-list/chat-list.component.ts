@@ -58,6 +58,13 @@ export class ChatListComponent {
     return chat.participants.find(id => id !== this.currentUser()!.fcmID) ?? '';
   }
 
+  getOtherUser(chat: ChatDocument, fcmID: string): RecievedUser & { fcmID: string } {
+    return {
+      ...chat.participantDetails[fcmID],
+      fcmID
+    };
+  }
+
   getUnreadCount(chat: ChatDocument): number {
     return chat.unreadCount?.[this.currentUser()!.fcmID] ?? 0;
   }

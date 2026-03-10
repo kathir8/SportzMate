@@ -12,10 +12,9 @@
 
     @for(chat of filteredChats(); track chat.chatId) {
 
-        @let otherUserId = getOtherUserId(chat);
-        @let otherUser = chat.participantDetails[otherUserId];
-        @let unread = getUnreadCount(chat);
-
+    @let otherUserId = getOtherUserId(chat);
+    @let otherUser = getOtherUser(chat, otherUserId);
+    @let unread = getUnreadCount(chat);
     <div (click)="openChat(otherUser)" class="chat-list">
       <div class="member-icon">
         <img [src]="otherUser.profileImage" />

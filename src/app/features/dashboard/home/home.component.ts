@@ -194,8 +194,6 @@ export class HomeComponent {
         );
 
         if (countryComponent) {
-          console.log("Country detected:", countryComponent.short_name);
-          console.log("Country detected:", countryComponent);
           this.userStore.updateCurrent('currentLocationCountry', countryComponent.short_name);
         }
       }
