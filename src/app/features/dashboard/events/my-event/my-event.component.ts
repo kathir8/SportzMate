@@ -98,4 +98,9 @@ export class MyEventComponent {
     });
   }
 
+
+  groupMessage(){
+    
+  }
+
 }

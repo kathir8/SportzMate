@@ -5,9 +5,15 @@
         --border-radius: 18px;
     }
 
-    .name-place {
-        font-weight: bold;
-        font-size: 15px;
-        display: block;
+    .detail-container {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        .name-place {
+            font-weight: bold;
+            font-size: 15px;
+            display: block;
+        }
     }
 }
