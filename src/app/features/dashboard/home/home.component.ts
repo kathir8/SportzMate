@@ -7,6 +7,7 @@ import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
 import { CommonService } from 'src/app/core/services/common.service';
 import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
+import { PushNotificationService } from 'src/app/core/services/push-notification.service';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { Coordinates } from 'src/app/shared/models/shared.model';
@@ -30,6 +31,7 @@ export class HomeComponent {
   private readonly homeApi = inject(HomeApiService);
   private readonly userStore = inject(UserStore);
   private readonly loader = inject(GlobalLoadingService);
+  private readonly pushNotificationService = inject(PushNotificationService);
   private readonly router = inject(Router);
   readonly commonService = inject(CommonService);
 
@@ -63,6 +65,7 @@ export class HomeComponent {
   });
 
   constructor() {
+    this.updateFCMToken();
     effect((onCleanup) => {
       const currentSearchTerm = this.rawSearchTerm();
 
@@ -94,6 +97,10 @@ export class HomeComponent {
 
   async ngAfterViewInit() {
     await this.refreshData();
+  }
+
+  private updateFCMToken() {
+    this.pushNotificationService.updateFCMToken(this.currentUser()!.userID)
   }
 
 

@@ -1,19 +1,25 @@
-import { HttpClient } from '@angular/common/http';
 import { inject, Injectable, signal } from '@angular/core';
 import { Capacitor } from '@capacitor/core';
+import { Device } from '@capacitor/device';
 import { ActionPerformed, PushNotifications, PushNotificationSchema, Token } from '@capacitor/push-notifications';
+import { FcmDetail } from '../model/user.model';
+import { ApiService } from './api.service';
 
+interface updateFCMApi {
+  userId: string;
+  fcmTokenDetails: FcmDetail;
+}
 @Injectable({
   providedIn: 'root'
 })
 export class PushNotificationService {
 
-  private http = inject(HttpClient);
+  private api = inject(ApiService);
+
 
   readonly fcmToken = signal<string | null>(null);
 
   private readonly LOCAL_STORAGE_KEY = 'sportzmate_fcm_token';
-
 
   async initializePush(): Promise<void> {
 
@@ -66,21 +72,33 @@ export class PushNotificationService {
     return localStorage.getItem(this.LOCAL_STORAGE_KEY);
   }
 
-  registerUserDevice(userUid: string): void {
-// this.pushNotificationService.registerUserDevice(user.uid);
-    const token = this.getStoredToken();
+  async registerUserDevice(): Promise<FcmDetail | null> {
+    const fcmToken = this.getStoredToken();
 
-    if (!token) {
+    if (!fcmToken) {
       console.warn('FCM token not available');
-      return;
+      return null;
     }
 
-    const payload = {
-      userUid,
-      fcmToken: token,
-      deviceType: Capacitor.getPlatform()
+    const deviceName = await Device.getInfo();
+    const deviceIdObj = await Device.getId();
+    const deviceType = Capacitor.getPlatform();
+
+    const fcmDetail: FcmDetail = {
+      fcmToken,
+      deviceType,
+      deviceName: deviceName.model,
+      deviceId: deviceIdObj.identifier,
+      isActive: true
     };
 
-    this.http.post('/api/user-devices', payload).subscribe();
+    return fcmDetail;
+  }
+
+  async updateFCMToken(userId: string) {
+    const fcmTokenDetails = await this.registerUserDevice();
+    if (fcmTokenDetails) {
+      this.api.post<updateFCMApi, {}>('notification/register-token', { userId, fcmTokenDetails });
+    }
   }
 }

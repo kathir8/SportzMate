@@ -15,5 +15,5 @@ export interface ParticipantDetails {
 }
 
 export interface RecievedUser extends ParticipantDetails { 
-  fcmID: string; 
+  userID: string; 
 }

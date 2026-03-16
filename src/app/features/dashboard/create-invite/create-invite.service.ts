@@ -13,7 +13,7 @@ export interface InviteForm {
   longitude:number | null;
   totalVacancy:number;
   sportId:number;
-  userID:number;
+  userID:string;
   eventDateTime:number;
 };
 

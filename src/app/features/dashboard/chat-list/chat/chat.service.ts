@@ -43,7 +43,7 @@ export class ChatService {
 
   //  Call this when user opens a chat / clicks on a user to chat
   async getOrCreateChat(currentUser: UserDetail, recievedUser: RecievedUser): Promise<string> {
-    const roomId = this.getRoomId(currentUser.fcmID, recievedUser.fcmID);
+    const roomId = this.getRoomId(currentUser.userID, recievedUser.userID);
 
     const chatDocRef = doc(this.firestore, 'messages', roomId);
     const chatSnap = await getDoc(chatDocRef);
@@ -51,10 +51,10 @@ export class ChatService {
     if (!chatSnap.exists()) {
       // 🆕 Chat doesn't exist — create it with participants field
       await setDoc(chatDocRef, {
-        participants: [currentUser.fcmID, recievedUser.fcmID],
+        participants: [currentUser.userID, recievedUser.userID],
         participantDetails: {
-          [currentUser.fcmID]: { name: currentUser.name, profileImage: currentUser.profileImage ?? '' },
-          [recievedUser.fcmID]: { name: recievedUser.name, profileImage: recievedUser.profileImage ?? '' },
+          [currentUser.userID]: { name: currentUser.name, profileImage: currentUser.profileImage ?? '' },
+          [recievedUser.userID]: { name: recievedUser.name, profileImage: recievedUser.profileImage ?? '' },
         },
         createdAt: serverTimestamp(),
         updatedAt: serverTimestamp(),

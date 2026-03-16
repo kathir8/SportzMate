@@ -47,18 +47,18 @@ export class ChatListComponent {
   }
 
   getOtherUserId(chat: ChatDocument): string {
-    return chat.participants.find(id => id !== this.currentUser()!.fcmID) ?? '';
+    return chat.participants.find(id => id !== this.currentUser()!.userID) ?? '';
   }
 
-  getOtherUser(chat: ChatDocument, fcmID: string): RecievedUser & { fcmID: string } {
+  getOtherUser(chat: ChatDocument, userID: string): RecievedUser & { userID: string } {
     return {
-      ...chat.participantDetails[fcmID],
-      fcmID
+      ...chat.participantDetails[userID],
+      userID
     };
   }
 
   getUnreadCount(chat: ChatDocument): number {
-    return chat.unreadCount?.[this.currentUser()!.fcmID] ?? 0;
+    return chat.unreadCount?.[this.currentUser()!.userID] ?? 0;
   }
 
 
@@ -72,7 +72,7 @@ export class ChatListComponent {
      this.router.navigate(['dashboard/chat'],
        {
         state: {
-          recievedMate: { fcmID: mate.fcmID, profileImage: mate.profileImage, name: mate.name }
+          recievedMate: { userID: mate.userID, profileImage: mate.profileImage, name: mate.name }
         }
       }
     );

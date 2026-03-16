@@ -13,7 +13,7 @@ export interface MyRequests extends Requests {
 }
 
 export interface EventsApi {
-    userId: number;
+    userId: string;
     statusFilter?: AcceptReject;
     page: number;
     size: number;
@@ -52,7 +52,7 @@ export enum AcceptReject {
 
 export interface ProcessRequestApi {
     approvalId: number;
-    eventCreatorId: number;
+    eventCreatorId: string;
     action: AcceptReject;
 }
 

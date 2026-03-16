@@ -10,7 +10,7 @@ import { CancelEventApiService } from './cancel-event-api.service';
 
 export interface deleteApi {
   eventId: number;
-  userId: number;
+  userId: string;
   deleteReason: string
 }
 

@@ -20,7 +20,7 @@ export interface MateDetail extends MateListItem {
 
 export interface eventListApi extends Coordinates {
     radius: number,
-    userId: number,
+    userId: string,
     page: number,
     size: number,
 }
@@ -47,7 +47,7 @@ export interface RequestedMember{
 
 export interface requestJoinApi {
     eventId: number,
-    userId: number,
+    userId: string,
 }
 
 export interface requestJoinApiResp extends ApiResp {

@@ -1,6 +1,5 @@
 import { ApiResp } from "src/app/shared/models/shared.model";
 
-
 export class ProfileInfo {
   age?: string = '';
   email: string = '';
@@ -8,14 +7,23 @@ export class ProfileInfo {
   gender: 'male' | 'female' | null = null;
   name: string = '';
   profileImage: string = '';
-  userID: number = 0;
 }
 export class UserDetail extends ProfileInfo {
 
   userLoginFlag: boolean = false;
-  fcmID: string = '';
+  userID: string = '';
   interestedSportsIds: string = '';
   currentLocationCountry: string = '';
+  fcmDetail: FcmDetail = new FcmDetail();
+}
+
+
+export class FcmDetail {
+  fcmToken: string = '';
+  deviceType: string = '';
+  deviceId: string = '';
+  deviceName: string = '';
+  isActive: boolean = true;
 }
 
 

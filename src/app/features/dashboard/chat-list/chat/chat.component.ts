@@ -35,11 +35,11 @@ export class ChatComponent {
   private readonly currentUser = this.userStore.getCurrent();
 
   readonly currentUid = computed(() => {
-    return this.currentUser()!.fcmID;
+    return this.currentUser()!.userID;
   });
 
   readonly receiverUid = computed(() => {
-    return this.recievedUser()?.fcmID;
+    return this.recievedUser()?.userID;
   });
 
 

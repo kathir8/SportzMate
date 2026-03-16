@@ -160,7 +160,7 @@ export class HomeApiService {
 
 
   getEventDetails(eventId: number): Observable<EventDetailApiResp> {
-    return this.api.post<{ eventId: number, userId: number }, EventDetailApiResp>(`eventApproval/getEventDetails`, { eventId,
+    return this.api.post<{ eventId: number, userId: string }, EventDetailApiResp>(`eventApproval/getEventDetails`, { eventId,
       userId : this.currentUser()!.userID
      })
       .pipe(

@@ -8,6 +8,7 @@ import { ApiResp } from 'src/app/shared/models/shared.model';
 import { UserDetail, UserExist, UserRegisterApi, UserRegisterApiResp } from '../model/user.model';
 import { GlobalLoadingService } from './global-loading-service';
 import { UserApiService } from './user-api-service';
+import { PushNotificationService } from './push-notification.service';
 
 @Injectable({
   providedIn: 'root',
@@ -18,6 +19,7 @@ export class UserService {
   private readonly auth = inject(AuthService);
   private readonly router = inject(Router);
   private readonly loader = inject(GlobalLoadingService);
+  private readonly pushNotificationService = inject(PushNotificationService);
 
 
   initializeUser() {
@@ -28,7 +30,7 @@ export class UserService {
       this.redirectToLogin();
       return;
     }
-    this.auth.updateUid(cached.fcmID);
+    this.auth.updateUid(cached.userID);
     this.navigateAfterUserLoad();
   }
 
@@ -62,7 +64,7 @@ export class UserService {
     const request = new UserRegisterApi();
     request.name = user.displayName || '';
     request.email = user.email!
-    request.fcmID = user.uid!
+    request.userID = user.uid!
     request.profileImage = user.photoURL || '';
     request.userLoginFlag = fromGoogle;
     request.interestedSportsIds = '';
@@ -76,7 +78,11 @@ export class UserService {
     });
   }
 
-  updateUser(user: UserDetail) {
+  async updateUser(user: UserDetail) {
+    const fcmDetail = await this.pushNotificationService.registerUserDevice();
+    if (fcmDetail) {
+      user.fcmDetail = fcmDetail;
+    }
     this.userApi.updateUser(user).subscribe((res: UserDetail) => {
       this.updateUserDetails(res);
     });
@@ -107,7 +113,7 @@ export class UserService {
 
   private updateUserDetails(user: UserDetail) {
     this.userStore.setCurrent(user);
-    this.auth.updateUid(user.fcmID);
+    this.auth.updateUid(user.userID);
     this.navigateAfterUserLoad();
   }
 
@@ -118,7 +124,7 @@ export class UserService {
 
   logOut() {
     this.auth.logout();
-     this.userStore.clear();
+    this.userStore.clear();
     this.router.navigateByUrl('/login', { replaceUrl: true });
     SplashScreen.hide();
   }
