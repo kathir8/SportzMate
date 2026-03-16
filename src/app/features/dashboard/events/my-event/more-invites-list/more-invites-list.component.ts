@@ -8,6 +8,7 @@ import { NoMateFoundComponent } from "../../../home/mate-stuff/no-mate-found/no-
 import { AcceptReject, ProcessRequestApiResp } from '../../../requests/models/requests.model';
 import { InviteApiService } from '../../../requests/services/invite-api-service';
 import { InvitesMateBasicComponent } from "./invites-mate-basic/invites-mate-basic.component";
+import { ChatService } from '../../../chat-list/chat/chat.service';
 
 @Component({
   selector: 'app-more-invites-list',
@@ -21,6 +22,7 @@ export class MoreInvitesListComponent {
   private readonly inviteApiService = inject(InviteApiService);
   private readonly toast = inject(IonicToastService);
   private readonly signalService = inject(SignalService);
+  private readonly chatService = inject(ChatService);
 
   /** incoming data from parent */
   readonly responseList = input<RequestedMember[]>([]);
@@ -40,6 +42,10 @@ export class MoreInvitesListComponent {
       this.toast.show(res.rspMsg);
       if (res.rspFlg) {
         this.signalService.removeItemByKey(this.displayList, 'id', res.eventId);
+
+        if(payload.accepted){
+          // this.chatService.handleGroupCreationAfterAccept(res);
+        }
       }
     });
   }

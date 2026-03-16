@@ -102,6 +102,35 @@ export class ChatService {
     return collectionData<ChatMessage>(q, { idField: 'id' });
   }
 
+
+  // async handleGroupCreationAfterAccept(res: ProcessRequestApiResp) {
+
+  //   const eventRef = doc(this.firestore, `events/${res.eventId}`);
+  //   const eventSnap = await getDoc(eventRef);
+
+  //   if (!eventSnap.exists()) return;
+
+  //   const event = eventSnap.data() as any;
+
+  //   let groupId = event.groupId;
+
+  //   if (!groupId) {
+
+  //     groupId = await this.createGroup(
+  //       res.eventId,
+  //       res.eventName,
+  //       [res.eventOwnerId, res.acceptedUserId]
+  //     );
+
+  //     await updateDoc(eventRef, { groupId });
+
+  //   } else {
+
+  //     await this.addMember(groupId, res.acceptedUserId);
+
+  //   }
+  // }
+
   async createGroup(name: string, members: string[]) {
     const groupsRef = collection(this.firestore, 'groups');
     const docRef = await addDoc(groupsRef, {
