@@ -38,6 +38,8 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
     effect(() => {
       if (this.responseList()?.length) {
         this.signalService.setList(this.displayList, this.responseList())
+      }else{
+        this.signalService.setList(this.displayList, [])
       }
     })
 

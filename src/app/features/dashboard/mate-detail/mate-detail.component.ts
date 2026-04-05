@@ -17,6 +17,7 @@ import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { MateBasicComponent } from "../home/mate-stuff/mate-basic/mate-basic.component";
 import { EventDetailApiResp, requestJoinApi } from '../home/mate-stuff/models/mate.model';
 import { HomeApiService } from '../home/services/home-api-service';
+import { AcceptReject } from '../requests/models/requests.model';
 
 @Component({
   selector: 'app-mate-detail',
@@ -148,7 +149,7 @@ export class MateDetailComponent implements OnInit {
       if (res.rspFlg) {
         this.commonStore.setMatchActionEventId(this.eventId());
 
-      } else if (res.status !== 'PENDING') {
+      } else if (res.status !== AcceptReject.Pending) {
         this.disableBtn.set(false);
       }
     });

@@ -41,8 +41,7 @@ export class MoreInvitesListComponent {
     this.inviteApiService.ProcessJoinRequests(payload.item!, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
       this.toast.show(res.rspMsg);
       if (res.rspFlg) {
-        this.signalService.removeItemByKey(this.displayList, 'id', res.eventId);
-
+        this.selectedMate().status = payload.accepted ? AcceptReject.Accepted : AcceptReject.Rejected;
         if(payload.accepted){
           // this.chatService.handleGroupCreationAfterAccept(res);
         }

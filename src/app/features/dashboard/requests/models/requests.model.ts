@@ -1,15 +1,16 @@
 import { ProfileInfo } from "src/app/core/model/user.model";
 import { ApiResp, Coordinates, EventBasic, ScrollList, SportType } from "src/app/shared/models/shared.model";
 
-export interface Requests extends EventBasic {
-    approvalId: number;
+export interface Requests extends RequestBasic, EventBasic { }
+
+export interface RequestBasic {
     remarks: string;
     requestDateTime: number;
     responseDateTime: number;
-    status: string;
+    status: AcceptReject;
 }
 export interface MyRequests extends Requests {
-    eventCreator:ProfileInfo;
+    eventCreator: ProfileInfo;
 }
 
 export interface EventsApi {
@@ -41,7 +42,7 @@ export interface myEventsApiResp extends ScrollList {
 }
 export interface JoinRequests extends Requests {
     activeStatus: string;
-    interestedUser:ProfileInfo;
+    interestedUser: ProfileInfo;
 }
 
 export enum AcceptReject {
@@ -60,7 +61,7 @@ export interface ProcessRequestApiResp extends ApiResp {
     approvalId: number;
     eventId: number;
     interestedUserId: number,
-    status: string,
+    status: AcceptReject,
     responseDateTime: number
 }
 

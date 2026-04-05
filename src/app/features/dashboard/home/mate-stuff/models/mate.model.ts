@@ -1,6 +1,6 @@
-import { ProfileInfo } from 'src/app/core/model/user.model';
+import { ProfileInfo, UserDetail } from 'src/app/core/model/user.model';
 import { ApiResp, Coordinates, EventBasic, ScrollList } from 'src/app/shared/models/shared.model';
-import { AcceptReject, Requests } from '../../../requests/models/requests.model';
+import { AcceptReject, RequestBasic, Requests } from '../../../requests/models/requests.model';
 
 export interface MateListItem extends EventBasic {
     // sport: SportType;
@@ -39,10 +39,10 @@ export interface EventDetailApiResp extends ApiResp{
  joinRequests:RequestedMember[];
 }
 
-export interface RequestedMember{
+export interface RequestedMember extends RequestBasic{
     approvalId:number
-    id:number;
     status: AcceptReject;
+    interestedUser:UserDetail;
 }
 
 export interface requestJoinApi {
@@ -51,7 +51,7 @@ export interface requestJoinApi {
 }
 
 export interface requestJoinApiResp extends ApiResp {
-  status : 'PENDING'
+  status : AcceptReject.Pending;
 }
 
 export interface AcceptOrReject {
