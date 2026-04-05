@@ -98,7 +98,7 @@ export class PushNotificationService {
   async updateFCMToken(userId: string) {
     const fcmTokenDetails = await this.registerUserDevice();
     if (fcmTokenDetails) {
-      this.api.post<updateFCMApi, {}>('notification/register-token', { userId, fcmTokenDetails });
+      this.api.post<updateFCMApi, {}>('notification/register-token', { userId, fcmTokenDetails }).subscribe();
     }
   }
 }
