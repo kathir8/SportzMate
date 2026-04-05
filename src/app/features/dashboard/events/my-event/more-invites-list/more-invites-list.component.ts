@@ -43,7 +43,7 @@ export class MoreInvitesListComponent {
       if (res.rspFlg) {
         this.selectedMate().status = payload.accepted ? AcceptReject.Accepted : AcceptReject.Rejected;
         if(payload.accepted){
-          // this.chatService.handleGroupCreationAfterAccept(res);
+          this.chatService.handleGroupCreationAfterAccept(res);
         }
       }
     });

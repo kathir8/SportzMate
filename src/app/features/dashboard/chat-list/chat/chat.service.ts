@@ -4,6 +4,7 @@ import { firstValueFrom, Observable } from 'rxjs';
 import { UserDetail } from 'src/app/core/model/user.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { RecievedUser } from '../chat.model';
+import { ProcessRequestApiResp } from '../../requests/models/requests.model';
 
 
 export interface ChatMessage {
@@ -103,33 +104,33 @@ export class ChatService {
   }
 
 
-  // async handleGroupCreationAfterAccept(res: ProcessRequestApiResp) {
+  async handleGroupCreationAfterAccept(res: ProcessRequestApiResp) {
 
-  //   const eventRef = doc(this.firestore, `events/${res.eventId}`);
-  //   const eventSnap = await getDoc(eventRef);
+    // const eventRef = doc(this.firestore, `events/${res.eventId}`);
+    // const eventSnap = await getDoc(eventRef);
 
-  //   if (!eventSnap.exists()) return;
+    // if (!eventSnap.exists()) return;
 
-  //   const event = eventSnap.data() as any;
+    // const event = eventSnap.data() as any;
 
-  //   let groupId = event.groupId;
+    // let groupId = event.groupId;
 
-  //   if (!groupId) {
+    // if (!groupId) {
 
-  //     groupId = await this.createGroup(
-  //       res.eventId,
-  //       res.eventName,
-  //       [res.eventOwnerId, res.acceptedUserId]
-  //     );
+    //   groupId = await this.createGroup(
+    //     res.eventId,
+    //     res.eventName,
+    //     [res.eventOwnerId, res.acceptedUserId]
+    //   );
 
-  //     await updateDoc(eventRef, { groupId });
+    //   await updateDoc(eventRef, { groupId });
 
-  //   } else {
+    // } else {
 
-  //     await this.addMember(groupId, res.acceptedUserId);
+    //   await this.addMember(groupId, res.acceptedUserId);
 
-  //   }
-  // }
+    // }
+  }
 
   async createGroup(name: string, members: string[]) {
     const groupsRef = collection(this.firestore, 'groups');

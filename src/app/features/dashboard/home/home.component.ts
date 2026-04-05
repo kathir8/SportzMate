@@ -95,8 +95,8 @@ export class HomeComponent {
     });
   }
 
-  async ngAfterViewInit() {
-    await this.refreshData();
+   ngAfterViewInit() {
+     this.refreshData();
   }
 
   private updateFCMToken() {
