@@ -1,7 +1,7 @@
 import { CommonModule } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { Router } from '@angular/router';
+import { NavigationEnd, Router } from '@angular/router';
 import { IonAvatar, IonContent, IonIcon, IonImg, IonLabel, IonRefresher, IonRefresherContent, IonSegment, IonSegmentButton, IonSegmentContent, IonSegmentView, IonTitle } from '@ionic/angular/standalone';
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
@@ -17,6 +17,7 @@ import { eventListApi, eventListApiResp, MateListItem } from './mate-stuff/model
 import { RangeFabComponent } from './range-fab/range-fab.component';
 import { HomeApiService } from './services/home-api-service';
 import { HomeService } from './services/home-service';
+import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-home',
@@ -96,7 +97,13 @@ export class HomeComponent {
   }
 
    ngAfterViewInit() {
-     this.refreshData();
+     this.router.events
+     .pipe(filter(event => event instanceof NavigationEnd))
+     .subscribe((event: NavigationEnd) => {
+      if (event.urlAfterRedirects === '/dashboard/home') {
+        this.refreshData();
+      }
+    });
   }
 
   private updateFCMToken() {
