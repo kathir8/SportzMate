@@ -7,3 +7,33 @@ ion-input {
 ion-toolbar {
     --ion-toolbar-color: var(--ion-color-primary) !important;
 }
+
+/* ============================================
+   Safe Area Handling for Ionic Components
+   ============================================ */
+
+/* Headers should respect the top safe area (for notched devices) */
+ion-header {
+    ion-toolbar:first-of-type {
+        padding-top: var(--ion-safe-area-top, 0);
+        --padding-top: var(--ion-safe-area-top, 0);
+    }
+}
+
+/* Tab bar should respect bottom safe area */
+ion-tab-bar {
+    padding-bottom: var(--ion-safe-area-bottom, 0);
+    --padding-bottom: var(--ion-safe-area-bottom, 0);
+    height: calc(56px + var(--ion-safe-area-bottom, 0));
+}
+
+/* FABs need adjustment when tabs are present */
+ion-fab {
+    &[vertical="bottom"] {
+        bottom: calc(var(--offset-bottom, 0px) + var(--ion-safe-area-bottom, 0));
+    }
+}
+
+/* ============================================
+   End Safe Area Handling
+   ============================================ */

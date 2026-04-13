@@ -1,6 +1,7 @@
 import { Component, computed, effect, inject, viewChild } from '@angular/core';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { IonApp, IonRouterOutlet, IonSpinner } from '@ionic/angular/standalone';
+import { StatusBar, Style } from '@capacitor/status-bar';
+import { IonApp, IonRouterOutlet, IonSpinner, Platform } from '@ionic/angular/standalone';
 import { IonicToastComponent } from 'src/app/shared/components/ionic-toast/ionic-toast.component';
 import { GlobalLoadingService } from './core/services/global-loading-service';
 import { UserService } from './core/services/user-service';
@@ -17,6 +18,7 @@ export class AppComponent {
 
   private readonly globalToast = viewChild.required<IonicToastComponent>('globalToast');
 
+  private readonly platform = inject(Platform);
   private readonly pushService = inject(PushNotificationService);
   private readonly toastService = inject(IonicToastService);
   private readonly loader = inject(GlobalLoadingService);
@@ -27,7 +29,7 @@ export class AppComponent {
 
 
   constructor() {
-    SplashScreen.show();
+    this.initializeApp();
     this.pushService.initializePush();
     this.userService.initializeUser();
     effect(() => {
@@ -36,6 +38,24 @@ export class AppComponent {
         this.toastService.register(toastInstance);
       }
     });
+  }
+
+  private async initializeApp(): Promise<void> {
+    await this.platform.ready();
+    
+    // Configure StatusBar
+    if (this.platform.is('capacitor')) {
+      try {
+        await StatusBar.setStyle({ style: Style.Light });
+        // Don't overlay webview - let safe areas handle spacing naturally
+        await StatusBar.setOverlaysWebView({ overlay: false });
+        await StatusBar.setBackgroundColor({ color: '#ffffff' });
+        
+        SplashScreen.show();
+      } catch (error) {
+        console.error('StatusBar configuration error:', error);
+      }
+    }
   }
 
 
