@@ -8,6 +8,7 @@ import { IonicAccordionComponent, IonicAccordionItem } from 'src/app/shared/comp
 import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ionic-button.component";
 import { EventBasic } from 'src/app/shared/models/shared.model';
 import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
+import { ChatService } from '../../chat-list/chat/chat.service';
 import { EventDetailApiResp, RequestedMember } from '../../home/mate-stuff/models/mate.model';
 import { HomeApiService } from '../../home/services/home-api-service';
 import { MateDetailComponent } from '../../mate-detail/mate-detail.component';
@@ -24,12 +25,11 @@ import { MoreInvitesListComponent } from './more-invites-list/more-invites-list.
 export class MyEventComponent {
 
   private readonly route = inject(ActivatedRoute);
-  private location = inject(Location);
-
-
+  private readonly location = inject(Location);
   private readonly bottomSheet = inject(BottomSheetService);
   private readonly homeApi = inject(HomeApiService);
   private readonly commonService = inject(CommonService);
+  private readonly chatService = inject(ChatService);
 
 
 
@@ -98,9 +98,32 @@ export class MyEventComponent {
     });
   }
 
+  async groupMessage() {
+    const event = this.mate();
+    if (!event) {
+      console.warn('Event not loaded yet');
+      return;
+    }
 
-  groupMessage(){
-    
+    const groupId = (event as any).groupId;
+    if (!groupId) {
+      console.warn('Group not created yet. No groupId found.');
+      return;
+    }
+
+    try {
+      // Load group messages
+      const messages = await this.chatService.loadGroupMessagesOnce(groupId);
+      console.log('Group messages loaded:', messages);
+
+      // TODO: Navigate to group chat component or open group chat dialog
+      // Example:
+      // await this.bottomSheet.open(GroupChatComponent, {
+      //   componentProps: { groupId }
+      // });
+    } catch (error) {
+      console.error('Error loading group messages:', error);
+    }
   }
 
 }

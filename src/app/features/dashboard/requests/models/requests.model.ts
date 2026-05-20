@@ -60,7 +60,8 @@ export interface ProcessRequestApi {
 export interface ProcessRequestApiResp extends ApiResp {
     approvalId: number;
     eventId: number;
-    interestedUserId: number,
+    eventName: string;
+    interestedUserId: string,
     status: AcceptReject,
     responseDateTime: number
 }

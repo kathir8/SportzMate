@@ -32,7 +32,7 @@ export class ChatService {
   private readonly currentUser = this.userStore.getCurrent();
 
   readonly currentUid = computed(() => {
-    return this.currentUser()?.userID;
+    return this.currentUser()!.userID;
   });
 
   // Create a unique room ID for two users
@@ -105,31 +105,40 @@ export class ChatService {
 
 
   async handleGroupCreationAfterAccept(res: ProcessRequestApiResp) {
+    
+    const eventRef = doc(this.firestore, `events/${String(res.eventId)}`);
+    let eventSnap = await getDoc(eventRef);
 
-    // const eventRef = doc(this.firestore, `events/${res.eventId}`);
-    // const eventSnap = await getDoc(eventRef);
+    // If event doesn't exist, create it
+    if (!eventSnap.exists()) {
+      await setDoc(eventRef, {
+        id: res.eventId,
+        name: res.eventName,
+        createdBy: this.currentUid(),
+        createdAt: serverTimestamp(),
+        updatedAt: serverTimestamp(),
+      });
+      eventSnap = await getDoc(eventRef);
+    }
 
-    // if (!eventSnap.exists()) return;
+    const event = eventSnap.data() as any;
 
-    // const event = eventSnap.data() as any;
+    let groupId = event.groupId;
 
-    // let groupId = event.groupId;
+    if (!groupId) {
 
-    // if (!groupId) {
+      groupId = await this.createGroup(
+        res.eventName,
+        [this.currentUid(), res.interestedUserId]
+      );
 
-    //   groupId = await this.createGroup(
-    //     res.eventId,
-    //     res.eventName,
-    //     [res.eventOwnerId, res.acceptedUserId]
-    //   );
+      await updateDoc(eventRef, { groupId });
 
-    //   await updateDoc(eventRef, { groupId });
+    } else {
 
-    // } else {
+      await this.addMember(groupId, res.interestedUserId);
 
-    //   await this.addMember(groupId, res.acceptedUserId);
-
-    // }
+    }
   }
 
   async createGroup(name: string, members: string[]) {
@@ -140,7 +149,7 @@ export class ChatService {
       createdBy: this.currentUid(),
       createdAt: serverTimestamp(),
     });
-
+    
     // return new groupId
     return docRef.id;
   }
@@ -175,12 +184,20 @@ export class ChatService {
     return docRef.id;
   }
 
-  async loadGroupMessagesOnce(groupId: string) {
-    if (!groupId) return [];
-    const ref = collection(this.firestore, `groups/${groupId}/chat`);
-    const q = query(ref, orderBy('timestamp'));
-    // convert observable to promise
-    return await firstValueFrom(collectionData(q, { idField: 'id' }));
+  async loadGroupMessagesOnce(groupId: string): Promise<any[]> {
+    if (!groupId) {
+      console.warn('groupId is required to load messages');
+      return [];
+    }
+    
+    try {
+      const ref = collection(this.firestore, `groups/${groupId}/chat`);
+      const q = query(ref, orderBy('timestamp', 'asc'));
+      return await firstValueFrom(collectionData(q, { idField: 'id' }));
+    } catch (error) {
+      console.error('Error loading group messages:', error);
+      return [];
+    }
   }
 
   async getGroupInfo(groupId: string) {
