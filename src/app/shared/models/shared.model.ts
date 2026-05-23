@@ -4,19 +4,19 @@ export interface ApiResp {
 }
 
 export enum SportType {
-  Badminton = 'Badminton',
-  Cricket = 'Cricket',
-  Cycling = 'Cycling',
-  Tennis = 'Tennis',
-  Football = 'Football',
-  Running = 'Running',
-  Swimming = 'Swimming',
-  Yoga = 'Yoga',
-  Basketball = 'Basketball',
+  Badminton = 1,
+  Cricket = 2,
+  Cycling = 3,
+  Tennis = 4,
+  Football = 5,
+  Running = 6,
+  Swimming = 7,
+  Yoga = 8,
+  Basketball = 9,
 }
 
 export interface SportsList {
-  sportID: number;
+  sportID: SportType;
   sportsName: string;
   sportsIcon: string;
   sportsImg: string;
@@ -46,7 +46,7 @@ export interface EventBasic extends Coordinates {
   profileImage: string;
   sportType: number;
   approvalId:number;
-  sportId: number;
+  sportId: SportType;
 }
 
 export interface Coordinates { latitude: number; longitude: number; }

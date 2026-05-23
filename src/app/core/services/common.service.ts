@@ -1,6 +1,6 @@
 import { inject, Injectable } from '@angular/core';
 import { ProfileInfo } from '../model/user.model';
-import { Coordinates, GeoLatLng } from 'src/app/shared/models/shared.model';
+import { Coordinates, GeoLatLng, SportType } from 'src/app/shared/models/shared.model';
 import { CommonStore } from '../stores/common-store';
 
 @Injectable({
@@ -33,7 +33,7 @@ export class CommonService {
     return { lat: coords.latitude, lng: coords.longitude }
   }
 
-  selectedSports(id: number){
+  selectedSports(id: SportType){
     return this.commonStore.sports().find(x=>x.sportID === id);
   }
 

@@ -14,6 +14,7 @@ import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-t
 import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
 import { formatToLocalTime } from 'src/app/shared/utils/date-utils';
 import { CreateInviteService, InviteForm, InviteFormApiResp } from './create-invite.service';
+import { SportType } from 'src/app/shared/models/shared.model';
 
 @Component({
   selector: 'app-create-invite',
@@ -77,7 +78,7 @@ export class CreateInviteComponent {
   }
 
 
-  onSportSelected(sportId: number | null): void {
+  onSportSelected(sportId: SportType | null): void {
     if (sportId) {
       this.updateFormManually('sportId', sportId);
     }

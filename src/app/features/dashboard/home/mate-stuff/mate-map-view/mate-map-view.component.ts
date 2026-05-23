@@ -4,7 +4,7 @@ import { IonContent, IonIcon } from '@ionic/angular/standalone';
 import { chatboxOutline, thumbsUpOutline } from 'ionicons/icons';
 import { CommonService } from 'src/app/core/services/common.service';
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
-import { Coordinates, GeoLatLng } from 'src/app/shared/models/shared.model';
+import { Coordinates, GeoLatLng, SportType } from 'src/app/shared/models/shared.model';
 import { HomeService } from '../../services/home-service';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { MateListItem } from '../models/mate.model';
@@ -340,7 +340,7 @@ export class MateMapViewComponent {
   }
 
   // small utility to produce emoji per game
-  private gameEmoji(id: number) {
+  private gameEmoji(id: SportType) {
     return this.commonService.selectedSports(id)?.sportsIcon || '🎯'
   }
 

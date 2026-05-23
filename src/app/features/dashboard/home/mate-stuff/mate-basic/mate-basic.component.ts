@@ -6,7 +6,7 @@ import { DATE_FORMATS } from 'src/app/core/constants';
 import { CommonService } from 'src/app/core/services/common.service';
 import { AcceptOrRejectComponent } from "src/app/shared/components/accept-or-reject/accept-or-reject.component";
 import { IonicBadgeComponent } from 'src/app/shared/components/ionic-badge/ionic-badge.component';
-import { EventBasic } from 'src/app/shared/models/shared.model';
+import { EventBasic, SportType } from 'src/app/shared/models/shared.model';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { Requests } from '../../../requests/models/requests.model';
 import { AcceptOrReject } from '../models/mate.model';
@@ -68,5 +68,32 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
       return m.status;
     }
     return null;
+  }
+
+  spotIcon() {
+    const m = this.mate();
+    if (!m) return 'cup-star';
+    switch (m.sportId) {
+      case SportType.Badminton:
+        return 'badminton';
+      case SportType.Cricket:
+        return 'cricket';
+      case SportType.Cycling:
+        return 'bicycle';
+      case SportType.Tennis:
+        return 'tennis';
+      case SportType.Football:
+        return 'football';
+      case SportType.Running:
+        return 'running';
+      case SportType.Swimming:
+        return 'swimming';
+      case SportType.Yoga:
+        return 'yoga';
+      case SportType.Basketball:
+        return 'basketball';
+      default:
+        return 'cup-star';
+    }
   }
 }

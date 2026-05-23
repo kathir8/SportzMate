@@ -1,5 +1,5 @@
 import { ProfileInfo, UserDetail } from 'src/app/core/model/user.model';
-import { ApiResp, Coordinates, EventBasic, ScrollList } from 'src/app/shared/models/shared.model';
+import { ApiResp, Coordinates, EventBasic, ScrollList, SportType } from 'src/app/shared/models/shared.model';
 import { AcceptReject, RequestBasic, Requests } from '../../../requests/models/requests.model';
 
 export interface MateListItem extends EventBasic {
@@ -8,7 +8,7 @@ export interface MateListItem extends EventBasic {
     // participants: number[];
     // coords: Coordinates;
     distanceKm?: number;
-    sportId:number;
+    sportId:SportType;
     eventId: number;
     invitedUser:ProfileInfo;
 }

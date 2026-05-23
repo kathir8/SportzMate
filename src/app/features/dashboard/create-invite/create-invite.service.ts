@@ -1,7 +1,7 @@
 import { inject, Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { CreateInviteApiService } from './create-invite-api.service';
-import { ApiResp } from 'src/app/shared/models/shared.model';
+import { ApiResp, SportType } from 'src/app/shared/models/shared.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 
 
@@ -12,7 +12,7 @@ export interface InviteForm {
   latitude:number | null;
   longitude:number | null;
   totalVacancy:number;
-  sportId:number;
+  sportId:SportType;
   userID:string;
   eventDateTime:number;
 };

@@ -6,6 +6,7 @@ import { IonAvatar, IonContent, IonIcon, IonImg, IonLabel, IonRefresher, IonRefr
 import { NgSelectModule } from '@ng-select/ng-select';
 import { navigateCircleOutline, navigateSharp } from 'ionicons/icons';
 import { CommonService } from 'src/app/core/services/common.service';
+import { GeolocationService } from 'src/app/core/services/geolocation.service';
 import { GlobalLoadingService } from 'src/app/core/services/global-loading-service';
 import { PushNotificationService } from 'src/app/core/services/push-notification.service';
 import { UserStore } from 'src/app/core/stores/user-store';
@@ -32,6 +33,7 @@ export class HomeComponent {
   private readonly homeApi = inject(HomeApiService);
   private readonly userStore = inject(UserStore);
   private readonly loader = inject(GlobalLoadingService);
+  private readonly geolocationService = inject(GeolocationService);
   private readonly pushNotificationService = inject(PushNotificationService);
   private readonly router = inject(Router);
   readonly commonService = inject(CommonService);
@@ -43,7 +45,6 @@ export class HomeComponent {
   private mates = signal<MateListItem[]>([]);
   private readonly visiblePlayersBase = signal<MateListItem[]>([]);
   readonly currentUser = this.userStore.getCurrent();
-
 
   readonly rawSearchTerm = signal<string>('');
   private debouncedSearchInvites = signal<string>('');
@@ -111,20 +112,12 @@ export class HomeComponent {
   }
 
 
-  private getCurrentPosition(): Promise<GeolocationPosition> {
-    return new Promise((resolve, reject) => {
-      if (!navigator.geolocation) reject('No geolocation');
-      navigator.geolocation.getCurrentPosition(resolve, reject, { timeout: 10000 });
-    });
-  }
-
   private async refreshData(event?: CustomEvent): Promise<void> {
     this.loader.start();
-
     try {
-      // Update location
-      const pos = await this.getCurrentPosition();
-      this.coords.set({ latitude: pos.coords.latitude, longitude: pos.coords.longitude });
+      // Update location using Capacitor Geolocation
+      const position = await this.geolocationService.getCurrentPosition();
+      this.coords.set({ latitude: position.latitude, longitude: position.longitude });
       this.getCountryFromCoords();
     } catch (err) {
       console.warn('Geolocation failed — using fallback.', err);
@@ -169,7 +162,6 @@ export class HomeComponent {
         page: 0,
         size: 25
       }
-
       this.homeApi.getMates(obj).subscribe((res: eventListApiResp) => {
         this.visiblePlayersBase.set(res.events);
       })

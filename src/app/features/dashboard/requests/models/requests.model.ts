@@ -1,5 +1,5 @@
 import { ProfileInfo } from "src/app/core/model/user.model";
-import { ApiResp, Coordinates, EventBasic, ScrollList, SportType } from "src/app/shared/models/shared.model";
+import { ApiResp, EventBasic, ScrollList } from "src/app/shared/models/shared.model";
 
 export interface Requests extends RequestBasic, EventBasic { }
 
@@ -50,6 +50,11 @@ export enum AcceptReject {
     'Rejected' = 'REJECTED',
     'Pending' = 'PENDING',
 }
+export enum EventStatus {
+    'EXPIRED' = 'EXPIRED',
+    'Rejected' = 'REJECTED',
+    'Pending' = 'PENDING',
+}
 
 export interface ProcessRequestApi {
     approvalId: number;
@@ -84,21 +89,21 @@ export interface ProcessRequestApiResp extends ApiResp {
 //     requestedMembers: RequestedList[]
 // }
 
-export interface RequestedList {
-    id: number;
-    eventName: string;
-    profileImage: string;
-    location: string;
-    sport: SportType;
-    eventDateTime: number;
-    distanceOrDuration: string;
-    totalVacancy: number;
-    currentVacancy: number;
-    participants?: number[];
-    coords: Coordinates;
-    distanceKm?: number;
-    description: string;
-}
+// export interface RequestedList {
+//     id: number;
+//     eventName: string;
+//     profileImage: string;
+//     location: string;
+//     sport: SportType;
+//     eventDateTime: number;
+//     distanceOrDuration: string;
+//     totalVacancy: number;
+//     currentVacancy: number;
+//     participants?: number[];
+//     coords: Coordinates;
+//     distanceKm?: number;
+//     description: string;
+// }
 
 export interface Invite {
     id: string;
