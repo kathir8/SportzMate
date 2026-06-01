@@ -15,7 +15,7 @@ export class GeolocationService {
             const permissionStatus = await Geolocation.checkPermissions();
 
             if (permissionStatus.location === 'denied') {
-                throw new Error('Location permission denied. Please enable it in app settings.');
+                throw new Error('Location permission denied. Please enable location access in app settings.');
             }
 
             if (permissionStatus.location !== 'granted') {
@@ -28,7 +28,7 @@ export class GeolocationService {
             // Get current position
             const position = await Geolocation.getCurrentPosition({
                 enableHighAccuracy: true,
-                timeout: 10000,
+                timeout: 30000,
                 maximumAge: 0
             });
 
@@ -39,9 +39,18 @@ export class GeolocationService {
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
             console.error('Geolocation error:', errorMessage);
+            
+            // Better error messaging for common issues
+            let userMessage = errorMessage;
+            if (errorMessage.includes('Location services are not enabled') || errorMessage.includes('PERMISSION_DENIED')) {
+                userMessage = 'Please enable Location Services on your device (Settings > Location) and grant app permission.';
+            } else if (errorMessage.includes('timeout')) {
+                userMessage = 'Location request timed out. Please try again.';
+            }
+            
             throw {
                 code: error instanceof GeolocationPositionError ? error.code : -1,
-                message: errorMessage,
+                message: userMessage,
                 name: error instanceof Error ? error.name : 'GeolocationError'
             };
         }
@@ -65,7 +74,7 @@ export class GeolocationService {
             const watchId = await Geolocation.watchPosition(
                 {
                     enableHighAccuracy: true,
-                    timeout: 10000,
+                    timeout: 30000,
                     maximumAge: 0,
                 },
                 (position, err) => {
