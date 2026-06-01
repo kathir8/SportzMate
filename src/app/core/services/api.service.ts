@@ -8,8 +8,7 @@ import { catchError, Observable, throwError } from 'rxjs';
 })
 export class ApiService {
   private readonly http = inject(HttpClient);
-  // private readonly baseUrl = 'https://sportzmate-api-964021449250.us-central1.run.app/sportzmate';
-  private readonly baseUrl = 'https://sportzmate-api-b7fqcajrgq-uc.a.run.app/sportzmate';
+  private readonly baseUrl = 'https://sportzmate-api-3bke5e2zta-uc.a.run.app/sportzmate';
 
   get<TResponse>(endpoint: string, params?: Record<string, any>): Observable<TResponse> {
     return this.http.get<TResponse>(`${this.baseUrl}/${endpoint}`, { params })
