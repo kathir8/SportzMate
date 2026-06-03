@@ -46,6 +46,7 @@ export interface EventBasic extends Coordinates {
   profileImage: string;
   sportType: number;
   approvalId:number;
+  groupChatId:string;
   sportId: SportType;
 }
 

@@ -5,6 +5,7 @@ import { UserDetail } from 'src/app/core/model/user.model';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { RecievedUser } from '../chat.model';
 import { ProcessRequestApiResp } from '../../requests/models/requests.model';
+import { ApiService } from 'src/app/core/services/api.service';
 
 
 export interface ChatMessage {
@@ -28,6 +29,7 @@ export interface ChatMessage {
 export class ChatService {
   private readonly firestore = inject(Firestore);
   private readonly userStore = inject(UserStore);
+  private readonly api = inject(ApiService);
 
   private readonly currentUser = this.userStore.getCurrent();
 
@@ -128,16 +130,15 @@ export class ChatService {
     if (!groupId) {
 
       groupId = await this.createGroup(
-        res.eventName,
+        `${res.eventId}_${res.eventName}`,
         [this.currentUid(), res.interestedUserId]
       );
 
       await updateDoc(eventRef, { groupId });
-
+      this.saveGroupID(res.eventId, groupId).subscribe();
     } else {
 
       await this.addMember(groupId, res.interestedUserId);
-
     }
   }
 
@@ -208,5 +209,8 @@ export class ChatService {
     return { id: snapshot.id, ...snapshot.data() };
   }
 
+  saveGroupID(eventId: number, groupChatId: string) {
+    return this.api.post<any, any>(`eventApproval/saveGroupChatId`, { eventId, groupChatId })
+  }
 
 }

@@ -14,6 +14,7 @@ import { HomeApiService } from '../../home/services/home-api-service';
 import { MateDetailComponent } from '../../mate-detail/mate-detail.component';
 import { CancelEventComponent } from './cancel-event/cancel-event.component';
 import { MoreInvitesListComponent } from './more-invites-list/more-invites-list.component';
+import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 
 @Component({
   selector: 'app-my-event',
@@ -30,6 +31,7 @@ export class MyEventComponent {
   private readonly homeApi = inject(HomeApiService);
   private readonly commonService = inject(CommonService);
   private readonly chatService = inject(ChatService);
+  private readonly toast = inject(IonicToastService);
 
 
 
@@ -101,13 +103,12 @@ export class MyEventComponent {
   async groupMessage() {
     const event = this.mate();
     if (!event) {
-      console.warn('Event not loaded yet');
       return;
     }
 
-    const groupId = (event as any).groupId;
+    const groupId = event.groupChatId;
     if (!groupId) {
-      console.warn('Group not created yet. No groupId found.');
+      this.toast.show('Group not created yet');
       return;
     }
 
