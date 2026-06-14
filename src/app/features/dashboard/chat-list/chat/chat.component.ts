@@ -28,9 +28,14 @@ export class ChatComponent {
 
   readonly icons = { happyOutline, attachOutline, sendOutline, closeOutline };
 
+  // Personal chat - recieved user data
   readonly recievedUser = signal<RecievedUser | null>(
     window.history.state?.recievedMate ?? null
   );
+
+  // Group chat - group data
+  readonly groupId = signal<string>(window.history.state?.groupId ?? '');
+  readonly groupName = signal<string>(window.history.state?.groupName ?? '');
 
   private readonly currentUser = this.userStore.getCurrent();
 
@@ -42,6 +47,10 @@ export class ChatComponent {
     return this.recievedUser()?.userID;
   });
 
+  // Detect if this is a group chat or personal chat
+  readonly isChatGroupChat = computed(() => {
+    return !!this.groupId() && !!this.groupName();
+  });
 
   readonly showEmojiPicker = signal(false);
   readonly emojiList = signal([
@@ -72,13 +81,22 @@ export class ChatComponent {
 
   readonly messages: Signal<ChatMessage[]> = toSignal(
     toObservable(this.roomId).pipe(
-      switchMap(roomId => this.chatService.getMessages(roomId)),
+      switchMap(roomId => {
+        // Determine if it's a group or personal chat based on roomId
+        if (this.isChatGroupChat()) {
+          // For group chat, use getGroupMessages
+          return this.chatService.getGroupMessages(this.groupId());
+        } else {
+          // For personal chat, use getMessages
+          return this.chatService.getMessages(roomId);
+        }
+      }),
       map(messages =>
         messages.map(msg => ({
           ...msg,
           updatedAt: new Timestamp(
-            msg.timestamp.seconds,
-            msg.timestamp.nanoseconds
+            msg.timestamp?.seconds,
+            msg.timestamp?.nanoseconds
           )
         }))
       )
@@ -88,12 +106,15 @@ export class ChatComponent {
 
 
   async ngOnInit() {
-    if (this.currentUid() && this.receiverUid()) {
+    if (this.isChatGroupChat()) {
+      // It's a group chat - use groupId directly as roomId
+      this.roomId.set(this.groupId());
+    } else if (this.currentUid() && this.receiverUid()) {
+      // It's a personal chat - create or get existing chat room
       this.roomId.set(await this.chatService.getOrCreateChat(this.currentUser()!, this.recievedUser()!));
     } else {
       this.handleBack();
     }
-
   }
 
   handleEmojiClick(emoji: string) {
@@ -103,11 +124,20 @@ export class ChatComponent {
   send() {
     if (!this.newMessage().trim()) return;
 
-    this.chatService.sendMessage(
-      this.roomId(),
-      this.currentUid(),
-      this.newMessage()
-    );
+    if (this.isChatGroupChat()) {
+      // Send group message
+      this.chatService.sendGroupMessage(
+        this.groupId(),
+        this.newMessage()
+      );
+    } else {
+      // Send personal message
+      this.chatService.sendMessage(
+        this.roomId(),
+        this.currentUid(),
+        this.newMessage()
+      );
+    }
 
     this.newMessage.set('');
   }
@@ -118,7 +148,7 @@ export class ChatComponent {
 
   formatMsgTime(timestamp: Timestamp): string {
 
-    if (!timestamp) return '';
+    if (!timestamp?.seconds) return '';
 
     const date = timestamp.toDate();
     return formatChatMessageTime(date.getTime());

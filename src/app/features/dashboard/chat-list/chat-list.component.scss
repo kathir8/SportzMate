@@ -1,98 +1,63 @@
 $containerPaddingX: 0px;
 
 .chat-page {
-    --background: var(--background-color);
-    --padding-start:#{$containerPaddingX};
-    --padding-end:#{$containerPaddingX};
+  --background: var(--background-color);
+  --padding-start: #{$containerPaddingX};
+  --padding-end: #{$containerPaddingX};
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-height: 0; // Critical for flex children
 
-    .chat-list-outer-container {
-        overflow-y: auto;
-        flex: 1 1 0%;
-        .no-chat-found{
-            line-height: 17.5px;
-            font-size: 12.25px;
-            text-align: center;
-            color: #6b7280;
-            padding: 28px;
+  .no-chat-found {
+    line-height: 17.5px;
+    font-size: 12.25px;
+    text-align: center;
+    color: #6b7280;
+    padding: 28px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+  }
+}
+
+// Accordion styling for proper height calculation
+::ng-deep {
+  .from-chat-list {
+    ion-accordion-group {
+      display: flex;
+      flex-direction: column;
+      flex: 1;
+      min-height: 0;
+
+      ion-accordion {
+        flex: 1;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+
+        .accordion-content-wrapper {
+          flex: 1;
+          min-height: 0;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
         }
 
-        .chat-list {
-            border-bottom: 1px solid #f9fafb;
-            align-items: center;
-            padding: 10.5px;
-            display: flex;
+        div[slot="content"] {
+          flex: 1;
+          min-height: 0;
+          display: flex;
+          flex-direction: column;
+          overflow: hidden;
 
-            .member-icon {
-                position: relative;
-                flex-shrink: 0;
-                height: 42px;
-                width: 42px;
-
-                img {
-                    border-radius: 9999px;
-                    object-fit: cover;
-                    height: 100%;
-                    width: 100%;
-                }
-            }
-
-            .member-content {
-                margin-left: 10px;
-                min-width: 0%;
-                flex: 1 1 0%;
-
-                .member-outer-container {
-                    justify-content: space-between;
-                    align-items: baseline;
-                    display: flex;
-
-                    .member-name {
-                        font-weight: 400;
-                        font-size: 17px;
-                        color: #111b21;
-                    }
-
-                    .last-message-time {
-                        font-size: 10.5px;
-                        line-height: 14px;
-                        color: #667781;
-
-                        &.unread {
-                            font-weight: 500;
-                            color: #ff4e18;
-                        }
-                    }
-                }
-
-                .member-message-container {
-                    justify-content: space-between;
-                    align-items: center;
-                    display: flex;
-
-                    .member-message {
-                        line-height: 17.5px;
-                        font-size: 12.25px;
-                        padding-right: 7px;
-                        color: #667781;
-
-                        .unread-count {
-                            justify-content: center;
-                            background: #ff4e18;
-                            border-radius: 9999px;
-                            padding-right: 3.5px;
-                            padding-left: 3.5px;
-                            align-items: center;
-                            font-size: 10.5px;
-                            line-height: 14px;
-                            font-weight: 500;
-                            min-width: 20px;
-                            height: 17.5px;
-                            display: flex;
-                            color: #fff;
-                        }
-                    }
-                }
-            }
+          app-chat-list-items {
+            flex: 1;
+            min-height: 0;
+          }
         }
+      }
     }
+  }
 }

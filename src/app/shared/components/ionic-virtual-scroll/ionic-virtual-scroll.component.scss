@@ -1,3 +1,43 @@
+// :host {
+//   display: flex;
+//   flex: 1;
+//   min-height: 0;
+// }
+
+// .virtual-scroll-container {
+//     height: 100%;
+//     width: 100%;
+//     overflow: auto;
+//     display: flex;
+//     flex-direction: column;
+//     scrollbar-color: #4f46e5 #d1d5db;
+//     // &::-webkit-scrollbar {
+//     //     display: none;
+//     // }
+
+//     ion-list {
+//       display: flex;
+//       flex: 1;
+//       min-height: 0;
+//       padding: 0;
+//       margin: 0;
+
+//       ion-grid {
+//         padding: 0;
+//         margin: 0;
+//       }
+//     }
+
+//     .sports-mate-list {
+//         margin-bottom: 150px;
+//         font-size: 12px;
+
+//         .primary-details {
+//             padding: 0;
+//         }
+//     }
+// }
+
  .virtual-scroll-container {
         height: 100%;
         width: 100%;

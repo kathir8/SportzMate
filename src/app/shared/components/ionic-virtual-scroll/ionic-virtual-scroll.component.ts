@@ -4,6 +4,7 @@ import { Component, input } from '@angular/core';
 import { IonGrid, IonList } from '@ionic/angular/standalone';
 import { EventBasic } from '../../models/shared.model';
 import { RequestedMember } from 'src/app/features/dashboard/home/mate-stuff/models/mate.model';
+import { ChatDocument } from 'src/app/features/dashboard/chat-list/chat.model';
 
 @Component({
   selector: 'ionic-virtual-scroll',
@@ -11,7 +12,7 @@ import { RequestedMember } from 'src/app/features/dashboard/home/mate-stuff/mode
   styleUrls: ['./ionic-virtual-scroll.component.scss'],
   imports: [CdkVirtualScrollViewport, ScrollingModule, IonList, IonGrid, NgTemplateOutlet],
 })
-export class IonicVirtualScrollComponent<T extends EventBasic | RequestedMember> {
+export class IonicVirtualScrollComponent<T extends EventBasic | RequestedMember | ChatDocument> {
 
   constructor() { }
 
@@ -27,15 +28,23 @@ export class IonicVirtualScrollComponent<T extends EventBasic | RequestedMember>
   readonly noDataTemplate = input<any>();
 
   readonly onItemClick = input<(item: any) => void>();
-
-  trackByFn = (_: number, item: any) => item.id;
-
+  readonly trackByFn = input<(index: number, item: any) => any>((index, item) => {
+    // Default trackBy - works with EventBasic, RequestedMember
+    if ('id' in item) return item.id;
+    // Works with ChatDocument
+    if ('chatId' in item) return item.chatId;
+    // Fallback to index
+    return index;
+  });
 
   handleItemClick(item: any) {
-    const fn = this.onItemClick();   // get function from signal
+    const fn = this.onItemClick();
     if (fn) {
-      fn(item);                      // invoke it correctly
+      fn(item);
     }
   }
 
+  getTrackByFn() {
+    return this.trackByFn();
+  }
 }

@@ -12,6 +12,7 @@ import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { AcceptOrReject } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
 import { CommonStore } from 'src/app/core/stores/common-store';
+import { MateService } from '../mate.service';
 
 @Component({
   selector: 'app-mate-list-view',
@@ -25,6 +26,7 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
   private readonly inviteApiService = inject(InviteApiService);
   private readonly signalService = inject(SignalService);
   private readonly commonStore = inject(CommonStore);
+  private readonly mateService = inject(MateService);
 
   readonly icons = { add };
   showInterestBtn = input<boolean>(true);
@@ -60,6 +62,9 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
     if (this.fromMyEvents()) {
       this.router.navigate(['dashboard/my-events', item.eventId]);
     } else {
+      if ('status' in item) {
+        this.mateService.currentMateStatusForEvent.set(item.status);
+      }
       this.router.navigate(
         ['dashboard/mate-detail', item.eventId],
         {

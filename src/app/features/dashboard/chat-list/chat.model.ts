@@ -3,6 +3,7 @@ import { Timestamp } from "@angular/fire/firestore";
 export interface ChatDocument {
   chatId: string;
   participants: string[];
+  members: string[];
   participantDetails: Record<string, RecievedUser>;
   lastMessage: string;
   updatedAt: Timestamp;

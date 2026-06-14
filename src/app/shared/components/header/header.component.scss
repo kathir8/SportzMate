@@ -22,5 +22,25 @@
             --ion-toolbar-color: #000;
             font-size: 15px;
         }
+
+        .search-input {
+            flex: 1;
+            padding: 8px 12px;
+            border: 1px solid #e5e7eb;
+            border-radius: 6px;
+            font-size: 14px;
+            outline: none;
+            margin: 0 8px;
+
+            &:focus {
+                border-color: #3b82f6;
+                box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+            }
+        }
+
+        .search-button {
+            --ion-toolbar-color: #000;
+            font-size: 15px;
+        }
     }
 }

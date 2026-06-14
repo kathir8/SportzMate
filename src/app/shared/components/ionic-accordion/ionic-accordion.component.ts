@@ -9,7 +9,6 @@ export interface IonicAccordionItem {
   inputs?: Record<string, any>;
 }
 
-
 @Component({
   selector: 'ionic-accordion',
   templateUrl: './ionic-accordion.component.html',
@@ -18,7 +17,6 @@ export interface IonicAccordionItem {
 })
 export class IonicAccordionComponent {
 
-   readonly items = input<IonicAccordionItem[]>([]);
-
-
+  readonly items = input<IonicAccordionItem[]>([]);
 }
+

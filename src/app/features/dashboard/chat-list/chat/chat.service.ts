@@ -185,20 +185,16 @@ export class ChatService {
     return docRef.id;
   }
 
-  async loadGroupMessagesOnce(groupId: string): Promise<any[]> {
+  // Get group messages as Observable for real-time updates
+  getGroupMessages(groupId: string): Observable<ChatMessage[]> {
     if (!groupId) {
-      console.warn('groupId is required to load messages');
-      return [];
+      const emptyRef = collection(this.firestore, 'empty') as CollectionReference<ChatMessage>;
+      return collectionData<ChatMessage>(emptyRef, { idField: 'id' });
     }
-    
-    try {
-      const ref = collection(this.firestore, `groups/${groupId}/chat`);
-      const q = query(ref, orderBy('timestamp', 'asc'));
-      return await firstValueFrom(collectionData(q, { idField: 'id' }));
-    } catch (error) {
-      console.error('Error loading group messages:', error);
-      return [];
-    }
+
+    const ref = collection(this.firestore, `groups/${groupId}/chat`) as CollectionReference<ChatMessage>;
+    const q = query(ref, orderBy('timestamp'));
+    return collectionData<ChatMessage>(q, { idField: 'id' });
   }
 
   async getGroupInfo(groupId: string) {

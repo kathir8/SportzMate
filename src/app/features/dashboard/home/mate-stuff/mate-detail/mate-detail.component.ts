@@ -14,10 +14,10 @@ import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ion
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { EventBasic } from 'src/app/shared/models/shared.model';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
-import { MateBasicComponent } from "../home/mate-stuff/mate-basic/mate-basic.component";
-import { EventDetailApiResp, requestJoinApi } from '../home/mate-stuff/models/mate.model';
-import { HomeApiService } from '../home/services/home-api-service';
-import { AcceptReject } from '../requests/models/requests.model';
+import { MateBasicComponent } from "../mate-basic/mate-basic.component";
+import { EventDetailApiResp, requestJoinApi } from '../models/mate.model';
+import { HomeApiService } from '../../services/home-api-service';
+import { AcceptReject } from '../../../requests/models/requests.model';
 
 @Component({
   selector: 'app-mate-detail',

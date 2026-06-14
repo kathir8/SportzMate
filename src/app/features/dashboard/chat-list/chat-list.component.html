@@ -1,49 +1,35 @@
-<app-header headerClass="from-mate-detail" [showBackButton]="false">
+<app-header 
+  headerClass="from-mate-detail" 
+  [showBackButton]="false"
+  [enableSearch]="true"
+  (searchChanged)="onSearchQueryChange($event)"
+>
   <ion-title class="header-title" slot="start">Chats</ion-title>
 </app-header>
-<ion-content class="ion-padding chat-page">
 
-  <div class="chat-list-outer-container">
-    @if(filteredChats().length === 0){
+<ion-content class="ion-padding chat-page">
+  @if(personalChats().length === 0 && groupChats().length === 0) {
+    <!-- No chats at all -->
     <div class="no-chat-found">
       No chats found
     </div>
-    }@else {
-
-    @for(chat of filteredChats(); track chat.chatId) {
-
-    @let otherUserId = getOtherUserId(chat);
-    @let otherUser = getOtherUser(chat, otherUserId);
-    @let unread = getUnreadCount(chat);
-    <div (click)="openChat(otherUser)" class="chat-list">
-      <div class="member-icon">
-        <img [src]="otherUser.profileImage" />
-      </div>
-      <div class="member-content">
-        <div class="member-outer-container">
-          <span class="member-name truncate">
-            {{otherUser.name}}
-          </span>
-          <span class="last-message-time" [class.unread]="unread > 0">
-            {{formatTime(chat.updatedAt)}}
-          </span>
-        </div>
-        <div class="member-message-container">
-          <span class="member-message truncate">
-            {{chat.lastMessage}}
-          </span>
-          @if(unread > 0){
-          <span class="unread-count">
-            {{unread}}
-          </span>
-          }
-        </div>
-      </div>
-
-    </div>
+  } @else if(shouldShowAccordion()) {
+    <!-- Show accordion when both chat types exist -->
+    <ionic-accordion [items]="accordionItems()"></ionic-accordion>
+  } @else if(hasOnlyOneType()) {
+    <!-- Show direct list when only one type exists -->
+    @if(hasPersonalChatsEver()) {
+      <app-chat-list-items 
+        [chats]="filteredPersonalChats()"
+        [currentUserId]="currentUser()?.userID || ''"
+        [onChatClick]="onChatClickHandler"
+      ></app-chat-list-items>
+    } @else {
+      <app-chat-list-items 
+        [chats]="filteredGroupChats()"
+        [currentUserId]="currentUser()?.userID || ''"
+        [onChatClick]="onChatClickHandler"
+      ></app-chat-list-items>
     }
-    }
-  </div>
-  <br><br><br><br><br><br>
-  <button>group chat</button>
+  }
 </ion-content>

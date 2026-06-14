@@ -10,6 +10,7 @@ import { EventBasic, SportType } from 'src/app/shared/models/shared.model';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { Requests } from '../../../requests/models/requests.model';
 import { AcceptOrReject } from '../models/mate.model';
+import { MateService } from '../mate.service';
 
 @Component({
   selector: 'app-mate-basic',
@@ -20,6 +21,7 @@ import { AcceptOrReject } from '../models/mate.model';
 export class MateBasicComponent<T extends Requests | EventBasic> {
   readonly commonService = inject(CommonService);
   private readonly router = inject(Router);
+  private readonly mateService = inject(MateService);
   readonly DATE_FORMATS = DATE_FORMATS;
 
 
@@ -60,13 +62,16 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
   }
 
 
-   eventStatus() {
+  eventStatus() {
     const m = this.mate();
     if (!m) return null;
 
     if ('status' in m) {
       return m.status;
+    } else if (this.mateService.currentMateStatusForEvent()) {
+      return this.mateService.currentMateStatusForEvent();
     }
+    
     return null;
   }
 
@@ -95,5 +100,9 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
       default:
         return 'cup-star';
     }
+  }
+
+  ngOnDestroy(){
+    this.mateService.currentMateStatusForEvent.set(null);
   }
 }

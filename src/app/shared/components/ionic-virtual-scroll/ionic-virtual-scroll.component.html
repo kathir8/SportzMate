@@ -2,7 +2,7 @@
 <cdk-virtual-scroll-viewport [itemSize]="itemSize()" class="virtual-scroll-container" [minBufferPx]="minBufferPx()"
   [maxBufferPx]="maxBufferPx()">
   <ion-list [class]="dynamicListClass()">
-    <ion-grid [class]="dynamicGridClass()" *cdkVirtualFor="let item of items(); trackBy: trackByFn"
+    <ion-grid [class]="dynamicGridClass()" *cdkVirtualFor="let item of items(); trackBy: getTrackByFn()"
       (click)="handleItemClick(item)">
       <ng-container [ngTemplateOutlet]="itemTemplate()" [ngTemplateOutletContext]="{ $implicit: item }">
       </ng-container>

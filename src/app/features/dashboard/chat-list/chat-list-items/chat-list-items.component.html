@@ -1,0 +1,49 @@
+<div class="chat-list-items-container">
+
+  <ionic-virtual-scroll [items]="chats()" [itemTemplate]="itemTemplate" [noDataTemplate]="noDataTemplate"
+    [onItemClick]="handleChatClick.bind(this)" [itemSize]="62"></ionic-virtual-scroll>
+</div>
+
+<!-- Layout Template -->
+<ng-template #itemTemplate let-chat>
+  @let otherUserId = isPersonalChat() ? getOtherUserId(chat) : null;
+  @let otherUser = isPersonalChat() ? getOtherUser(chat, otherUserId!) : null;
+
+  <ng-container *ngTemplateOutlet="chatRowTemplate; context: {
+      name: isPersonalChat() ? otherUser!.name : chat.name,
+      profileImage: isPersonalChat() ? otherUser!.profileImage : 'https://randomuser.me/api/portraits/women/44.jpg',
+      chat: chat,
+      unread: getUnreadCount(chat),
+      otherUser: otherUser
+    }"></ng-container>
+</ng-template>
+
+<!-- Chat Row Template -->
+<ng-template #chatRowTemplate let-name="name" let-profileImage="profileImage" let-chat="chat" let-unread="unread" let-otherUser="otherUser">
+  <div class="chat-list" (click)="isPersonalChat() ? openChat(otherUser) : openGroupChat(chat.chatId, chat.name)">
+    <div class="member-icon">
+      <img [src]="profileImage" [alt]="name" />
+    </div>
+    <div class="member-content">
+      <div class="member-outer-container">
+        <span class="member-name truncate">{{ name }}</span>
+        <span class="last-message-time" [class.unread]="unread > 0">
+          {{ formatTime(chat.updatedAt) }}
+        </span>
+      </div>
+      <div class="member-message-container">
+        <span class="member-message truncate">{{ chat.lastMessage }}</span>
+        @if(unread > 0) {
+        <span class="unread-count">{{ unread }}</span>
+        }
+      </div>
+    </div>
+  </div>
+</ng-template>
+
+<!-- No Data Template -->
+<ng-template #noDataTemplate>
+  <div class="no-chat-found">
+    No chats found
+  </div>
+</ng-template>

@@ -1,6 +1,6 @@
 import { Location } from '@angular/common';
 import { Component, computed, effect, inject, signal } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { IonContent, IonFooter, IonTitle } from "@ionic/angular/standalone";
 import { CommonService } from 'src/app/core/services/common.service';
 import { HeaderComponent } from "src/app/shared/components/header/header.component";
@@ -11,7 +11,7 @@ import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce
 import { ChatService } from '../../chat-list/chat/chat.service';
 import { EventDetailApiResp, RequestedMember } from '../../home/mate-stuff/models/mate.model';
 import { HomeApiService } from '../../home/services/home-api-service';
-import { MateDetailComponent } from '../../mate-detail/mate-detail.component';
+import { MateDetailComponent } from '../../home/mate-stuff/mate-detail/mate-detail.component';
 import { CancelEventComponent } from './cancel-event/cancel-event.component';
 import { MoreInvitesListComponent } from './more-invites-list/more-invites-list.component';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
@@ -27,6 +27,7 @@ export class MyEventComponent {
 
   private readonly route = inject(ActivatedRoute);
   private readonly location = inject(Location);
+  private readonly router = inject(Router);
   private readonly bottomSheet = inject(BottomSheetService);
   private readonly homeApi = inject(HomeApiService);
   private readonly commonService = inject(CommonService);
@@ -112,19 +113,14 @@ export class MyEventComponent {
       return;
     }
 
-    try {
-      // Load group messages
-      const messages = await this.chatService.loadGroupMessagesOnce(groupId);
-      console.log('Group messages loaded:', messages);
-
-      // TODO: Navigate to group chat component or open group chat dialog
-      // Example:
-      // await this.bottomSheet.open(GroupChatComponent, {
-      //   componentProps: { groupId }
-      // });
-    } catch (error) {
-      console.error('Error loading group messages:', error);
-    }
+    // Navigate to group chat with groupId and groupName
+    const groupName = `${event.eventId}_${event.eventName}`;
+    this.router.navigate(['dashboard/chat'], {
+      state: {
+        groupId: groupId,
+        groupName: groupName
+      }
+    });
   }
 
 }

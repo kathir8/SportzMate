@@ -9,7 +9,33 @@
     </ion-buttons>
     }
 
-    <ng-content></ng-content>
+    @if (!showSearchInput()) {
+      <ng-content></ng-content>
+    }
+
+    @if (enableSearch() && showSearchInput()) {
+      <input
+        type="text"
+        class="search-input"
+        placeholder="Search chats..."
+        (input)="onSearchInput($event)"
+        autofocus
+      />
+    }
+
+    @if (enableSearch()) {
+    <ion-buttons slot="end">
+      @if (showSearchInput()) {
+        <ion-button class="search-button" (click)="clearSearch()">
+          <ion-icon [icon]="icons.closeOutline"></ion-icon>
+        </ion-button>
+      } @else {
+        <ion-button class="search-button" (click)="toggleSearch()">
+          <ion-icon [icon]="icons.searchOutline"></ion-icon>
+        </ion-button>
+      }
+    </ion-buttons>
+    }
 
   </ion-toolbar>
 </ion-header>
