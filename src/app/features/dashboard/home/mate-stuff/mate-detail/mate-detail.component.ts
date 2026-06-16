@@ -87,7 +87,8 @@ export class MateDetailComponent implements OnInit {
             this.headingText.set(this.commonService.selectedSports(res.eventDetails?.sportId)?.sportsName || '');
             this.mate.set(res.eventDetails);
             if (res.acceptedRequests) {
-              this.AcceptedRequest.set(res.joinRequests?.filter(x => x.approvalId === 3) || []);
+              // this.AcceptedRequest.set(res.joinRequests?.filter(x => x.approvalId === 3) || []);
+              this.AcceptedRequest.set(res.joinRequests || []);
             }
           } else {
             this.handleBack();

@@ -58,48 +58,12 @@
       <div class="title">Members</div>
   
       <div class="profile-container">
-        <div class="profile-item active">
-          <img src="https://randomuser.me/api/portraits/women/65.jpg" alt="profile" />
-          <ion-icon [icon]="icons.mailOpenOutline" class="mail-icon"></ion-icon>
-        </div>
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/75.jpg" alt="profile" />
-        </div>
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/25.jpg" alt="profile" />
-        </div>
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/10.jpg" alt="profile" />
-        </div>
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="profile" />
-        </div>
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/35.jpg" alt="profile" />
-        </div>
-  
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="profile" />
-        </div>
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/35.jpg" alt="profile" />
-        </div>
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/44.jpg" alt="profile" />
-        </div>
-  
-        <div class="profile-item">
-          <img src="https://randomuser.me/api/portraits/women/35.jpg" alt="profile" />
-        </div>
-  
+        @for(member of AcceptedRequest();track member.interestedUser.userID){
+          <div class="profile-item active">
+            <img [src]="member.interestedUser.profileImage" alt="profile" />
+            <!-- <ion-icon [icon]="icons.mailOpenOutline" class="mail-icon"></ion-icon> -->
+          </div>
+        }
       </div>
     </div>
   }
