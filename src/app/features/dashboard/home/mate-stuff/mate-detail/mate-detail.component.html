@@ -17,7 +17,7 @@
 <ng-template #mateDetail>
   <div class="mate-detail">
   <ion-grid class="primary-details">
-    <app-mate-basic [mate]="mate()" [dynamicClass]="dynamicClass()" [reduceSize]="true"></app-mate-basic>
+    <app-mate-basic [mate]="mate()" [dynamicClass]="dynamicClass()" [reduceSize]="true" (isAccepted)="acceptOrReject($event)"></app-mate-basic>
   </ion-grid>
 
   <div class="cards-container">

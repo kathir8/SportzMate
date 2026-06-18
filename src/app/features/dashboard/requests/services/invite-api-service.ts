@@ -1,9 +1,11 @@
 import { inject, Injectable } from '@angular/core';
-import { map, Observable } from 'rxjs';
+import { map, Observable, tap } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { UserStore } from 'src/app/core/stores/user-store';
 import { AcceptReject, EventsApi, Invite, JoinRequestsApiResp, myRequestsApiResp, ProcessRequestApi, ProcessRequestApiResp, Requests } from '../models/requests.model';
+import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
+import { ChatService } from '../../chat-list/chat.service';
 
 @Injectable({
   providedIn: 'root'
@@ -11,6 +13,8 @@ import { AcceptReject, EventsApi, Invite, JoinRequestsApiResp, myRequestsApiResp
 export class InviteApiService {
   private readonly api = inject(ApiService);
   private readonly userStore = inject(UserStore);
+  private readonly chatService = inject(ChatService);
+  private readonly toast = inject(IonicToastService);
   private readonly commonService = inject(CommonService);
   private readonly current = this.userStore.getCurrent();
 
@@ -56,7 +60,15 @@ export class InviteApiService {
       eventCreatorId: this.current()!.userID,
       action: isAccepted ? AcceptReject.Accepted : AcceptReject.Rejected
     }
-    return this.api.post<any, ProcessRequestApiResp>(`eventApproval/processRequest`, obj)
+    return this.api.post<any, ProcessRequestApiResp>(`eventApproval/processRequest`, obj).pipe(
+      tap((res) => {
+        this.toast.show(res.rspMsg);
+
+        if (res.rspFlg && isAccepted) {
+          this.chatService.handleGroupCreationAfterAccept(res);
+        }
+      })
+    );
   }
 
   fetchNearby(lat: number, lng: number) { return this.api.get<Invite[]>(`/api/requests/near?lat=${lat}&lng=${lng}`); }

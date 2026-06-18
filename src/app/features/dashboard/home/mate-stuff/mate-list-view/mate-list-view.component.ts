@@ -13,6 +13,7 @@ import { AcceptOrReject } from '../models/mate.model';
 import { NoMateFoundComponent } from "../no-mate-found/no-mate-found.component";
 import { CommonStore } from 'src/app/core/stores/common-store';
 import { MateService } from '../mate.service';
+import { ChatService } from '../../../chat-list/chat.service';
 
 @Component({
   selector: 'app-mate-list-view',
@@ -23,6 +24,7 @@ import { MateService } from '../mate.service';
 export class MateListViewComponent<T extends Requests | EventBasic> {
   private readonly router = inject(Router);
   private readonly toast = inject(IonicToastService);
+  private readonly chatService = inject(ChatService);
   private readonly inviteApiService = inject(InviteApiService);
   private readonly signalService = inject(SignalService);
   private readonly commonStore = inject(CommonStore);
@@ -70,7 +72,8 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
         {
           state: {
             fromPage: this.dynamicClass(),
-            showInterestBtn: this.showInterestBtn()
+            showInterestBtn: this.showInterestBtn(),
+            approvalId: item.approvalId
           }
         }
       );
@@ -84,7 +87,6 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
   acceptOrReject(payload: AcceptOrReject) {
     payload.event.stopPropagation();
     this.inviteApiService.ProcessJoinRequests(payload.item!, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
-      this.toast.show(res.rspMsg);
       if (res.rspFlg) {
         this.signalService.removeItemByKey(this.displayList, 'eventId', res.eventId);
       }

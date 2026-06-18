@@ -15,10 +15,11 @@ import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-t
 import { EventBasic } from 'src/app/shared/models/shared.model';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
-import { EventDetailApiResp, requestJoinApi } from '../models/mate.model';
+import { AcceptOrReject, EventDetailApiResp, requestJoinApi } from '../models/mate.model';
 import { HomeApiService } from '../../services/home-api-service';
-import { AcceptReject } from '../../../requests/models/requests.model';
+import { AcceptReject, ProcessRequestApiResp } from '../../../requests/models/requests.model';
 import { ChatService } from '../../../chat-list/chat.service';
+import { InviteApiService } from '../../../requests/services/invite-api-service';
 
 @Component({
   selector: 'app-mate-detail',
@@ -40,11 +41,13 @@ export class MateDetailComponent implements OnInit {
   private readonly toast = inject(IonicToastService);
   private readonly commonStore = inject(CommonStore);
   private readonly commonService = inject(CommonService);
+  private readonly inviteApiService = inject(InviteApiService);
   protected readonly chatService = inject(ChatService);
 
 
   readonly showInterestBtn = signal<boolean>(true);
   readonly fromPage = signal<string>('');
+  readonly approvalId = signal<number>(0);
   readonly disableBtn = signal<boolean>(false);
 
   private readonly currentUser = this.userStore.getCurrent()!;
@@ -119,6 +122,7 @@ export class MateDetailComponent implements OnInit {
         if (state?.navigationId) {
           this.fromPage.set(state.fromPage ?? null);
           this.showInterestBtn.set(!!state.showInterestBtn);
+          this.approvalId.set(state.approvalId ?? 0);
         }
       });
 
@@ -154,6 +158,18 @@ export class MateDetailComponent implements OnInit {
 
       } else if (res.status !== AcceptReject.Pending) {
         this.disableBtn.set(false);
+      }
+    });
+  }
+
+  acceptOrReject(payload: AcceptOrReject) {
+    if(this.approvalId() && payload.item){
+      payload.item.approvalId = this.approvalId(); // from join request > mate-detail page
+    }
+    this.inviteApiService.ProcessJoinRequests(payload.item!, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
+      if (res.rspFlg) {
+        this.commonStore.setMatchActionEventId(this.eventId());
+        this.handleBack(); // go to join requests tab
       }
     });
   }

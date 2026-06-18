@@ -1,5 +1,4 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
-import { SignalService } from 'src/app/core/services/signal.service';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { IonicVirtualScrollComponent } from 'src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component';
 import { StatusFilterComponent } from "src/app/shared/components/status-filter/status-filter.component";
@@ -21,7 +20,6 @@ export class MoreInvitesListComponent {
 
   private readonly inviteApiService = inject(InviteApiService);
   private readonly toast = inject(IonicToastService);
-  private readonly signalService = inject(SignalService);
   private readonly chatService = inject(ChatService);
 
   /** incoming data from parent */
@@ -39,12 +37,8 @@ export class MoreInvitesListComponent {
 
   acceptOrReject(payload: AcceptOrReject) {
     this.inviteApiService.ProcessJoinRequests(payload.item!, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
-      this.toast.show(res.rspMsg);
       if (res.rspFlg) {
         this.selectedMate().status = payload.accepted ? AcceptReject.Accepted : AcceptReject.Rejected;
-        if(payload.accepted){
-          this.chatService.handleGroupCreationAfterAccept(res);
-        }
       }
     });
   }
