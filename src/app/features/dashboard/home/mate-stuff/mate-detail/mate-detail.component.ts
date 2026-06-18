@@ -18,6 +18,7 @@ import { MateBasicComponent } from "../mate-basic/mate-basic.component";
 import { EventDetailApiResp, requestJoinApi } from '../models/mate.model';
 import { HomeApiService } from '../../services/home-api-service';
 import { AcceptReject } from '../../../requests/models/requests.model';
+import { ChatService } from '../../../chat-list/chat.service';
 
 @Component({
   selector: 'app-mate-detail',
@@ -39,6 +40,7 @@ export class MateDetailComponent implements OnInit {
   private readonly toast = inject(IonicToastService);
   private readonly commonStore = inject(CommonStore);
   private readonly commonService = inject(CommonService);
+  protected readonly chatService = inject(ChatService);
 
 
   readonly showInterestBtn = signal<boolean>(true);

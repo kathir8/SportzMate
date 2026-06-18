@@ -8,7 +8,7 @@ import { NoMateFoundComponent } from "../../../home/mate-stuff/no-mate-found/no-
 import { AcceptReject, ProcessRequestApiResp } from '../../../requests/models/requests.model';
 import { InviteApiService } from '../../../requests/services/invite-api-service';
 import { InvitesMateBasicComponent } from "./invites-mate-basic/invites-mate-basic.component";
-import { ChatService } from '../../../chat-list/chat/chat.service';
+import { ChatService } from '../../../chat-list/chat.service';
 
 @Component({
   selector: 'app-more-invites-list',

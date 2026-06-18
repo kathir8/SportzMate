@@ -3,9 +3,10 @@ import { addDoc, collection, collectionData, CollectionReference, doc, Firestore
 import { firstValueFrom, Observable } from 'rxjs';
 import { UserDetail } from 'src/app/core/model/user.model';
 import { UserStore } from 'src/app/core/stores/user-store';
-import { RecievedUser } from '../chat.model';
-import { ProcessRequestApiResp } from '../../requests/models/requests.model';
+import { RecievedUser } from './chat.model';
+import { ProcessRequestApiResp } from '../requests/models/requests.model';
 import { ApiService } from 'src/app/core/services/api.service';
+import { Router } from '@angular/router';
 
 
 export interface ChatMessage {
@@ -32,6 +33,8 @@ export class ChatService {
   private readonly api = inject(ApiService);
 
   private readonly currentUser = this.userStore.getCurrent();
+  private readonly router = inject(Router);
+
 
   readonly currentUid = computed(() => {
     return this.currentUser()!.userID;
@@ -207,6 +210,27 @@ export class ChatService {
 
   saveGroupID(eventId: number, groupChatId: string) {
     return this.api.post<any, any>(`eventApproval/saveGroupChatId`, { eventId, groupChatId })
+  }
+
+  openChat(mate: RecievedUser & { userID: string }): void {
+    this.router.navigate(['dashboard/chat'],
+      {
+        state: {
+          recievedMate: { userID: mate.userID, profileImage: mate.profileImage, name: mate.name }
+        }
+      }
+    );
+  }
+
+  openGroupChat(groupId: string, groupName: string): void {
+     this.router.navigate(['dashboard/chat'],
+      {
+        state: {
+          groupId: groupId,
+          groupName: groupName
+        }
+      }
+    );  
   }
 
 }

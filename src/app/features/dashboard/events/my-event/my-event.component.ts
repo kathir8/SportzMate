@@ -8,7 +8,7 @@ import { IonicAccordionComponent, IonicAccordionItem } from 'src/app/shared/comp
 import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ionic-button.component";
 import { EventBasic } from 'src/app/shared/models/shared.model';
 import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
-import { ChatService } from '../../chat-list/chat/chat.service';
+import { ChatService } from '../../chat-list/chat.service';
 import { EventDetailApiResp, RequestedMember } from '../../home/mate-stuff/models/mate.model';
 import { HomeApiService } from '../../home/services/home-api-service';
 import { MateDetailComponent } from '../../home/mate-stuff/mate-detail/mate-detail.component';

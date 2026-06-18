@@ -59,7 +59,7 @@
   
       <div class="profile-container">
         @for(member of AcceptedRequest();track member.interestedUser.userID){
-          <div class="profile-item active">
+          <div class="profile-item active" (click)="chatService.openChat(member.interestedUser)">
             <img [src]="member.interestedUser.profileImage" alt="profile" />
             <!-- <ion-icon [icon]="icons.mailOpenOutline" class="mail-icon"></ion-icon> -->
           </div>

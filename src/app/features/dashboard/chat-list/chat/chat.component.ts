@@ -11,7 +11,7 @@ import { HeaderComponent } from "src/app/shared/components/header/header.compone
 import { IonicInputComponent } from 'src/app/shared/components/ionic-input/ionic-input.component';
 import { formatChatMessageTime } from 'src/app/shared/utils/date-utils';
 import { RecievedUser } from '../chat.model';
-import { ChatMessage, ChatService } from './chat.service';
+import { ChatMessage, ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-chat',

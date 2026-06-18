@@ -20,7 +20,7 @@
 
 <!-- Chat Row Template -->
 <ng-template #chatRowTemplate let-name="name" let-profileImage="profileImage" let-chat="chat" let-unread="unread" let-otherUser="otherUser">
-  <div class="chat-list" (click)="isPersonalChat() ? openChat(otherUser) : openGroupChat(chat.chatId, chat.name)">
+  <div class="chat-list" (click)="isPersonalChat() ? chatService.openChat(otherUser) : chatService.openGroupChat(chat.chatId, chat.name)">
     <div class="member-icon">
       <img [src]="profileImage" [alt]="name" />
     </div>

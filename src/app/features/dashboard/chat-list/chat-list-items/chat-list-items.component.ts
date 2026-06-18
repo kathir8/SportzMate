@@ -1,11 +1,10 @@
-import { Component, effect, inject, input, TemplateRef, viewChild } from '@angular/core';
-import { ChatDocument, RecievedUser } from '../chat.model';
-import { Timestamp } from '@angular/fire/firestore';
-import { formatChatListTime } from 'src/app/shared/utils/date-utils';
-import { IonicVirtualScrollComponent } from 'src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component';
-import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
-import { ChatService } from '../chat/chat.service';
+import { Component, effect, inject, input, TemplateRef, viewChild } from '@angular/core';
+import { Timestamp } from '@angular/fire/firestore';
+import { IonicVirtualScrollComponent } from 'src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component';
+import { formatChatListTime } from 'src/app/shared/utils/date-utils';
+import { ChatDocument, RecievedUser } from '../chat.model';
+import { ChatService } from '../chat.service';
 
 @Component({
   selector: 'app-chat-list-items',
@@ -15,8 +14,7 @@ import { ChatService } from '../chat/chat.service';
 })
 export class ChatListItemsComponent {
 
-  private readonly router = inject(Router);
-  private readonly chatService = inject(ChatService);
+  protected readonly chatService = inject(ChatService);
 
   readonly isPersonalChat = input<boolean>(false);
 
@@ -58,27 +56,6 @@ constructor() {
 
   getUnreadCount(chat: ChatDocument): number {
     return chat.unreadCount?.[this.currentUserId()] ?? 0;
-  }
-
-   openChat(mate: RecievedUser & { userID: string }): void {
-    this.router.navigate(['dashboard/chat'],
-      {
-        state: {
-          recievedMate: { userID: mate.userID, profileImage: mate.profileImage, name: mate.name }
-        }
-      }
-    );
-  }
-
-  openGroupChat(groupId: string, groupName: string): void {
-     this.router.navigate(['dashboard/chat'],
-      {
-        state: {
-          groupId: groupId,
-          groupName: groupName
-        }
-      }
-    );  
   }
 
   handleChatClick(user: RecievedUser & { userID: string }): void {
