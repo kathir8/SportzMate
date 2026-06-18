@@ -48,14 +48,16 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
     })
 
     effect(() => {
-      const eventId = this.commonStore.matchActionEventId();
-      if (!eventId) return;
+      const uniqueActionId = this.commonStore.uniqueActionId();
+      if (!uniqueActionId) return;
+
+      const [key, value] = Object.entries(uniqueActionId)[0] as [ keyof T, T[keyof T] ];
 
       if (this.displayList()?.length) {
-        this.signalService.removeItemByKey(this.displayList, 'eventId', eventId);
+        this.signalService.removeItemByKey(this.displayList, key, value);
       }
 
-      this.commonStore.clearMatchActionEventId();
+      this.commonStore.clearUniqueActionIdId();
     })
 
   }
@@ -88,7 +90,7 @@ export class MateListViewComponent<T extends Requests | EventBasic> {
     payload.event.stopPropagation();
     this.inviteApiService.ProcessJoinRequests(payload.item!, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
       if (res.rspFlg) {
-        this.signalService.removeItemByKey(this.displayList, 'eventId', res.eventId);
+        this.signalService.removeItemByKey(this.displayList, 'approvalId', payload.item!.approvalId);
       }
     });
   }

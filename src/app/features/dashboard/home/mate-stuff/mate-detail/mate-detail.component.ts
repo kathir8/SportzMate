@@ -154,7 +154,9 @@ export class MateDetailComponent implements OnInit {
     this.homeApi.requestJoin(obj).subscribe((res) => {
       this.toast.show(res.rspMsg);
       if (res.rspFlg) {
-        this.commonStore.setMatchActionEventId(this.eventId());
+        this.commonStore.setUniqueActionId({
+          eventId: this.eventId()
+        });
 
       } else if (res.status !== AcceptReject.Pending) {
         this.disableBtn.set(false);
@@ -168,7 +170,9 @@ export class MateDetailComponent implements OnInit {
     }
     this.inviteApiService.ProcessJoinRequests(payload.item!, payload.accepted).subscribe((res: ProcessRequestApiResp) => {
       if (res.rspFlg) {
-        this.commonStore.setMatchActionEventId(this.eventId());
+        this.commonStore.setUniqueActionId({
+          approvalId: this.approvalId()
+        });
         this.handleBack(); // go to join requests tab
       }
     });

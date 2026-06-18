@@ -2,6 +2,7 @@ import { inject, Injectable, signal } from '@angular/core';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { ApiResp, SportsList } from 'src/app/shared/models/shared.model';
 import { CommonApiService } from '../services/common-api-service';
+import { UniqueActionId } from '../model/common.model';
 
 export interface SportsListResp extends ApiResp {
   sportsList: SportsList[];
@@ -18,16 +19,16 @@ export class CommonStore {
 
   private readonly toast = inject(IonicToastService);
 
-  private readonly _matchActionEventId = signal<number | null>(null);
+  private readonly _uniqueActionId = signal<UniqueActionId | null>(null);
 
-  readonly matchActionEventId = this._matchActionEventId.asReadonly();
+  readonly uniqueActionId = this._uniqueActionId.asReadonly();
 
-  setMatchActionEventId(eventId: number) {
-    this._matchActionEventId.set(eventId);
+  setUniqueActionId(action: UniqueActionId):void {
+    this._uniqueActionId.set(action);
   }
 
-  clearMatchActionEventId() {
-    this._matchActionEventId.set(null);
+  clearUniqueActionIdId() {
+    this._uniqueActionId.set(null);
   }
   
   loadSports(): SportsList[] {
