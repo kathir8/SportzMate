@@ -14,7 +14,6 @@
   <h4>Email : <b>{{ profileUser().email }}</b></h4>
   }
   <h4>Interested Details :</h4>
-
   <div class="sports-container">
     @for (sport of selectedSports(); track sport) {
     <ionic-chip [dynamicClass]="'interest-chip selected'">
@@ -23,12 +22,16 @@
     }
   </div>
 </ion-content>
-@if (isMyProfile()) {
+@if (isMyProfile() || showChatButton()) {
 <ion-footer class="footer">
   <ion-toolbar class="footer-toolbar">
-    <ionic-button (ionClick)="editProfile()">Edit profile</ionic-button>
-    <ionic-button fill="outline" (ionClick)="userService.redirectToLogin()">Log out</ionic-button>
-    <ionic-button color="danger" (ionClick)="confirmLogOut.set(true)">Delete account</ionic-button>
+    @if(isMyProfile()){
+      <ionic-button (ionClick)="editProfile()">Edit profile</ionic-button>
+      <ionic-button fill="outline" (ionClick)="userService.redirectToLogin()">Log out</ionic-button>
+      <ionic-button color="danger" (ionClick)="confirmLogOut.set(true)">Delete account</ionic-button>
+    }@else {
+      <ionic-button (ionClick)="chatService.openChat(profileUser())">Send message</ionic-button>
+    }
   </ion-toolbar>
 </ion-footer>
 }

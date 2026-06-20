@@ -17,6 +17,7 @@ import { IonicButtonComponent } from "src/app/shared/components/ionic-button/ion
 import { IonicChipComponent } from "src/app/shared/components/ionic-chip/ionic-chip.component";
 import { ProfileImageComponent } from "src/app/shared/components/profile-image/profile-image.component";
 import { ProfileViewService } from './profile-view.service';
+import { ChatService } from '../dashboard/chat-list/chat.service';
 
 @Component({
   selector: 'app-profile-view',
@@ -32,15 +33,21 @@ export class ProfileViewComponent {
   private readonly commonStore = inject(CommonStore);
   private readonly commonService = inject(CommonService);
   private readonly profileViewService = inject(ProfileViewService);
-  readonly userService = inject(UserService);
+  protected readonly userService = inject(UserService);
+  protected readonly chatService = inject(ChatService);
 
 
+
+  // private showChatButton = signal<boolean>(false);
   private readonly routedProfileUser = signal<UserDetail | null>(
     (this.location.getState() as { profileUser?: UserDetail })?.profileUser ?? null
   );
 
   private readonly routedUserID = signal<number | null>(
     (this.location.getState() as { userID?: number })?.userID ?? null);
+
+  readonly showChatButton = signal<boolean>(
+    (this.location.getState() as { showChatButton?: boolean })?.showChatButton ?? false);
 
   readonly isMyProfile = computed(() => !this.routedProfileUser() && !this.routedUserID());
 
@@ -103,7 +110,6 @@ export class ProfileViewComponent {
     }
     return g.charAt(0).toUpperCase() + g.slice(1);
   });
-
 
   handleBack() {
     if (this.isMyProfile()) {

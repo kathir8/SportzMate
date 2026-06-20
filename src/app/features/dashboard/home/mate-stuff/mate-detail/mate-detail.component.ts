@@ -15,11 +15,12 @@ import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-t
 import { EventBasic } from 'src/app/shared/models/shared.model';
 import { LocalTimePipe } from 'src/app/shared/pipes/local-time';
 import { MateBasicComponent } from "../mate-basic/mate-basic.component";
-import { AcceptOrReject, EventDetailApiResp, requestJoinApi } from '../models/mate.model';
+import { AcceptOrReject, EventDetailApiResp, RequestedMember, requestJoinApi } from '../models/mate.model';
 import { HomeApiService } from '../../services/home-api-service';
 import { AcceptReject, ProcessRequestApiResp } from '../../../requests/models/requests.model';
 import { ChatService } from '../../../chat-list/chat.service';
 import { InviteApiService } from '../../../requests/services/invite-api-service';
+import { UserDetail } from 'src/app/core/model/user.model';
 
 @Component({
   selector: 'app-mate-detail',
@@ -42,7 +43,6 @@ export class MateDetailComponent implements OnInit {
   private readonly commonStore = inject(CommonStore);
   private readonly commonService = inject(CommonService);
   private readonly inviteApiService = inject(InviteApiService);
-  protected readonly chatService = inject(ChatService);
 
 
   readonly showInterestBtn = signal<boolean>(true);
@@ -64,7 +64,7 @@ export class MateDetailComponent implements OnInit {
 
   readonly icons = { calendarOutline, timeOutline, mailOpenOutline };
 
-  readonly AcceptedRequest = signal<any[]>([]);
+  readonly AcceptedRequest = signal<RequestedMember[]>([]);
 
   readonly dynamicClass = computed(() => {
     if (!!this.fromMyEvent()) {
@@ -139,9 +139,10 @@ export class MateDetailComponent implements OnInit {
       });
   }
 
-
-  handleBack() {
-    this.location.back();
+  profileInfo(mateDetail: UserDetail) {
+    return this.router.navigate(['profile'], {
+      state: { profileUser: mateDetail, showChatButton: true }
+    });
   }
 
 
@@ -176,6 +177,10 @@ export class MateDetailComponent implements OnInit {
         this.handleBack(); // go to join requests tab
       }
     });
+  }
+
+  handleBack() {
+    this.location.back();
   }
 
 }
