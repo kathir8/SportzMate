@@ -5,6 +5,7 @@ import { MateListViewComponent } from "../home/mate-stuff/mate-list-view/mate-li
 import { AcceptReject, JoinRequests, JoinRequestsApiResp, MyRequests, myRequestsApiResp } from './models/requests.model';
 import { InviteApiService } from './services/invite-api-service';
 import { StatusFilterComponent } from "src/app/shared/components/status-filter/status-filter.component";
+import { RequestsService } from './services/requests.service';
 @Component({
   selector: 'app-requests',
   templateUrl: './requests.component.html',
@@ -13,6 +14,7 @@ import { StatusFilterComponent } from "src/app/shared/components/status-filter/s
 })
 export class RequestsComponent {
   private readonly invitesApiService = inject(InviteApiService);
+  private readonly requestsService = inject(RequestsService);
 
   readonly segmentView = signal<'myRequests' | 'joinRequests'>('myRequests');
   readonly myRequestsList = signal<MyRequests[]>([]);
@@ -23,7 +25,7 @@ export class RequestsComponent {
   constructor() {
     effect(() => {
       if (this.segmentView() === 'myRequests') {
-        this.loadMyRequests(AcceptReject.Pending);
+        this.loadMyRequests(this.requestsService.myRequestStatusFilter());
       } else {
         this.loadJoinRequests();
       }

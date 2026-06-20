@@ -1,8 +1,7 @@
 import { Component, inject, output, signal } from '@angular/core';
 import { AcceptReject } from 'src/app/features/dashboard/requests/models/requests.model';
+import { RequestsService } from 'src/app/features/dashboard/requests/services/requests.service';
 import { IonicChipComponent } from "../ionic-chip/ionic-chip.component";
-import { NavigationEnd, Router } from '@angular/router';
-import { filter } from 'rxjs';
 
 @Component({
   selector: 'app-status-filter',
@@ -12,7 +11,7 @@ import { filter } from 'rxjs';
 })
 export class StatusFilterComponent {
 
-  private readonly router = inject(Router);
+  protected readonly requestsService = inject(RequestsService);
 
 
   /** status filters used by the chips */
@@ -22,21 +21,10 @@ export class StatusFilterComponent {
     { label: 'Rejected', status: AcceptReject.Rejected }
   ] as const);
 
-  readonly selectedFilter = signal<AcceptReject>(AcceptReject.Pending);
   readonly filterChange = output<AcceptReject>();
 
-  ngAfterViewInit() {
-    this.router.events
-      .pipe(filter(event => event instanceof NavigationEnd))
-      .subscribe((event: NavigationEnd) => {
-        if (event.urlAfterRedirects === '/dashboard/requests') {
-          this.selectedFilter.set(AcceptReject.Pending);
-        }
-      });
-  }
-
   setFilter(status: AcceptReject): void {
-    this.selectedFilter.set(status);
+    this.requestsService.myRequestStatusFilter.set(status);
     this.filterChange.emit(status);
   }
 
