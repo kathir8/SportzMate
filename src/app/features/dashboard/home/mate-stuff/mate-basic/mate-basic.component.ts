@@ -42,7 +42,7 @@ export class MateBasicComponent<T extends Requests | EventBasic> {
     event.stopPropagation();
 
     const m = this.mate();
-    if (!m) return null;
+    if (!m || this.dynamicClass() === 'from-my-event') return null;
 
     if ('eventCreator' in m) {
       return this.router.navigate(['profile'], {

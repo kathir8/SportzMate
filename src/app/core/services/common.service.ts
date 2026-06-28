@@ -1,6 +1,5 @@
 import { inject, Injectable } from '@angular/core';
-import { ProfileInfo } from '../model/user.model';
-import { Coordinates, GeoLatLng, SportType } from 'src/app/shared/models/shared.model';
+import { Coordinates, EventProfileHolder, EventProfileKey, GeoLatLng, SportType } from 'src/app/shared/models/shared.model';
 import { CommonStore } from '../stores/common-store';
 
 @Injectable({
@@ -38,12 +37,9 @@ export class CommonService {
   }
 
 
-  updateEventProfileImage<T extends {
-    eventCreator?: ProfileInfo;
-    interestedUser?: ProfileInfo;
-  }>(
+  updateEventProfileImage<T extends EventProfileHolder>(
     response: readonly T[] | null,
-    fromMyRequestedEvents: boolean
+    property: EventProfileKey  = 'eventCreator',
   ): T[] {
 
     if (!response || response.length === 0) {
@@ -52,9 +48,7 @@ export class CommonService {
 
     return response.map(item => ({
       ...item,
-      profileImage: fromMyRequestedEvents
-        ? item.eventCreator?.profileImage
-        : item.interestedUser?.profileImage,
+      profileImage: item[property]?.profileImage
     }));
   }
 

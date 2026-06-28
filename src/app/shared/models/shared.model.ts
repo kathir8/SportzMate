@@ -1,3 +1,5 @@
+import { ProfileInfo } from "src/app/core/model/user.model";
+
 export interface ApiResp {
   rspFlg: boolean,
   rspMsg: string,
@@ -52,3 +54,11 @@ export interface EventBasic extends Coordinates {
 
 export interface Coordinates { latitude: number; longitude: number; }
 export interface GeoLatLng { lat: number; lng: number; }
+
+export type EventProfileHolder = {
+  eventCreator?: ProfileInfo;
+  interestedUser?: ProfileInfo;
+  invitedUser?: ProfileInfo;
+};
+
+export type EventProfileKey = keyof EventProfileHolder;

@@ -3,9 +3,9 @@ import { map, Observable, tap } from 'rxjs';
 import { ApiService } from 'src/app/core/services/api.service';
 import { CommonService } from 'src/app/core/services/common.service';
 import { UserStore } from 'src/app/core/stores/user-store';
-import { AcceptReject, EventsApi, Invite, JoinRequestsApiResp, myRequestsApiResp, ProcessRequestApi, ProcessRequestApiResp, Requests } from '../models/requests.model';
 import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { ChatService } from '../../chat-list/chat.service';
+import { AcceptReject, EventsApi, Invite, JoinRequestsApiResp, myRequestsApiResp, ProcessRequestApi, ProcessRequestApiResp, Requests } from '../models/requests.model';
 
 @Injectable({
   providedIn: 'root'
@@ -30,10 +30,7 @@ export class InviteApiService {
         map((response: myRequestsApiResp) =>
         ({
           ...response,
-          requestedEvents: this.commonService.updateEventProfileImage(
-            response.requestedEvents,
-            true
-          ),
+          requestedEvents: this.commonService.updateEventProfileImage(response.requestedEvents, 'eventCreator'),
         }))
       );
   }
@@ -49,7 +46,7 @@ export class InviteApiService {
       .pipe(
         map((response: JoinRequestsApiResp) => ({
           ...response,
-          receivedRequests: this.commonService.updateEventProfileImage(response.receivedRequests,false),
+          receivedRequests: this.commonService.updateEventProfileImage(response.receivedRequests, 'interestedUser'),
         }))
       );
   }
