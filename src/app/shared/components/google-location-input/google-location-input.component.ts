@@ -30,6 +30,7 @@ export class GoogleLocationInputComponent {
   private readonly searchInput = viewChild.required<IonInput>('googleSearchInput');
 
   readonly placeholder = input<string>('Choose the location');
+  readonly restrictToAreaOnly = input<boolean>(false);
 
   readonly locationSelected = output<AddressInfo>();
 
@@ -38,21 +39,35 @@ export class GoogleLocationInputComponent {
   async ngAfterViewInit(): Promise<void> {
     const nativeInput = await this.searchInput().getInputElement();
 
-    const autocomplete = new google.maps.places.Autocomplete(nativeInput, {
+    const autocompleteOptions: google.maps.places.AutocompleteOptions = {
       componentRestrictions: { country: this.currentUser()!.currentLocationCountry },
-      fields: ['geometry', 'formatted_address']
-    });
+      fields: ['geometry', 'formatted_address', 'name', 'vicinity', 'address_components']
+    };
+
+    if (this.restrictToAreaOnly()) {
+      autocompleteOptions.types = ['(regions)'];
+    }
+
+    const autocomplete = new google.maps.places.Autocomplete(nativeInput, autocompleteOptions);
 
     autocomplete.addListener('place_changed', () => {
       this.ngZone.run(() => {
         const place = autocomplete.getPlace();
+        const fallbackAddress = place.formatted_address?.trim() || '';
+        const areaName = this.extractAreaName(place);
 
-        if (!place.geometry?.location || !place.formatted_address) {
+        if (!place.geometry?.location) {
+          return;
+        }
+
+        const selectedAddress = this.restrictToAreaOnly() ? (areaName || fallbackAddress) : fallbackAddress;
+
+        if (!selectedAddress) {
           return;
         }
 
         this.locationSelected.emit({
-          address: place.formatted_address,
+          address: selectedAddress,
           latitude: place.geometry.location.lat(),
           longitude: place.geometry.location.lng()
         });
@@ -60,8 +75,28 @@ export class GoogleLocationInputComponent {
     });
   }
 
-  onUserTyping(): void {
-    this.locationCleared.emit();
+  onUserTyping(event?: Event): void {
+    const target = event?.target as HTMLIonInputElement | null;
+    const value = target?.value?.toString().trim() ?? '';
+
+    if (!value) {
+      this.locationCleared.emit();
+    }
+  }
+
+  private extractAreaName(place: google.maps.places.PlaceResult): string {
+    const locality = place.address_components?.find(component =>
+      component.types.includes('locality') ||
+      component.types.includes('sublocality') ||
+      component.types.includes('administrative_area_level_2') ||
+      component.types.includes('postal_town')
+    );
+
+    if (locality?.long_name) {
+      return locality.long_name;
+    }
+
+    return place.name?.trim() || place.vicinity?.trim() || place.formatted_address?.trim() || '';
   }
 
 }

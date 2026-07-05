@@ -31,8 +31,8 @@
   <ion-segment-view>
     <ion-segment-content id="list" value="list">
       @if(segmentView() === 'list'){
-      <div class="text-wrapper">
-        <p>Based on your current Location </p>
+      <div class="text-wrapper" (click)="updateLocation()">
+        <p>{{locality()}} </p>
         <ion-icon [icon]="icons.navigateSharp"></ion-icon>
       </div>
 

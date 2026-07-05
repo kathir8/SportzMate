@@ -5,6 +5,7 @@
 export const  environment = {
   production: false,
   googleWebClientId: "853532937748-7fb6egmr2jhqt726pb641t995io06rda.apps.googleusercontent.com",
+  googleMapsApiKey: 'AIzaSyB8LbLa_oSkHl0zYPzVoVMeQBTkeUf9v0U',
   firebaseConfig: {
     apiKey: "AIzaSyAndy7XYPM3jk_zy_Fyp6l4oeJHTjXhfVM",
     authDomain: "sportzmate-89ad8.firebaseapp.com",

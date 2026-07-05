@@ -19,6 +19,9 @@ import { RangeFabComponent } from './range-fab/range-fab.component';
 import { HomeApiService } from './services/home-api-service';
 import { HomeService } from './services/home-service';
 import { filter } from 'rxjs';
+import { BottomSheetService } from 'src/app/shared/services/bottom-sheet.serivce';
+import { LocationPickerSheetComponent } from './location-picker-sheet/location-picker-sheet.component';
+import { AddressInfo } from 'src/app/shared/components/google-location-input/google-location-input.component';
 
 @Component({
   selector: 'app-home',
@@ -36,12 +39,15 @@ export class HomeComponent {
   private readonly geolocationService = inject(GeolocationService);
   private readonly pushNotificationService = inject(PushNotificationService);
   private readonly router = inject(Router);
+  private readonly bottomSheet = inject(BottomSheetService);
   readonly commonService = inject(CommonService);
 
   readonly icons = { navigateCircleOutline, navigateSharp };
 
   readonly segmentView = signal<'list' | 'map'>('list');
   readonly coords = signal<Coordinates>({ latitude: 13.0827, longitude: 80.2707 }); // (fallback to Chennai if geolocation fails)
+  readonly locality = signal<string>('');
+  private readonly localityUpdatedManually = signal(false);
   private mates = signal<MateListItem[]>([]);
   private readonly visiblePlayersBase = signal<MateListItem[]>([]);
   readonly currentUser = this.userStore.getCurrent();
@@ -68,6 +74,12 @@ export class HomeComponent {
 
   constructor() {
     this.updateFCMToken();
+    effect(async ()=>{
+      if(this.coords() && !this.localityUpdatedManually()){
+        const locality = await this.geolocationService.getLocalityName(this.coords());
+        this.locality.set(locality ? `Location: ${locality}` : `Based on your current location`);
+      }
+    })
     effect((onCleanup) => {
       const currentSearchTerm = this.rawSearchTerm();
 
@@ -107,6 +119,26 @@ export class HomeComponent {
     });
   }
 
+  async updateLocation(): Promise<void> {
+    const result = await this.bottomSheet.open<AddressInfo>(LocationPickerSheetComponent, {
+      initialBreakpoint: 0.35,
+      breakpoints: [0, 0.35, 0.6],
+      cssClass: 'bottom-sheet-modal'
+    });
+
+    if (!result?.data) {
+      return;
+    }
+    this.localityUpdatedManually.set(true);
+    this.coords.set({
+      latitude: result.data.latitude,
+      longitude: result.data.longitude
+    });
+
+    this.locality.set(`Location: ${result.data.address}`);
+    this.getMatesList();
+  }
+
   private updateFCMToken() {
     this.pushNotificationService.updateFCMToken(this.currentUser()!.userID)
   }
@@ -114,13 +146,16 @@ export class HomeComponent {
 
   private async refreshData(event?: CustomEvent): Promise<void> {
     this.loader.start();
-    try {
-      // Update location using Capacitor Geolocation
-      const position = await this.geolocationService.getCurrentPosition();
-      this.coords.set({ latitude: position.latitude, longitude: position.longitude });
-      this.getCountryFromCoords();
-    } catch (err) {
-      console.warn('Geolocation failed — using fallback.', err);
+
+    if(!this.localityUpdatedManually()){
+      try {
+        // Update location using Capacitor Geolocation
+        const position = await this.geolocationService.getCurrentPosition();      
+        this.coords.set({ latitude: position.latitude, longitude: position.longitude });
+        this.getCountryFromCoords();
+      } catch (err) {
+        console.warn('Geolocation failed — using fallback.', err);
+      }
     }
 
     this.getMatesList(event);

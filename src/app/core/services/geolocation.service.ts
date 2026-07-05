@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { Geolocation } from '@capacitor/geolocation';
 import { GlobalLoadingService } from './global-loading-service';
 import { Coordinates } from 'src/app/shared/models/shared.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
     providedIn: 'root'
@@ -53,6 +54,31 @@ export class GeolocationService {
                 message: userMessage,
                 name: error instanceof Error ? error.name : 'GeolocationError'
             };
+        }
+    }
+
+    async getLocalityName(position: Coordinates) {
+        try {
+            const response = await fetch(
+                `https://maps.googleapis.com/maps/api/geocode/json?latlng=${position.latitude},${position.longitude}&key=${environment.googleMapsApiKey}`
+            );
+
+            const data = await response.json();
+            const components = data.results
+                .flatMap((r: any) => r.address_components);
+
+            const locality =
+                components.find((c:any) => c.types.includes('sublocality_level_1'))
+                    ?.long_name ??
+                components.find((c:any) => c.types.includes('sublocality'))
+                    ?.long_name ??
+                components.find((c:any) => c.types.includes('neighborhood'))
+                    ?.long_name ??
+                components.find((c:any) => c.types.includes('locality'))
+                    ?.long_name;
+            return locality;
+        } catch (error) {
+            return error;
         }
     }
 

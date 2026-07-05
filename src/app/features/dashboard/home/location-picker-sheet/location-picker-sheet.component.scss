@@ -1,0 +1,25 @@
+$containerPaddingX: 16px;
+
+:host {
+    display: block;
+}
+
+ion-content {
+    --padding-start: #{$containerPaddingX};
+    --padding-end: #{$containerPaddingX};
+    --background: #fff;
+    --padding-top: 20px;
+}
+
+ion-icon {
+    display: inline-block !important;
+    color: var(--ion-color-primary) !important;
+}
+
+.manual-location {
+    .input-item {
+        --background: #f5f5f5;
+        margin-bottom: 10px;
+        border-radius: 12px;
+    }
+}

@@ -1,0 +1,15 @@
+<ion-content class="ion-padding manual-location">
+  <div class="ion-margin-bottom">
+    <strong>Select a location</strong>
+  </div>
+
+  <ion-item lines="none" class="input-item">
+    <ion-icon name="location-sharp" slot="start"></ion-icon>
+  <google-location-input
+    placeholder="Search area name"
+    [restrictToAreaOnly]="true"
+    (locationSelected)="onLocationSelected($event)"
+    (locationCleared)="onLocationCleared()"
+  />
+  </ion-item>
+</ion-content>
