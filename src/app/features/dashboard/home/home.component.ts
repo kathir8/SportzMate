@@ -76,6 +76,10 @@ export class HomeComponent {
     this.updateFCMToken();
     effect(async ()=>{
       if(this.coords() && !this.localityUpdatedManually()){
+        if(this.coords().latitude === 13.0827 && this.coords().longitude === 80.2707){
+          this.locality.set('Location: Chennai');
+          return;
+        }
         const locality = await this.geolocationService.getLocalityName(this.coords());
         this.locality.set(locality ? `Location: ${locality}` : `Based on your current location`);
       }
