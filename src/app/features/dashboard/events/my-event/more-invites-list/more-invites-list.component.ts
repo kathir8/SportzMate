@@ -1,5 +1,4 @@
 import { Component, effect, inject, input, signal } from '@angular/core';
-import { IonicToastService } from 'src/app/shared/components/ionic-toast/ionic-toast.service';
 import { IonicVirtualScrollComponent } from 'src/app/shared/components/ionic-virtual-scroll/ionic-virtual-scroll.component';
 import { StatusFilterComponent } from "src/app/shared/components/status-filter/status-filter.component";
 import { AcceptOrReject, RequestedMember } from '../../../home/mate-stuff/models/mate.model';
@@ -7,7 +6,7 @@ import { NoMateFoundComponent } from "../../../home/mate-stuff/no-mate-found/no-
 import { AcceptReject, ProcessRequestApiResp } from '../../../requests/models/requests.model';
 import { InviteApiService } from '../../../requests/services/invite-api-service';
 import { InvitesMateBasicComponent } from "./invites-mate-basic/invites-mate-basic.component";
-import { ChatService } from '../../../chat-list/chat.service';
+import { RequestsService } from '../../../requests/services/requests.service';
 
 @Component({
   selector: 'app-more-invites-list',
@@ -19,8 +18,7 @@ export class MoreInvitesListComponent {
   readonly AcceptReject = AcceptReject; // expose enum to template
 
   private readonly inviteApiService = inject(InviteApiService);
-  private readonly toast = inject(IonicToastService);
-  private readonly chatService = inject(ChatService);
+  private readonly requestsService = inject(RequestsService);
 
   /** incoming data from parent */
   readonly responseList = input<RequestedMember[]>([]);
@@ -30,7 +28,7 @@ export class MoreInvitesListComponent {
 
   constructor() {
     effect(() => {
-      this.onFilterChange();
+      this.onFilterChange(this.requestsService.myRequestStatusFilter());
     });
   }
 
