@@ -12,21 +12,7 @@ export class GeolocationService {
 
     async getCurrentPosition(): Promise<Coordinates> {
         try {
-            // Check and request permission if needed
-            const permissionStatus = await Geolocation.checkPermissions();
-
-            if (permissionStatus.location === 'denied') {
-                throw new Error('Location permission denied. Please enable location access in app settings.');
-            }
-
-            if (permissionStatus.location !== 'granted') {
-                const requestResult = await Geolocation.requestPermissions();
-                if (requestResult.location !== 'granted') {
-                    throw new Error('Location permission not granted');
-                }
-            }
-
-            // Get current position
+            // This automatically triggers native Android "Turn on Location" popup if GPS is off
             const position = await Geolocation.getCurrentPosition({
                 enableHighAccuracy: true,
                 timeout: 30000,
@@ -40,20 +26,7 @@ export class GeolocationService {
         } catch (error) {
             const errorMessage = error instanceof Error ? error.message : String(error);
             console.error('Geolocation error:', errorMessage);
-            
-            // Better error messaging for common issues
-            let userMessage = errorMessage;
-            if (errorMessage.includes('Location services are not enabled') || errorMessage.includes('PERMISSION_DENIED')) {
-                userMessage = 'Please enable Location Services on your device (Settings > Location) and grant app permission.';
-            } else if (errorMessage.includes('timeout')) {
-                userMessage = 'Location request timed out. Please try again.';
-            }
-            
-            throw {
-                code: error instanceof GeolocationPositionError ? error.code : -1,
-                message: userMessage,
-                name: error instanceof Error ? error.name : 'GeolocationError'
-            };
+            throw error;
         }
     }
 
